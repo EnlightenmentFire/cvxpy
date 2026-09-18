@@ -38,6 +38,7 @@
 - 笔记：`notes/12_terrain_model_reasoning.md`（模型给出的事实、坝趾几何定理、11 种情况的数字、以及"地形 → 坝线 → 分段高度 → 断面 → 方量与库容 → 料源 → 运输 → 设备 → 压实/验收 → 交付物"的推理链）。
 - 复算：见该笔记第 6 节的命令。
 - 打孔为主的平衡设计：`notes/14_pit_first_balanced_design.md`（把坝顶高程当变量、所有坝料来自库内的碗形坑：3,700 环上全环堆石的坝顶上限 3,850 ft、组合 III（1、4 段 RCC）3,900 ft、全环 RCC 到 4,120 勉强平衡而 4,000–4,050 宽松；三个环的结果表；每一段在平衡坝顶下的坝型；§2.0 记录了初版"统一退让"规则的错误与修正）。
+- 加州电网政策与抽蓄经济性：`notes/17_ca_policy_and_psh_economics.md`（法规/政策/许可框架、RA 与能量市场价格基准、造价与运维基准、本地块 8 个方案的造价/收入/运维/IRR/盈亏平衡收入、敏感性、与公开案例交叉验证：现价下任何规模都收不回投资，2,000 MW × 12 h 东半环最接近成立；`scripts/psh_economics.py`、`scripts/econ_brief.py` → `deliverables/D_ca_market_economics_brief.html`、`outputs/econ_*`）。
 - 坝高–填方–库容简版：`scripts/height_series.py` → `deliverables/D_height_series_brief.html`（S29、S2 沟谷坝随坝高 20–130 m 的坝长/填方/库容/再挖，与东半环、B1 同图同表；`outputs/height_series.csv`、`hs_map.png`、`hs_curve.png`）。
 - 墙段自由组合（最优库区轮廓 = 最小割）：`notes/16_wall_combination.md`（对每个填方价格 λ 求最优轮廓，λ 扫描 = 每次加最高效的墙段；拐点是东半环：坝顶 4,050 下 2.5 km、RCC 10.3 Mm³ 换 19.2 Mm³ 天然库容、挖 20 后 38 Mm³；`scripts/wall_optimizer.py`、`scripts/wall_brief.py` → `deliverables/D_wall_combo_brief.html`、`outputs/wall_*`）。
 - 跨沟谷短坝坝址搜索：`notes/15_gully_dam_sites.md`（D8 汇流找沟谷、沿沟谷放坝轴、洪水填充算库容：地块内短坝最多 6 Mm³，是 B1 的 1/10，填方 7%——回答"能否用 1/10 填方换一半库容"：不能；`scripts/gully_dam_sites.py`、`scripts/gully_brief.py` → `deliverables/D_gully_sites_brief.html`、`outputs/gully_*`）。

@@ -1,0 +1,64 @@
+{
+ "head_m": 390.144,
+ "gwh_per_Mm3": 0.90367104,
+ "params": {
+  "nwl_upper_ft": 4030.0,
+  "nwl_lower_ft": 2750.0,
+  "head_alt_ft": 2400.0,
+  "eta_turbine": 0.85,
+  "rte": 0.8,
+  "rcc_usd_m3": 110.0,
+  "cfrd_usd_m3": 25.0,
+  "cut_usd_m3": 12.0,
+  "lower_res_usd_m3": 15.0,
+  "reservoir_ancillary": 1.15,
+  "power_usd_kw_1000": 2300.0,
+  "power_scale_exp": -0.077,
+  "tx_line_usd": 60000000.0,
+  "network_upgrade_usd_kw": 300.0,
+  "contingency_civil": 0.2,
+  "owner_dev": 0.08,
+  "idc": 0.18,
+  "ra_usd_kw_mo": {
+   "低": 8.0,
+   "中": 11.5,
+   "高": 20.0
+  },
+  "energy_12h_usd_kw_yr": {
+   "低": 40.0,
+   "中": 60.0,
+   "高": 90.0
+  },
+  "as_usd_kw_yr": {
+   "低": 5.0,
+   "中": 9.0,
+   "高": 12.0
+  },
+  "duration_energy_factor": {
+   "8": 0.85,
+   "10": 0.95,
+   "12": 1.0,
+   "24": 1.15,
+   "48": 1.2,
+   "100": 1.2
+  },
+  "contract_usd_kw_yr": 200.0,
+  "fom_usd_kw_yr_100": 28.2,
+  "fom_usd_kw_yr_1000": 15.6,
+  "storage_om_frac": 0.003,
+  "property_tax": 0.01,
+  "insurance": 0.004,
+  "admin_usd_kw_yr": 2.0,
+  "discount_real": 0.05,
+  "life_yr": 50,
+  "itc": 0.3,
+  "cycles_per_yr": {
+   "8": 330,
+   "10": 320,
+   "12": 300,
+   "24": 180,
+   "48": 90,
+   "100": 40
+  }
+ }
+}
