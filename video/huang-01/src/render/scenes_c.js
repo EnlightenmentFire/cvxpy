@@ -25,13 +25,13 @@ SCENES.inner = function (sc) {
     d += mono(140, 486, 24, 'NV2 架构 · 四边形 / 正向纹理映射', { f: COL.g });
     d += mono(940, 890, 20, '设计：联合创始人、技术负责人 Curtis Priem', { a: 'end' });
     s += `<g opacity="${f1(bp * (1 - .7 * sh) * 100) / 100}" transform="translate(0 ${f1(sh * 120)}) rotate(${f1(-3 * sh)} 540 700)">${d}</g>`;
-    s += G(eo(prog('shelve', .35, .9)) * bp, `<g transform="rotate(-10 540 700)"><rect x="350" y="690" width="380" height="130" rx="12" fill="none" stroke="${COL.warn}" stroke-width="8"/>` + tx(540, 790, 92, '放下', { a: 'middle', w: 900, f: COL.warn, ls: 16 }) + `</g>`, 0);
+    s += G(eo(prog('shelve', .35, .9)) * bp, `<g transform="rotate(-10 540 700)"><rect x="350" y="690" width="380" height="130" rx="12" fill="none" stroke="${COL.warn}" stroke-width="8"/>` + tx(540, 790, 92, '放弃', { a: 'middle', w: 900, f: COL.warn, ls: 16 }) + `</g>`, 0);
     const sp = win('split', 'shelve');
     s += G(sp * eo(prog('split', .4, 1.6)), pill(72, 330, 440, 84, '普里姆：沿着它继续做', { fs: 32 }));
     s += G(sp * eo(prog('split', .4, 3.6)), pill(568, 330, 440, 84, '黄仁勋：顾客别再退货', { fs: 32, c: COL.gd, f: COL.g }));
     const st = win('shout', 'shelve');
     s += G(st, pill(110, 960, 330, 80, '关着门的争论', { fs: 32, f: COL.mute }) + arrow(460, 1000, 610, 1000, COL.warn, 5) + pill(630, 960, 340, 80, '当着员工的面', { fs: 32, c: COL.warn, f: COL.warn }));
-    s += G(on('shelve', .6, 2.4) * bp, pill(150, 330, 780, 90, '掉头：做一块守微软规则的芯片', { fs: 36, c: COL.g, f: COL.g }));
+    s += G(on('shelve', .6, 2.4) * bp, pill(120, 330, 840, 90, '掉头：做一块按微软规则来的芯片', { fs: 36, c: COL.g, f: COL.g }));
   }
   // 裁员：一百多个人影 → 四十个左右
   if (lay > 0 && so < 1) {
@@ -69,7 +69,9 @@ SCENES.inner = function (sc) {
 
 SCENES.time = function (sc) {
   let s = BG();
-  s += G(win('time', 'tapeout', .7), tx(540, 720, 54, '剩下的问题', { a: 'middle', w: 500, f: COL.mute }) + glow(tx(540, 900, 180, '时间', { a: 'middle', w: 900, f: COL.g, ls: 20 })));
+  s += G(win('speed', 'tapeout', .6), tx(540, 560, 50, '规则是微软定的', { a: 'middle', w: 500, f: COL.mute }) + O(pc('speed', 1), tx(540, 720, 70, '在别人的规则里', { a: 'middle', w: 900 }) + tx(540, 820, 70, '能比的只剩一样', { a: 'middle', w: 900 })) +
+    G(pc('speed', 2), glow(tx(540, 1040, 190, '谁快', { a: 'middle', w: 900, f: COL.g, ls: 24 })), 20));
+  s += G(win('time', 'speed', .7), tx(540, 720, 54, '剩下的问题', { a: 'middle', w: 500, f: COL.mute }) + glow(tx(540, 900, 180, '时间', { a: 'middle', w: 900, f: COL.g, ls: 20 })));
   // ① 平常的流程：设计 → 流片 → 打样 → 找错 → 改 → 再流片…
   const fl = on('tapeout', .7) * (1 - on('emu', .5));
   if (fl > 0) {
@@ -115,7 +117,7 @@ SCENES.time = function (sc) {
       tx(566, 1054, 34, '“最后的钱”', { w: 900 }) + mono(960, 1052, 20, 'Witt 的书', { a: 'end' }));
     const rm = win('room', 'slow');
     s += G(rm, tx(540, 400, 46, '机房放不下，摆进休息室', { a: 'middle', w: 900 }), 0);
-    s += G(rm * eo(prog('room', .4, 3.0)), pill(540, 920, 210, 84, '☀ 白天一班', { fs: 30 }) + pill(770, 920, 210, 84, '☾ 晚上一班', { fs: 30, c: COL.gd, f: COL.g }));
+    s += G(rm * eo(prog('room', .4, 1.6)), pill(540, 920, 210, 84, '☀ 白天一班', { fs: 30 }) + pill(770, 920, 210, 84, '☾ 晚上一班', { fs: 30, c: COL.gd, f: COL.g }));
     const sl = win('slow', 'queue');
     s += G(sl, tx(540, 400, 76, '非常、非常慢', { a: 'middle', w: 900 }), 0);
     s += G(sl * eo(prog('slow', .5, 1.6)), `<rect x="540" y="900" width="440" height="190" rx="12" fill="${COL.panel}" stroke="${COL.line}" stroke-width="2"/>` +
@@ -125,7 +127,7 @@ SCENES.time = function (sc) {
   // ③ 排队干 vs 同时干
   const qp = on('queue', .7) * (1 - on('noproto', .5));
   if (qp > 0) {
-    const par = on('parallel', .8), u = i => eo(prog('queue', .45, .9 + i * .95));
+    const par = on('parallel', .8), u = i => eo(prog('queue', .45, .7 + i * 1.5));
     const names = ['等芯片', '写软件', '找错'];
     let d = tx(72, 392, 44, '排队干', { w: 900, f: '#aab4ad' }) + mono(1008, 388, 22, '一件做完，才能做下一件', { a: 'end' });
     names.forEach((nm, i) => d += O(u(i), pill(72 + i * 312, 430, 300, 96, nm, { fs: 36, bg: '#141a17', c: '#3a433d' })));
@@ -133,7 +135,7 @@ SCENES.time = function (sc) {
     d += O(par, tx(72, 740, 44, '同时干', { w: 900, f: COL.g }) + mono(1008, 736, 22, '芯片和软件，一起跑在模拟器上', { a: 'end', f: COL.g }) +
       names.map((nm, i) => pill(72, 778 + i * 104, 340, 90, i === 0 ? '芯片（在模拟器里）' : nm, { fs: i === 0 ? 30 : 36, bg: '#0c1a12', c: COL.g, f: COL.g })).join('') +
       `<line x1="412" y1="778" x2="412" y2="1076" stroke="${COL.g}" stroke-width="3" stroke-dasharray="8 8"/>` +
-      O(eo(prog('parallel', .6, 1.5)), `<rect x="430" y="778" width="578" height="298" rx="12" fill="${COL.g}" opacity=".07"/>` +
+      O(on('buytime', .6), `<rect x="430" y="778" width="578" height="298" rx="12" fill="${COL.g}" opacity=".07"/>` +
         `<path d="M440 1100h558" stroke="${COL.g}" stroke-width="3"/><path d="M440 1088v24M998 1088v24" stroke="${COL.g}" stroke-width="3"/>` +
         glow(tx(719, 950, 76, '省下的时间', { a: 'middle', w: 900, f: COL.g })) + tx(719, 1166, 40, '拿钱，买时间', { a: 'middle', w: 900 })));
     s += O(qp, d);
@@ -146,7 +148,7 @@ SCENES.time = function (sc) {
     d += O(x, `<path d="M420 530L660 620M660 530L420 620" stroke="${COL.warn}" stroke-width="9" stroke-linecap="round"/>` +
       `<path d="M197 640C300 800 780 800 883 640" fill="none" stroke="${COL.g}" stroke-width="5" stroke-dasharray="1" pathLength="1" stroke-dashoffset="${f1(1 - eio(prog('noproto', 1.0, 2.0)))}"/>`);
     d += tx(540, 410, 64, '不打样，直接量产', { a: 'middle', w: 900 });
-    d += G(on('q_perfect', .6, 5.6), glow(tx(540, 990, 110, '只有一次机会', { a: 'middle', w: 900, f: COL.g, ls: 6 })) + mono(540, 1050, 24, 'We get one shot.', { a: 'middle' }));
+    d += G(pc('q_perfect', 2, .6), glow(tx(540, 990, 110, '只有一次机会', { a: 'middle', w: 900, f: COL.g, ls: 6 })) + mono(540, 1050, 24, 'We get one shot.', { a: 'middle' }));
     d += G(win('ask2', 'q_perfect'), tx(540, 960, 52, '“你怎么知道它会是完美的？”', { a: 'middle', w: 700, f: '#b7c0ba' }));
     s += O(np, d);
   }
@@ -207,8 +209,8 @@ SCENES.result = function (sc) {
     s += G(q * (1 - so), tx(540, 660, 76, '我们公司，离倒闭', { a: 'middle', w: 900 }) + glow(tx(540, 860, 180, '只有 30 天', { a: 'middle', w: 900, f: COL.warn, ls: 4 })), 14);
   }
   if (so > 0) {
-    s += G(eo(prog('so8', .5, .1)), tx(540, 680, 70, '这不是一句口号', { a: 'middle', w: 900, f: '#9aa49d' }));
-    s += G(eo(prog('so8', .5, 1.5)), glow(tx(540, 860, 92, '他们真的那样活过', { a: 'middle', w: 900, f: COL.g })));
+    s += G(eo(prog('so8', .5, 1.4)), tx(540, 680, 70, '活下来之后，他没讲胜利', { a: 'middle', w: 900, f: '#9aa49d' }));
+    s += G(pc('so8', 1), tx(540, 800, 56, '他讲的，还是', { a: 'middle', w: 500, f: COL.mute }) + glow(tx(540, 930, 100, '公司随时会倒闭', { a: 'middle', w: 900, f: COL.g })));
   }
   return s;
 };
@@ -224,8 +226,9 @@ SCENES.end = function (sc) {
   s += G(qc, `<rect x="72" y="560" width="8" height="340" fill="${COL.g}"/>` + tx(120, 650, 84, '直面错误', { w: 900 }) + O(prog('q_confront', .5, 1.9), tx(120, 760, 84, '带着谦卑去求助', { w: 900 })) +
     O(prog('q_confront', .5, 3.3), glow(tx(120, 880, 84, '救了英伟达', { w: 900, f: COL.g }))));
   if (fin > 0 && nx < 1) {
-    const a = fin * (1 - nx), st = eo(prog('not', .5, 1.5)), up = on('l1', .6);
-    s += G(a * (1 - up), tx(540, 720, 60, '这不是一个', { a: 'middle', w: 500, f: COL.mute }) + tx(540, 860, 104, '咬牙坚持', { a: 'middle', w: 900, f: '#9aa49d' }) + tx(540, 980, 60, '的故事', { a: 'middle', w: 500, f: COL.mute }) +
+    const a = fin * (1 - nx), st = eo(prog('not', .5, 1.5)), up = on('l1', .6), th3 = on('three', .5);
+    s += G(a * (1 - up) * th3, tx(540, 520, 76, '是三次认错', { a: 'middle', w: 900 }) + ['对客户', '对自己人', '对完美'].map((w, i) => O(eo((T - CH('three', 1) - i * .75) / .4), pill(190, 600 + i * 170, 700, 130, w, { fs: 66, w: 900, c: COL.g, f: COL.g, bg: '#0c1a12', sw: 4 }))).join(''));
+    s += G(a * (1 - th3), tx(540, 720, 60, '这不是一个', { a: 'middle', w: 500, f: COL.mute }) + tx(540, 860, 104, '咬牙坚持', { a: 'middle', w: 900, f: '#9aa49d' }) + tx(540, 980, 60, '的故事', { a: 'middle', w: 500, f: COL.mute }) +
       `<rect x="322" y="820" width="${f1(436 * st)}" height="8" fill="${COL.warn}"/>`);
     const rows = [['l1', '押对了方向，', '却押错了规则', COL.ink], ['l2', '认了错，', '把剩下的钱换成了时间', COL.ink], ['l3', '这一次，', '他向别人的标准低头', COL.ink], ['l4', '后来，', '他要让别人，向他的标准低头', COL.g]];
     rows.forEach(([cue, a1, a2, c], i) => {

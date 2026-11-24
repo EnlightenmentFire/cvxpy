@@ -52,7 +52,7 @@ def asr(w):
 
 t = 0.6  # 片头留白
 tl = []; chunks = [np.zeros(int(t * SR), dtype=np.float32)]
-scenes = []; CARD = 1.4  # 章节卡停留
+scenes = []; CARD = 1.2  # 章节卡停留
 cache_f = os.path.join(OUT, 'cache.json')
 cache = json.load(open(cache_f)) if os.path.exists(cache_f) else {}
 for i, (scene, zhs, o) in enumerate(LINES):
@@ -63,7 +63,7 @@ for i, (scene, zhs, o) in enumerate(LINES):
         w, _ = sf.read(f, dtype='float32')
     else:
         w = synth(text); sf.write(f, w, SR); cache[str(i)] = key
-    pre = o.get('pre', 0.0); gap = o.get('gap', 0.32)
+    pre = o.get('pre', 0.0); gap = o.get('gap', 0.28)
     if not scenes or scenes[-1]['name'] != scene:
         if scenes: pre += CARD; scenes[-1]['end'] = round(t, 3)
         scenes.append(dict(name=scene, start=round(t, 3) if scenes else 0.0))

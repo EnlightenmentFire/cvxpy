@@ -10,6 +10,7 @@ const eio = u => { u = clamp(u); return u < .5 ? 4 * u * u * u : 1 - Math.pow(-2
 const rnd = i => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
 const f1 = x => (Math.round(x * 10) / 10);
 
+const countCh = s => s.replace(/[^一-鿿A-Za-z0-9]/g, '').length || 1;
 const LN = TL.lines;
 const CUE = {}; LN.forEach(l => { if (l.cue) CUE[l.cue] = l; });
 const SC = {}; TL.scenes.forEach(s => SC[s.name] = s);
@@ -19,6 +20,10 @@ const CE = n => CUE[n].end;
 const on = (n, d = .6, off = 0) => eo((T - C(n) - off) / d);
 // cue a 到 cue b 之间可见
 const win = (a, b, d = .5) => on(a, d) * (1 - eo((T - C(b) + .15) / .35));
+// 某一行第 k 个字幕分段开始的时刻（和字幕换屏同步）
+const CH = (n, k) => { const l = CUE[n], ps = l.zh.split('|'), tot = ps.reduce((s, p) => s + countCh(p), 0);
+  let acc = 0; for (let i = 0; i < k; i++) acc += countCh(ps[i]); return l.start + (l.end - l.start) * acc / tot; };
+const pc = (n, k, d = .5) => eo((T - CH(n, k)) / d);
 // 线性进度
 const prog = (n, d, off = 0) => clamp((T - C(n) - off) / d);
 
@@ -52,7 +57,6 @@ const DEFS = `
 </defs>`;
 
 // ─── 字幕层（中文译文 + 英文原话 + 出处），放在安全区内
-const countCh = s => s.replace(/[^一-鿿A-Za-z0-9]/g, '').length || 1;
 // 一行放不下时，在最靠近中间的标点后面折行
 const zhW = s => [...s].reduce((w, ch) => w + (ch.charCodeAt(0) > 0x2e80 || '，。：；？！、“”「」《》'.includes(ch) ? 1 : 0.55), 0);
 function breakZh(s) {
@@ -92,7 +96,7 @@ const CHAP = {
 function header(sc) {
   if (sc.name === 'cold' || sc.name === 'title') return '';
   const ch = CHAP[sc.name] || ['', '', ''];
-  const a = clamp((T - sc.start - 1.5) / .5) * clamp((sc.end - T) / .4);
+  const a = clamp((T - sc.start - 1.3) / .5) * clamp((sc.end - T) / .4);
   const p = T / TL.duration;
   return O(a, mono(70, 262, 22, '黄仁勋的商业决断 · 01', { f: '#6f7a73' }) +
     (ch[0] ? tx(1010, 263, 24, `第${ch[0]}章 · ${ch[1]}`, { a: 'end', f: COL.g, w: 700, ls: 2 }) : '') +
@@ -101,10 +105,10 @@ function header(sc) {
 // 章节卡：每场开头 1.4 秒
 function chapterCard(sc) {
   const ch = CHAP[sc.name]; if (!ch || !ch[0]) return '';
-  const lt = T - sc.start; if (lt > 1.9) return '';
-  const a = clamp(lt / .3) * clamp((1.75 - lt) / .35);
+  const lt = T - sc.start; if (lt > 1.7) return '';
+  const a = clamp(lt / .3) * clamp((1.55 - lt) / .35);
   const w = eo(lt / .9) * 300;
-  return `<rect width="${W}" height="${H}" fill="#070908" opacity="${clamp((1.9 - lt) / .4).toFixed(3)}"/>` + O(a,
+  return `<rect width="${W}" height="${H}" fill="#070908" opacity="${clamp((1.7 - lt) / .4).toFixed(3)}"/>` + O(a,
     mono(540, 770, 40, `第${ch[0]}章`, { a: 'middle', f: COL.g, ls: 14 }) +
     `<rect x="${540 - w / 2}" y="820" width="${w}" height="3" fill="${COL.g}"/>` +
     tx(540, 950, 104, ch[1], { a: 'middle', w: 900, ls: 6 }) +

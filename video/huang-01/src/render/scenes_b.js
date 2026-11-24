@@ -158,8 +158,8 @@ SCENES.sega = function (sc) {
     s += O(ta, d);
     // 坦白的三句话
     const cf = win('confess', 'ask');
-    ['我们的路线错了', '这块芯片做不完', '你们应该另找伙伴'].forEach((w, i) => {
-      s += G(cf * eo(prog('confess', .4, i * 1.15)), `<rect x="210" y="${334 + i * 78}" width="660" height="62" rx="10" fill="#101512" stroke="${COL.line}" stroke-width="2"/>` + tx(540, 378 + i * 78, 36, w, { a: 'middle', w: 700 }));
+    ['英伟达的路线错了', '这块芯片做不完', '世嘉应该另找伙伴'].forEach((w, i) => {
+      s += G(cf * eo(prog('confess', .4, .5 + i * 1.5)), `<rect x="210" y="${334 + i * 78}" width="660" height="62" rx="10" fill="#101512" stroke="${COL.line}" stroke-width="2"/>` + tx(540, 378 + i * 78, 36, w, { a: 'middle', w: 700 }));
     });
     // 解约 / 照付
     const ak = win('ask', 'agree');
@@ -182,8 +182,8 @@ SCENES.sega = function (sc) {
     });
   }
   if (so > 0) {
-    s += G(eo(prog('so5', .5, .9)), tx(540, 600, 60, '对方押的', { a: 'middle', w: 500, f: COL.mute }) + tx(540, 730, 100, '不是芯片，是人', { a: 'middle', w: 900 }));
-    s += G(eo(prog('so5', .5, 3.3)), tx(540, 900, 54, '坦白', { a: 'middle', w: 500, f: COL.mute }) + glow(tx(540, 1030, 96, '成了唯一的筹码', { a: 'middle', w: 900, f: COL.g })));
+    s += G(pc('so5', 1), tx(540, 600, 60, '对方押的', { a: 'middle', w: 500, f: COL.mute }) + tx(540, 730, 100, '不是芯片，是人', { a: 'middle', w: 900 }));
+    s += G(pc('so5', 2), tx(540, 900, 54, '坦白', { a: 'middle', w: 500, f: COL.mute }) + glow(tx(540, 1030, 96, '成了唯一的筹码', { a: 'middle', w: 900, f: COL.g })));
   }
   return s;
 };
