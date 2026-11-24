@@ -48,7 +48,7 @@ def plan(tl):
         (fx_t(tl, "dragon") - 0.3, "climax@2", -2.0, 1.5),          # 黄龙: 音乐单独出来
         (line(tl, "S4_14")["t0"], "push_tension", 0.0, 3.0),
         (sfx_t(tl, "cut"), "STOP", 0.0, 0.0),                      # 新垣平: 骤停一拍
-        (sfx_t(tl, "cut") + 1.1, "base", -2.0, 2.0),
+        (sfx_t(tl, "cut") + 2.0, "base", -2.0, 2.0),                # 停一拍（约 1 秒静），再慢慢回来
         (seg(tl, "S5")["t0"] - 1.0, "push_warm", 0.0, 3.0),         # 太初
         (flip_t, "climax@0", 0.0, 1.0),                            # 全片高潮: 轮盘翻面
         (line(tl, "S6_09")["t0"], "push_tension", 0.0, 4.0),        # 闰位、王莽
