@@ -288,7 +288,7 @@ scene("s10", "收尾", "dawn", chapter="十 · 一门手艺", lines=[
          fr="Il ressemblerait à la puissance paternelle, si, comme elle, il avait pour objet de préparer les hommes à l’âge viril ; mais il ne cherche, au contraire, qu’à les fixer irrévocablement dans l’enfance…",
          src=DA2 + " · 第四部分第六章"),
     dict(id="s10_06", k="n", say="小学，是让人长大的地方。包办一切，是让人长不大的办法。"),
-    dict(id="s10_07", k="n", say="他给的答案并不复杂：别把小事全交出去。", gap=0.9),
+    dict(id="s10_07", k="n", say="他给的答案并不复杂：别把小事全交出去。", gap=1.9),  # 高潮：旁白留白，音乐单独出来
     dict(id="s10_08", k="n", say="自由不是一句口号，是一门手艺。", cue="final1", gap=0.6),
     dict(id="s10_09", k="n", say="手艺是在修路、办学、开会这种小事里练出来的。", cue="final2", gap=0.6),
     dict(id="s10_10", k="n", say="什么都等别人来管，人就会慢慢忘了，怎么自己管自己。", cue="final3", gap=2.0),

@@ -1847,7 +1847,7 @@ def black_s10(c):
     e = c.end("final3")
     if e is None:
         return 0.0
-    return ease((c.t - e - 1.2) / 1.8) if c.t > e + 1.2 else 0.0
+    return ease((c.t - e - 2.4) / 1.2) if c.t > e + 2.4 else 0.0
 
 
 # ====================================================================== dispatch
