@@ -1,0 +1,6 @@
+cache/
+fonts/*.ttf
+audio/lines/
+assets/macro.jpg
+audio/*.wav
+out/queyue_v*.mp4
