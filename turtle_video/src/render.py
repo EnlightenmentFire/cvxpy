@@ -43,6 +43,7 @@ def main():
     ap.add_argument("--crf", type=int, default=None)
     ap.add_argument("--bitrate", type=int, default=None, help="video kbit/s (2-pass)")
     ap.add_argument("--preset", default="slow")
+    ap.add_argument("--abitrate", default="128k")
     a = ap.parse_args()
     dur_audio = sf.info(a.mix_wav).duration
     t1 = a.t1 if a.t1 is not None else dur_audio
@@ -78,7 +79,7 @@ def main():
         os.remove(inter)
     # mux audio (AAC 160k)
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", tmpv, "-ss", f"{a.t0:.3f}", "-t", f"{t1 - a.t0:.3f}", "-i", a.mix_wav,
-                    "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "160k", "-ar", "48000",
+                    "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", a.abitrate, "-ar", "48000",
                     "-movflags", "+faststart", "-shortest", a.out_mp4], check=True)
     os.remove(tmpv)
     print(f"done {a.out_mp4} in {time.time() - t_start:.0f}s")

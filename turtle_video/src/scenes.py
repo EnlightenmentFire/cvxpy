@@ -695,19 +695,20 @@ def scene_outsiders(c, x):
             c.drawRect(skia.Rect.MakeLTRB(900, 740, 1010, 1170), fill(GOLD_HI, door_a * 0.85))
             c.drawRect(skia.Rect.MakeLTRB(892, 732, 1018, 1170), stroke(GOLD, 4, door_a))
             chip(c, "两周", 955, 630, door_a, GOLD, 40)
-        back_a = a * x.on("o_total", 0.6) * (1 - walk_u)
+        back_a = a * x.win("o_total", "o_jobs", 0.5) * (1 - walk_u)
         for i in range(10):
             walker(c, 150 + i * 86, 990, 0.8, a=back_a * 0.55, rim_a=0.35, walking=False)
         for i in range(ROW_N):
             bx = ROW_X0 + i * ROW_DX
             px = bx + walk_u * (1000 - bx + 80 + i * 46)
-            if px > 905:
+            if walk_u > 0 and px > 905:
                 continue
-            aa = a * (1 - ramp(px, 860, 905))
+            aa = a * (1 - ramp(px, 860, 905)) if walk_u > 0 else a
             ph = (t * 1.1 + i * 0.13) if 0 < walk_u < 1 else 0
             walker(c, px, ROW_Y, ROW_S, ph, a=aa, rim_a=0.6, walking=0 < walk_u < 1)
         ja = a * x.on("o_jobs", 0.4) * (1 - walk_u)
         if ja > 0:
+            text(c, "来历五花八门", 540, 600, "black", 72, CREAM, ja * (1 - x.on("o_faith", 0.4)), "c", 6)
             for k, (ic, lab) in enumerate(JOBS):
                 i = 1 + 2 * k
                 bx = ROW_X0 + i * ROW_DX
@@ -1456,9 +1457,9 @@ def scene_1988(c, x):
         text(c, "据 Covel：投资人认为他偏离了自己的交易规则", 540, 520, "medium", 28, INK_SOFT, a * x.on("t_suit", 0.5, 2.0), "c")
         s1 = a * x.on("t_settle", 0.5)
         mtext(c, "1990 年和解", 540, 650, 46, INK, s1, "c", cjk="black")
-        mtext(c, "近 6000 名投资人 · 分到 250 万美元", 540, 724, 40, INK, s1 * x.on("t_settle", 0.5, 1.6), "c", cjk="bold")
-        text(c, "（另加此后三年交易利润的一半）", 540, 772, "medium", 26, INK_SOFT, s1 * x.on("t_settle", 0.5, 1.6), "c")
-        s2 = a * x.on("t_settle", 0.5, 4.2)
+        mtext(c, "近 6000 名投资人 · 分到 250 万美元", 540, 724, 40, INK, a * x.on("t_settle2", 0.5), "c", cjk="bold")
+        text(c, "（另加此后三年交易利润的一半）", 540, 772, "medium", 26, INK_SOFT, a * x.on("t_settle2", 0.5), "c")
+        s2 = a * x.on("t_settle2", 0.5, 2.6)
         c.drawRRect(rrect(200, 820, 680, 110, 14), stroke(LOSS, 4, s2))
         text(c, "丹尼斯一方：不承认有过错", 540, 892, "black", 46, LOSS, s2, "c")
         note(c, "据《纽约时报》1990-11-21；Covel 书", s1, y=1060, color=INK_SOFT)
