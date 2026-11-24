@@ -683,6 +683,11 @@ def hypo_globe(t, sub=None, lon_from=-50, lon_to=-6, dur=10.0, hypo_alpha=1.0):
 # 8. surfaced: top-down, searchlights, aircraft, cannon splashes beside the sub
 # ============================================================================
 
+@functools.lru_cache(maxsize=1)
+def _haze_tex():
+    return cv2.GaussianBlur(cv2.resize(value_noise(H // 4, W // 4, 18, seed=4, octaves=3), (W, H)), (0, 0), 6)
+
+
 def _wedge(src, dst, w0, w1, h=H, w=W):
     """Soft light wedge from src (width w0) to dst (width w1). Returns intensity & 'along' fraction."""
     xx, yy = grid(h, w)
@@ -747,7 +752,7 @@ def surface_topdown(t, sub=None, plane_t=None, lights=1.0, beams_on=(1, 1, 1), p
         ramp_al = 0.30 + 0.70 * np.clip(along, 0, 1) ** 1.5
         beam_sum += wdg * ramp_al * (0.92 + 0.08 * math.sin(t * 2.1 + i))
     beam_sum *= lights
-    haze = cv2.GaussianBlur(cv2.resize(value_noise(H // 4, W // 4, 18, seed=4, octaves=3), (W, H)), (0, 0), 6)
+    haze = _haze_tex()
     img += (beam_sum * (0.6 + 0.4 * haze))[..., None] * cold * 0.20
     img += glow((beam_sum * 0.25)[..., None] * cold, (6, 24), (0.4, 0.25))
     sparkle = contour * beam_sum

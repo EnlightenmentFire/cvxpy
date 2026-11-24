@@ -2,7 +2,7 @@
 
 微信视频号竖屏片（1080×1920 · 30fps · H.264 · < 100MB）。
 
-## 当前状态：风格确认阶段
+## 当前状态：全片制作（8 分钟版）
 - `docs/script.md` 旁白稿 v1（约 2700 字，预计 9.5–10 分钟）
 - `docs/factcheck.md` 20 条史料逐条核对表（已对上原文 / 有出入 / 说法不一）
 - `stills/` 8 张关键静帧 + `00_contact_sheet.jpg` 总览
@@ -16,6 +16,8 @@
 - `src/globe.py` 三维地球：Natural Earth 海岸线 + 城市光点；**不加载任何国界数据，东经 62° 以东整体剔除**
 - `src/scenes.py` 各场景（真实段冷蓝/琥珀，假想段洋红热成像）
 - `src/stills.py` 出静帧：`python3 src/stills.py`
+- `src/script_v2.py` 8 分钟版旁白（64 句，字幕文本 + 配音文本）→ `audio/full/lines.json`、`docs/script_v2.md`
+- `src/scenes2.py` 全片 35 个镜头；`src/edit.py` 按配音时长排镜头、切字幕、拼人声；`src/score.py` 配乐与音效；`src/render.py` 并行渲染；`src/finalize.py` 两遍编码（< 100MB）+ 整片 ASR 与响度复核
 - `src/tts_qwen3.py` 首选配音：Qwen3-TTS-12Hz-1.7B-VoiceDesign 按描述设计参考音 → 1.7B-Base 克隆，逐句合成；每句测音高（85–105 Hz）+ ASR 回读，不合格换 seed 重做（Python 3.12 venv：`qwen-tts==0.1.1`，CPU bf16）
 - `src/voiceqc.py` 质检工具：parselmouth 测音高、faster-whisper 回读（按拼音比对，标出声调可疑处）、压停顿（≤0.38 s）、rubberband 变速（R3 引擎，保留共振峰）、50 Hz 高通、-18 dBFS RMS
 - `src/voice_post.py` 后期与拼接：旁白 ×1.3、引文 ×1.16，句间停顿 ≤0.4 s，配乐自动避让，成片整段 ASR 回读

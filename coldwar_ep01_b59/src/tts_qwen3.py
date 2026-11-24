@@ -81,6 +81,7 @@ def clone(ref_wav, lines_path, out_dir, max_tries=6, ser_max=0.08, batch=4):
     if os.path.exists(rp):
         report = json.load(open(rp))
     todo = [ln for ln in lines if not report.get(ln["id"], {}).get("ok")]
+    todo.sort(key=lambda ln: len(ln["tts"]))  # batch similar lengths together
     tries = {ln["id"]: report.get(ln["id"], {}).get("tries", 0) for ln in lines}
     round_ = 0
     while todo and round_ < max_tries:

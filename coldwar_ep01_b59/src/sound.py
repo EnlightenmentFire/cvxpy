@@ -121,9 +121,14 @@ def place(buf, x, at):
 
 def duck(music, voice, depth=0.45, att=0.05, rel=0.4):
     """Sidechain: lower music under the voice."""
-    env = np.abs(voice)
+    env = np.abs(voice).astype(np.float64)
     win = int(0.03 * SR)
-    env = np.convolve(env, np.ones(win) / win, mode="same")
+    c = np.cumsum(np.concatenate([[0.0], env]))
+    half = win // 2
+    idx = np.arange(len(env))
+    lo = np.clip(idx - half, 0, len(env))
+    hi = np.clip(idx + half, 0, len(env))
+    env = (c[hi] - c[lo]) / np.maximum(hi - lo, 1)
     env = env / (np.max(env) + 1e-9)
     g = 1 - depth * np.clip(env * 4, 0, 1)
     # smooth gain

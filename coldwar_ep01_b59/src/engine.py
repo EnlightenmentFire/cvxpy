@@ -306,7 +306,11 @@ def save_png(img, path):
 # shapes (anti-aliased via cv2 on uint8 masks, optional supersampling)
 # ----------------------------------------------------------------------------
 
-def mask_polyline(pts_list, thickness=1.5, h=H, w=W, closed=False, ss=2):
+SS = 2
+
+
+def mask_polyline(pts_list, thickness=1.5, h=H, w=W, closed=False, ss=None):
+    ss = SS if ss is None else ss
     m = np.zeros((h * ss, w * ss), np.uint8)
     shift = 4
     k = (1 << shift) * ss
@@ -320,7 +324,8 @@ def mask_polyline(pts_list, thickness=1.5, h=H, w=W, closed=False, ss=2):
     return m.astype(np.float32) / 255.0
 
 
-def mask_poly(pts_list, h=H, w=W, ss=2):
+def mask_poly(pts_list, h=H, w=W, ss=None):
+    ss = SS if ss is None else ss
     m = np.zeros((h * ss, w * ss), np.uint8)
     shift = 4
     k = (1 << shift) * ss
@@ -332,7 +337,8 @@ def mask_poly(pts_list, h=H, w=W, ss=2):
     return m.astype(np.float32) / 255.0
 
 
-def mask_circle(cx, cy, r, h=H, w=W, fill=True, thickness=2.0, ss=2):
+def mask_circle(cx, cy, r, h=H, w=W, fill=True, thickness=2.0, ss=None):
+    ss = SS if ss is None else ss
     m = np.zeros((h * ss, w * ss), np.uint8)
     shift = 4
     k = (1 << shift) * ss
@@ -343,7 +349,8 @@ def mask_circle(cx, cy, r, h=H, w=W, fill=True, thickness=2.0, ss=2):
     return m.astype(np.float32) / 255.0
 
 
-def mask_ellipse(cx, cy, rx, ry, angle=0.0, h=H, w=W, fill=True, thickness=2.0, ss=2, a0=0, a1=360):
+def mask_ellipse(cx, cy, rx, ry, angle=0.0, h=H, w=W, fill=True, thickness=2.0, ss=None, a0=0, a1=360):
+    ss = SS if ss is None else ss
     m = np.zeros((h * ss, w * ss), np.uint8)
     shift = 4
     k = (1 << shift) * ss
