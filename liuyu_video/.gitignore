@@ -1,0 +1,6 @@
+out/frames/
+out/*.wav
+out/segments/
+out/*.mp4
+!out/final/
+__pycache__/
