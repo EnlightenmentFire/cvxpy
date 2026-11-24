@@ -89,7 +89,7 @@ def main():
         d = wav_dur(p) if os.path.exists(p) else est(text, kind)
         if kind == 'q': t += 0.12
         if sec == 's7' and kind == 'q' and text.startswith('敕勒川'):
-            secs['s7']['hush'] = t; t += 1.6        # 音乐收掉，只留风声
+            secs['s7']['hush'] = t; t += 1.0        # 音乐收掉，只留风声
         st, en = t, t + d
         cs = chunks(text) if kind == 'n' else [text]
         ws = [weight(c) for c in cs]; tot = sum(ws); acc = 0; bounds = [0.0]
@@ -104,7 +104,7 @@ def main():
         k += 1
         gap = 0.3 if kind == 'q' else (0.2 if text[-1] in '。？！' else 0.06)
         if sec == 's7' and kind == 'q' and text.startswith('敕勒川'): gap = 2.0          # 念完歌词停两秒
-        if sec == 's10': gap = 0.75
+        if sec == 's10': gap = 0.4
         if sec == 's5' and kind == 'q': gap = 0.4
         t = en + gap
     secs[cur]['end'] = t + 1.2; t += 1.2

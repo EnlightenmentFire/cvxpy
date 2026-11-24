@@ -1,7 +1,10 @@
 #!/bin/bash
 # 帧序列 + 混音 → 1080x1920 30fps H.264 mp4（两遍编码，控制在 100MB 以内）
 cd "$(dirname "$0")"
-BR=${BR:-1750k}; OUT=${1:-out/yubi_1080x1920.mp4}
+DUR=$(python3 -c "import json;print(json.load(open('src/timeline.json'))['total'])")
+# 码率按时长算：总大小控制在约 95MB 以内（音频 160k）
+BR=${BR:-$(python3 -c "print(int(95e6*8/($DUR+1)/1000 - 165))")k}; OUT=${1:-out/yubi_1080x1920.mp4}
+echo "duration ${DUR}s  video bitrate ${BR}"
 VF="scale=in_range=full:out_range=tv:out_color_matrix=bt709,format=yuv420p"
 COMMON="-framerate 30 -i cache/frames/f%06d.jpg"
 ffmpeg -y -loglevel error $COMMON -vf "$VF" -c:v libx264 -preset slow -b:v $BR -pass 1 -passlogfile cache/x264 -an -f mp4 /dev/null && \
