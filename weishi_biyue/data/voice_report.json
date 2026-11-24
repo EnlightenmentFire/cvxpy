@@ -1,0 +1,237 @@
+[
+ {
+  "id": "S1",
+  "text": "包围敌人，为什么要故意留一个口子？",
+  "tts": "包围敌人，为什么要故意留一个口子？",
+  "candidates": [
+   {
+    "file": "S1_s1.wav",
+    "f0": 107.1,
+    "asr": "包围敌人,为什么要故意留一个口子?",
+    "asr_exact": true,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 2.7,
+    "rate": 5.56
+   },
+   {
+    "file": "S1_s2.wav",
+    "f0": 102.6,
+    "asr": "包围敌人,为什么要故意留一个口子?",
+    "asr_exact": true,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 2.68,
+    "rate": 5.6
+   },
+   {
+    "file": "S1_s3.wav",
+    "f0": 103.9,
+    "asr": "包围敌人,为什么要故意留一个口子?",
+    "asr_exact": true,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 2.66,
+    "rate": 5.64
+   }
+  ],
+  "chosen": "S1_s2.wav"
+ },
+ {
+  "id": "S2",
+  "text": "一千八百多年前，曹操围攻壶关，下了一道命令：城破之后，全部活埋。",
+  "tts": "一千八百多年前，曹操围攻壶关，下了一道命令：城破之后，全部活埋。",
+  "candidates": [
+   {
+    "file": "S2_s1.wav",
+    "f0": 95.5,
+    "asr": "一千八百多年前,曹操围攻湖关,下了一道命令,城破之后,全部活埋。",
+    "asr_exact": false,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 6.26,
+    "rate": 4.31
+   },
+   {
+    "file": "S2_s2.wav",
+    "f0": 92.6,
+    "asr": "一千八百多年前,曹操围攻湖关,下了一道命令,城破之后全部活埋。",
+    "asr_exact": false,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 6.52,
+    "rate": 4.14
+   },
+   {
+    "file": "S2_s3.wav",
+    "f0": 92.2,
+    "asr": "一千八百多年前,草草围攻湖关,下了一道命令,城破之后全部活埋。",
+    "asr_exact": false,
+    "asr_ok": false,
+    "pinyin_diff": [
+     "cao2->cao3",
+     "cao1->cao3"
+    ],
+    "dur": 6.24,
+    "rate": 4.33
+   }
+  ],
+  "chosen": "S2_s1.wav"
+ },
+ {
+  "id": "S3",
+  "text": "结果城里的人，个个拼命。打了几个月，就是打不下来。",
+  "tts": "结果城里的人，个个拼命。打了几个月，就是打不下来。",
+  "candidates": [
+   {
+    "file": "S3_s1.wav",
+    "f0": 88.6,
+    "asr": "结果城里的人个个拼命,打了几个月,就是打不下来。",
+    "asr_exact": true,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 4.08,
+    "rate": 5.15
+   },
+   {
+    "file": "S3_s2.wav",
+    "f0": 94.9,
+    "asr": "结果城里的人个个拼命,打了几个月,就是打不下来。",
+    "asr_exact": true,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 4.2,
+    "rate": 5.0
+   },
+   {
+    "file": "S3_s3.wav",
+    "f0": 98.6,
+    "asr": "结果成立的人个个拼命打了几个月,就是打不下来。",
+    "asr_exact": false,
+    "asr_ok": false,
+    "pinyin_diff": [
+     "li3->li4"
+    ],
+    "dur": 3.92,
+    "rate": 5.36
+   }
+  ],
+  "chosen": "S3_s2.wav"
+ },
+ {
+  "id": "S4",
+  "text": "他的堂弟曹仁劝了一句。曹操改了命令。没过多久，城就降了。",
+  "tts": "他的堂弟曹仁劝了一句。曹操改了命令。没过多久，城就翔了。",
+  "candidates": [
+   {
+    "file": "S4_s1.wav",
+    "f0": 101.3,
+    "asr": "他的堂弟曹仁劝了一句,曹操改了命令,没过多久,城就降了。",
+    "asr_exact": true,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 5.34,
+    "rate": 4.49
+   },
+   {
+    "file": "S4_s2.wav",
+    "f0": 95.6,
+    "asr": "他的堂弟曹仁劝了一句,曹操改了命令,没过多久,城就降了。",
+    "asr_exact": true,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 5.06,
+    "rate": 4.74
+   },
+   {
+    "file": "S4_s3.wav",
+    "f0": 88.8,
+    "asr": "他的堂弟曹仁劝了一句,曹操改了命令,没过多久,城就降了。",
+    "asr_exact": true,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 4.94,
+    "rate": 4.86
+   }
+  ],
+  "chosen": "S4_s3.wav"
+ },
+ {
+  "id": "S5",
+  "text": "曹仁劝的，是什么？",
+  "tts": "曹仁劝的，是什么？",
+  "candidates": [
+   {
+    "file": "S5_s1.wav",
+    "f0": 90.1,
+    "asr": "曹人劝的是什么?",
+    "asr_exact": false,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 1.62,
+    "rate": 4.32
+   },
+   {
+    "file": "S5_s2.wav",
+    "f0": 83.0,
+    "asr": "草人劝的是什么?",
+    "asr_exact": false,
+    "asr_ok": false,
+    "pinyin_diff": [
+     "cao2->cao3"
+    ],
+    "dur": 1.6,
+    "rate": 4.38
+   },
+   {
+    "file": "S5_s3.wav",
+    "f0": 87.4,
+    "asr": "曹人劝的是什么?",
+    "asr_exact": false,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 1.48,
+    "rate": 4.73
+   }
+  ],
+  "chosen": "S5_s1.wav"
+ },
+ {
+  "id": "S6",
+  "text": "围死了，人人只能拼命；给条活路，就没人想死。",
+  "tts": "围死了，人人只能拼命；给条活路，就没人想死。",
+  "candidates": [
+   {
+    "file": "S6_s1.wav",
+    "f0": 101.9,
+    "asr": "违死了,人人只能拼命,给条活路就没人想死。",
+    "asr_exact": false,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 4.18,
+    "rate": 4.31
+   },
+   {
+    "file": "S6_s2.wav",
+    "f0": 91.6,
+    "asr": "违死了,人人只能拼命,给条活路,就没人想死。",
+    "asr_exact": false,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 4.24,
+    "rate": 4.25
+   },
+   {
+    "file": "S6_s3.wav",
+    "f0": 91.1,
+    "asr": "违死了,人人只能拼命,给条活路,就没人想死。",
+    "asr_exact": false,
+    "asr_ok": true,
+    "pinyin_diff": [],
+    "dur": 4.1,
+    "rate": 4.39
+   }
+  ],
+  "chosen": "S6_s2.wav"
+ }
+]
