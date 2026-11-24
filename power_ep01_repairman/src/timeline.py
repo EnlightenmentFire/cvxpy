@@ -12,6 +12,7 @@ STOP_GAP = 0.85       # clack + half-second silence before "一台机器，停�
 TAIL = 2.0            # hold after last line
 TEASER_DUR = 4.0
 SOURCES_DUR = 5.0
+BLACK_HOLD = 1.0
 EST_RATE = {"Chinese": 4.6, "English": 2.6, "French": 2.6}  # chars/s (en/fr: words/s)
 
 
@@ -71,9 +72,11 @@ def build(durations=None):
     t += TEASER_DUR
     sources = (t, t + SOURCES_DUR)
     t += SOURCES_DUR
+    black = (t - 1.0, t + BLACK_HOLD)   # fade to black over the last second, then hold
+    t += BLACK_HOLD
     sections["end"] = (sections["end"][0], t)
     return dict(lines=lines, sections=sections, cards=cards, events=sorted(events, key=lambda e: e[0]),
-                teaser=teaser, sources=sources, total=t, end_main=end_main)
+                teaser=teaser, sources=sources, black=black, total=t, end_main=end_main)
 
 
 # ------------------------------------------------------------------ subtitles

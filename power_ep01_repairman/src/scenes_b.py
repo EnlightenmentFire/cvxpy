@@ -522,7 +522,7 @@ def draw_compare(c, ctx, t):
     draw_text(c, "上", 583, 600, "serif_heavy", 34, INK3, 1, align="center")
     draw_text(c, "下", 583, 920, "serif_heavy", 34, INK3, 1, align="center")
     ca = ease(seg(t, word_time(ctx, "s3_13", "按谁离不开谁"), word_time(ctx, "s3_13", "按谁离不开谁") + 0.6))
-    cb = ease(seg(t, word_time(ctx, "s3_13", "克罗齐耶说得"), word_time(ctx, "s3_13", "克罗齐耶说得") + 0.5))
+    cb = ease(seg(t, ctx.ls("s3_13b"), ctx.ls("s3_13b") + 0.5))
     draw_text(c, "车间主任 ⇅ 维修工：上下颠倒", 540, 1098, "serif_heavy", 42, INK, ca * (1 - cb), align="center")
     draw_text(c, "维修工，才是真正的老板", 540, 1080, "serif_heavy", 44, INK, cb, align="center")
     draw_text(c, "“…they are the real bosses.”  Crozier 1964, p. 126", 540, 1128, "garamond_it", 26, INK2, cb, align="center")

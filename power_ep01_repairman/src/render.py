@@ -158,6 +158,9 @@ def render_frame(tl, subs, t, frame=0):
     chrome(c, tl, t)
     draw_subs(c, subs, t, SUPPRESS_SUBS)
     apply_overlay(c)
+    b0, b1 = tl["black"]
+    if t >= b0:
+        c.drawRect(skia.Rect.MakeXYWH(0, 0, W, H), paint((0, 0, 0), ease(seg(t, b0, b0 + 1.0))))
     return s
 
 
