@@ -648,7 +648,7 @@ def sec4(c, t, cam):
         k62 = fade(t, S('e6') + 5.0, S('e7') + 0.4, 0.6, 0.5) * v4
         tag(c, 540 - 200, PCY + PR - 150, '取民家一笠 → 垂涕斩之', '#FF8E7A', k62, 28)
     # e7-e8 军心瓦解
-    v7 = fade(t, S('e7') + 1.2, T.chap[5][0] + 0.5, 1.0, 0.6)
+    v7 = fade(t, S('e7') + 0.5, T.chap[5][0] + 0.5, 0.9, 0.6)
     if v7 > 0.01:
         cities(c, cam, t, ['江陵', '公安', '樊城', '襄阳', '麦城', '临沮', '夷陵', '陆口'], v7, major=('江陵',), left=('襄阳', '公安', '临沮'), subs={'临沮': '章乡'}, up=('临沮',))
         ret = PL(cam, D.R_GUAN_RET); end = PL(cam, D.R_GUAN_END)
@@ -1038,7 +1038,7 @@ def stamp(c, t):
         if b0 in ('c3',): continue
         w = max(tw(s1, 'serif', 30), tw(s2, 'sans', 24)) + 44
         # 被整屏面板遮住的时段隐藏
-        if S('f4') < t < S('h1') or S('f1') - 0.2 < t < S('f3'): continue
+        if S('f4') < t < S('h1') or S('f1') - 0.2 < t < S('f3') + 1.0: continue
         panel(c, 64, 250, w, 96, a, r=6, fa=0.72)
         rrect(c, 64, 250, 6, 96, 2, GOLD, a)
         text(c, s1, 86, 290, 30, PAPER, 'serif', a); text(c, s2, 86, 328, 24, '#D9D2C2', 'sansm', a)
