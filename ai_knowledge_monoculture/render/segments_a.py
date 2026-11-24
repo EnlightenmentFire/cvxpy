@@ -524,13 +524,10 @@ def plymouth(ctx, t, c):
             draw_text(ctx, "← 猜低的　　误差互相抵消　　猜高的 →", W / 2, 860, "serif_bold", 32, INK, k13, "ms")
         ctx.pop_group_to_source()
         ctx.paint_with_alpha(main)
-    k3 = win(t, c.s("c3_3"), c.e("c3_4"), 0.4, 0.4)
+    k3 = win(t, c.s("c3_3"), c.e("c3_3"), 0.4, 0.4)
     if k3 > 0:
         ctx.push_group()
         _ticket(ctx, t, c, 1.0)
-        if t >= c.s("c3_4"):
-            a = clamp((t - c.s("c3_4")) / 0.4)
-            draw_text(ctx, "屠夫 · 农夫 · 看牛的高手 · 凭感觉的人", W / 2, 980, "serif_bold", 34, INK, a, "ms")
         ctx.pop_group_to_source()
         ctx.paint_with_alpha(k3)
     if cond > 0:
@@ -590,7 +587,7 @@ def athens(ctx, t, c):
     draw_text(ctx, "约 500 名普通公民组成陪审团，审判哲学家苏格拉底", W / 2, SAFE_TOP + 186, "serif", 30, CLAY, a2, "ms")
     uy = SAFE_TOP + 330
     s = 0.82
-    urns = win(t, c.s("c4_2") + 1.5, c.e("c4_9") + 1, 0.6, 0.3) * (1 - win(t, c.s("c4_3"), c.e("c4_5"), 0.4, 0.4))
+    urns = win(t, c.s("c4_2") + 1.5, c.e("c4_9") + 1, 0.6, 0.3) * (1 - win(t, c.s("c4_3"), c.e("c4_4"), 0.4, 0.4))
     if urns > 0:
         ctx.push_group()
         for cx, lab in [(W / 2 - 215, "有罪"), (W / 2 + 215, "无罪")]:
@@ -624,25 +621,6 @@ def athens(ctx, t, c):
             a = clamp((t - c.s("c4_4") - 1.0 - i * 1.2) / 0.4) * k4
             card(ctx, 430, yy - 60, 560, 100, a, fill="#1C120D", stroke=CLAY, lw=2.5)
             draw_text(ctx, q, 710, yy + 4, "serif_bold", 36, "#F3E1C2", a, "mm")
-    k5 = win(t, c.s("c4_5"), c.e("c4_5"), 0.4, 0.35)
-    if k5 > 0:
-        # one rumour reaching many listeners: not independent
-        src = (W / 2, 520)
-        set_color(ctx, RED, 0.9 * k5)
-        ctx.arc(*src, 18, 0, 2 * math.pi)
-        ctx.fill()
-        draw_text(ctx, "同一套坏话", W / 2, 470, "serif_bold", 32, CLAY_LIGHT, k5, "ms")
-        prog = clamp((t - c.s("c4_5")) / max(0.5, c.e("c4_5") - c.s("c4_5")))
-        for i in range(24):
-            fx = 150 + (i % 8) * 112
-            fy = 780 + (i // 8) * 150
-            pa = clamp(prog * 2 - i / 24)
-            set_color(ctx, CLAY, 0.35 * k5 * pa)
-            ctx.set_line_width(1.5)
-            ctx.move_to(*src)
-            ctx.line_to(fx, fy - 90)
-            ctx.stroke()
-            _figure(ctx, fx, fy, 0.7, CLAY if pa < 1 else RED, k5)
     k7 = win(t, c.s("c4_7"), c.e("c4_7") + 0.2, 0.4, 0.4)
     if k7 > 0:
         draw_text(ctx, "差 30 票", W / 2, 1125, "serif_black", 120, "#F3E1C2", k7, "ms", glow=18, glow_color=CLAY,

@@ -13,10 +13,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, ".."))
 from script_data import SEGMENTS  # noqa: E402
 
-GAP = 0.22           # between sentences
-POINT_GAP = 0.85     # after a "这说明什么" sentence
+GAP = 0.18           # between sentences
+POINT_GAP = 0.7      # after a "这说明什么" sentence
 SEG_LEAD = {"coldopen": 0.5}
-SEG_LEAD_DEFAULT = 0.9   # chapter transition
+SEG_LEAD_DEFAULT = 0.8   # chapter transition
 SEG_TAIL_DEFAULT = 0.3
 HOLD_AFTER = {"c0_robot": 1.25, "c0_5": 0.15, "c0_9": 3.2, "c4_8": 1.0, "c10_14": 2.0, "c11_3": 6.5}
 

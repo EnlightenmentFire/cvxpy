@@ -27,7 +27,7 @@ args = ap.parse_args()
 
 lines = {l["id"]: l for l in all_lines()}
 takes = json.load(open(os.path.join(args.voice, "takes.json")))
-ids = args.ids.split(",") if args.ids else [i for i in takes]
+ids = [i for i in (args.ids.split(",") if args.ids else list(takes)) if i in lines]
 os.makedirs(os.path.join(args.voice, "proc"), exist_ok=True)
 report_path = os.path.join(args.voice, "proc_report.json")
 report = json.load(open(report_path)) if os.path.exists(report_path) else {}
@@ -46,7 +46,7 @@ for lid in ids:
     style = ln.get("style", "")
     target = args.quote_rate if ln["kind"] == "quote" else (args.slow_rate if style == "slow" else args.narr_rate)
     if style == "smile":
-        target = min(target, 4.6)
+        target = min(target, 4.9)
     factor = float(np.clip(target / rate0, 1.0, args.max_factor))
     y = tempo(w, sr, factor)
     y = trim_and_squeeze(y, sr, max_pause=0.4)
