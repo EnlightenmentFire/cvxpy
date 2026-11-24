@@ -6,6 +6,15 @@ cd "$(dirname "$0")/.."
 V=${1:-build/video.mp4}; A=${2:-build/audio.wav}; O=${3:-out/sunzi_ep01.mp4}; MB=${4:-92}
 DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$V")
 ABR=160
+# 母版本身已低于目标体积时，直接复用母版画面（质量更高），只编码音轨
+SZ=$(stat -c %s "$V")
+if [ "$SZ" -lt $(( (MB - 10) * 1024 * 1024 )) ]; then
+  echo "master is small enough ($SZ bytes): stream copy"
+  ffmpeg -y -loglevel error -i "$V" -i "$A" -map 0:v -map 1:a -c:v copy \
+    -af "loudnorm=I=-16:TP=-1.5:LRA=11" -ar 48000 -c:a aac -b:a ${ABR}k -shortest -movflags +faststart "$O"
+  ffprobe -v error -show_entries format=duration,size,bit_rate -of default=nw=1 "$O"
+  exit 0
+fi
 VBR=$(python3 -c "print(int($MB*8*1024*1024/$DUR/1000 - $ABR - 12))")
 echo "duration=$DUR video=${VBR}k audio=${ABR}k"
 X="-c:v libx264 -preset slow -b:v ${VBR}k -maxrate $((VBR*2))k -bufsize $((VBR*4))k -pix_fmt yuv420p -profile:v high -x264-params aq-mode=3:aq-strength=1.1:deblock=-1,-1 -color_primaries bt709 -color_trc bt709 -colorspace bt709"
