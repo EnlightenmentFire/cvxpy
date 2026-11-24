@@ -28,6 +28,7 @@ def num_to_cn(n):
 
 def tts_text(s):
     s = s.replace("——", "，").replace("…", "，")
+    s = s.replace("黙殺", "默杀")  # Japanese kanji form -> Chinese reading mò shā for the Chinese TTS
     # 4-digit years: digit by digit
     s = re.sub(r"(1[89]\d\d|20\d\d)", lambda m: "".join(CN_DIG[int(c)] for c in m.group(1)), s)
     s = re.sub(r"(\d+)", lambda m: num_to_cn(m.group(1)), s)
