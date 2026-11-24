@@ -3,7 +3,7 @@
 import os, re, json, numpy as np
 from script import BEATS, SECTIONS
 WAVDIR = '/home/user/work/tts/wav/'
-TEMPO = 1.10          # 旁白整体变速（ffmpeg atempo）
+TEMPO = 1.03          # 旁白整体变速（ffmpeg atempo）
 GAP = 0.36            # 段间停顿
 LEAD = 0.9
 TITLE_D = 3.4

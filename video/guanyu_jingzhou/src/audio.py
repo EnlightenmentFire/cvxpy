@@ -14,7 +14,7 @@ def narration():
         if a['a0'] is None: continue
         tmp = f"/home/user/work/tts/tmp/{a['id']}.wav"
         subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-ss', f"{a['a0']:.3f}", '-to', f"{a['a1']:.3f}", '-i', WAVDIR + a['id'] + '.wav',
-                        '-af', f'atempo={TEMPO},highpass=f=70,aresample={SR}', '-ac', '1', tmp], check=True)
+                        '-af', f'atempo={TEMPO},highpass=f=50,aresample={SR}', '-ac', '1', tmp], check=True)
         w, sr = sf.read(tmp, dtype='float32')
         # 每段统一响度
         rms = np.sqrt(np.mean(w ** 2) + 1e-9); w = w * (0.085 / rms)
