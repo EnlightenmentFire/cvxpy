@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>荣格精读 01</title>
+<link rel="stylesheet" href="base.css">
+<style>
+.center { text-align: center; left: 96px; width: 888px; position: absolute; }
+.serif { font-family: "SongSC", serif; }
+.lat { font-family: "Garamond", serif; }
+.quote.compact .en { font-size: 35px; line-height: 1.4; }
+.quote.compact .zh { font-size: 42px; line-height: 1.56; }
+.quote.compact .rule { margin: 28px 0 26px; }
+.quote.compact { padding: 44px 46px 40px 54px; }
+.quote.mid .en { font-size: 39px; }
+.quote.mid .zh { font-size: 46px; line-height: 1.58; }
+.block { position: absolute; left: 96px; width: 888px; padding: 34px 40px 36px 44px; border-left: 4px solid var(--rose); background: linear-gradient(rgba(217,167,156,.07), rgba(217,167,156,.07)), rgba(6,8,15,.55); border-radius: 0 10px 10px 0; }
+.block .who { font-size: 30px; color: var(--rose); letter-spacing: 4px; margin-bottom: 14px; font-weight: 500; }
+.block .p { color: var(--ink); }
+.kawai-card { position: absolute; left: 96px; width: 888px; padding: 48px 48px 44px 54px; border-left: 4px solid var(--teal); background: linear-gradient(rgba(156,203,185,.07), rgba(156,203,185,.07)), rgba(6,8,15,.55); border-radius: 0 10px 10px 0; }
+.kawai-card .p { color: var(--ink); font-size: 48px; line-height: 1.62; }
+.kawai-card .cite { margin-top: 30px; font-size: 27px; line-height: 1.5; color: #7fa596; letter-spacing: 1px; }
+.strike { text-decoration: line-through; text-decoration-color: rgba(236,231,219,.85); text-decoration-thickness: 4px; color: var(--ink-dim); }
+svg text { font-family: "HeiSC", sans-serif; }
+.tl-year { font-family: "Garamond", serif; font-size: 62px; font-weight: 600; color: var(--ink); letter-spacing: 1px; }
+.tl-item { position: absolute; left: 190px; width: 794px; }
+.tl-item .t { font-size: 41px; line-height: 1.45; font-weight: 500; }
+.tl-item .d { font-size: 31px; line-height: 1.5; color: var(--ink-dim); margin-top: 6px; }
+.letters { position: absolute; left: 96px; width: 888px; display: flex; justify-content: space-between; }
+.letters .lt { width: 198px; height: 150px; border: 2px solid rgba(236,231,219,.35); border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.letters .lt .a { font-family: "Garamond", serif; font-size: 62px; font-weight: 600; letter-spacing: 4px; line-height: 1.1; }
+.letters .lt .b { font-size: 25px; color: var(--ink-dim); letter-spacing: 2px; margin-top: 4px; }
+.letters .lt.new { border-color: var(--blue); background: rgba(157,187,216,.10); }
+.letters .lt.new .a { color: var(--blue); }
+#fade { position: absolute; inset: 0; background: #000; opacity: 1; pointer-events: none; }
+</style>
+</head>
+<body>
+<canvas id="sky" width="1080" height="1920"></canvas>
+<div id="vignette"></div>
+
+<!-- ═════════ 1 开场 ═════════ -->
+<section class="scene" id="s1a" data-in="0" data-out="L02e+0.75">
+  <div class="series">荣格精读 · 01</div>
+  <div class="center el h1" style="top:520px;font-size:128px;letter-spacing:6px" data-in="0.5" data-dim="L02" data-dimto="0.5">“我内向。”</div>
+  <div class="center el p dim" style="top:742px;font-size:40px;letter-spacing:6px" data-in="L01c1" data-dim="L02" data-dimto="0.5">意思是</div>
+  <div class="center el h2" style="top:812px;font-weight:500" data-in="L01c2" data-dim="L02" data-dimto="0.5">不爱聚会　<span class="el" data-in="L01c3" data-fx="fade" style="display:inline-block">见人就累</span></div>
+  <div class="center el p dim" style="top:1010px;font-size:40px;letter-spacing:3px" data-in="L02">荣格要是听见，大概会说——</div>
+  <div class="center el h2" style="top:1086px;font-size:68px" data-in="L02c2">你说的，<br>可能<span class="hl-b">不是</span>内向。</div>
+  <div class="center el note" style="top:1304px;color:#b9b7ae" data-in="L02c2+0.3" data-fx="fade">（这是设想的说法，不是荣格原话）</div>
+</section>
+
+<section class="scene" id="s1b" data-in="L03-0.05" data-out="L03e+1.0">
+  <div class="center el serif" style="top:548px;font-size:36px;letter-spacing:14px;color:var(--gold);font-weight:600" data-in="L03">荣格精读 · 第一期</div>
+  <div class="center el serif" style="top:654px;font-size:90px;line-height:1.42;font-weight:700;letter-spacing:4px" data-in="L03+0.25">你说的内向，<br>不是荣格说的内向</div>
+  <div class="el abs" style="left:496px;top:968px;width:88px;height:2px;background:var(--gold-dim)" data-in="L03c2" data-fx="fade"></div>
+  <div class="center el lat" style="top:1010px;font-size:40px;font-style:italic;color:#e9dcc0;letter-spacing:1px" data-in="L03c2">C. G. Jung · <span style="font-style:normal">Psychologische Typen</span> · 1921</div>
+  <div class="center el serif" style="top:1082px;font-size:40px;letter-spacing:6px;color:var(--ink-dim)" data-in="L03c2+0.2">《心理类型》</div>
+</section>
+
+<!-- ═════════ 2 荣格的定义 ═════════ -->
+<section class="scene" id="s2a" data-in="L05-0.05" data-out="L06e+0.8">
+  <div class="tag yuanwen"><span class="chip">原文</span><span class="src">《心理类型》CW6 §710</span></div>
+  <div class="quote mid el" style="top:452px" data-in="L05" data-fx="fade">
+    <div class="en el" data-in="L05+0.3"><b>Extraversion</b> is an outward-turning of libido (q.v.). I use this concept to denote a manifest relation of subject to object, a positive movement of subjective interest towards the object.</div>
+    <div class="rule el" data-in="L06" data-fx="fade"></div>
+    <div class="zh el" data-in="L06"><b>外向</b>，是力比多的向外转。我用这个概念，指主体对客体的一种明显的关系，即主体的兴趣朝着客体的正向运动。</div>
+    <div class="cite el" data-in="L06+0.6" data-fx="fade">第十一章“定义”· 外向条<br>德文初版（1921）第 624 页：<i>Auswärtswendung der Libido</i></div>
+  </div>
+</section>
+
+<section class="scene" id="s2b" data-in="L07-0.05" data-out="L08e+0.8">
+  <div class="tag yuanwen"><span class="chip">原文</span><span class="src">《心理类型》CW6 §769</span></div>
+  <div class="quote mid el" style="top:452px" data-in="L07" data-fx="fade">
+    <div class="en el" data-in="L07+0.3"><b>Introversion</b> means an inward-turning of libido (q.v.), in the sense of a negative relation of subject to object. Interest does not move towards the object but withdraws from it into the subject.</div>
+    <div class="rule el" data-in="L08" data-fx="fade"></div>
+    <div class="zh el" data-in="L08"><b>内向</b>，是力比多的向内转，表示主体对客体的一种负向的关系。兴趣不朝客体去，而是从客体撤回，回到主体。</div>
+    <div class="cite el" data-in="L08+0.6" data-fx="fade">第十一章“定义”· 内向条<br>德文初版（1921）第 641 页：<i>Einwärtswendung der Libido</i></div>
+  </div>
+</section>
+
+<section class="scene" id="s2b2" data-in="L08b-0.05" data-out="L08be+0.6">
+  <div class="tag jiedu"><span class="chip">解读</span></div>
+  <div class="say el" style="top:520px" data-in="L08b"><span class="h1" style="font-size:96px">主体</span><span class="el p" data-in="L08bc1" data-fx="fade" style="font-size:58px;margin-left:30px">＝ <span class="hl-b" style="font-weight:700">你自己</span></span></div>
+  <div class="say el" style="top:760px" data-in="L08bc2"><span class="h1" style="font-size:96px">客体</span><span class="el p" data-in="L08bc3" data-fx="fade" style="font-size:58px;margin-left:30px">＝ <span class="hl-b" style="font-weight:700">外面的人和事</span></span></div>
+  <div class="say el note" style="top:1020px;font-size:32px;color:#b9b7ae" data-in="L08bc3+0.5" data-fx="fade">原文里的“负向”不是贬义，只是说方向朝里。</div>
+</section>
+
+<section class="scene" id="s2c" data-in="L09-0.05" data-out="L10e+0.6">
+  <div class="tag jiedu"><span class="chip">解读</span></div>
+  <div class="say el" style="top:470px" data-in="L09"><span class="h1" style="font-size:104px">力比多</span><span class="lat" style="font-size:54px;font-style:italic;color:var(--ink-dim);margin-left:26px">Libido</span></div>
+  <div class="say el h1" style="top:650px" data-in="L09c2">＝ <span class="hl-b">心理能量</span></div>
+  <div class="say el" style="top:774px;font-family:'SongSC',serif;font-size:29px;color:var(--gold);letter-spacing:1px" data-in="L09c2+0.3" data-fx="fade">荣格原话：<span class="lat" style="font-style:italic;font-size:33px">“By libido I mean psychic energy.”</span>　CW6 §778</div>
+  <div class="say el h2" style="top:912px;font-weight:500" data-in="L10"><span class="dim">不是</span> <span class="strike">体力</span></div>
+  <div class="say el h2" style="top:1024px;font-weight:500" data-in="L10c1">你的 <span class="hl-b" style="font-weight:700">注意</span><span class="el" data-in="L10c2" data-fx="fade"> · <span class="hl-b" style="font-weight:700">兴趣</span></span><span class="el" data-in="L10c3" data-fx="fade"> · <span class="hl-b" style="font-weight:700">关心</span></span></div>
+  <div class="say el h2" style="top:1136px;font-weight:500" data-in="L10c4">自然而然，往哪儿跑</div>
+</section>
+
+<section class="scene" id="s2d" data-in="L11-0.05" data-out="L12e+0.9">
+  <div class="tag jiedu"><span class="chip">解读</span></div>
+  <div class="say" style="top:452px;height:120px">
+    <div class="abs" id="d-ext" style="left:0;top:0"><span class="h1" style="font-size:86px">外向</span><span class="p" style="margin-left:28px;font-size:50px">先看<span class="hl-b" style="font-weight:700">外面</span></span></div>
+    <div class="abs" id="d-int" style="left:0;top:0;opacity:0"><span class="h1" style="font-size:86px">内向</span><span class="p" style="margin-left:28px;font-size:50px">先看<span class="hl-b" style="font-weight:700">里面</span></span></div>
+  </div>
+  <svg id="flow" class="abs" style="left:96px;top:590px" width="888" height="640" viewBox="0 0 888 640"></svg>
+  <div class="center p" id="d-cap1" style="top:1256px;font-size:40px;opacity:0">兴趣 <span class="hl-b">→</span> 客体：外面的人和事</div>
+  <div class="center p" id="d-cap2" style="top:1256px;font-size:40px;opacity:0">兴趣 <span class="hl-b">→</span> 主体：自己的感受和想法</div>
+</section>
+
+<section class="scene" id="s2e" data-in="L15-0.05" data-out="L16e+1.0">
+  <div class="tag jiedu"><span class="chip">解读</span></div>
+  <div class="say el p" style="top:480px;font-size:52px" data-in="L15">一个很少聚会、<br>下班只想独处的人</div>
+  <div class="say el p" style="top:690px;font-size:52px" data-in="L15c3">如果做决定，全看<br><span class="hl-b" style="font-weight:700">外部条件</span>和<span class="hl-b" style="font-weight:700">客观结果</span></div>
+  <div class="say el h1" style="top:930px;font-size:78px" data-in="L16">在荣格这里，<br>反而可能是<span class="hl-b">外向</span>的。</div>
+  <div class="say el note" style="top:1198px;font-family:'SongSC',serif;color:var(--gold-dim);font-size:28px;line-height:1.55" data-in="L16+0.5" data-fx="fade">依据：CW6 §563 —— 决定和行动取决于客观条件、<br>而不是主观看法时，荣格称之为“外向态度”。</div>
+</section>
+
+<!-- ═════════ 3 生活里的样子 ═════════ -->
+<section class="scene" id="s3a" data-in="L17-0.05" data-out="L19e+0.8">
+  <div class="tag yuanwen"><span class="chip">原文</span><span class="src">《心理类型》CW6 §937</span></div>
+  <div class="quote compact el" style="top:448px" data-in="L17" data-fx="fade">
+    <div class="en el" data-in="L17+0.3">… there is a whole class of men who, at the moment of reaction to a given situation, at first draw back a little as if with an unvoiced <b>“No,”</b> and only after that are able to react; and there is another class who, in the same situation, come out with an immediate reaction, apparently quite confident that their behaviour is self-evidently right.</div>
+    <div class="rule el" data-in="L18" data-fx="fade"></div>
+    <div class="zh"><span class="el" data-in="L18" data-fx="fade">有一类人，对一个情境做出反应时，先往后缩一下，像是无声地说了一个<b>“不”</b>，然后才能反应；</span><span class="el" data-in="L19" data-fx="fade">另一类人，在同样的情境里，马上就有反应，显得很有把握，觉得自己的做法理所当然。</span></div>
+    <div class="cite el" data-in="L19+0.6" data-fx="fade">附录《类型的心理学理论》（1928 年讲演，1931 年刊行）</div>
+  </div>
+</section>
+
+<section class="scene" id="s3b" data-in="L20-0.05" data-out="L21e+0.7">
+  <div class="tag lizi"><span class="chip">例子</span><span class="src">虚构的日常场景</span></div>
+  <div class="say el h1" style="top:462px;font-size:78px" data-in="L20">入职第一天</div>
+  <div class="block el" style="top:620px" data-in="L20c1"><div class="who">有的人</div><div class="p">随口打招呼，<br>很快就像在这儿待了很久。</div></div>
+  <div class="block el" style="top:930px" data-in="L21"><div class="who">有的人</div><div class="p">一言不发，怕说错话；<span class="el" data-in="L21c2" data-fx="fade"><br>回到家还在想：<br>白天哪句话说傻了。</span></div></div>
+</section>
+
+<section class="scene" id="s3c" data-in="L22-0.05" data-out="L22e+0.9">
+  <div class="tag kawai"><span class="chip">转述</span><span class="src">河合隼雄《荣格心理学入门》</span></div>
+  <div class="kawai-card el" style="top:470px" data-in="L22" data-fx="fade">
+    <div class="p el" data-in="L22c1" id="kawai1">在新环境里<br>像个<span class="hl-t" style="font-weight:700">无能之辈</span>的人，<span class="el" data-in="L22c2" data-fx="fade"><br>慢慢熟悉以后，<br>会显出<span class="hl-t" style="font-weight:700">让人吃惊的深度</span>。</span></div>
+    <div class="cite el" data-in="L22+0.8" data-fx="fade" id="kawai1cite">第三章“心理类型”· 大意，据日文原著转述</div>
+  </div>
+</section>
+
+<section class="scene" id="s3d" data-in="L23-0.05" data-out="L24e+0.7">
+  <div class="tag lizi"><span class="chip">例子</span><span class="src">虚构的日常场景</span></div>
+  <div class="say el h1" style="top:462px;font-size:78px" data-in="L23">看完同一部电影</div>
+  <div class="block el" style="top:620px" data-in="L23c2"><div class="who">有的人</div><div class="p">一散场就聊：<br>票房多少？<span class="el" data-in="L23c4" data-fx="fade">别人怎么评？</span></div></div>
+  <div class="block el" style="top:930px" data-in="L24"><div class="who">有的人</div><div class="p">一路不说话，在想：<span class="el" data-in="L24c2" data-fx="fade"><br>这部片子，<br>让我想起了什么。</span></div></div>
+</section>
+
+<section class="scene" id="s3e" data-in="L25-0.05" data-out="L26e+1.0">
+  <div class="tag jiedu"><span class="chip">解读</span></div>
+  <div class="say el h2" style="top:470px;font-weight:500" data-in="L25c1">这和<span style="font-weight:700">会不会说话</span>、<br><span style="font-weight:700">朋友多不多</span></div>
+  <div class="say el h1" style="top:672px" data-in="L25c3"><span class="hl-b">没有必然关系。</span></div>
+  <div class="kawai-card el" style="top:880px;padding:40px 44px 38px 50px" data-in="L26" data-fx="rise">
+    <div class="p" style="font-size:46px" id="kawai2">不能简单地说，<br>内向的人就一定不善交际。</div>
+    <div class="cite" id="kawai2cite">转述 · 河合隼雄《荣格心理学入门》第三章 · 大意</div>
+  </div>
+</section>
+
+<!-- ═════════ 4 荣格自己的提醒 ═════════ -->
+<section class="scene" id="s4a" data-in="L27-0.05" data-out="L28e+0.8">
+  <div class="tag yuanwen"><span class="chip">原文</span><span class="src">《心理类型》CW6 §4</span></div>
+  <div class="say el" style="top:446px" data-in="L27c2"><span class="p dim" style="font-size:38px;letter-spacing:4px">提醒一</span><span class="h2" style="margin-left:24px;font-size:56px">没有纯粹的类型</span></div>
+  <div class="quote compact el" style="top:566px" data-in="L28-0.3" data-fx="fade">
+    <div class="en el" data-in="L28-0.2" style="font-size:38px">… everyone possesses both mechanisms, extraversion as well as introversion, and only the relative predominance of one or the other determines the type.</div>
+    <div class="rule el" data-in="L28" data-fx="fade"></div>
+    <div class="zh el" data-in="L28" style="font-size:45px">每个人都兼有外向和内向这两种机制，只是其中一种相对占了上风，才决定了类型。</div>
+    <div class="cite el" data-in="L28c1" data-fx="fade" style="line-height:1.6">导言 §4；§6 又说：<i>“there can never be a pure type”</i><br>1957 年访谈：<i>“There is no such thing as a pure extravert or a pure introvert.”</i>（<i>C. G. Jung Speaking</i>, p. 304）</div>
+  </div>
+</section>
+
+<section class="scene" id="s4b" data-in="L29-0.05" data-out="L30e+0.7">
+  <div class="tag yuanwen"><span class="chip">原文大意</span><span class="src">CW6 §570、§626</span></div>
+  <div class="say el" style="top:446px" data-in="L29"><span class="p dim" style="font-size:38px;letter-spacing:4px">提醒二</span><span class="h2" style="margin-left:24px;font-size:56px">意识和无意识互相补偿</span></div>
+  <svg id="comp" class="abs el" data-in="L29c1" data-fx="fade" style="left:96px;top:590px" width="888" height="580" viewBox="0 0 888 580"></svg>
+  <div class="say el" style="top:1196px;font-family:'Garamond',serif;font-style:italic;font-size:32px;line-height:1.45;color:#cdbf9f" data-in="L29c3" data-fx="fade">“The attitude of the unconscious as an effective complement to the conscious extraverted attitude has a definitely introverting character.” <span style="font-style:normal;color:var(--gold-dim)">§570</span></div>
+</section>
+
+<section class="scene" id="s4c" data-in="L31-0.05" data-out="L31e+1.0">
+  <div class="tag jiedu"><span class="chip">解读</span></div>
+  <div class="say el p" style="top:480px;font-size:52px" data-in="L31">一个平时<br><span style="font-weight:700;color:var(--ink)">特别能张罗</span>的人</div>
+  <div class="say el p" style="top:700px;font-size:52px" data-in="L31c1">突然有一阵，<br>把自己关起来，<span class="el" data-in="L31c2" data-fx="fade">谁都不想见</span></div>
+  <div class="say el h1" style="top:960px;font-size:76px" data-in="L31c3">这可能就是另一面，<br>在<span class="hl-b">找补</span>。</div>
+</section>
+
+<!-- ═════════ 5 后来的走样 ═════════ -->
+<section class="scene" id="s5a" data-in="L32-0.05" data-out="L34e+0.7">
+  <div class="tag shishi"><span class="chip">史实</span><span class="src" id="mbti-src">据 The Myers-Briggs Company 官方资料</span></div>
+  <div class="abs el" style="left:128px;top:486px;width:2px;height:500px;background:linear-gradient(180deg,var(--gold-dim),var(--blue-dim))" data-in="L32" data-fx="fade"></div>
+  <div class="abs el" style="left:117px;top:494px;width:24px;height:24px;border-radius:50%;background:var(--gold)" data-in="L32" data-fx="fade"></div>
+  <div class="tl-item el" style="top:456px" data-in="L32"><div class="tl-year">1921</div><div class="t">荣格《心理类型》</div><div class="d">两种态度（内向 / 外向）× 四种功能</div></div>
+  <div class="abs el" style="left:117px;top:754px;width:24px;height:24px;border-radius:50%;background:var(--blue)" data-in="L32c1" data-fx="fade"></div>
+  <div class="tl-item el" style="top:716px" data-in="L32c1"><div class="tl-year" id="mbti-year">1943</div><div class="t" id="mbti-t">布里格斯、迈尔斯母女编出问卷初版</div><div class="d" id="mbti-d">Katharine C. Briggs · Isabel Briggs Myers<br>1962 年由 ETS 正式出版，即 MBTI</div></div>
+  <div class="letters" style="top:1058px">
+    <div class="lt el" data-in="L33"><div class="a">E · I</div><div class="b">外向 内向</div></div>
+    <div class="lt el" data-in="L33c1"><div class="a">S · N</div><div class="b">感觉 直觉</div></div>
+    <div class="lt el" data-in="L33c2"><div class="a">T · F</div><div class="b">思维 情感</div></div>
+    <div class="lt new el" data-in="L33c4"><div class="a">J · P</div><div class="b" style="color:var(--blue)">问卷新增</div></div>
+  </div>
+  <div class="center el p sm" style="top:1244px;font-size:38px" data-in="L34">坐标轴 → 打分 → <span class="hl-b" style="font-weight:700">四个字母</span></div>
+</section>
+
+<section class="scene" id="s5b" data-in="L35-0.05" data-out="L36e+1.0">
+  <div class="tag kawai"><span class="chip">转述</span><span class="src">河合隼雄 1982 年论文</span></div>
+  <div class="kawai-card el" style="top:460px" data-in="L35" data-fx="fade">
+    <div class="p el" data-in="L35+0.5" id="kawai3" style="font-size:47px">依靠这类问卷，<br>也要时常反省：<span class="el" data-in="L35c3" data-fx="fade"><br>它在多大程度上，<br>反映了<span class="hl-t" style="font-weight:700">荣格的本意</span>。</span></div>
+    <div class="cite el" data-in="L35+0.8" data-fx="fade" id="kawai3cite">《荣格类型论研究：文献展望》<br>《京都大学教育学部纪要》第 28 号（1982）· 大意</div>
+  </div>
+  <div class="say el h2" style="top:1040px;font-weight:500" data-in="L36">做个测试，没有错。</div>
+  <div class="say el h2" style="top:1142px;font-weight:500" data-in="L36c2">只是它和荣格原来说的，<br><span class="hl-b" style="font-weight:700">不是一回事</span>。</div>
+</section>
+
+<!-- ═════════ 6 收尾 ═════════ -->
+<section class="scene" id="s6a" data-in="L37-0.05" data-out="L37e+0.5">
+  <div class="tag jiedu"><span class="chip">解读</span></div>
+  <div class="say el h1" style="top:500px" data-in="L37">分清这件事，<br>有什么用？</div>
+  <div class="say el p dim" style="top:800px;font-size:44px" data-in="L37c2">很多人从小被说——</div>
+  <div class="say el h1" style="top:890px;font-size:84px" data-in="L37c3">“太内向了，要改。”</div>
+</section>
+
+<section class="scene" id="s6b" data-in="L38-0.05" data-out="L38e+0.8">
+  <div class="tag yuanwen"><span class="chip">原文大意</span><span class="src">《心理类型》CW6 §560–561</span></div>
+  <div class="quote compact el" style="top:448px" data-in="L38" data-fx="fade">
+    <div class="en el" data-in="L38+0.2">… the decisive factor must be looked for in the <b>disposition</b> of the child.<br>… a reversal of type often proves exceedingly harmful to the physiological well-being of the organism, usually causing <b>acute exhaustion</b>.</div>
+    <div class="rule el" data-in="L38c1" data-fx="fade"></div>
+    <div class="zh"><span class="el" data-in="L38c1" data-fx="fade">往哪边偏，决定性的因素在一个人自己的<b>禀性</b>。</span><span class="el" data-in="L38c3" data-fx="fade">类型被硬扭成相反的一种，往往严重损害身体的健康，通常造成<b>极度的疲劳</b>。</span></div>
+    <div class="cite el" data-in="L38c3+0.5" data-fx="fade">第十章导言 · 中文为撮述，非逐字翻译</div>
+  </div>
+</section>
+
+<section class="scene" id="s6c" data-in="L39-0.05" data-out="L39e+0.8">
+  <div class="tag jiedu"><span class="chip">解读</span></div>
+  <div class="say el h1" style="top:560px;font-size:88px" data-in="L39c1">别硬扭自己</div>
+  <div class="say el h1" style="top:760px;font-size:88px" data-in="L39c2">也别急着<br>给别人<span class="hl-b">贴标签</span></div>
+</section>
+
+<section class="scene" id="s6d" data-in="L40-0.05" data-out="L40e+0.8">
+  <div class="tag yuanwen"><span class="chip">原文</span><span class="src">《心理类型》CW6 §986</span></div>
+  <div class="quote compact el" style="top:448px" data-in="L40" data-fx="fade">
+    <div class="en el" data-in="L40+0.2">It is not the purpose of a psychological typology to classify human beings into categories—this in itself would be pretty pointless. … we could compare typology to a trigonometric net or, better still, to a crystallographic <b>axial system</b>.</div>
+    <div class="rule el" data-in="L40c1" data-fx="fade"></div>
+    <div class="zh"><span class="el" data-in="L40c1" data-fx="fade">心理类型学的目的，不是把人分门别类——那本身没有多大意义。</span><span class="el" data-in="L40c3" data-fx="fade">……可以把它比作一张三角测量网，或者更好，比作结晶学里的一套<b>轴系</b>。</span></div>
+    <div class="cite el" data-in="L40c3+0.5" data-fx="fade">附录《心理类型学》（1936）</div>
+  </div>
+</section>
+
+<section class="scene" id="s6e" data-in="L41-0.05" data-out="L41e+1.1">
+  <div class="tag jiedu"><span class="chip">解读</span></div>
+  <div class="say el h1" style="top:470px;font-size:92px" data-in="L41">是<span class="hl-b">坐标轴</span>，</div>
+  <div class="say el h1" style="top:606px;font-size:92px" data-in="L41c1">不是盒子。</div>
+  <svg id="axis" class="abs" style="left:96px;top:790px" width="888" height="330" viewBox="0 0 888 330"></svg>
+  <div class="say el p" style="top:1170px;font-size:46px" data-in="L41c2">看清自己<span class="hl-b" style="font-weight:700">往哪边偏</span>，<span class="el" data-in="L41c3" data-fx="fade"><br>又<span class="hl-b" style="font-weight:700">缺了哪一边</span>。</span></div>
+</section>
+
+<section class="scene" id="s6f" data-in="L42-0.05" data-out="9999">
+  <div class="center el serif" style="top:500px;font-size:36px;letter-spacing:14px;color:var(--gold);font-weight:600" data-in="L42">下一期</div>
+  <div class="center el serif" style="top:612px;font-size:80px;line-height:1.5;font-weight:700;letter-spacing:3px" data-in="L42c1">同一个烟灰缸，<br><span class="el" data-in="L42c2" data-fx="fade">四种人，</span><span class="el" data-in="L42c3" data-fx="fade">看见四样东西</span></div>
+  <div class="el abs" style="left:496px;top:1000px;width:88px;height:2px;background:var(--gold-dim)" data-in="L42c3" data-fx="fade"></div>
+  <div class="center el serif" style="top:1040px;font-size:30px;line-height:1.75;color:var(--ink-dim);letter-spacing:1px" data-in="L42c3+0.3" data-fx="fade" id="endsrc">本期引文<br><span class="lat" style="font-size:32px">C. G. Jung, <i>Psychological Types</i> (CW 6)</span><br><span class="lat" style="font-size:32px">§§ 4, 560–561, 563, 570, 626, 710, 769, 778, 937, 986</span><br>河合隼雄《荣格心理学入门》第三章 · 1982 年类型论综述</div>
+  <div class="center el serif" style="top:1292px;font-size:30px;letter-spacing:10px;color:var(--gold-dim)" data-in="L42c3+0.6" data-fx="fade">荣格精读 · 01</div>
+</section>
+
+<div id="subline"></div>
+<div id="sub"></div>
+<div id="fade"></div>
+
+<script src="build/timeline.js"></script>
+<script src="engine.js"></script>
+<script src="diagrams.js"></script>
+</body>
+</html>

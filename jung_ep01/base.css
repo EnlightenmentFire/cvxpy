@@ -1,0 +1,80 @@
+@font-face { font-family: "SongSC"; src: url("assets/fonts/NotoSerifSC-Regular.otf"); font-weight: 400; }
+@font-face { font-family: "SongSC"; src: url("assets/fonts/NotoSerifSC-Medium.otf"); font-weight: 500; }
+@font-face { font-family: "SongSC"; src: url("assets/fonts/NotoSerifSC-SemiBold.otf"); font-weight: 600; }
+@font-face { font-family: "SongSC"; src: url("assets/fonts/NotoSerifSC-Bold.otf"); font-weight: 700; }
+@font-face { font-family: "HeiSC"; src: url("assets/fonts/NotoSansSC-Light.otf"); font-weight: 300; }
+@font-face { font-family: "HeiSC"; src: url("assets/fonts/NotoSansSC-Regular.otf"); font-weight: 400; }
+@font-face { font-family: "HeiSC"; src: url("assets/fonts/NotoSansSC-Medium.otf"); font-weight: 500; }
+@font-face { font-family: "HeiSC"; src: url("assets/fonts/NotoSansSC-Bold.otf"); font-weight: 700; }
+@font-face { font-family: "Garamond"; src: url("assets/fonts/EBGaramond.ttf"); font-weight: 400 800; font-style: normal; }
+@font-face { font-family: "Garamond"; src: url("assets/fonts/EBGaramond-Italic.ttf"); font-weight: 400 800; font-style: italic; }
+
+:root {
+  --ink: #ece7db;          /* 正文暖白 */
+  --ink-dim: #a9a79f;
+  --gold: #d2b47a;         /* 原文 */
+  --gold-dim: #8f7a52;
+  --blue: #9dbbd8;         /* 解读 */
+  --blue-dim: #5f7892;
+  --teal: #9ccbb9;         /* 河合隼雄 */
+  --rose: #d9a79c;         /* 例子 */
+  --bg: #060810;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+body { position: relative; color: var(--ink); font-family: "HeiSC", sans-serif; -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; }
+#sky { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+#vignette { position: absolute; inset: 0; background:
+  radial-gradient(ellipse 85% 62% at 50% 47%, rgba(4,6,12,.50) 0%, rgba(4,6,12,.30) 55%, rgba(2,3,7,.62) 100%); }
+
+/* ---------- 场景 ---------- */
+.scene { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; opacity: 0; }
+.safe { position: absolute; left: 96px; top: 340px; width: 888px; height: 1000px; }
+
+/* 左上角标签 */
+.tag { position: absolute; left: 96px; top: 344px; height: 54px; display: flex; align-items: center; gap: 16px; font-size: 30px; letter-spacing: 2px; white-space: nowrap; }
+.tag .chip { height: 54px; padding: 0 20px; display: flex; align-items: center; border-radius: 6px; font-weight: 700; letter-spacing: 6px; text-indent: 3px; }
+.tag .src { opacity: .92; }
+.tag.yuanwen { color: var(--gold); font-family: "SongSC", serif; font-weight: 600; }
+.tag.yuanwen .chip { background: var(--gold); color: #14110a; font-family: "SongSC", serif; }
+.tag.jiedu { color: var(--blue); }
+.tag.jiedu .chip { border: 2px solid var(--blue); color: var(--blue); }
+.tag.lizi { color: var(--rose); }
+.tag.lizi .chip { border: 2px solid var(--rose); color: var(--rose); }
+.tag.kawai { color: var(--teal); font-weight: 500; }
+.tag.kawai .chip { border: 2px solid var(--teal); color: var(--teal); }
+.tag.shishi { color: var(--ink-dim); }
+.tag.shishi .chip { border: 2px solid var(--ink-dim); color: var(--ink-dim); }
+.series { position: absolute; right: 96px; top: 344px; height: 54px; display: flex; align-items: center; font-family: "SongSC", serif; font-size: 26px; letter-spacing: 5px; color: var(--ink-dim); opacity: .62; }
+
+/* 原文卡 */
+.quote { position: absolute; left: 96px; width: 888px; padding: 54px 52px 50px 60px; border-left: 4px solid var(--gold);
+  background: linear-gradient(180deg, rgba(210,180,122,.105), rgba(210,180,122,.045)), rgba(6,8,15,.62); border-radius: 0 10px 10px 0; }
+.quote .en { font-family: "Garamond", serif; font-style: italic; font-size: 43px; line-height: 1.42; color: #e9dcc0; letter-spacing: .2px; }
+.quote .en b, .quote .de b { font-weight: 600; font-style: normal; color: var(--gold); }
+.quote .de { font-family: "Garamond", serif; font-size: 40px; line-height: 1.42; color: #e9dcc0; }
+.quote .rule { width: 88px; height: 2px; background: var(--gold-dim); margin: 38px 0 36px; }
+  .quote .zh, .p, .kawai-card .p { text-wrap: pretty; }
+.h1, .h2 { text-wrap: balance; }
+.quote .zh { font-family: "SongSC", serif; font-weight: 500; font-size: 49px; line-height: 1.62; color: var(--ink); letter-spacing: 1px; }
+.quote .zh b { font-weight: 700; color: var(--gold); }
+.quote .cite { margin-top: 34px; font-family: "SongSC", serif; font-size: 27px; line-height: 1.5; color: var(--gold-dim); letter-spacing: 1px; }
+.quote .cite i { font-family: "Garamond", serif; font-size: 29px; }
+
+/* 解读卡 */
+.say { position: absolute; left: 96px; width: 888px; font-family: "HeiSC", sans-serif; }
+.h1 { font-size: 74px; line-height: 1.34; font-weight: 700; letter-spacing: 2px; }
+.h2 { font-size: 60px; line-height: 1.42; font-weight: 700; letter-spacing: 1.5px; }
+.p  { font-size: 47px; line-height: 1.62; font-weight: 400; letter-spacing: 1px; color: #dcd9d0; }
+.p.sm { font-size: 41px; }
+.dim { color: var(--ink-dim); }
+.hl-b { color: var(--blue); } .hl-g { color: var(--gold); } .hl-t { color: var(--teal); } .hl-r { color: var(--rose); }
+.note { font-size: 28px; line-height: 1.5; color: var(--ink-dim); letter-spacing: 1px; }
+.el { opacity: 0; will-change: opacity, transform; }
+.abs { position: absolute; }
+
+/* 字幕 */
+#sub { position: absolute; left: 110px; width: 860px; top: 1392px; height: 150px; display: flex; align-items: center; justify-content: center; text-align: center;
+  font-family: "HeiSC", sans-serif; font-weight: 500; font-size: 42px; line-height: 1.5; letter-spacing: 1px; color: #f4f1ea; text-wrap: balance;
+  text-shadow: 0 2px 10px rgba(0,0,0,.95), 0 0 3px rgba(0,0,0,.9); }
+#subline { position: absolute; left: 430px; top: 1372px; width: 220px; height: 1px; background: rgba(236,231,219,.16); }

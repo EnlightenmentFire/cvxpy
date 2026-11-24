@@ -1,0 +1,6 @@
+assets/fonts/*.otf
+assets/fonts/*.ttf
+build/
+node_modules/
+__pycache__/
+out/*.mp4
