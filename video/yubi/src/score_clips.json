@@ -1,0 +1,12 @@
+{
+ "build_a": "build_s2_3.wav",
+ "build_b": "build_s2_1.wav",
+ "drive": "drive_s2_1.wav",
+ "s5": "tmp_s5.wav",
+ "lament_a": "coda_s1_0.wav",
+ "lament_b": "coda_s1_0.wav",
+ "reflect": "reflect_s1_0.wav",
+ "s9": "tmp_s9.wav",
+ "coda": "coda_s1_1.wav",
+ "bed": "tmp_bed.wav"
+}

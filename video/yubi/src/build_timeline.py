@@ -83,7 +83,7 @@ def main():
             if meta[2]:
                 secs[sec]['card'] = [t, t + CARD]; t += CARD
             elif sec == 's10':
-                t += 1.0
+                t += 2.6          # “此人若在”之后的留白：音乐第二次抬起
             secs[sec]['body'] = t; cur = sec; k = 0
         p = f"{adir}/{i:03d}.wav"
         d = wav_dur(p) if os.path.exists(p) else est(text, kind)
@@ -106,6 +106,7 @@ def main():
         if sec == 's7' and kind == 'q' and text.startswith('敕勒川'): gap = 2.0          # 念完歌词停两秒
         if sec == 's10': gap = 0.4
         if sec == 's5' and kind == 'q': gap = 0.4
+        if sec == 's5' and text.endswith('人人有了拼死的心。'): gap = 2.0     # 高潮：旁白停两秒，让音乐单独出来
         t = en + gap
     secs[cur]['end'] = t + 1.2; t += 1.2
     secs['end'] = dict(start=t, end=t + ENDCARD); total = t + ENDCARD

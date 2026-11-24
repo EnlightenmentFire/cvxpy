@@ -227,20 +227,23 @@ function sceneS5(t) {
   if (ar > 0 && ar < 1) drawArrow(lerp(300, 760, eio(ar)), lerp(1150, 880, eio(ar)), Math.atan2(-270, 460), 220, { blur: 1, scroll: 1 });
   const am = fadeIO(t, CK('s5', 10, 1) - 0.2, TE(10) + 0.3, 0.4, 0.4); if (am > 0) label('对城里的兵：何事相随入汤火中', 250, 1230, { size: 28, bar: C.xuanL, alpha: am, align: 'left' });
   // 侄子：被缚的剪影 + 一道冷光
-  const an = fadeIO(t, T(11) - 0.1, TE(13) + 0.3, 0.5, 0.6);
+  const an = fadeIO(t, T(11) - 0.1, TE(14) + 0.3, 0.5, 0.6);
   if (an > 0) {
     ctx.save(); ctx.globalAlpha = an; silhouette(410, 1300, 0.8, { color: '#060708', bound: 1 });
     const gl = 0.6 + 0.4 * Math.sin(t * 3); const lg = ctx.createLinearGradient(330, 1150, 470, 1120); lg.addColorStop(0, 'rgba(200,225,255,0)'); lg.addColorStop(0.5, `rgba(220,235,255,${0.9 * gl})`); lg.addColorStop(1, 'rgba(200,225,255,0)'); ctx.strokeStyle = lg; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(330, 1150); ctx.lineTo(470, 1120); ctx.stroke();
     ctx.restore(); label('侄子 韦迁', 400, 1340, { size: 28, bar: C.red, alpha: an * P(t, T(11) + 0.8, 0.4) });
   }
-  const aq = fadeIO(t, CK('s5', 13, 2) - 0.2, TE(13) + 0.3, 0.4, 0.4); if (aq > 0) note('韦迁后来下落：史书没有交代', 90, 1180, aq, 'left', 26);
+  const aq = fadeIO(t, T(14) - 0.2, TE(14) + 0.3, 0.4, 0.4); if (aq > 0) note('韦迁后来下落：史书没有交代', 90, 1075, aq, 'left', 26);
   // 结论
-  const a14 = fadeIO(t, T(14) - 0.1, s.end, 0.4, 0.4);
+  const a14 = fadeIO(t, T(15) - 0.1, s.end, 0.4, 0.4);
   if (a14 > 0) {
     ctx.save(); ctx.globalAlpha = a14; rrect(60, 262, 960, 210, 10); ctx.fillStyle = 'rgba(14,11,8,0.88)'; ctx.fill(); ctx.restore();
     text('想把城主和士兵拆开来买', 100, 320, { size: 40, fam: SERIF, wt: 900, alpha: a14, stroke: 0, color: '#b9c8d8' });
-    text('守城的人知道为什么守 —— 买不到', 100, 410, { size: 40, fam: SERIF, wt: 900, alpha: a14 * P(t, CK('s5', 14, 1) - 0.1, 0.4), stroke: 0, color: '#ff9a7c' });
+    text('守城的人知道为什么守 —— 买不到', 100, 410, { size: 40, fam: SERIF, wt: 900, alpha: a14 * P(t, CK('s5', 15, 1) - 0.1, 0.4), stroke: 0, color: '#ff9a7c' });
   }
+  // 高潮留白（约 2 秒）：城头一线暖光
+  const ah = fadeIO(t, TE(13) - 0.3, T(14) + 0.6, 0.9, 0.9);
+  if (ah > 0) { const rg = ctx.createRadialGradient(700, 930, 20, 700, 930, 520); rg.addColorStop(0, `rgba(255,150,90,${0.32 * ah})`); rg.addColorStop(1, 'rgba(255,120,80,0)'); ctx.fillStyle = rg; ctx.fillRect(100, 450, 1000, 900); }
   bands(0.35, 0.5);
 }
 

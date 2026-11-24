@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
-"""旁白拼接 + 配乐与音效合成（全部 numpy 生成）+ 混音。输出 audio/narration.wav、audio/music.wav、audio/mix.wav（48 kHz 立体声）。
-配乐：D 小调，低音鼓 + 弦乐长音；肆段鼓点加紧；柒段《敕勒歌》处音乐收掉，只留风声。"""
-import json, os, sys, subprocess, numpy as np, soundfile as sf, librosa
+"""旁白拼接 + 音效 / 环境声（numpy 合成）+ 配乐（MusicGen 片段，src/score.py 拼好的 audio/music.wav）→ 按《配乐规范》侧链混音。
+  音乐：削 3 kHz 约 4 dB、开头淡入 2 秒；音乐和音效一起由旁白做侧链压缩（有旁白时比人声低约 15–18 dB，停顿时自动回升）；
+  整体 loudnorm 到 -16 LUFS、真峰值不超过 -1.5 dBTP（两遍，线性增益）；结尾淡出 3 秒。
+输出 audio/narration.wav、audio/fx.wav、audio/mix.wav；另出无配乐版 audio/mix_nomusic.wav（发布时可用视频号音乐库另配）。
+用法：python src/audio.py [nomusic]"""
+import json, os, sys, subprocess, re, numpy as np, soundfile as sf, librosa
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from sound import *
+from loud import lufs, blocks
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TL = json.load(open(f"{ROOT}/src/timeline.json"))
 TOTAL = TL['total'] + 0.6
@@ -13,6 +17,11 @@ A = lambda s, k: LN(s, k)['start']
 E = lambda s, k: LN(s, k)['end']
 CK = lambda s, k, j: LN(s, k)['chunks'][min(j, len(LN(s, k)['chunks']) - 1)]['start']
 S = TL['secs']
+AU = f"{ROOT}/audio"
+# 侧链与电平（实测校准：有旁白时音乐比人声低约 16 dB；见 report()）
+MUSIC_DB = float(os.environ.get('MUSIC_DB', '0'))      # 音乐总增益（music.wav 已按 -20 LUFS 基准排好层次）
+FX_DB = float(os.environ.get('FX_DB', '0'))
+SC = dict(threshold=float(os.environ.get('SC_THR', '0.035')), ratio=float(os.environ.get('SC_RATIO', '10')), attack=15, release=500)
 
 
 def narration():
@@ -30,93 +39,15 @@ def narration():
     return buf
 
 
-def music():
-    dry = np.zeros((N, 2)); perc = np.zeros((N, 2)); fx = np.zeros((N, 2)); amb = np.zeros((N, 2))
-    t = np.arange(N) / SR
-    # 1) 低音持续（全片，强度随段落）
-    keys_t = [0, S['title']['start'], S['s1']['start'], S['s2']['start'], S['s3']['start'], S['s4']['start'], A('s4', 7), S['s5']['start'], A('s5', 11), S['s6']['start'], S['s7']['start'], S['s7']['hush'] - 0.3, S['s8']['card'][0], S['s9']['start'], A('s9', 8), S['s10']['start'], TOTAL - 3, TOTAL]
-    keys_v = [0.6, 0.9, 0.55, 0.65, 0.75, 0.9, 1.0, 0.5, 0.75, 0.6, 0.6, 0.0, 0.6, 0.65, 0.9, 0.7, 0.4, 0.0]
-    inten = np.interp(t, keys_t, keys_v)
-    dr = drone(TOTAL) * inten; dry[:, 0] += dr * 0.15; dry[:, 1] += dr * 0.15
-    # 2) 弦乐长音：每段一组和声
-    def seq(t0, t1, names, step=8.0, gain=1.0, bright=800, octv=-12):
-        k = 0; tt = t0
-        while tt < t1 - 1:
-            d = min(step, t1 - tt) + 2.6
-            add(dry, strings([NOTE(s + octv) for s in CH[names[k % len(names)]]], d, bright, 1.6, 1.8), tt - 0.8, 0.55 * gain, rng.uniform(-0.2, 0.2)); tt += step; k += 1
-    seq(0, S['title']['start'], ['Dm', 'Bb', 'Gm', 'Asus'], 6.5, 0.8)
-    seq(S['title']['start'], S['s1']['start'], ['Dm'], 4, 1.2, 1000)
-    seq(S['s1']['start'], S['s2']['start'], ['Dm', 'Gm', 'Bb', 'Asus'], 8.5, 0.75, 700)
-    seq(S['s2']['start'], S['s3']['start'], ['Dm', 'Bb', 'Em7b5', 'Asus'], 7, 0.85, 760)
-    seq(S['s3']['start'], S['s4']['start'], ['Dm', 'Em7b5', 'Asus', 'Dm'], 5, 0.85, 600, -24)
-    seq(S['s4']['start'], S['s5']['start'], ['Dm', 'Dm', 'Bb', 'Asus'], 5.5, 0.9, 900)
-    seq(S['s5']['start'], A('s5', 11), ['Dm', 'Gm', 'Dsus', 'F', 'C', 'Dm'], 9, 0.7, 650)
-    seq(A('s5', 11), S['s6']['start'], ['Em7b5', 'Asus', 'Bb', 'F', 'Dm'], 4.2, 0.9, 900)
-    seq(S['s6']['start'], S['s7']['start'], ['Dm', 'Bb', 'Gm', 'Em7b5'], 7, 0.7, 520, -24)
-    seq(S['s7']['start'], S['s7']['hush'] - 1.2, ['Gm', 'Dm', 'Asus'], 6.5, 0.6, 520)
-    seq(S['s8']['start'], S['s9']['start'], ['Dm', 'Bb', 'F', 'C'], 6.5, 0.8, 700)
-    seq(S['s9']['start'], A('s9', 8), ['Dm', 'Em7b5', 'Bb', 'Asus'], 6, 0.8, 700)
-    seq(A('s9', 8), A('s9', 9), ['Gm'], 5, 0.5, 400, -24)
-    seq(A('s9', 9), S['s10']['start'], ['Dm', 'Bb', 'F', 'Asus'], 3.5, 1.0, 1000)
-    seq(S['s10']['start'], TOTAL - 1.5, ['Bb', 'F', 'Dm', 'Dm'], 4.5, 1.0, 800)
-    # 3) 拨弦动机（五声）
-    PENT = [0, 3, 5, 7, 10, 12, 15, 17]
-    def motif(t0, notes, step=0.9, gain=0.5, octave=0):
-        for k, nidx in enumerate(notes):
-            if nidx is None: continue
-            add(dry, pluck(NOTE(PENT[nidx] + octave), 3.2), t0 + k * step + rng.uniform(-0.012, 0.012), gain * rng.uniform(0.8, 1.0), rng.uniform(-0.4, 0.4))
-    motif(2.0, [0, None, 3, 2, None, 0, None, 5, 3], 1.15, 0.32)
-    motif(S['s1']['body'], [3, 2, 0, None, 1, 2, None, None, 3, 4, 3, None, 2, 0], 1.3, 0.34)
-    motif(S['s2']['body'] + 12, [0, 2, 3, None, 3, 4, 5, None, 4, 3, 2, None], 1.0, 0.32)
-    motif(S['s5']['body'] + 2, [0, None, None, 2, 1, None, None, 0], 1.7, 0.3)
-    motif(A('s8', 3), [0, 2, 4, 5, None, 4, 5, 7], 0.8, 0.36, 12)
-    motif(S['s9']['body'] + 8, [5, None, 4, 3, None, None, 2, None, 0, None, 1, 2], 0.75, 0.3, 12)
-    motif(A('s10', 2), [0, None, 2, 3, None, None, 4, 3, None, 0], 1.0, 0.4)
-    # 4) 鼓
-    def beat(t0, t1, bpm, pattern, gain=1.0):
-        st = 60 / bpm / 2; k = 0; tt = t0
-        while tt < t1:
-            p = pattern[k % len(pattern)]
-            if p == 'X': add(perc, taiko(56, 1.4), tt, 0.85 * gain, 0)
-            elif p == 'x': add(perc, taiko(72, 0.9, 0.7), tt, 0.42 * gain, rng.uniform(-0.3, 0.3))
-            elif p == 'o': add(perc, tom(116, 0.4), tt, 0.3 * gain, rng.uniform(-0.5, 0.5))
-            elif p == 'i': add(perc, tom(156, 0.3), tt, 0.2 * gain, rng.uniform(-0.6, 0.6))
-            elif p == 'r': add(perc, rim(), tt, 0.25 * gain, rng.uniform(-0.6, 0.6))
-            tt += st; k += 1
-    beat(1.0, A('cold', 2) - 0.4, 52, 'X.......x.......', 0.55)
-    add(perc, taiko(50, 2.2, 1.2), A('cold', 2) - 0.12, 0.85)
-    beat(A('cold', 3), S['title']['start'] - 0.8, 60, 'X...x...X..ox...', 0.5)
-    add(perc, taiko(46, 2.8, 1.3), S['title']['start'] + 0.1, 1.25)
+def fx():
+    """音效与环境声：只跟画面事件走，不承担配乐。章节卡、片名各一记低鼓作转场。"""
+    perc = np.zeros((N, 2)); fx = np.zeros((N, 2)); amb = np.zeros((N, 2))
+    # 转场：片名、章节卡
+    add(perc, taiko(50, 2.2, 1.2), A('cold', 2) - 0.12, 0.6)
+    add(perc, taiko(46, 2.8, 1.3), S['title']['start'] + 0.1, 0.9)
     for sid in ('s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9'):
-        g = 0.55 if sid == 's8' else 1.0
-        add(perc, taiko(52, 2.2, 1.1), S[sid]['card'][0] + 0.1, 0.95 * g); add(fx, whoosh(1.1, 200, 1500)[::-1].copy(), S[sid]['card'][0] - 1.0, 0.22 * g)
-    beat(S['s1']['body'], S['s2']['start'] - 1, 56, 'X.......x...o...', 0.4)
-    beat(S['s2']['body'], A('s2', 3), 66, 'X..ox.o.X..ox.oi', 0.55)
-    beat(A('s2', 3), S['s3']['start'] - 1, 66, 'X...x...X..ox...', 0.45)
-    beat(S['s3']['body'], S['s4']['start'] - 1, 50, 'X.......x.......', 0.45)
-    # 肆：紧鼓 + 低音弦乐固定音型
-    beat(S['s4']['body'], A('s4', 11) - 0.3, 92, 'X.oxX.oix.oxXooi', 0.75)
-    beat(A('s4', 11) - 0.3, S['s5']['start'] - 1, 92, 'X...x...X..ox...', 0.5)
-    st = 60 / 92 / 2; tt = S['s4']['body']; k = 0
-    while tt < A('s4', 11) - 0.3:
-        add(dry, cello_note(NOTE([0, 0, 12, 0, 1, 0, 12, 3][k % 8] - 24), st * 1.6, 1.0 if k % 4 == 0 else 0.6), tt, 0.55, -0.2); tt += st; k += 1
-    # 伍：几乎无鼓；关键句各一记低鼓
-    for tt in (A('s5', 4) - 0.1, A('s5', 8) - 0.1): add(perc, taiko(46, 3.0, 1.0), tt, 0.85)
-    beat(A('s5', 11), E('s5', 13), 60, 'X.......x.......', 0.45)
-    # 陆：慢脉
-    beat(S['s6']['body'], S['s7']['start'] - 1, 44, 'X...............', 0.5)
-    # 柒：撤军段轻鼓，之后全停
-    beat(S['s7']['body'], S['s7']['hush'] - 2.5, 50, 'X.......x.......', 0.4)
-    # 捌：547 一记；侯景
-    add(perc, taiko(44, 3.2, 1.2), CK('s8', 0, 1) + 0.3, 0.9)
-    beat(A('s8', 1), S['s9']['start'] - 1, 54, 'X.......x...o...', 0.4)
-    # 玖：童谣段轻、死讯一击、北周东征行军鼓
-    beat(S['s9']['body'], A('s9', 8), 58, 'X.....r.x.....r.', 0.45)
-    add(perc, taiko(42, 3.5, 1.3), CK('s9', 8, 1), 1.0)
-    beat(A('s9', 9) + 0.3, A('s9', 10) - 0.2, 76, 'X.oix.o.X.oix.oo', 0.6)
-    add(perc, taiko(46, 3.0, 1.2), A('s9', 10) - 0.1, 0.9)
-    for k in (0, 1, 2): add(perc, taiko(48 - k * 2, 2.6, 1.1), A('s10', k) - 0.06, 0.95)
-    # 5) 音效
+        g = 0.5 if sid in ('s7', 's8') else 0.8
+        add(perc, taiko(52, 2.2, 1.1), S[sid]['card'][0] + 0.1, 0.8 * g); add(fx, whoosh(1.1, 200, 1500)[::-1].copy(), S[sid]['card'][0] - 1.0, 0.22 * g)
     # 冷启动：箭入、钉住、纸卷、翻面、射出
     add(fx, arrow_fly(0.6), 0.28, 0.95, -0.6); add(fx, thunk(), 0.88, 1.0, 0.1)
     add(fx, paper(1.2), 1.15, 0.7, 0.0); add(fx, paper(0.7), A('cold', 1) + 0.3, 0.6, 0.1)
@@ -147,20 +78,18 @@ def music():
     add(fx, arrow_fly(0.6), CK('s5', 10, 2) - 0.25, 0.8, -0.4); add(fx, thunk(), CK('s5', 10, 2) + 0.45, 0.7)
     # 陆：风
     add(amb, wind(S['s7']['start'] - S['s6']['start'] + 1, 1.0, 0.12), S['s6']['start'], 0.9)
-    # 柒：风声贯穿，歌词处只剩风
-    add(amb, wind(S['s8']['card'][0] - S['s7']['start'] + 1.5, 1.4, 0.1), S['s7']['start'], 1.0)
+    # 柒：风声贯穿；歌词前后音乐收掉，只剩风（风在 hush 处略抬）
+    w7 = wind(S['s8']['card'][0] - S['s7']['start'] + 1.5, 1.4, 0.1); tt = np.arange(len(w7)) / SR + S['s7']['start']
+    w7 *= 1 + 1.0 * np.clip((tt - S['s7']['hush'] + 0.8) / 1.2, 0, 1) * np.clip((S['s8']['card'][0] - tt) / 1.5, 0, 1)
+    add(amb, w7, S['s7']['start'], 1.0)
     # 捌：侯景
     add(fx, whoosh(1.0, 300, 1600), CK('s8', 0, 2) + 0.3, 0.5)
-    # 玖：北周东征
+    # 玖：斛律光之死一记低鼓；北周东征
+    add(perc, taiko(42, 3.5, 1.3), CK('s9', 8, 1), 0.6)
     add(fx, rumble(A('s9', 10) - A('s9', 9), 40, 0.9), A('s9', 9) + 0.3, 0.8)
     # 收尾：雪夜的风
     add(amb, wind(TOTAL - S['s10']['start'], 1.0, 0.08), S['s10']['start'], 0.8)
-    mix = reverb(dry, 3.2, 0.45) + reverb(perc, 2.0, 0.28) * 0.95 + reverb(fx, 1.4, 0.2) * 0.8
-    # 柒：歌词前后音乐收掉（风声 amb 不受影响）
-    h0, h1 = S['s7']['hush'] - 0.6, S['s8']['card'][0] - 0.3
-    g = 1 - np.clip((t - h0) / 0.9, 0, 1) * np.clip((h1 - t) / 0.6, 0, 1)
-    mix *= g[:, None]
-    return mix, amb
+    return reverb(perc, 2.0, 0.28) * 0.95 + reverb(fx, 1.4, 0.2) * 0.8, amb
 
 
 def psum(*xs):
@@ -180,26 +109,75 @@ def clank_lite(dur=0.35):
     return x * 0.3
 
 
+def ff(*a): subprocess.run(['ffmpeg', '-y', '-hide_banner', '-loglevel', 'error', *a], check=True)
+
+
+def measure_i(p):
+    r = subprocess.run(['ffmpeg', '-hide_banner', '-nostats', '-i', p, '-af', 'ebur128=framelog=quiet', '-f', 'null', '-'], capture_output=True, text=True).stderr
+    return float(re.findall(r'I:\s+(-?[\d.]+) LUFS', r)[-1])
+
+
+def mixdown(music, out):
+    """规范的侧链链路：旁白分两路，一路进混音，一路做侧链；音乐削 3 kHz、淡入 2 秒，与音效一起被压。"""
+    pre, pre2, duck = f"{ROOT}/cache/premix.wav", f"{ROOT}/cache/premix2.wav", out.replace('.wav', '_bed.wav')
+    ins = ['-i', f"{AU}/narration.wav", '-i', f"{AU}/fx.wav"] + (['-i', music] if music else [])
+    g = f"[0:a]asplit=2[v][sc];[1:a]volume={FX_DB}dB[f];"
+    if music: g += f"[2:a]volume={MUSIC_DB}dB,equalizer=f=3000:t=q:w=1:g=-4,afade=t=in:d=2[m];[m][f]amix=inputs=2:duration=first:normalize=0[bed];"
+    else: g += "[f]anull[bed];"
+    g += (f"[bed][sc]sidechaincompress=threshold={SC['threshold']}:ratio={SC['ratio']}:attack={SC['attack']}:release={SC['release']},"
+          f"afade=t=out:st={TL['total'] - 3:.2f}:d=3,asplit=2[d1][d2];"
+          f"[v][d1]amix=inputs=2:duration=first:normalize=0[o]")
+    ff(*ins, '-filter_complex', g, '-map', '[o]', '-c:a', 'pcm_f32le', pre, '-map', '[d2]', '-c:a', 'pcm_f32le', duck)
+    # 先把整体增益推到 -16 LUFS 附近，同时用限幅器把样本峰值压在 -2.3 dBFS 以下（给真峰值留余量），
+    # 再做 loudnorm 两遍：先测，再按实测值线性归一（不做动态压缩，保住音乐与人声的相对关系）
+    g0 = -16.0 - measure_i(pre)
+    ff('-i', pre, '-af', f"alimiter=level_in={10 ** (g0 / 20):.5f}:limit={10 ** (-2.3 / 20):.5f}:attack=3:release=60:level=false", '-c:a', 'pcm_f32le', pre2)
+    r = subprocess.run(['ffmpeg', '-hide_banner', '-i', pre2, '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json', '-f', 'null', '-'], capture_output=True, text=True).stderr
+    m = json.loads(r[r.rindex('{'):r.rindex('}') + 1])
+    ln = (f"loudnorm=I=-16:TP=-1.5:LRA=11:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}:"
+          f"measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true:print_format=json")
+    r2 = subprocess.run(['ffmpeg', '-y', '-hide_banner', '-i', pre2, '-af', ln, '-ar', '48000', '-c:a', 'pcm_s24le', out], capture_output=True, text=True).stderr
+    m2 = json.loads(r2[r2.rindex('{'):r2.rindex('}') + 1])
+    gain = g0 + float(m2['output_i']) - float(m2['input_i'])
+    return dict(normalization_type=m2['normalization_type'], gain_db=round(gain, 2), pre_tp=m['input_tp'], pre_lra=m['input_lra']), duck, gain
+
+
+def report(out, duck, gain, music):
+    """核对：成片响度 / 真峰值；有旁白时音乐（含音效）比人声低多少；高潮留白处音乐抬到多少。"""
+    r = subprocess.run(['ffmpeg', '-hide_banner', '-nostats', '-i', out, '-af', 'ebur128=peak=true:framelog=quiet', '-f', 'null', '-'], capture_output=True, text=True).stderr
+    I = float(re.findall(r'I:\s+(-?[\d.]+) LUFS', r)[-1]); LRA = float(re.findall(r'LRA:\s+(-?[\d.]+) LU', r)[-1]); TP = float(re.findall(r'Peak:\s+(-?[\d.]+) dBFS', r)[-1])
+    k = 10 ** (gain / 20)
+    v, _ = sf.read(f"{AU}/narration.wav"); b, _ = sf.read(duck); v = v * k; b = b * k
+    vI = lufs(v)
+    t, mv = blocks(v); _, mb = blocks(b); Lv = -0.691 + 10 * np.log10(mv + 1e-12); Lb = -0.691 + 10 * np.log10(mb + 1e-12)
+    act = Lv > vI - 8; d = (Lb - Lv)[act]
+    res = dict(mix_I=I, mix_LRA=LRA, mix_TP=TP, voice_I=round(vI, 1), under_voice_median=round(float(np.median(d)), 1),
+               under_voice_p10=round(float(np.percentile(d, 10)), 1), under_voice_p90=round(float(np.percentile(d, 90)), 1))
+    if music:
+        def win(a, z): s = (t + 0.2 >= a) & (t + 0.2 <= z); return round(float(-0.691 + 10 * np.log10(mb[s].mean() + 1e-12) - vI), 1)
+        res['climax_gap_vs_voice'] = win(E('s5', 13) + 0.3, A('s5', 14) - 0.1)
+        res['s10_gap_vs_voice'] = win(E('s9', 11) + 0.3, A('s10', 0) - 0.1)
+        res['card_s4_vs_voice'] = win(S['s4']['card'][0] + 0.2, S['s4']['card'][1])
+        res['hush_vs_voice'] = win(S['s7']['hush'] + 0.1, A('s7', 4) - 0.05)
+    return res
+
+
 def main():
-    os.makedirs(f"{ROOT}/audio", exist_ok=True)
-    nar = narration(); sf.write(f"{ROOT}/audio/narration.wav", nar, SR, subtype='PCM_16')
-    mus, amb = music(); mus /= np.abs(mus).max() + 1e-9; amb /= np.abs(amb).max() + 1e-9
-    w = int(0.05 * SR); e = np.sqrt(np.convolve(nar ** 2, np.ones(w) / w, 'same'))
-    gate = (e > 0.02).astype(np.float64); k = int(0.45 * SR); gate = np.convolve(gate, np.ones(k) / k, 'same'); gate = np.clip(gate * 2.2, 0, 1)
-    k2 = int(0.25 * SR); gate = np.convolve(gate, np.hanning(k2) / np.hanning(k2).sum(), 'same')
-    g = 0.66 - 0.42 * gate                     # 无旁白约 0.66，有旁白约 0.24（约 -9 dB）
-    mus = mus * g[:, None] + amb * (0.22 - 0.08 * gate)[:, None]
-    fade = np.minimum(np.arange(N) / (0.25 * SR), 1) * np.minimum((N - np.arange(N)) / (3.0 * SR), 1); mus *= fade[:, None]
-    sf.write(f"{ROOT}/audio/music.wav", mus, SR, subtype='PCM_16')
-    # 音乐整体电平：无旁白处的音乐 RMS 约比人声低 6 dB，有旁白处由上面的 ducking 再压约 9 dB
-    w3 = int(0.05 * SR); en = np.sqrt(np.convolve(nar ** 2, np.ones(w3) / w3, 'same')); act = en > en.max() * 0.05
-    mrms = np.sqrt((mus[~act] ** 2).mean()); mus = mus * (10 ** (-24 / 20) / (mrms + 1e-9))
-    mix = mus + nar[:, None]
-    pk = np.abs(mix).max(); lim = 10 ** (-1.0 / 20)
-    if pk > lim: mix = np.tanh(mix / lim * 0.98) * lim          # 只压峰值，不改人声电平
-    sf.write(f"{ROOT}/audio/mix.wav", mix, SR, subtype='PCM_16')
-    def db(x): return 20 * np.log10(np.sqrt((x ** 2).mean()) + 1e-9)
-    print("dur %.1f  voice RMS(active) %.1f dBFS  music RMS(no voice) %.1f dBFS  peak %.1f dBFS" % (N / SR, db(nar[act]), db(mus[~act]), 20 * np.log10(np.abs(mix).max())))
+    os.makedirs(AU, exist_ok=True)
+    nar = narration(); sf.write(f"{AU}/narration.wav", np.stack([nar, nar], 1), SR, subtype='FLOAT')
+    ev, amb = fx(); vI = lufs(np.stack([nar, nar], 1))
+    # 音效：最响的 3 秒比旁白低约 5 dB；环境风声：比旁白低约 21 dB（之后与音乐一起被旁白侧链压低）
+    from loud import short_term
+    ev *= 10 ** ((vI - 5 - short_term(ev)[1].max()) / 20)
+    act = np.abs(amb).sum(1) > 1e-4; amb *= 10 ** ((vI - 21 - lufs(amb[act])) / 20)
+    sf.write(f"{AU}/fx.wav", ev + amb, SR, subtype='FLOAT')
+    out = {}
+    for name, music in (('mix', f"{AU}/music.wav"), ('mix_nomusic', None)):
+        if name == 'mix' and not os.path.exists(music): continue
+        if name == 'mix_nomusic' and 'nomusic' not in sys.argv: continue
+        ln, duck, gain = mixdown(music, f"{AU}/{name}.wav"); rep = report(f"{AU}/{name}.wav", duck, gain, music)
+        out[name] = dict(loudnorm=ln, **rep); print(name, json.dumps(out[name], ensure_ascii=False), flush=True)
+    json.dump(out, open(f"{ROOT}/cache/mix_report.json", 'w'), ensure_ascii=False, indent=1)
 
 
 if __name__ == "__main__":
