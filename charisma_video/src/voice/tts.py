@@ -54,7 +54,7 @@ def main():
                 continue
             text = to_tts(ln)
             best = None
-            for attempt, seed in enumerate([1234, 777, 4242, 9001, 31337]):
+            for attempt, seed in enumerate([1234, 777, 4242, 9001, 31337, 2024, 8888]):
                 torch.manual_seed(seed)
                 t0 = time.time()
                 wavs, sr = m.generate_voice_clone(text=text, language="Chinese", voice_clone_prompt=prompt)
@@ -64,7 +64,7 @@ def main():
                 f0 = med_f0(tmp)
                 dur = len(wavs[0]) / sr
                 cps = len(text) / max(dur, 0.1)
-                ok = 85 <= f0 <= 105 and 2.2 < cps < 7.5
+                ok = 86.5 <= f0 <= 104 and 2.2 < cps < 7.5
                 print(f"{sid}_{i:02d} try{attempt} seed{seed} f0={f0:.1f} dur={dur:.2f} cps={cps:.2f} {'OK' if ok else 'RETRY'} ({time.time()-t0:.0f}s)", flush=True)
                 score = abs(f0 - 95) + (0 if 2.2 < cps < 7.5 else 100)
                 if best is None or score < best[0]:
