@@ -197,8 +197,8 @@ def build_score(tl, total=None):
     segs.append((lt("i01") + 0.5, lt("s1_01") - 2.0, 104, 0.35))
     segs.append((lt("s1_01"), stops[1], 104, 0.5))
     segs.append((lt("s2_05"), lt("s3_09"), 104, 0.4))
-    segs.append((lt("s3_14"), lt("s4_05"), 104, 0.4))
-    segs.append((lt("s4_11"), lt("s5_02"), 104, 0.4))
+    segs.append((lt("s3_14"), lt("s4_07") + 0.25, 104, 0.4))   # cut on "不确定区域"
+    segs.append((lt("s4_11"), lt("s5_02") + 0.25, 104, 0.4))   # cut on "什么都说不准"
     segs.append((lt("s5_04"), lt("s6_01"), 104, 0.45))
     segs.append((lt("s6_03"), lt("s6_04"), 104, 0.5))
     # vicious circle: tighter and tighter
@@ -232,9 +232,11 @@ def build_score(tl, total=None):
         add(sfx, big_clack(), st - 0.02, 0.9)
         add(sfx, hum(6.0 if st == cold_stop else 4.5), st + 0.5, 1.0)
 
-    # light 'uncertainty' marks (beat dropout handled by segments; add a low tone)
-    for lid in ("s2_03", "s4_07"):
-        add(sfx, hum(3.0, 49.0), lt(lid) + 0.2, 0.55)
+    # the same sound mark, lighter, whenever 'uncertainty' is named: beat cuts, a click, then the low hum
+    add(sfx, hum(3.0, 49.0), lt("s2_03") + 0.2, 0.7)
+    for lid in ("s4_07", "s5_02"):
+        add(sfx, clack(1.0), lt(lid) + 0.25, 0.9)
+        add(sfx, hum(3.0, 49.0), lt(lid) + 0.75, 0.7)
 
     # --- tonal layers -------------------------------------------------------------------
     bar = 60.0 / 104 * 4

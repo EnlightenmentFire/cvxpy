@@ -13,11 +13,16 @@ NOTES = {
     "s3_17": "人物心理只用“也许”。",
     "s4_02": "【英文原话】Crozier 1964，第 6 章 Power and Uncertainty。",
     "s4_06": "【法文】只上屏，不让中文 TTS 念。",
-    "s4_08": "【法文原话】只上屏；措辞以 1977 年原书为准，核不实则只讲意思。",
+    "s4_07b": "Crozier & Friedberg 1977（约 p. 21）：« ce qui est incertitude du point de vue des problèmes est pouvoir du point de vue des acteurs »，法文只上屏。",
+    "s4_08": "【法文原话】只上屏，已对 1977 年初版 pp. 59–60 核实。",
+    "s4_19": "Hickson 等 1971, p. 221 原意。",
+    "s4_22b": "Hickson 等 1971, p. 225：“很可能”有工会协议；“得三条一起解释”。",
+    "s6_09": "Friedberg 2010 年导言 p. xii。",
+    "s7_05b": "Crozier & Friedberg 1977, p. 67（作者自称“推到极端”的说法）。",
     "s4_17": "【英文原话】Hickson et al. 1971, ASQ 16(2)。",
-    "s6_10": "【二手概括】研究者对 Friedberg 导言的概括。",
+    "s6_10": "【二手概括】这句概括不在 Friedberg 导言里，片中只说“有研究者”。",
     "s7_05": "【推论】由理论推出，不是对这家厂后来情况的记载。",
-    "s7_06": "【推论】同上，用“可以想见”。",
+    "s7_06": "【推论】用“可以想见”；机制部分引 Hickson 等 1971, p. 224。",
 }
 
 
@@ -57,4 +62,4 @@ def main(out):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), "../script/讲稿_v1.md"))
+    main(sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), "../script/讲稿_v2.md"))

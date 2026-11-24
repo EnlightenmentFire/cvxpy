@@ -961,10 +961,11 @@ def sc_end(c, ctx):
     t0, t1 = tl["teaser"]
     ta = ease(seg(t, t0, t0 + 0.6)) * (1 - ease(seg(t, t1 - 0.5, t1)))
     if ta > 0:
-        draw_text(c, "组织里的权力", 540, 640, "serif_bold", 44, INK2, ta, align="center", spacing=10)
-        draw_text(c, "下一期", 540, 760, "sans", 34, INK3, ta, align="center", spacing=8)
-        draw_text(c, "罗伯特·摩西", 540, 880, "serif_heavy", 92, INK, ta, align="center")
-        draw_text(c, "一个从没赢过选举的人，怎样改写了纽约", 540, 1000, "serif_semi", 36, INK2, ta, align="center")
+        # one small line, as a closing note
+        draw_text(c, "组织里的权力", 540, 700, "serif_heavy", 56, INK, ta, align="center", spacing=10)
+        c.drawLine(400, 760, 680, 760, paint(INK3, ta, stroke=2))
+        draw_text(c, "下一期 · 罗伯特·摩西：从没当选过公职，却主导了纽约几十年的建设", 540, 1150, "serif_semi", 30, INK2, ta,
+                  align="center")
     # sources
     s0, s1 = tl["sources"]
     sa = ease(seg(t, s0, s0 + 0.6)) * (1 - ease(seg(t, s1 - 0.6, s1)))

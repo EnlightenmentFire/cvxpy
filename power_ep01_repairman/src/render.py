@@ -55,6 +55,13 @@ def draw_scene(c, tl, sec, t, frame):
         return
     c.save()
     c.clipRect(skia.Rect.MakeXYWH(0, 300, W, 952))
+    if sec not in ("cold",):
+        # a very slow push-in over each section ("镜头缓推")
+        a, b = tl["sections"][sec]
+        z = 1.0 + 0.025 * ease(seg(t, a, b))
+        c.translate(540, STAGE_CY)
+        c.scale(z, z)
+        c.translate(-540, -STAGE_CY)
     fn(c, A.Ctx(tl, t, frame))
     c.restore()
 
