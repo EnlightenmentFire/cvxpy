@@ -50,29 +50,37 @@ def chunks_for(line):
             cur = ""
     if cur:
         clauses.append(cur)
-    out, cur = [], ""
     limit = maxc * 2
-    for cl in clauses:
-        if len(cur) + len(cl) <= limit:
-            cur += cl
-        else:
-            if cur:
-                out.append(cur)
-            while len(cl) > limit:
-                out.append(cl[:limit])
-                cl = cl[limit:]
-            cur = cl
-    if cur:
-        out.append(cur)
-    # make sure every chunk wraps into at most two rows
-    fixed = []
-    for ch in out:
-        rows = wrap_cjk(ch, maxc)
-        while len(rows) > 2:
-            fixed.append("".join(rows[:2]))
-            rows = rows[2:]
-        fixed.append("".join(rows))
-    out = [x for x in fixed if x]
+    pieces = []
+    for cl in clauses:  # hard-split over-long clauses
+        while len(cl) > limit:
+            pieces.append(cl[:limit])
+            cl = cl[limit:]
+        if cl:
+            pieces.append(cl)
+    # DP: fewest chunks (each <= limit), then most balanced (min sum of squares)
+    n = len(pieces)
+    INF = 10 ** 12
+    best = [INF] * (n + 1)
+    prev = [0] * (n + 1)
+    best[0] = 0
+    for i in range(1, n + 1):
+        for j in range(i - 1, -1, -1):
+            L = sum(len(x) for x in pieces[j:i])
+            if L > limit:
+                break
+            if best[j] == INF:
+                continue
+            chunk = "".join(pieces[j:i])
+            cand = best[j] + 900 + L * L + (0 if clean_split(chunk, maxc) else 1500)
+            if cand < best[i]:
+                best[i], prev[i] = cand, j
+    out, i = [], n
+    while i > 0:
+        j = prev[i]
+        out.append("".join(pieces[j:i]))
+        i = j
+    out = out[::-1]
     # timing weights
     weights = [han_len(c) + 1.2 * sum(c.count(p) for p in PUNCT) + 0.5 for c in out]
     tot = sum(weights)
@@ -86,26 +94,59 @@ def chunks_for(line):
 _chunk_cache = {}
 
 
+_WB = {}
+
+
+def word_breaks(text):
+    """Allowed row-break positions: after punctuation (preferred) or at jieba word boundaries."""
+    if text not in _WB:
+        import jieba
+        jieba.setLogLevel(60)
+        pos, cut = set(), 0
+        for w in jieba.cut(text, HMM=False):
+            cut += len(w)
+            pos.add(cut)
+        _WB[text] = pos
+    return _WB[text]
+
+
+PUNCT_ROW = "，。；：？！、”」"
+
+
+def best_row_split(text, maxc):
+    mid = len(text) / 2
+    wb = word_breaks(text)
+    best, best_score = None, 1e9
+    for i in range(1, len(text)):
+        if i > maxc or len(text) - i > maxc:
+            continue
+        if text[i] in PUNCT_ROW:   # never start a row with punctuation
+            continue
+        if text[i - 1] in PUNCT_ROW:
+            sc = abs(i - mid)
+        elif i in wb:
+            sc = abs(i - mid) + 2.5
+        else:
+            continue
+        if sc < best_score:
+            best, best_score = i, sc
+    return best
+
+
+def clean_split(text, maxc):
+    return len(text) <= maxc or best_row_split(text, maxc) is not None
+
+
 def balanced_rows(text, maxc):
-    """Split a chunk into one or two visually balanced rows (prefer breaking after punctuation)."""
+    """Split a chunk into one or two rows, breaking after punctuation or between words."""
     if len(text) <= maxc:
         return [text]
-    if len(text) > 2 * maxc:
-        return wrap_cjk(text, maxc)
-    punct = "，。；：？！、”"
-    mid = len(text) / 2
-    best, best_d = None, 99
-    for i in range(1, len(text)):
-        if text[i - 1] in punct and len(text[:i]) <= maxc and len(text[i:]) <= maxc:
-            d = abs(i - mid)
-            if d < best_d:
-                best, best_d = i, d
-    if best is None or best_d > 5:
-        best = int(math.ceil(mid))
-        # never start a row with punctuation
-        while best < len(text) and text[best] in punct:
-            best += 1
-    return [text[:best], text[best:]]
+    i = best_row_split(text, maxc)
+    if i is None:
+        if len(text) > 2 * maxc:
+            return wrap_cjk(text, maxc)
+        i = int(math.ceil(len(text) / 2))
+    return [text[:i], text[i:]]
 
 
 def subtitle_state(tl, t):
