@@ -1,0 +1,9 @@
+assets/geo/tiles/
+assets/geo/*.npy
+assets/geo/ne_*.geojson
+assets/fonts/*.ttf
+assets/maps/
+render/data.js
+audio/*.wav
+build/__pycache__/
+out/
