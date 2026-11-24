@@ -160,7 +160,7 @@ def draw_viterbo(c, roof_off=0.0, bread=4, key=0.0, letter=0.0, moon=0.0, cardin
         draw_text(c, "“在没有屋顶的宫殿里”——枢机主教们 1270 年 6 月的信", 540, 380, "serif", 26, IVORY, letter * 0.9, align="center")
     # key
     if key > 0:
-        dim = 0.55 * ease(key)
+        dim = 0.72 * ease(key)
         c.drawRect(skia.Rect.MakeWH(W, H), paint((0, 0, 0), dim))
         y = lerp(-200, 700, ease_out(key))
         radial(c, 540, y, 320, (*GOLD_HI, 70), (*GOLD, 0), alpha=ease(key))

@@ -110,6 +110,7 @@ def draw_text(c, s, x, y, fname, size, color, alpha=1.0, align="left", tracking=
     _draw(p)
     return w
 
+@functools.lru_cache(4096)
 def wrap_cjk(s, fname, size, maxw):
     """Greedy wrap for mixed CJK/Latin text; keeps latin words together and
     avoids starting a line with closing punctuation."""
@@ -309,6 +310,7 @@ def tag_badge(c, text, alpha=1.0, y=None):
     c.drawRRect(r, paint(GOLD_DIM, alpha * 0.9, stroke=1.4))
     draw_text(c, text, W / 2, y + 1, "sans", size, GOLD, alpha * 0.95, align="center")
 
+@functools.lru_cache(2048)
 def balanced_wrap(text, fname, size, maxw):
     lines = wrap_cjk(text, fname, size, maxw)
     if len(lines) < 2:
