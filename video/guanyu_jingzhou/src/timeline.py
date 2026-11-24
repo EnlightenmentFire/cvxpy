@@ -3,12 +3,12 @@
 import os, re, json, numpy as np
 from script import BEATS, SECTIONS
 WAVDIR = '/home/user/work/tts/wav/'
-TEMPO = 1.12          # 旁白整体变速（ffmpeg atempo）
-GAP = 0.30            # 段间停顿
+TEMPO = 1.10          # 旁白整体变速（ffmpeg atempo）
+GAP = 0.36            # 段间停顿
 LEAD = 0.9
 TITLE_D = 3.4
-CHAP_D = 2.1
-END_D = 5.0
+CHAP_D = 2.3
+END_D = 6.0
 
 def wav_info(bid):
     p = WAVDIR + bid + '.wav'
@@ -20,7 +20,8 @@ def wav_info(bid):
     if len(idx) == 0: return None
     a = max(0, idx[0] - int(0.04 * sr)); b = min(len(w), idx[-1] + int(0.10 * sr))
     le = _QC.get(bid, {}).get('last_end')
-    if le and _QC[bid].get('tail'): b = min(b, int((le + 0.22) * sr))   # 末尾多出的杂音/赘字裁掉
+    ms = _QC.get(bid, {}).get('miss') or []
+    if le and _QC[bid].get('tail') and ms and ms[-1][0] == '': b = min(b, int((le + 0.22) * sr))   # 末尾多出的杂音/赘字裁掉
     return a / sr, b / sr, sr
 
 _QC = json.load(open('/home/user/work/tts/qc.json')) if os.path.exists('/home/user/work/tts/qc.json') else {}

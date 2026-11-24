@@ -130,18 +130,22 @@ def music():
 def build(out='/home/user/work/vid/audio.wav'):
     nar = narration()
     perc, p = music()
-    e = env_follow(nar); duck = 1.0 - 0.62 * np.clip(e / 0.03, 0, 1)
+    e = env_follow(nar); duck = 1.0 - 0.52 * np.clip(e / 0.03, 0, 1)
     k = int(0.25 * SR); duck = signal.lfilter(np.ones(k) / k, [1], duck)
     mus = (perc * 0.95 + p) * duck
     t = np.arange(N) / SR
     mus *= np.clip(t / 0.8, 0, 1) * np.clip((T.total - t) / 2.5, 0, 1)
-    mix = nar * 1.0 + mus * 0.80
+    mix = nar * 1.0 + mus * 0.56
     st = np.stack([mix, mix], 1)
     # 轻微立体声展宽：音乐部分左右微差
     d = int(0.011 * SR); st[d:, 1] += mus[:-d] * 0.18; st[d:, 0] -= mus[:-d] * 0.06
     pk = np.abs(st).max(); st = st / max(1.0, pk / 0.95)
     sf.write(out + '.raw.wav', st.astype(np.float32), SR)
-    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', out + '.raw.wav', '-af', 'loudnorm=I=-15:TP=-1.5:LRA=9,alimiter=limit=0.89', '-ar', '48000', out], check=True)
+    r = subprocess.run(['ffmpeg', '-hide_banner', '-i', out + '.raw.wav', '-af', 'ebur128', '-f', 'null', '-'], capture_output=True, text=True).stderr
+    import re
+    I = float(re.findall(r'I:\s+(-?[0-9.]+) LUFS', r)[-1]); g = -15.5 - I
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', out + '.raw.wav', '-af', f'volume={g:.2f}dB,alimiter=limit=0.84:attack=3:release=60:level=disabled', '-ar', '48000', out], check=True)
+    print('loudness in', I, 'gain', round(g, 2))
     sf.write('/home/user/work/vid/nar_only.wav', nar, SR)
     print('audio', out, round(T.total, 2))
 if __name__ == '__main__': build()
