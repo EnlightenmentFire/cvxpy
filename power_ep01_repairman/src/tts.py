@@ -218,6 +218,30 @@ def process(ids, target_rms_db=-18.0):
     json.dump(old, open(dpath, "w"), indent=1)
 
 
+def rescore():
+    """Re-check flagged lines with the current ASR normalisation (e.g. digits read as 一九七一)."""
+    q = load_qc()
+    for i, rec in q.items():
+        if not rec.get("flag") or i not in BY_ID:
+            continue
+        best = None
+        for d in rec["takes"]:
+            if not os.path.exists(d["path"]):
+                continue
+            err, hyp = asr_err(d["path"], BY_ID[i])
+            d["err"], d["hyp"] = round(err, 3), hyp
+            ok = F0_LO <= d["f0"] <= F0_HI and err <= (ASR_MAX if BY_ID[i]["lang"] == "Chinese" else 0.15)
+            if ok and (best is None or err < best["err"]):
+                best = d
+        if best:
+            rec.update(ok=True, best=best["path"], flag=False, text=BY_ID[i]["tts"])
+            print(f"{i}: rescored OK err={best['err']} | {best['hyp']}", flush=True)
+        else:
+            rec.pop("flag", None)   # let synth try again
+            print(f"{i}: still failing, will re-synthesise", flush=True)
+    save_qc(q)
+
+
 def report():
     q = load_qc()
     for ln in LINES:
@@ -242,3 +266,5 @@ if __name__ == "__main__":
         process(ids)
     elif cmd == "report":
         report()
+    elif cmd == "rescore":
+        rescore()
