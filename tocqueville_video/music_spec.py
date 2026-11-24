@@ -106,6 +106,22 @@ def main():
         place_xf(buf, seg, a, fade_in, fade_out)
         used.append(name)
 
+    # slow partial level-follower: lift soft passages, hold back swells (+-6 dB, 70 %), so the music is
+    # always felt under the voice but never jumps out in pauses
+    tgt = np.full(len(buf), -99.0, np.float32)
+    for name, off_, a, b, lvl in plan:
+        i, j = int(a * SR), min(len(buf), int(b * SR))
+        tgt[i:j] = np.maximum(tgt[i:j], lvl)
+    win = int(3 * SR)
+    mono = buf.mean(1)
+    pw = np.convolve(mono ** 2, np.ones(win, np.float32) / win, mode="same")
+    cur = 10 * np.log10(pw + 1e-12)
+    g = np.clip(tgt - cur, -6, 6) * 0.7
+    g[(cur < -60) | (tgt < -90)] = 0.0
+    k = int(4 * SR)
+    g = np.convolve(g, np.ones(k, np.float32) / k, mode="same")
+    buf *= (10 ** (g / 20))[:, None]
+
     # climax: let the full piece come up during the narration pause before "自由不是一句口号"
     p0, p1 = C["s10_07"][1], C["s10_08"][0]
     i0, i1 = int((p0 - 0.3) * SR), int((p1 + 1.0) * SR)

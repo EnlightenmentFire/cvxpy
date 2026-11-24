@@ -30,7 +30,7 @@ def trim_and_cap(x, sr):
     if not voiced.any():
         return x
     i0 = max(0, np.argmax(voiced) - 2)
-    i1 = len(voiced) - np.argmax(voiced[::-1]) + 2
+    i1 = min(len(voiced), len(voiced) - np.argmax(voiced[::-1]) + 2)
     segs, cur, run = [], [], 0
     out = []
     maxf = int(MAX_PAUSE / 0.02)

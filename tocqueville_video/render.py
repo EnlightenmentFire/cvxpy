@@ -268,7 +268,7 @@ class Renderer:
         self.subs = []
         for s in self.scenes:
             for ln in s["lines"]:
-                if ln["k"] == "n" or ln.get("low"):
+                if (ln["k"] == "n" or ln.get("low")) and ln.get("cue") not in ("final1", "final2", "final3"):
                     for a, b, c in chunk_sub(ln["sub"], ln["start"], ln["end"]):
                         self.subs.append((a - 0.08, b + 0.12, c, s["id"]))
         self._ill_cache = {}

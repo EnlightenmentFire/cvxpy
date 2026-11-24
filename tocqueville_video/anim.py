@@ -501,12 +501,12 @@ def question_map():
 
 
 S01_ORDER = [(None, "door"), ("guillotine_shadow", "guillo"), ("s01_03", "father"), ("s01_04", "alexis"),
-             ("two_judges", "judges"), ("s01_08", "plan"), ("s01_10", "map")]
+             ("two_judges", "judges"), ("prison_corridor", "plan"), ("s01_10", "map")]
 
 
 def s01(c):
     cur, prev, x = c.phase(S01_ORDER)
-    walk = c.p("s01_08", 9.0, smooth=False)
+    walk = c.p("prison_corridor", 9.0, smooth=False)
     builders = {"door": prison_door, "guillo": guillotine, "father": father, "alexis": alexis, "judges": two_judges,
                 "plan": lambda: prison_plan(0.0), "map": question_map}
 
@@ -749,7 +749,7 @@ def excluded(k):
     return ill
 
 
-S03_ORDER = [(None, "town"), ("meeting_hall", "hall"), ("s03_13", "chalk"), ("excluded", "excl"), ("s03_18", "town")]
+S03_ORDER = [(None, "town"), ("meeting_hall", "hall"), ("s03_13", "chalk"), ("s03_14", "town"), ("excluded", "excl"), ("s03_18", "town")]
 
 
 def s03(c):

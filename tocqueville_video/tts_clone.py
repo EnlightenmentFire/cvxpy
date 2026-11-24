@@ -11,7 +11,7 @@ from qwen_tts import Qwen3TTSModel
 OUT = "/tmp/claude-0/work/tts/raw"
 REF_WAV = "/tmp/claude-0/work/voice/ref_voice.wav"
 REF_TEXT = "一八三一年的春天，一艘帆船从法国出发，在大西洋上走了三十多天。船上有两个年轻人，他们想亲眼看一看，一个没有国王的国家，究竟是什么样子。"
-F0_LO, F0_HI = 85.0, 105.0
+F0_LO, F0_HI = float(os.environ.get("F0_LO", 85.0)), float(os.environ.get("F0_HI", 105.0))
 torch.set_num_threads(4)
 
 def f0_median(w, sr):

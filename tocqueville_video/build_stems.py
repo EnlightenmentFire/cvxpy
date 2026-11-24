@@ -20,8 +20,8 @@ def reverb(x, rt=1.4, mix=0.25, seed=0):
     ir = sfx.lp(ir, 5000)
     ir /= np.sqrt((ir ** 2).sum())
     from scipy.signal import fftconvolve
-    wet = fftconvolve(x, ir)[:len(x) + n]
-    out = np.zeros(len(x) + n, np.float32)
+    wet = fftconvolve(x, ir)
+    out = np.zeros(len(wet), np.float32)
     out[:len(x)] += x * (1 - mix)
     out += wet.astype(np.float32) * mix
     return out
@@ -113,13 +113,14 @@ def main():
     pu = C["pyramid_up"][0]
     for k in range(4):
         place(fx, sfx.hooves(0.5, seed=25 + k, level=-34, rate=4), pu + k * 1.25 + 0.2)
-    g0 = C["s06_07"][0]
-    clicks = np.zeros(int(8 * SR), np.float32)
-    for k in range(int(8 * 3)):
-        i = int(k / 3 * SR)
-        L = int(0.01 * SR)
-        clicks[i:i + L] += np.random.default_rng(k).normal(size=L) * np.exp(-np.arange(L) / 60)
-    place(fx, sfx.norm(sfx.bp(clicks, 1500, 6000), -40), g0)
+    if "s06_07" in C:  # gears (cut in the 14-min version)
+        g0 = C["s06_07"][0]
+        clicks = np.zeros(int(8 * SR), np.float32)
+        for k in range(int(8 * 3)):
+            i = int(k / 3 * SR)
+            L = int(0.01 * SR)
+            clicks[i:i + L] += np.random.default_rng(k).normal(size=L) * np.exp(-np.arange(L) / 60)
+        place(fx, sfx.norm(sfx.bp(clicks, 1500, 6000), -40), g0)
     place(fx, sfx.hooves(6.0, seed=29, level=-36, rate=1.1), C["layer3"][0] + 0.5)
 
     # s07: archive candle/paper; quill route; calendar flips
