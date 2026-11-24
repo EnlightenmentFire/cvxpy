@@ -284,7 +284,7 @@ def red_ellipse(ill, cx, cy, rx_, ry_, prog, op=0.85, dashed=True, width=3.4):
     r.apply(ill, RED, op, grain=0.08)
 
 
-def draw_road(t=0.0, fallen=1.0, gather=1.0, circled=1.0, saw=0.0, cleared=0.0, bubble=1.0, seed=0, carts_go=0.0):
+def road_static(seed=0, office=True):
     ill = paper("america", 31)
     rng = np.random.default_rng(seed)
     hor = 655
@@ -339,10 +339,20 @@ def draw_road(t=0.0, fallen=1.0, gather=1.0, circled=1.0, saw=0.0, cleared=0.0, 
     for k in range(14):
         yy = hor + 22 + k * 13
         ink.line([(PX0 + rng.uniform(0, 40) + i * 48, yy + rng.normal(0, 0.6) - i * 0.3) for i in range(21)], 0.7)
+    ink.apply(ill, INK, 0.92)
+    if office:
+        office_icon(ill)
+    return ill
+
+
+def road_dynamic(ill, t=0.0, fallen=1.0, gather=1.0, circled=1.0, saw=0.0, cleared=0.0, bubble=1.0, carts_go=0.0, seed=0, show_tree=True):
+    rng = np.random.default_rng(seed + 100)
+    ink = Ink()
     # ---- the fallen tree: roots on the far edge, crown in the near verge
     rx, ry = 430, ROAD_Y0 - 2
     ang = math.radians(-92 + (92 + 52) * ease(fallen))
-    fallen_tree(ill, ink, rx, ry, ang, 360, cleared, rng)
+    if show_tree:
+        fallen_tree(ill, ink, rx, ry, ang, 360, cleared, rng)
     # cart + horse on the left, stopped
     sil = Ink()
     cx0 = 60 + 380 * carts_go
@@ -384,8 +394,12 @@ def draw_road(t=0.0, fallen=1.0, gather=1.0, circled=1.0, saw=0.0, cleared=0.0, 
         speech_bubble(ill, 790, 760, 300, 104, "咱们自己来！", (720, 875), bubble)
     if circled > 0:
         red_ellipse(ill, 718, ROAD_Y0 + 35, 118, 150, circled)
-    office_icon(ill)
     return ill
+
+
+def draw_road(t=0.0, fallen=1.0, gather=1.0, circled=1.0, saw=0.0, cleared=0.0, bubble=1.0, seed=0, carts_go=0.0):
+    ill = road_static(seed)
+    return road_dynamic(ill, t, fallen, gather, circled, saw, cleared, bubble, carts_go, seed)
 
 
 # ====================================================================== s09 Memphis

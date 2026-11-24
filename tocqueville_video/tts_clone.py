@@ -16,7 +16,7 @@ torch.set_num_threads(4)
 
 def f0_median(w, sr):
     snd = parselmouth.Sound(w.astype(np.float64), sampling_frequency=sr)
-    p = snd.to_pitch(pitch_floor=60, pitch_ceiling=300)
+    p = snd.to_pitch(pitch_floor=75, pitch_ceiling=300)
     v = p.selected_array['frequency']; v = v[v > 0]
     return float(np.median(v)) if len(v) else 0.0
 
@@ -29,7 +29,7 @@ def main():
     force = "--force" in sys.argv
     lines = [d for d in all_lines() if any(d["id"] == a or d["id"].startswith(a) for a in args)]
     print("lines:", len(lines), flush=True)
-    m = Qwen3TTSModel.from_pretrained("/tmp/claude-0/models/Qwen3-TTS-12Hz-1.7B-Base", dtype=torch.float32, device_map="cpu")
+    m = Qwen3TTSModel.from_pretrained("/tmp/claude-0/models/Qwen3-TTS-12Hz-1.7B-Base", dtype=getattr(torch, os.environ.get("TTS_DTYPE", "float32")), device_map="cpu")
     ref_w, ref_sr = sf.read(REF_WAV)
     prompt = m.create_voice_clone_prompt(ref_audio=(ref_w.astype(np.float32), ref_sr), ref_text=REF_TEXT)
     for d in lines:

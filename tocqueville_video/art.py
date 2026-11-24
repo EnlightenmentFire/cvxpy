@@ -38,6 +38,17 @@ RED = hexc("#9c2f22")
 
 # ------------------------------------------------------------------ noise / paper
 
+_NCACHE = {}
+
+
+def cnoise(h, w, scale, key):
+    """cached smooth noise field (deterministic per key)"""
+    k = (h, w, scale, key)
+    if k not in _NCACHE:
+        _NCACHE[k] = noise2d(h, w, scale, np.random.default_rng(hash(key) % (2 ** 32)))
+    return _NCACHE[k]
+
+
 def noise2d(h, w, scale, rng):
     sh, sw = max(2, h // scale), max(2, w // scale)
     a = rng.random((sh, sw)).astype(np.float32)
@@ -84,7 +95,17 @@ PAPER_TONES = {
 }
 
 
+_PAPER = {}
+
+
 def paper(tone="warm", seed=1, w=W, h=H):
+    k = (tone, seed, w, h)
+    if k not in _PAPER:
+        _PAPER[k] = _paper(tone, seed, w, h)
+    return _PAPER[k].copy()
+
+
+def _paper(tone="warm", seed=1, w=W, h=H):
     rng = np.random.default_rng(seed)
     light, dark = (hexc(c) for c in PAPER_TONES.get(tone, PAPER_TONES["warm"]))
     n = fbm(h, w, rng)
@@ -184,14 +205,14 @@ class Ink:
         self.d.text((xy[0] * s, xy[1] * s), txt, font=f2, fill=val, anchor=anchor)
 
     def alpha(self):
-        a = self.im.resize((self.w, self.h), Image.LANCZOS)
+        a = self.im.reduce(self.ss) if self.ss > 1 else self.im
         return np.asarray(a).astype(np.float32) / 255.0
 
     def apply(self, canvas, color=INK, opacity=1.0, grain=0.18, seed=3):
         a = self.alpha() * opacity
         if grain:
             rng = np.random.default_rng(seed)
-            g = noise2d(self.h, self.w, 3, rng)
+            g = cnoise(self.h, self.w, 3, ("grain", seed % 4))
             a = a * (1 - grain + grain * 1.6 * g)
             a = np.clip(a, 0, 1)
         canvas[:] = canvas * (1 - a[..., None]) + color[None, None, :] * a[..., None]
@@ -203,28 +224,33 @@ def mask_from_poly(polys, w=W, h=H, blur_r=0.0):
     d = ImageDraw.Draw(m)
     for p in polys:
         d.polygon([(x * SS, y * SS) for x, y in p], fill=255)
-    m = m.resize((w, h), Image.LANCZOS)
+    m = m.reduce(SS)
     if blur_r:
         m = m.filter(ImageFilter.GaussianBlur(blur_r))
     return np.asarray(m).astype(np.float32) / 255
 
 
 def wash(canvas, mask, color, opacity=0.6, seed=0, gran=0.35, edge=0.6, bleed=2.5):
-    """Watercolor multiply-wash inside mask with granulation and darker edges."""
-    rng = np.random.default_rng(seed)
+    """Watercolor multiply-wash inside mask with granulation and darker edges (cropped to the mask bbox)."""
+    ys, xs = np.nonzero(mask > 0.002)
+    if len(ys) == 0:
+        return canvas
     h, w = mask.shape
-    m = blur(mask, bleed) if bleed else mask
-    # irregular edge
-    n = noise2d(h, w, 18, rng)
+    mg = int(bleed * 3 + 24)
+    y0, y1 = max(0, ys.min() - mg), min(h, ys.max() + mg + 1)
+    x0, x1 = max(0, xs.min() - mg), min(w, xs.max() + mg + 1)
+    m = mask[y0:y1, x0:x1]
+    m = blur(m, bleed) if bleed else m
+    n = cnoise(h, w, 18, ("wn", seed % 8))[y0:y1, x0:x1]
     m = np.clip(m * (0.75 + 0.5 * n) - 0.08, 0, 1)
     m = np.clip(m * 1.25, 0, 1)
-    # edge darkening
     e = np.clip(m - blur(m, 6), 0, 1)
-    g = noise2d(h, w, 2, rng) * 0.5 + noise2d(h, w, 7, rng) * 0.5
-    a = m * opacity * (1 - gran + gran * 1.4 * g) + e * edge
-    a = np.clip(a, 0, 1)[..., None]
+    g = (cnoise(h, w, 2, ("wg2", seed % 4))[y0:y1, x0:x1] * 0.5 + cnoise(h, w, 7, ("wg7", seed % 4))[y0:y1, x0:x1] * 0.5)
+    al = m * opacity * (1 - gran + gran * 1.4 * g) + e * edge
+    al = np.clip(al, 0, 1)[..., None]
     col = np.asarray(color, np.float32)[None, None, :]
-    canvas[:] = canvas * (1 - a + a * col)
+    sub = canvas[y0:y1, x0:x1]
+    canvas[y0:y1, x0:x1] = sub * (1 - al + al * col)
     return canvas
 
 
