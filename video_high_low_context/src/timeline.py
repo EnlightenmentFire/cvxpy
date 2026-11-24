@@ -178,7 +178,7 @@ def build(segments, dur=None):
             c["t0"] = c.get("t_zh", seg["t0"])
             nxt = [ts for ts, _ in seg["scenes"] if ts > c["t0"] + 0.01]
             c["t_end"] = min(nxt) if nxt else seg["t1"] - 0.3
-    tl["total"] = t + 0.5
+    tl["total"] = t + 1.0
     return tl
 
 

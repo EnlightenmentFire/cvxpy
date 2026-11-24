@@ -522,4 +522,9 @@ class Composer:
             badge = badge_img("history")
         if badge is not None and sname != "title":
             comp(fr, badge, W - 60 - badge.width, 196)
+        # 结尾：音乐收住后留 2–3 秒，再淡到黑场
+        if t > tl["total"] - 1.0:
+            k = ease((t - (tl["total"] - 1.0)) / 1.0)
+            black = Image.new("RGBA", fr.size, (0, 0, 0, int(255 * k)))
+            fr.alpha_composite(black)
         return fr.convert("RGB")
