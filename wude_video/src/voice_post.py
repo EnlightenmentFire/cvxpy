@@ -15,7 +15,7 @@ import soundfile as sf
 from scipy.signal import butter, sosfiltfilt, resample_poly
 
 SR = 48000
-TEMPO = {"N": 1.27, "T": 1.22, "Q": 1.14}
+TEMPO = {"N": 1.32, "T": 1.26, "Q": 1.16}
 MAX_PAUSE = 0.38
 TARGET_RMS_DB = -18.0
 
