@@ -1,6 +1,6 @@
 // 场景（一）：冷启动、章节卡、苏报案引文卡、关系网、地图、两个桃子、日历
 // ── 冷启动：平政院裁决书 ────────────────────────────────
-E.add({id:'verdict',a:0,b:C('c0_3')-.05,dark:true,chap:'1926 · 北京',fi:.8,
+E.add({id:'verdict',nokb:true,a:0,b:C('c0_3')-.05,dark:true,chap:'1926 · 北京',fi:.8,
   build(r,s){
     h('div','bg dark',null,r);
     s.cam=h('div','abs',null,r,{left:0,top:0,width:'1080px',height:'1920px',transformOrigin:'540px 780px'});
@@ -69,29 +69,18 @@ E.add({id:'q_yangnu',a:C('c1_4')-.1,b:C('c1_6')-.05,chap:'壹 · 一张人情网
   }
 });
 
-// ── 关系网（第三章结尾的状态；后续章节继续长）──────────
-E.add({id:'web3',a:C('c3_8')-.1,b:CE('c3_8')+2.4,chap:'叁 · 一支笔',
-  build(r,s){h('div','bg light',null,r);
-    s.ttl=h('div','abs sans','人 情 网 · 截至 1913',r,{left:'64px',top:'300px',fontSize:'30px',letterSpacing:'6px',color:'#6b6052',fontWeight:'500'});
-    s.web=Web(r);
-    s.take=h('div','take','他的笔谁都想要，<br>可往哪边写，<span class="red">他自己定。</span>',r,{left:'64px',top:'1262px',fontSize:'50px',display:'none'});
-  },
-  update(t,lt,s){const a=s.a;fin(s.ttl,t,a,.5,20);
-    s.web.update(t,{zsz:a-9,ymz:a-9,zty:a-9,wzh:a-9,szs:a-9,wrn:a-9,wcq:a-9,hx:a+.3,ysk:a+.9});
-    s.web.lg.style.opacity=P(t,a+.2,.6);}
-});
-
 // ── 地图：上海—东京—伦敦 ────────────────────────────────
-E.add({id:'map_tokyo',a:C('c2_1')-.1,b:C('c2_2')-.05,chap:'贰 · 不是谁的人',
+E.add({id:'map_tokyo',nokb:true,a:C('c2_1')-.1,b:C('c2_2')-.05,chap:'贰 · 不是谁的人',
   build(r,s){h('div','bg old',null,r);
     s.frame=h('div','abs',null,r,{left:'0',top:'330px',width:'1080px',height:'700px',overflow:'hidden',borderTop:'4px solid #1b1814',borderBottom:'4px solid #1b1814'});
     s.map=GeoMap(s.frame,'eurasia');
     s.map.city('上海',{left:true,sub:'1903',dy:-4});s.map.city('东京',{sub:'1905',dy:-64});s.map.city('伦敦',{sub:'1909'});
     s.r1=s.map.route('上海','东京',-.25);s.r2=s.map.route('东京','伦敦',.12);
-    s.ttl=h('div','abs black trad','一九〇五　東京',r,{left:'64px',top:'1080px',fontSize:'84px',letterSpacing:'8px'});
+    s.ttl=h('div','abs black trad','一九〇五　東京',r,{left:'64px',top:'1060px',fontSize:'84px',letterSpacing:'8px',display:'none'});
     s.def=h('div','abs',`<span class="sans" style="font-size:26px;font-weight:700;letter-spacing:6px;color:#e8ddc5;background:#2c4563;padding:3px 12px 4px 16px">名词</span>
       <div class="black" style="font-size:60px;margin-top:14px;letter-spacing:6px">同盟会</div>
-      <div class="sans" style="font-size:36px;line-height:1.5;margin-top:6px;color:#3a332b;font-weight:500">孙中山把几个革命团体合并而成的组织，<br>1905 年在东京成立。</div>`,r,{left:'64px',top:'1080px',display:'none'});
+      <div class="sans" style="font-size:36px;line-height:1.5;margin-top:6px;color:#3a332b;font-weight:500">孙中山领导的革命组织，<br>1905 年 8 月在东京成立。</div>`,r,{left:'64px',top:'1060px'});
+    s.note=h('div','abs bold','章士钊人在东京，<span class="red">偏不入会。</span>',r,{left:'64px',top:'1060px',fontSize:'60px',lineHeight:'1.3'});
   },
   update(t,lt,s){const a=s.a;const z=P(t,a,3.5,ease.io);
     // 从欧亚全景推到东亚
@@ -101,7 +90,7 @@ E.add({id:'map_tokyo',a:C('c2_1')-.1,b:C('c2_2')-.05,chap:'贰 · 不是谁的�
     s.map.cities['上海'].style.opacity=P(t,a+.3,.4);s.r1.set(P(t,a+1.6,1.4,ease.io));
     s.map.cities['东京'].style.opacity=P(t,a+2.6,.4);
     s.map.cities['伦敦'].style.opacity=0;s.r2.set(0);
-    fin(s.ttl,t,a+.4,.6,24);
+    const d=CE('c2_1')-C('c2_1');finout(s.def,t,a+d*.2,a+d*.66,.6,24);fin(s.note,t,a+d*.68,.6,24);
   }
 });
 
@@ -159,6 +148,7 @@ E.add({id:'peaches',a:C('c5_2')-.1,b:C('c5_5')-.05,chap:'伍 · 两个桃子',
     svg('circle',{cx:2,cy:-268,r:22,fill:F},yz);svg('path',{d:'M-16,-286 L20,-286 L20,-312 L-16,-300 Z',fill:F},yz);
     svg('path',{d:'M30,-226 Q76,-214 92,-190 L84,-164 Q52,-160 28,-180 Z',fill:F},yz);
     h('div','abs',null,slab,{left:0,top:0,width:'952px',height:'520px',backgroundImage:'url(../assets/rub_specks.png)',opacity:.9});
+    s.nm=[['古冶子',150],['田開疆',340],['公孫接',520],['晏子',850]].map(([n,x])=>h('div','abs sans',n,slab,{left:(x-60)+'px',top:'474px',width:'120px',textAlign:'center',fontSize:'23px',letterSpacing:'3px',color:'#e6dcc3',fontWeight:'500'}));
     s.cap=h('div','abs sans','二桃杀三士 · 仿汉画像石拓片风格自绘',r,{right:'64px',top:'902px',fontSize:'24px',letterSpacing:'2px',color:'#6b6052'});
     // 五个字
     s.five=h('div','abs black trad',null,r,{left:'64px',top:'950px',fontSize:'124px',letterSpacing:'18px',whiteSpace:'nowrap'});
@@ -172,11 +162,10 @@ E.add({id:'peaches',a:C('c5_2')-.1,b:C('c5_5')-.05,chap:'伍 · 两个桃子',
     const z=P(t,a,e-a,ease.io2);s.slab.style.transform=`scale(${lerp(1.0,1.035,z)})`;
     s.w.forEach((w,i)=>w.style.opacity=P(t,a+.2+i*.25,.6));s.dish.style.opacity=P(t,a+.1,.6);s.yz.style.opacity=P(t,d+1.2,.6);
     reveal(s.fs,t,a+.2,1.3);
-    s.arrow.style.opacity=P(t,a+6.2,.4);
-    fin(s.bai,t,a+6.6,.6,24);
-    const k=P(t,d+3.2,.35,ease.out3);s.strike.style.transform=`scaleX(${k})`;
-    const f=P(t,d+3.6,.3,ease.back);s.fix.style.opacity=clamp(f*2);s.fix.style.transform=`rotate(-5deg) scale(${lerp(1.6,1,f)})`;
-    fin(s.src,t,a+.8,.6,12);s.cap.style.opacity=P(t,a+.8,.6);
+    const bq=a+(b-a)*.58;s.arrow.style.opacity=P(t,bq-.4,.4);
+    fin(s.bai,t,bq,.6,24);
+    s.strike.style.transform='scaleX(0)';s.fix.style.opacity=0;
+    fin(s.src,t,a+.8,.6,12);s.cap.style.opacity=P(t,a+.8,.6);s.nm.forEach((n,i)=>n.style.opacity=P(t,d+1.0+i*.25,.4));
   }
 });
 

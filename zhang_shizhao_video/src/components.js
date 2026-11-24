@@ -32,14 +32,14 @@ const WEB_NODES={
   wrn:{n:'吴弱男',r:'妻·同盟会女会员',x:190,y:735},
   wcq:{n:'吴长庆',r:'淮军将领·弱男祖父',x:190,y:985},
   ysk:{n:'袁世凯',r:'大总统·吴长庆旧部',x:330,y:1190},
-  dqr:{n:'段祺瑞',r:'临时执政',x:640,y:1200},
-  lx:{n:'鲁迅',r:'教育部佥事·周树人',x:900,y:1170},
+  dqr:{n:'段祺瑞',r:'临时执政',x:575,y:1215},
+  lx:{n:'鲁迅',r:'教育部佥事·周树人',x:850,y:1185},
 };
 const WEB_EDGES=[
   ['zsz','ymz','shi','师生'],['zsz','zty','zhi','结拜'],['zsz','wzh','zhi','同人'],['ymz','wzh','guan','放走',true,.26],
   ['zsz','szs','zhi','不入会'],['zsz','wrn','yin','夫妻'],['wrn','wcq','yin','祖孙'],
   ['zsz','hx','zhi','秘书长'],['wcq','ysk','guan','旧部'],['zsz','ysk','di','拉拢→决裂'],
-  ['zsz','dqr','guan','总长'],['zsz','lx','di','免职→被告'],
+  ['zsz','dqr','guan','总长'],['zsz','lx','di','免职→败诉',false,.7],
 ];
 function Web(root,opt={}){
   const g=h('div','abs',null,root,{left:'0',top:'0',width:'1080px',height:'1920px'});
@@ -52,7 +52,7 @@ function Web(root,opt={}){
     if(dash)ln.setAttribute('stroke-dasharray','2 14');
     const f=lf||(A_.center?.6:.5);const mx=lerp(A_.x,B_.x,f),my=lerp(A_.y,B_.y,f);
     const lb=h('div','abs sans',lab,g,{left:mx+'px',top:my+'px',transform:'translate(-50%,-50%)',fontSize:'23px',fontWeight:'700',letterSpacing:'2px',color:'#efe6cf',background:REL[rel].c,padding:'1px 9px 3px',whiteSpace:'nowrap'});
-    edges.push({a,b,ln,lb,len,dash});
+    edges.push({a,b,ln,lb,len,dash,lab});
   }
   for(const k in WEB_NODES){const n=WEB_NODES[k];
     const e=h('div','abs',null,g,{left:n.x+'px',top:n.y+'px'});
@@ -68,10 +68,10 @@ function Web(root,opt={}){
   for(const k of ['shi','yin','zhi','di','guan'])h('div',null,`<i style="display:inline-block;width:44px;height:7px;background:${REL[k].c};vertical-align:middle;margin-right:10px"></i>${REL[k].n}`,lg);
   return {g,nodes,edges,lg,
     // times: {nodeKey: 出现时间}，未列出的不显示
-    update(t,times){
+    update(t,times,labels){
       for(const k in nodes){const t0=times[k];const p=t0===undefined?0:P(t,t0,.5,ease.back);
         nodes[k].style.opacity=clamp(p*1.6);nodes[k].style.visibility=p<=0?'hidden':'visible';nodes[k].style.transform=`scale(${lerp(.7,1,p)})`;}
-      for(const e of edges){const ta=times[e.a],tb=times[e.b];if(ta===undefined||tb===undefined){e.ln.style.opacity=0;e.lb.style.opacity=0;continue;}
+      for(const e of edges){const ta=times[e.a],tb=times[e.b];const L=(labels&&labels[e.a+'-'+e.b])||e.lab;if(e.lb.textContent!==L)e.lb.textContent=L;if(ta===undefined||tb===undefined){e.ln.style.opacity=0;e.lb.style.opacity=0;continue;}
         const t0=Math.max(ta,tb)-.1;const p=P(t,t0,.7,ease.io);e.ln.style.opacity=p>0?1:0;
         if(!e.dash)e.ln.setAttribute('stroke-dashoffset',e.len*(1-p));else e.ln.style.opacity=p;
         e.lb.style.opacity=P(t,t0+.45,.35);}
@@ -108,7 +108,7 @@ function GeoMap(root,which,opt={}){
 
 // ── 章节卡 ───────────────────────────────────────────────
 function chapterCard(a,b,num,title,sub,chap){
-  E.add({id:'chap_'+num,a,b,dark:true,nosub:true,chap:'',fi:.45,fo:.35,
+  E.add({id:'chap_'+num,a,b,dark:true,nosub:true,chap:'',fi:.45,
     build(r,s){h('div','bg dark',null,r);
       s.box=h('div','abs',null,r,{left:'0',top:'560px',width:'1080px',textAlign:'center'});
       s.num=seal(r,num,460,520,160,{fill:true,fs:112});

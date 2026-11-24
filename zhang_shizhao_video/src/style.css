@@ -24,7 +24,7 @@ html,body{background:#000;overflow:hidden}
 
 /* 字幕 */
 #subs{position:absolute;left:0;width:1080px;top:1392px;text-align:center;z-index:50}
-#subtext{display:inline-block;font-family:var(--sans);font-weight:500;font-size:45px;line-height:1.25;letter-spacing:1px;color:#f4ecd9;
+#subtext{display:inline-block;font-family:var(--sans);font-weight:500;font-size:45px;line-height:1.25;letter-spacing:1px;color:#f4ecd9;white-space:nowrap;
   background:rgba(18,15,12,.84);padding:13px 30px 15px;border-radius:6px;max-width:980px;box-shadow:0 2px 0 rgba(0,0,0,.25)}
 #subtext.q{color:#ffe2a8}
 #subtext:empty{display:none}
@@ -75,3 +75,7 @@ html,body{background:#000;overflow:hidden}
 .cols{background-image:repeating-linear-gradient(to left,transparent 0,transparent calc(var(--pitch) - 2px),rgba(165,40,29,.55) calc(var(--pitch) - 2px),rgba(165,40,29,.55) var(--pitch))}
 .kv{font-family:var(--sans);font-weight:500}
 .hl{background:rgba(165,40,29,.16);box-shadow:0 0 0 6px rgba(165,40,29,.16)}
+
+#vig{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:40;pointer-events:none;background:radial-gradient(ellipse 75% 62% at 50% 46%,transparent 62%,rgba(10,8,6,.26) 100%)}
+#hud{z-index:45}
+#scenes{z-index:1;isolation:isolate}

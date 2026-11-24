@@ -40,7 +40,7 @@ const E={scenes:[],t:0,
   boot(){
     const root=document.getElementById('scenes');
     this.scenes.sort((a,b)=>a.a-b.a);
-    this.scenes.forEach((s,i)=>{s.el=h('div','scene',null,root);s.el.style.zIndex=10+i;s.build(s.el,s);s.el.style.display='none';});
+    this.scenes.forEach((s,i)=>{s.el=h('div','scene',null,root);s.el.style.transformOrigin='540px 800px';s.el.style.zIndex=10+i;s.build(s.el,s);s.el.style.display='none';});
     this.hud=document.getElementById('hud');
     this.hud.innerHTML='<div class="bar"><i></i><span>背水一战 · 章士钊</span></div><div class="chap"></div>';
     this.sub=document.getElementById('subtext');
@@ -50,39 +50,40 @@ const E={scenes:[],t:0,
   },
   // 字幕：按标点把每句切成不超过 MAXC 字的行，按字数分配时长
   buildSubs(){
-    const MAXC=17;this.subs=[];
+    const MAXC=16;this.subs=[];const PUN=/[，。；：？！、…「」“”《》]/;
+    const vis=s=>[...s].filter(c=>!PUN.test(c)).length;
     for(const seg of window.SCRIPT){
       const [a,b]=window.TIM[seg.id];
-      let txt=seg.t.replace(/……/g,'…');
-      const parts=[];let cur='';
-      const toks=txt.split(/(?<=[，。；：？！、…」])/);
-      const vis=s=>s.replace(/[，。；：？！、…「」“”《》]/g,'').length;
+      const txt=seg.t.replace(/……/g,'…');
+      const toks=txt.split(/(?<=[，。；：？！、…])(?![」”])|(?<=[」”])(?=[^，。；：？！、…])/).filter(x=>x);
+      let parts=[];let cur='';
       for(let tk of toks){
-        while(vis(tk)>MAXC){ // 超长无标点的片段硬切
-          let k=0,cnt=0;for(const ch of tk){if(!/[，。；：？！、…「」“”《》]/.test(ch))cnt++;k+=ch.length;if(cnt>=Math.ceil(vis(tk)/Math.ceil(vis(tk)/MAXC)))break;}
-          if(cur){parts.push(cur);cur='';}
-          parts.push(tk.slice(0,k));tk=tk.slice(k);
-        }
-        if(vis(cur)+vis(tk)>MAXC&&cur){parts.push(cur);cur=tk;}else cur+=tk;
+        while(vis(tk)>MAXC){const n=Math.ceil(vis(tk)/Math.ceil(vis(tk)/MAXC));let k=0,cnt=0;for(const ch of tk){if(!PUN.test(ch))cnt++;k+=ch.length;if(cnt>=n)break;}
+          if(cur){parts.push(cur);cur='';}parts.push(tk.slice(0,k));tk=tk.slice(k);}
+        if(cur&&vis(cur)+vis(tk)>MAXC){parts.push(cur);cur=tk;}else cur+=tk;
+        if(/[。？！]」?$/.test(cur)&&vis(cur)>=7){parts.push(cur);cur='';}
       }
       if(cur)parts.push(cur);
-      // 合并过短尾行
-      for(let i=parts.length-1;i>0;i--){if(vis(parts[i])<=3&&vis(parts[i-1])+vis(parts[i])<=MAXC+2){parts[i-1]+=parts[i];parts.splice(i,1);}}
+      if(seg.sub)parts=seg.sub.slice();else
+      for(let i=parts.length-1;i>0;i--){if(vis(parts[i])<=3&&vis(parts[i-1])+vis(parts[i])<=MAXC+1){parts[i-1]+=parts[i];parts.splice(i,1);}}
       const tot=parts.reduce((s,p)=>s+vis(p)+1.2,0);let t=a;
+      let inq=false;
       for(const p of parts){const d=(b-a)*(vis(p)+1.2)/tot;
-        const show=p.replace(/^[，。；：、]+/,'').replace(/[，。；：、]+$/,'');
-        this.subs.push({a:t,b:t+d,txt:show,k:seg.k,ch:seg.ch});t+=d;}
+        const show=p.replace(/^[，。；：、]+/,'').replace(/[，。；、]+$/,'');
+        const isq=inq||p.includes('「');if(p.includes('「'))inq=true;if(p.includes('」'))inq=false;
+        this.subs.push({a:t,b:t+d,txt:show,k:isq?'q':'n',ch:seg.ch});t+=d;}
     }
   },
   renderAt(t){
     this.t=t;let top=null;
     for(const s of this.scenes){
       const fi=s.fi===undefined?.5:s.fi, fo=s.fo===undefined?0:s.fo;
-      const vis=t>=s.a-0.001&&t<s.b+ (s.hold||0);
+      const vis=t>=s.a-0.001&&t<s.b+(s.hold===undefined?.6:s.hold);
       if(!vis){if(s.on){s.el.style.display='none';s.on=false;}continue;}
       if(!s.on){s.el.style.display='block';s.on=true;}
       let o=fi>0?clamp((t-s.a)/fi):1; if(fo>0)o=Math.min(o,clamp((s.b-t)/fo));
       s.el.style.opacity=o;
+      if(!s.nokb){const kp=clamp((t-s.a)/Math.max(4,s.b-s.a));s.el.style.transform=`scale(${1+0.018*kp})`;}
       s.update(t,t-s.a,s);
       top=s;
     }
