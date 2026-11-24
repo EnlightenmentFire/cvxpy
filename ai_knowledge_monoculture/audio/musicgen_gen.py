@@ -37,16 +37,23 @@ class Gen:
         return [o.float().numpy() for o in out]        # each (2, samples)
 
     @torch.no_grad()
-    def continue_(self, prompt, prev, extra_seconds, context_seconds=10.0, seed=0, guidance=3.0):
-        """prev: (2, samples) float. Returns prev extended by extra_seconds (crossfade-free, same stream)."""
+    def continue_(self, prompt, prev, extra_seconds, context_seconds=8.0, seed=0, guidance=3.0, overlap=0.5):
+        """prev: (2, samples). Feed the last context_seconds back as an audio prompt and append
+        extra_seconds of new music in the same key/tempo. The model returns the re-decoded context
+        followed by the new audio; the seam is crossfaded over `overlap` seconds."""
         torch.manual_seed(seed)
-        ctx = prev[:, -int(context_seconds * SR):]
+        n_ctx = int(context_seconds * SR)
+        ctx = prev[:, -n_ctx:]
         inp = self.proc(audio=[ctx], sampling_rate=SR, text=[prompt], padding=True, return_tensors="pt")
         out = self.model.generate(**inp, do_sample=True, guidance_scale=guidance, top_k=250,
-                                  max_new_tokens=int((context_seconds + extra_seconds) * FRAME_RATE))
-        new = out[0].float().numpy()
-        new = new[:, ctx.shape[1]:]                       # drop the re-decoded context
-        return np.concatenate([prev, new], axis=1)
+                                  max_new_tokens=int(extra_seconds * FRAME_RATE))
+        full = out[0].float().numpy()            # re-decoded context + continuation
+        n_ov = int(overlap * SR)
+        a = prev[:, -n_ov:]
+        b = full[:, n_ctx - n_ov:n_ctx]
+        t = np.linspace(0, np.pi / 2, n_ov)[None, :]
+        seam = a * np.cos(t) + b * np.sin(t)
+        return np.concatenate([prev[:, :-n_ov], seam, full[:, n_ctx:]], axis=1)
 
 
 if __name__ == "__main__":
@@ -55,10 +62,34 @@ if __name__ == "__main__":
     ap.add_argument("--out", required=True)
     ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--only", default="")
+    ap.add_argument("--extend", default="", help="comma list of piece keys to extend by continuation")
+    ap.add_argument("--extend-seconds", type=float, default=20.0)
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     plan = json.load(open(a.plan))
     g = Gen(a.threads)
+    if a.extend:
+        # extend the chosen take of each piece in its own key/tempo (continuation), update choices.json
+        cpath = os.path.join(a.out, "choices.json")
+        choices = json.load(open(cpath))
+        prompts = {p["key"]: p["prompt"] for p in plan}
+        for spec in a.extend.split(","):
+            key, times = (spec.split(":") + ["1"])[:2]
+            files = choices[key] if isinstance(choices[key], list) else [choices[key]]
+            src = files[0]
+            dst = f"{key}_ext.wav"
+            if os.path.exists(os.path.join(a.out, dst)):
+                continue
+            t0 = time.time()
+            w, sr = sf.read(os.path.join(a.out, src), dtype="float32")
+            ext = w.T
+            for k in range(int(times)):
+                ext = g.continue_(prompts[key], ext, a.extend_seconds, context_seconds=8.0, seed=77 + k)
+            sf.write(os.path.join(a.out, dst), ext.T, SR)
+            choices[key] = [dst]
+            json.dump(choices, open(cpath, "w"), indent=1)
+            print(json.dumps(dict(key=key, extended=dst, secs=round(ext.shape[1] / SR, 1), gen_s=round(time.time() - t0, 1))), flush=True)
+        raise SystemExit(0)
     for item in plan:
         if a.only and item["key"] not in a.only.split(","):
             continue

@@ -66,7 +66,7 @@ def score(a):
 
 
 if __name__ == "__main__":
-    takes = sorted(glob.glob(os.path.join(sys.argv[1], "*_v*.wav")))
+    takes = sorted(glob.glob(os.path.join(sys.argv[1], "*_v[0-9].wav")))
     res = []
     for p in takes:
         a = analyse(p)
@@ -75,6 +75,20 @@ if __name__ == "__main__":
         res.append(a)
         print(json.dumps(a, ensure_ascii=False), flush=True)
     json.dump(res, open(os.path.join(sys.argv[1], "scores.json"), "w"), ensure_ascii=False, indent=1)
+    if "--choose" in sys.argv:
+        best = {}
+        for a in res:
+            fn = os.path.basename(a["path"])
+            if "_ext" in fn:
+                continue
+            key = fn.rsplit("_v", 1)[0]
+            ok = len(a["vocals"]) <= 6
+            cand = (0 if ok else 1, a["score"], a["speech_ratio"], fn)
+            if key not in best or cand < best[key]:
+                best[key] = cand
+        choices = {k: [v[3]] for k, v in best.items()}
+        json.dump(choices, open(os.path.join(sys.argv[1], "choices.json"), "w"), indent=1)
+        print("choices", choices)
     # spectrogram sheet
     from PIL import Image, ImageDraw, ImageFont
     rows = []
