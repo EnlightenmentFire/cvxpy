@@ -1,0 +1,5 @@
+node_modules/
+build/
+*.wav
+out/*.mp4
+__pycache__/
