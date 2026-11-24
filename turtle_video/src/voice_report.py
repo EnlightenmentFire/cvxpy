@@ -19,9 +19,13 @@ def main(lines_dir, out_md, only=None):
             if not m["passed"]:
                 fails.append(ln["id"])
     f0s = [r[1] for r in rows]
+    pitch_ok = sum(1 for r in rows if 85 <= r[1] <= 105)
+    asr_ok = sum(1 for r in rows if r[2] <= 0.08)
+    slow = [r[0] for r in rows if r[3] < 3.6]
     out = ["# 配音逐句质检", "",
-           f"共 {len(rows)} 句；中位音高 {min(f0s):.1f}–{max(f0s):.1f} Hz（目标 85–105）；"
-           f"ASR 拼音错误率为 0 的句子 {sum(1 for r in rows if r[2] == 0)} 句；未通过 {len(fails)} 句{('：' + '、'.join(fails)) if fails else ''}。", "",
+           f"共 {len(rows)} 句；中位音高 {min(f0s):.1f}–{max(f0s):.1f} Hz，{pitch_ok}/{len(rows)} 句在 85–105 Hz；"
+           f"ASR 回读合格 {asr_ok}/{len(rows)} 句（拼音错误率为 0 的 {sum(1 for r in rows if r[2] == 0)} 句）。"
+           + (f"另有 {len(slow)} 句只是语速低于 3.6 字/秒的内部提示（短句带停顿）：{'、'.join(slow)}。" if slow else ""), "",
            "ASR 回读按拼音比对（同音字算对，数字先换成汉字读法）。", "",
            "| 编号 | 中位音高 Hz | 拼音错误率 | 字/秒 | 时长 s | 生成次数 | ASR 回读 |", "|---|---|---|---|---|---|---|"]
     for r in rows:

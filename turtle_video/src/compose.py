@@ -146,6 +146,9 @@ class Renderer:
         gp.setBlendMode(skia.BlendMode.kOverlay)
         c.drawImage(self.grain[(frame // 2) % len(self.grain)], 0, 0, skia.SamplingOptions(), gp)
         c.drawRect(skia.Rect.MakeWH(W, H), self.vig)
+        blk = ramp(T, self.total - 1.6, self.total - 0.25)
+        if blk > 0:   # fade to black at the very end
+            c.drawRect(skia.Rect.MakeWH(W, H), fill((0, 0, 0), blk))
         return self.surface.makeImageSnapshot()
 
     def frame_bgra(self, T, frame=0):
