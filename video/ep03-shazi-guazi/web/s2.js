@@ -71,9 +71,9 @@
     const t8 = cw('a7', '8'), t4 = cw('a7', '4');
     S.a(seg8, { at: t8 - 0.3, d: 0.9, e: 'io', from: {}, clip: 'x' }); S.a(seg4, { at: t4 - 0.3, d: 0.7, e: 'io', from: {}, clip: 'x' });
     for (let i = 1; i < 12; i++) { const tk = box(bx + hw * i - 1, by + 96, 2, 12, '', { background: ink, opacity: .5 }); S.add(tk); S.fade(tk, t8 - 0.2 + i * 0.05); }
-    const l8 = box(bx, by + 118, hw * 8, null, 'hei', { fontWeight: 600, fontSize: '32px', color: ink }, '挣回自己的生活（工资）');
+    const l8 = box(bx, by + 118, hw * 8, null, 'hei', { fontWeight: 600, fontSize: '32px', color: ink }, '赚回自己的生活（工资）');
     const l4 = box(bx + hw * 8, by + 118, hw * 4, null, 'hei c', { fontWeight: 700, fontSize: '32px', color: C.red2 }, '归雇主');
-    S.add(l8, l4); S.fade(l8, cw('a7', '挣回')); S.fade(l4, cw('a7', '归雇主') - 0.1);
+    S.add(l8, l4); S.fade(l8, cw('a7', '赚回')); S.fade(l4, cw('a7', '归雇主') - 0.1);
     chip(S, 800, '剩余价值', '马克思的说法：工人干活创造的价值，扣掉工资，剩下的那部分。', cw('a8', '剩余价值') - 0.2, c('a9') - 0.1);
     // 4 / 8 = 1/2
     const eq = box(70, 600, 940, 120, '', { color: ink });

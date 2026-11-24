@@ -41,7 +41,7 @@
       S.add(e); S.a(e, { at: at - 0.15, d: 0.5, from: { o: 0, x: -40 } }); });
     const st = box(560, 1090, 440, 180, 'song c', { fontWeight: 900, fontSize: '120px', lineHeight: '166px', letterSpacing: '8px', color: C.gold, border: `8px solid ${C.gold}`, background: 'rgba(27,22,18,.94)', whiteSpace: 'nowrap' }, '先不动');
     S.add(st); S.a(st, { at: cw('f6', '先不动') - 0.15, d: 0.3, e: 'out5', from: { o: 0, s: 1.7 }, base: 'rotate(-4deg)' });
-    src(S, 1296, '此句据研究文献转引；1983 年 4 月《人民日报》公开发表稿未见此句', tQ + 0.4);
-    takeaway(S, 'f8', '7 个人的规定，没改。<br>过了线的人，也没处理。<br><em>都在等。</em>');
+    src(S, 1296, '此句据研究文献转引；目前能查到的公开全文版本里未见此句', tQ + 0.4);
+    takeaway(S, 'f8', '7 个人的规定，没改。<br>越了线的人，也没处理。<br><em>都在等。</em>');
   } });
 })();

@@ -84,7 +84,8 @@ for k in range(nb):  # each k = 2 bars (16 eighths)
         for j, n in enumerate([D4, None, None, None, None, None, None, None, A3, None, None, None, None, None, None, None]):
             if n: add(mel, t0 + j*e8, pluck(midi(n), 2.2, 0.35), 0.5)
         continue
-    mot = (SPARSE[k % 2] if m in ('sparse', 'wait') else MOTIFS[k % 4])
+    breath = m in ('groove', 'groove2') and k % 6 == 5      # every 6th phrase the melody rests
+    mot = (SPARSE[k % 2] if (m in ('sparse', 'wait') or breath) else MOTIFS[(k + k//6) % 4])
     for j, n in enumerate(mot):
         if n is None: continue
         tt = t0 + j*e8 + rng.normal(0, 0.004)
@@ -108,6 +109,12 @@ for lid, n in [('h1', D4), ('h2', A3), ('h3', D4)]:
     add(mel, c(lid) - 0.25, pluck(midi(n), 3.0, 0.35), 0.6); add(mel, c(lid) - 0.25, pluck(midi(n-12), 3.0, 0.3), 0.4)
 add(mel, SEC['s7']['s'] + 0.15, pluck(midi(D4), 3.0, 0.35), 0.6); add(mel, SEC['s7']['s'] + 0.15, pluck(midi(50-12), 3.5, 0.3), 0.5)
 add(mel, ce('g8') + 1.1, pluck(midi(A3), 3.0, 0.3), 0.35)
+# title-card flourish (music is un-ducked here) and a two-note tag on each chapter card
+tt = ce('c3') + 0.95
+for j, n in enumerate([D4, Fs4, A4, D5]): add(mel, tt + j*0.17, pluck(midi(n), 2.4, 0.5), 0.8)
+add(mel, tt + 0.68, pluck(midi(D4-12), 3.0, 0.35), 0.7); add(bas, tt, sine_bass(midi(38), 2.5), 0.7); add(sfx, tt - 0.02, thump(), 0.35)
+for sid in ['s2', 's3', 's4', 's5', 's6']:
+    add(mel, SEC[sid]['s'] + 0.12, pluck(midi(A3), 1.6, 0.45), 0.7); add(mel, SEC[sid]['s'] + 0.42, pluck(midi(D4), 2.0, 0.45), 0.75)
 # chapter thumps
 for sid in ['s2', 's3', 's4', 's5', 's6', 's7']: add(sfx, SEC[sid]['s'] + 0.08, thump(), 0.5)
 # stamp / slam hits
@@ -156,7 +163,14 @@ duck = 1.0 - 0.74*act           # music at ~26% (-11.7 dB) under voice
 q0, q1 = c('g2') - 0.5, ce('g8') + 2.2
 duck *= 1 - 0.45*np.clip((t-q0)/1.0, 0, 1)*np.clip((q1-t)/1.0, 0, 1)
 mix = nar + music*duck*0.62 + sfx[:N]*(1 - 0.35*act)*0.5
-mix = np.tanh(mix*1.05)/1.05
+# make-up gain + look-ahead limiter so the programme sits near -16 LUFS with peaks under -1.5 dBFS
+from scipy.ndimage import maximum_filter1d
+mix = mix*10**(5.6/20)
+pk = maximum_filter1d(np.abs(mix), int(0.006*SR)); thr = 0.82
+g = np.minimum(1.0, thr/np.maximum(pk, 1e-9))
+g = np.minimum(g, sosfilt(butter(1, 14, 'lp', fs=SR, output='sos'), g))
+g = maximum_filter1d(-g, int(0.003*SR)); g = -g
+mix = np.clip(mix*g, -0.84, 0.84)
 st = np.stack([mix, mix], 1)
 sf.write(f'{D}/mix.wav', st.astype(np.float32), SR)
 sf.write(f'{D}/music_only.wav', (music*0.62).astype(np.float32), SR)

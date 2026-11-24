@@ -37,7 +37,7 @@
   ENGINE.scene({ id: 's4hire', t0: b0, t1: b1 + 0.3, cls: 'bg-dark', build(S) {
     header(S, HD);
     S.cam({ s0: 1.0, s1: 1.04 });
-    const tRep = c('d2'), tFew = cw('d4', '几个'), tTen = cw('d4', '十来个'), tHun = cw('d4', '过了'), tRule = cw('d4', '规定最多'), tMul = cw('d4', '十几倍');
+    const tRep = c('d2'), tFew = cw('d4', '几个'), tTen = cw('d4', '十来个'), tHun = cw('d4', '超过'), tRule = cw('d4', '规定最多'), tMul = cw('d4', '十几倍');
     // small clipping
     const clip = box(70, 312, 940, 170, 'bg-news', { boxShadow: '0 12px 30px rgba(0,0,0,.5)', padding: '18px 28px', color: C.ink, background: 'url("../assets/newsprint.jpg")' }, `<div class="hei" style="font-weight:600;font-size:28px;letter-spacing:4px;opacity:.75">1981 年 9 月 · 芜湖当地报纸</div><div class="song" style="font-weight:900;font-size:52px;margin-top:10px;white-space:nowrap">货真价实的“傻子瓜子”</div><div class="demo" style="right:14px;bottom:10px;font-size:20px">标题据回忆 · 示意</div>`);
     S.add(clip); S.a(clip, { at: tRep - 0.1, d: 0.6, from: { o: 0, y: -30, r: -3 }, base: 'rotate(-1deg)', out: tFew - 0.5, od: 0.4 });
@@ -114,6 +114,6 @@
     ['6 月', '7 月', '8 月'].forEach((m, i) => { const x = x0 + (x1 - x0) * [0.035, 0.36, 0.69][i]; const tk = box(x, y - 12, 3, 30, '', { background: C.dim }); S.add(tk); S.fade(tk, tS + 0.4 + i * 0.3); const l = box(x - 50, y - 60, 100, null, 'hei c', { fontWeight: 500, fontSize: '26px', color: C.dim }, m); S.add(l); S.fade(l, tS + 0.4 + i * 0.3); });
     const three = box(70, 1180, 940, null, 'song c', { fontWeight: 900, fontSize: '88px', color: C.paper, letterSpacing: '6px' }, '讨论了 <span class="red">三个月</span>');
     S.add(three); S.fadeUp(three, cw('d8', '前后') - 0.15);
-    takeaway(S, 'd9', '两个人都不是<br>冲着那条线去的。<br>生意大了要人手，<br><em>人数自己过了线。</em>');
+    takeaway(S, 'd9', '两个人都没想<br>去碰那条线。<br>生意大了要人手，<br><em>人数自己越过了线。</em>');
   } });
 })();

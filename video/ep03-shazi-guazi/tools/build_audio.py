@@ -4,8 +4,11 @@ sys.path.insert(0, '.'); sys.path.insert(0, 'tools')
 ENGINE = os.environ.get('TTS', 'kokoro'); VOICE = os.environ.get('VOICE', 'zm_010'); SPEED = float(os.environ.get('SPEED', '0.95'))
 SR = 24000
 script = importlib.import_module('script')
-SEEDS = getattr(script, 'SEEDS', {})
+SEEDS = json.load(open('build/seeds.json')) if os.path.exists('build/seeds.json') else {}
 OUT = os.environ.get('OUT', 'build')
+LEAD = '|lead' if ENGINE == 'cosy' else ''
+STRETCH = float(os.environ.get('STRETCH', '1.0')); PSCALE = float(os.environ.get('PSCALE', '1.0'))
+TEMPO = os.environ.get('TEMPO', 'rubberband=tempo={}:pitchq=quality:formant=preserved')
 PUNC = '，。；：？！'
 def parse(text):
     """-> list of chunks [(display, spoken)] split at punctuation outside braces."""
@@ -35,9 +38,16 @@ def parse(text):
         else: merged.append((d, s))
     return merged
 MAN = {}
+def fix_kokoro(t):
+    """Kokoro's zh front end applies tone sandhi to 一 inside years/ordinals (yì jiǔ bā…); 衣 keeps it yī."""
+    t = re.sub(r'[一二三四五六七八九〇零]{4}年', lambda m: m.group(0).replace('一', '衣'), t)
+    t = re.sub(r'(?<![十百千])一月', '衣月', t)
+    t = re.sub(r'(十)一号', r'\1衣号', t)
+    return t.replace('一号文件', '衣号文件')
 def tts(text, rate=1.0):
+    if ENGINE == 'kokoro': text0, text = text, fix_kokoro(text)
     sp = round(SPEED*rate, 3); seed = SEEDS.get(text, 7)
-    key = hashlib.md5(f'{ENGINE}|{VOICE}|{sp}|{seed}|{text}'.encode()).hexdigest()[:16]
+    key = hashlib.md5(f'{ENGINE}|{VOICE}|{sp}|{seed}|{text}{LEAD}'.encode()).hexdigest()[:16]
     p = f'build/tts/{key}.wav'
     if not os.path.exists(p):
         os.makedirs('build/tts', exist_ok=True)
@@ -46,7 +56,7 @@ def tts(text, rate=1.0):
             x = synth(text, VOICE, sp)
         else:
             from cosy_tts import synth
-            x = synth(text, VOICE, sp, seed)
+            x = synth(('，' if LEAD else '') + text, VOICE, sp, seed)   # leading pause: avoids a garbled first syllable
             print('gen', len(x)/SR, text[:16], flush=True)
         sf.write(p, x, SR)
     x, sr = sf.read(p, dtype='float32'); assert sr == SR
@@ -55,8 +65,10 @@ def tts(text, rate=1.0):
 def trim(x, thr=0.012):
     e = np.abs(x); idx = np.where(e > thr)[0]
     if len(idx) == 0: return x
-    a = max(0, idx[0]-int(0.03*SR)); b = min(len(x), idx[-1]+int(0.10*SR))
-    return x[a:b]
+    lo = np.where(e > 0.003)[0]            # keep quiet finals (nasals, breathy endings)
+    a = max(0, idx[0]-int(0.03*SR)); b = min(len(x), lo[-1]+int(0.06*SR))
+    x = x[a:b].copy(); n = int(0.03*SR); x[-n:] *= np.linspace(1, 0, n)
+    return x
 def gaps(x, min_len=0.09, thr=0.02):
     hop = int(0.01*SR); n = len(x)//hop
     rms = np.sqrt((x[:n*hop].reshape(n, hop)**2).mean(1)); sil = rms < thr*max(0.2, rms.max()/0.2) if False else rms < 0.018
@@ -74,12 +86,21 @@ t = 0.6  # lead-in
 audio = []; lines = {}; subs = []; secs = {}
 for sid, title, L in script.SECTIONS:
     secs[sid] = {'title': title, 's': t}
-    t += getattr(script, 'PRE', {}).get(sid, 0); secs[sid]['n'] = t
+    t += getattr(script, 'PRE', {}).get(sid, 0)*float(os.environ.get('PRESCALE', '1.0')); secs[sid]['n'] = t
     for lid, text, pause, *opt in L:
         rate = opt[0] if opt else 1.0
         chunks = parse(text)
         spoken = ''.join(s for _, s in chunks)
-        x = trim(tts(spoken, rate)); dur = len(x)/SR
+        x = tts(spoken, rate)
+        st = STRETCH if rate == 1.0 else 1.0
+        if st != 1.0:
+            src = MAN[spoken]; dst = src.replace('.wav', f'_t{st}.wav')
+            if not os.path.exists(dst):
+                import subprocess
+                subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', src, '-af', TEMPO.format(st), dst], check=True)
+            x, _ = sf.read(dst, dtype='float32')
+            if pause < 2.0: pause = max(0.2, pause*PSCALE)
+        x = trim(x); dur = len(x)/SR
         # chunk boundaries
         w = np.array([weight(s) for _, s in chunks]); cum = np.cumsum(w)/w.sum()*dur
         g = gaps(x); bounds = []

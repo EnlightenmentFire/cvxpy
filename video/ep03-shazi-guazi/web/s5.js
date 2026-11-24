@@ -120,6 +120,6 @@
       w.append(h('path', { d: 'M6,26 C10,58 28,64 42,64 C56,64 74,58 78,26 Z', fill: i === 0 ? C.red : C.kraft }), h('ellipse', { cx: 42, cy: 26, rx: 36, ry: 8, fill: '#17130f', stroke: i === 0 ? C.red : C.kraft, 'stroke-width': 3 }));
       for (let k = 0; k < 3; k++) w.append(h('ellipse', { cx: 30 + k * 12, cy: 16 - (k % 2) * 6, rx: 5, ry: 2.6, fill: C.paper, transform: `rotate(${k * 50} ${30 + k * 12} ${16 - (k % 2) * 6})` }));
       S.add(w); S.a(w, { at: i === 0 ? e0 + 0.3 : t0 + rr() * 1.3, d: 0.35, e: 'back', from: { o: 0, s: .3 } }); }
-    takeaway(S, 'e13', '同一个作坊，<br>一边看他<em>过没过线</em>，<br>一边看<em>税、就业和价钱</em>。<br>两种说法，同时摆着。');
+    takeaway(S, 'e13', '同一个作坊，<br>一边看他<em>有没有越线</em>，<br>一边看<em>税、就业和价钱</em>。<br>两种说法，同时摆着。');
   } });
 })();

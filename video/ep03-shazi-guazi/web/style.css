@@ -20,7 +20,7 @@ html, body { background: #000; width: 1080px; height: 1920px; overflow: hidden; 
 #vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 78% 62% at 50% 46%, rgba(0,0,0,0) 58%, rgba(0,0,0,.42) 100%); }
 #grain { position: absolute; left: -256px; top: -256px; width: 1600px; height: 2440px; background: url("../assets/grain.png"); opacity: .055; mix-blend-mode: overlay; pointer-events: none; }
 #black { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
-#subs { position: absolute; left: 70px; width: 940px; bottom: 420px; text-align: center; pointer-events: none; }
+#subs { position: absolute; left: 70px; width: 940px; bottom: 462px; text-align: center; pointer-events: none; }
 #subtxt { display: inline-block; font-family: "Hei"; font-weight: 600; font-size: 50px; line-height: 1.32; letter-spacing: 1px; color: #f6efdd;
   padding: 10px 26px 13px; border-radius: 8px; background: rgba(16,12,9,.74); max-width: 940px; }
 .song { font-family: "Song"; } .hei { font-family: "Hei"; } .brush { font-family: "Brush"; } .hand { font-family: "Hand"; }
