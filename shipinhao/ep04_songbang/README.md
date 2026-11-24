@@ -12,7 +12,7 @@ bash src/get_fonts.sh                              # 字体（SIL OFL）
 uv venv --python 3.12 /opt/ttsenv
 uv pip install --python /opt/ttsenv/bin/python torch --index-url https://download.pytorch.org/whl/cpu
 uv pip install --python /opt/ttsenv/bin/python "kokoro>=0.8.2" "misaki[zh]>=0.8.2" soundfile numpy scipy
-bash src/build.sh zm_011 1.08                      # 全片：旁白→时间轴→混音→渲染→编码
+bash src/build.sh zm_011 1.08                      # 全片：旁白→时间轴→混音→渲染→编码（成片约 97MB，不入库）
 FROM=186 DUR=30 SKIP_TTS=1 SKIP_MIX=1 bash src/build.sh zm_011 1.08 out/预览.mp4   # 只做一段
 ```
 画面的所有时间点都由 `audio/narration.json`（旁白时间轴）推出；换声音、改稿子后重新构建即可自动对齐。
