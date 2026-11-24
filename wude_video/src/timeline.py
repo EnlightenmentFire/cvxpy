@@ -114,7 +114,8 @@ class Timeline:
                     order = list(ORDER_SHENG)
                 target = sector_angle(order.index(el))
                 d = (target - angle + 540) % 360 - 180
-                self.wk_go.append((t + 0.15, el, c.get("label"), angle, angle + d))
+                # pointer moves in the gap before the line, so the 磬 strike is heard clear of the voice
+                self.wk_go.append((t - 0.32, el, c.get("label"), angle, angle + d))
                 angle += d
                 cur_el = el
             if "_args" in c and "demo" in c["_args"]:
