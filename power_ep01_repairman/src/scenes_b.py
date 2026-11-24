@@ -596,7 +596,7 @@ def sc_s4(c, ctx):
         para(c, ["我能猜准你，你猜不准我", "→ 我占上风"], 540, 960, 46, INK, s4, font_name="serif_heavy")
         c.restore()
     # beat 4 (s4_05–s4_07): zone d'incertitude
-    a = ctx.win("s4_05", "s4_09", lead=-0.5)
+    a = ctx.win("s4_05", "s4_07b", lead=-0.5)
     if a > 0:
         wp = seg(t, ctx.frac("s4_05", 0.7), ctx.frac("s4_05", 0.7) + 1.6)
         txt = "zone d'incertitude"
@@ -615,6 +615,25 @@ def sc_s4(c, ctx):
         d3 = ease(seg(t, word_time(ctx, "s4_07", "谁能控制它"), word_time(ctx, "s4_07", "谁能控制它") + 0.6))
         draw_text(c, "谁控制它，谁就有权力", 540, 1000, "serif_heavy", 46, INK, a * d3, align="center")
         draw_text(c, "Crozier & Friedberg, L'Acteur et le système, 1977", 540, 1100, "sans", 26, INK3, a * da, align="center")
+    # beat 4b (s4_07b): what is uncertainty for the problem is power for the actors
+    a = ctx.win("s4_07b", "s4_09")
+    if a > 0:
+        k1 = ease(seg(t, word_time(ctx, "s4_07b", "从事情"), word_time(ctx, "s4_07b", "从事情") + 0.6))
+        k2 = ease(seg(t, word_time(ctx, "s4_07b", "从人的"), word_time(ctx, "s4_07b", "从人的") + 0.6))
+        c.drawRRect(_rrect(70, 470, 440, 420, 18), paint(CARD, a * k1))
+        c.drawRRect(_rrect(70, 470, 440, 420, 18), paint(INK3, a * k1, stroke=2.5))
+        draw_text(c, "从事情的角度看", 290, 540, "serif_bold", 36, INK2, a * k1, align="center")
+        draw_text(c, "?", 290, 680, "garamond", 130, ACCENT, a * k1, align="center")
+        draw_text(c, "不确定性", 290, 820, "serif_heavy", 58, INK, a * k1, align="center")
+        c.drawRRect(_rrect(570, 470, 440, 420, 18), paint(CARD, a * k2))
+        c.drawRRect(_rrect(570, 470, 440, 420, 18), paint(INK, a * k2, stroke=5))
+        draw_text(c, "从人的角度看", 790, 540, "serif_bold", 36, INK2, a * k2, align="center")
+        bust(c, 790, 650, 46, "maint", a * k2)
+        draw_text(c, "权力", 790, 820, "serif_heavy", 58, INK, a * k2, align="center")
+        arrow(c, 515, 680, 565, 680, INK, 6, a * k2, head=16)
+        draw_text(c, "« ce qui est incertitude du point de vue des problèmes", 540, 975, "garamond_it", 34, INK2, a * k2, align="center")
+        draw_text(c, "est pouvoir du point de vue des acteurs »", 540, 1020, "garamond_it", 34, INK2, a * k2, align="center")
+        draw_text(c, "Crozier & Friedberg, L'Acteur et le système, 1977", 540, 1085, "sans", 26, INK3, a * k2, align="center")
     # beat 5 (s4_09–s4_10): French sentence + power is a relation
     a = ctx.win("s4_09", "s4_11")
     if a > 0:
@@ -842,7 +861,7 @@ def sc_s6(c, ctx):
         c.restore()
         draw_text(c, "恶性循环", cx, cy + 60, "serif_heavy", 54, INK, va, align="center")
         c.restore()
-    a = ctx.win("s6_06", "s6_09")
+    a = ctx.win("s6_06", "s6_08b")
     if a > 0:
         lay = c.saveLayerAlpha(None, int(255 * a))
         for k in range(4):
@@ -863,6 +882,16 @@ def sc_s6(c, ctx):
         ha = ease(seg(t, word_time(ctx, "s6_07", "反而会推着"), word_time(ctx, "s6_07", "反而会推着") + 0.5))
         label(c, "下面的人：要新规章，限制上面的权力", 420, 470, 36, INK, ha, box=True, font_name="serif_heavy")
         draw_text(c, "Crozier 1964, pp. 160–161", 420, 525, "sans", 24, INK3, ha, align="center")
+        c.restore()
+    a = ctx.win("s6_08b", "s6_09")
+    if a > 0:
+        lay = c.saveLayerAlpha(None, int(255 * a))
+        draw_text(c, "科层系统的心理动机：躲开……", 540, 450, "serif_heavy", 42, INK, ctx.at("s6_08b", 0.6, 0.6), align="center")
+        items = [("当面的上下级紧张", "当面的"), ("当事人说：专断、偏袒", "当事人"), ("说到底：人对人的依附", "说到底")]
+        for k, (s_, anchor) in enumerate(items):
+            ia = ease(seg(t, word_time(ctx, "s6_08b", anchor), word_time(ctx, "s6_08b", anchor) + 0.4))
+            label(c, s_, 540, 610 + k * 150, 50, INK, ia, box=True, font_name="serif_heavy", pad=26)
+        draw_text(c, "Crozier, Sociologie du travail, 1960", 540, 1090, "sans", 24, INK3, ctx.at("s6_08b", 0.6, 0.6), align="center")
         c.restore()
     a = ctx.win("s6_09", "s6_10")
     if a > 0:
