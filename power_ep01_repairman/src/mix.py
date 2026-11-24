@@ -31,11 +31,26 @@ XF = 3.0  # crossfade between layers (规范: 2–4 s)
 LAYER_LUFS = {"L1_base": -24.0, "L2_drive": -22.5, "L3_peak": -20.0, "L4_release": -23.5, "L5_end": -24.5}
 
 
+# keep every layer in F major / D minor: the drive and release layers came out a whole tone higher (G),
+# measured by chroma correlation against the base layer, so they are transposed down 2 semitones.
+TRANSPOSE = {"L2_drive": -2, "L4_release": -2}
+
+
+def _transposed(path, semis):
+    if not semis:
+        return path
+    out = path.replace(".wav", f"_t{semis:+d}.wav")
+    if not os.path.exists(out) or os.path.getmtime(out) < os.path.getmtime(path):
+        subprocess.run(["rubberband", "-q", "-3", "-p", str(semis), path, out], check=True)
+    return out
+
+
 def layer_audio(name):
     import librosa
     import pyloudnorm as pyln
     rep = json.load(open(os.path.join(MG, "report.json")))
-    a, sr = sf.read(rep[name]["chosen_full"], dtype="float32", always_2d=True)
+    src = _transposed(rep[name]["chosen_full"], TRANSPOSE.get(name, 0))
+    a, sr = sf.read(src, dtype="float32", always_2d=True)
     if sr != SR:
         a = np.stack([librosa.resample(ch, orig_sr=sr, target_sr=SR) for ch in a.T], axis=1)
     meter = pyln.Meter(SR)
