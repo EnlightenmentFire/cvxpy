@@ -12,3 +12,8 @@ out/stills/spec*.png
 out/stills/enc_test.png
 fonts/*.ttf
 src/dbg.cjs
+audio/vo_raw2/
+audio/vo_alt2/
+out/review/
+out/stills/r*.png
+out/stills/q_*.png
