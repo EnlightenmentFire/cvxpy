@@ -19,7 +19,7 @@ KINDS = {
     "director": ("厂长", "director", ""),
     "engineer": ("技术工程师", "engineer", ""),
     "chief": ("车间主任", "chief", "1 人"),
-    "maint": ("维修工", "maint", "几人到十来人"),
+    "maint": ("维修工", "maint", "十来人"),
     "workers": ("生产工人", "worker", "多为女工"),
 }
 
@@ -139,7 +139,7 @@ def sc_s2(c, ctx):
         draw_text(c, "今日件数", 640, 790, "sans_bold", 28, INK3, 1)
         draw_text(c, "0 3 1 8", 800, 840, "courier_bold", 56, INK, 1, align="center")
         draw_text(c, "停", 960, 840, "serif_heavy", 40, ACCENT, ease(seg(t, ctx.ls("s2_04"), ctx.ls("s2_04") + 0.5)), align="center")
-        steps = ["机器停", "少挣钱", "只能等维修工"]
+        steps = ["机器停", "活就断了", "只能等维修工"]
         for k, s_ in enumerate(steps):
             sa = ease(seg(t, ctx.frac("s2_04", 0.15 + k * 0.28), ctx.frac("s2_04", 0.15 + k * 0.28) + 0.5))
             draw_text(c, s_, 800, 950 + k * 62, "serif_heavy", 42, INK, sa, align="center")
@@ -166,6 +166,10 @@ def sc_s2(c, ctx):
                     for q in range(3):
                         c.drawRect(skia.Rect.MakeXYWH(x + 14, y + 22 + q * 20, tw * (0.5 + 0.3 * _hash(i * 9 + j + q)), 6), paint(INK4, ta))
         label(c, "全厂唯一重要的不确定性：机器停机", 540, 1060, 40, INK, ctx.at("s2_05", 0.6, 1.5), box=True)
+        ea = ctx.at("s2_05", 0.6, 2.4) * (1 - ctx.at("s2_06", 0.4))
+        draw_text(c, "“machine stoppages are the only major happenings that cannot be predicted”", 540, 1135,
+                  "garamond_it", 30, INK2, ea, align="center")
+        draw_text(c, "Crozier 1964, p. 109", 540, 1180, "sans", 24, INK3, ea, align="center")
         # s2_06: control -> power
         pa = ctx.at("s2_06", 0.6)
         if pa > 0:
@@ -304,10 +308,12 @@ def sc_s3(c, ctx):
         for k, key in enumerate(("chief", "maint", "workers")):
             na = a * ease(seg(t, ctx.ls("s3_04") + k * 0.25, ctx.ls("s3_04") + k * 0.25 + 0.5))
             node(c, P[key][0], P[key][1], key, 0.9, na, t=t, sub=False)
-        note_card(c, 250, 800, ["来往不多 · 关系不错", "不太当他是“头”"], a * e1, size=32, ang=-2)
+        note_card(c, 250, 800, ["关系挺松", "彼此容忍，甚至互不关心"], a * e1, size=32, ang=-2)
         n2 = ease(seg(t, ctx.ls("s3_07"), ctx.ls("s3_07") + 0.6))
-        note_card(c, 830, 800, ["有矛盾 · 不公开", "女工：怪他慢，只能服软"] + (["维修工：插手，嫌不上心"] if n2 > 0 else []), a * e2, size=30, ang=2)
-        note_card(c, 540, 600, ["公开敌对", "当面挑毛病 / 吞吞吐吐"], a * e3, size=32)
+        note_card(c, 830, 800, ["女工：离不开，又憋着气", "有所保留的敌意 · 不公开"] + (["维修工：宽容的家长作风"] if n2 > 0 else []), a * e2, size=30, ang=2)
+        n3 = ease(seg(t, word_time(ctx, "s3_08", "问卷里"), word_time(ctx, "s3_08", "问卷里") + 0.6))
+        note_card(c, 540, 600, ["公开 · 很紧张", "维修工不停挑主任毛病"] + (["46% 维修工：信不过主任", "问到被拆台：1/3 主任拒答"] if n3 > 0 else []),
+                  a * e3, size=30)
     # beat 4 (s3_09–s3_13): THE MORPH
     a = ctx.win("s3_09", "s3_14")
     if a > 0:
@@ -331,25 +337,70 @@ def sc_s3(c, ctx):
         draw_gear(c, 790, 600, 40, -t * 1.2, METAL_D, teeth=9)
         label(c, "门道：只在他们脑子里", 540, 1150, 46, INK, ctx.at("s3_14", 0.6, 1.5), font_name="serif_heavy")
         c.restore()
-    # beat 6 (s3_15): preventive maintenance glossary
+    # beat 6 (s3_15): blueprints and maintenance directions disappear from the plants (Crozier 1964, p. 153)
     a = ctx.win("s3_15", "s3_16")
     if a > 0:
-        def ex(cc, ww, hh):
-            ca = int(clamp(seg(t, ctx.ls("s3_15") + 1.0, ctx.ls("s3_15") + 3.5)) * 9)
-            calendar(cc, -170, hh / 2 - 150, 190, 1, checks=ca)
-            oa = ease(seg(t, word_time(ctx, "s3_15", "再比如"), word_time(ctx, "s3_15", "再比如") + 0.6))
-            figure_side(cc, 140, hh / 2 - 40, 210, "worker", face=-1, arm=0.5, a=oa)
-            oil_can(cc, 60, hh / 2 - 150, 70, oa)
-            draw_text(cc, "女工做日常保养", 140, hh / 2 - 15, "sans_bold", 26, INK3, oa, align="center")
-        gloss_card(c, 540, 770, 840, 700, "预防性维护", ["不等机器坏，提前定期保养"], a, ang=1, extra=ex, def_size=40)
-    # beat 7 (s3_16–s3_17): the manual goes blank
-    a = ctx.win("s3_16", "s3_18")
+        lay = c.saveLayerAlpha(None, int(255 * a))
+        blank = seg(t, word_time(ctx, "s3_15", "而且还让"), ctx.le("s3_15") + 0.2)
+        manual(c, 540, 760, 1, blank, t)
+        draw_text(c, "维修工：对图纸和维修说明一概不理", 540, 450, "serif_heavy", 40, INK, ctx.at("s3_15", 0.6, 0.6), align="center")
+        draw_text(c, "“…have been able to make them disappear from the plants.”", 540, 1065, "garamond_it", 32, INK2,
+                  ease(seg(t, word_time(ctx, "s3_15", "而且还让"), word_time(ctx, "s3_15", "而且还让") + 0.6)), align="center")
+        draw_text(c, "Crozier 1964, p. 153", 540, 1110, "sans", 24, INK3, ctx.at("s3_15", 0.6, 1.0), align="center")
+        c.restore()
+    # beat 7 (s3_16): the evidence — none in the plants, plenty at head office (p. 153 n.)
+    a = ctx.win("s3_16", "s3_16c")
     if a > 0:
         lay = c.saveLayerAlpha(None, int(255 * a))
-        blank = seg(t, word_time(ctx, "s3_16", "书面的"), ctx.le("s3_17") - 0.5)
-        manual(c, 540, 760, 1, blank, t)
-        draw_text(c, "教材转述的细节 · 原书措辞待核", 540, 1070, "sans", 28, INK3, 1, align="center")
-        stamp(c, "示意", 940, 470, 28)
+        k1 = ctx.at("s3_16", 0.6, 0.3)
+        k2 = ease(seg(t, word_time(ctx, "s3_16", "可在巴黎"), word_time(ctx, "s3_16", "可在巴黎") + 0.6))
+        for (x0, ttl, kk) in ((60, "三家厂里", k1), (560, "巴黎总部", k2)):
+            c.drawRRect(_rrect(x0, 420, 460, 520, 16), paint(CARD, 0.6 * kk))
+            c.drawRRect(_rrect(x0, 420, 460, 520, 16), paint(INK3, kk, stroke=2.5))
+            draw_text(c, ttl, x0 + 230, 470, "serif_heavy", 40, INK, kk, align="center")
+        # empty shelf: dashed outlines of missing binders
+        for k in range(5):
+            dp = paint(INK3, k1, stroke=2.5)
+            dp.setPathEffect(skia.DashPathEffect.Make([8, 7], 0))
+            c.drawRect(skia.Rect.MakeXYWH(110 + k * 72, 600, 56, 190), dp)
+        c.drawLine(90, 795, 490, 795, paint(INK2, k1, stroke=6))
+        draw_text(c, "找不到一份书面说明", 290, 870, "serif_bold", 34, INK, k1, align="center")
+        # full shelf at head office
+        for k in range(5):
+            col_ = [(124, 92, 66), (92, 86, 78), (140, 110, 70), (110, 82, 60), (98, 90, 80)][k]
+            c.drawRect(skia.Rect.MakeXYWH(610 + k * 72, 600, 56, 190), paint(col_, k2))
+            c.drawRect(skia.Rect.MakeXYWH(622 + k * 72, 630, 32, 10), paint(CARD, k2))
+        c.drawLine(590, 795, 990, 795, paint(INK2, k2, stroke=6))
+        draw_text(c, "随手就能拿到", 790, 870, "serif_bold", 34, INK, k2, align="center")
+        k3 = ease(seg(t, word_time(ctx, "s3_16", "至于"), word_time(ctx, "s3_16", "至于") + 0.6))
+        label(c, "怎么不见的？书里没有说", 540, 1030, 40, INK, k3, box=True, font_name="serif_heavy")
+        draw_text(c, "Crozier 1964, p. 153 脚注", 540, 1100, "sans", 24, INK3, k1, align="center")
+        c.restore()
+    # beat 7b (s3_16c): hands off the machines
+    a = ctx.win("s3_16c", "s3_17")
+    if a > 0:
+        lay = c.saveLayerAlpha(None, int(255 * a))
+        gx, gy = machine_side(c, 90, 1080, 520, 290, t, running=0.0)
+        reach = ease(seg(t, ctx.ls("s3_16c") + 0.3, ctx.ls("s3_16c") + 1.2))
+        figure_side(c, 820, 1110, 440, "worker", face=-1, arm=0.35 + 0.55 * reach)
+        k = ease(seg(t, word_time(ctx, "s3_16c", "最不可饶恕"), word_time(ctx, "s3_16c", "最不可饶恕") + 0.4))
+        cx_, cy_ = 610, 790
+        c.drawLine(cx_ - 50 * k, cy_ - 50 * k, cx_ + 50 * k, cy_ + 50 * k, paint(INK, 1, stroke=12))
+        c.drawLine(cx_ + 50 * k, cy_ - 50 * k, cx_ - 50 * k, cy_ + 50 * k, paint(INK, 1, stroke=12))
+        draw_text(c, "女工最不可饶恕的错：自己摆弄机器", 540, 450, "serif_heavy", 42, INK, ctx.at("s3_16c", 0.6, 0.4), align="center")
+        draw_text(c, "Crozier 1964, p. 153", 540, 505, "sans", 24, INK3, ctx.at("s3_16c", 0.6, 0.4), align="center")
+        c.restore()
+    # beat 7c (s3_17): perhaps… (psychology only as a "perhaps")
+    a = ctx.win("s3_17", "s3_18")
+    if a > 0:
+        lay = c.saveLayerAlpha(None, int(255 * a))
+        bust(c, 360, 820, 110, "maint")
+        thought_bubble(c, 700, 560, 150, 1)
+        c.save(); c.translate(700, 560); c.scale(0.3, 0.3)
+        manual(c, 0, 0, 1, 1.0, t)
+        c.restore()
+        draw_text(c, "也许……", 700, 760, "serif_heavy", 44, INK2, 1, align="center")
+        stamp(c, "示意", 940, 420, 28)
         c.restore()
     # beat 8 (s3_18–s3_19): real but not legitimate
     a = ctx.win("s3_18", "s3_20")
@@ -471,7 +522,10 @@ def draw_compare(c, ctx, t):
     draw_text(c, "上", 583, 600, "serif_heavy", 34, INK3, 1, align="center")
     draw_text(c, "下", 583, 920, "serif_heavy", 34, INK3, 1, align="center")
     ca = ease(seg(t, word_time(ctx, "s3_13", "按谁离不开谁"), word_time(ctx, "s3_13", "按谁离不开谁") + 0.6))
-    draw_text(c, "车间主任 ⇅ 维修工：上下颠倒", 540, 1098, "serif_heavy", 42, INK, ca, align="center")
+    cb = ease(seg(t, word_time(ctx, "s3_13", "克罗齐耶说得"), word_time(ctx, "s3_13", "克罗齐耶说得") + 0.5))
+    draw_text(c, "车间主任 ⇅ 维修工：上下颠倒", 540, 1098, "serif_heavy", 42, INK, ca * (1 - cb), align="center")
+    draw_text(c, "维修工，才是真正的老板", 540, 1080, "serif_heavy", 44, INK, cb, align="center")
+    draw_text(c, "“…they are the real bosses.”  Crozier 1964, p. 126", 540, 1128, "garamond_it", 26, INK2, cb, align="center")
 
 
 # =====================================================================================
@@ -518,7 +572,7 @@ def sc_s4(c, ctx):
     a = ctx.win("s4_02", "s4_03")
     if a > 0:
         quote_block(c, BYID["s4_02"]["text"], 540, 720, 30, 46, a, prog=seg(t, ctx.ls("s4_02"), ctx.frac("s4_02", 0.62)),
-                    src="Michel Crozier, The Bureaucratic Phenomenon, 1964")
+                    src="Michel Crozier, The Bureaucratic Phenomenon, 1964, p. 158")
     # beat 3 (s4_03–s4_04): A / B
     a = ctx.win("s4_03", "s4_05")
     if a > 0:
@@ -661,7 +715,7 @@ def sc_s4(c, ctx):
             condition_row(c, 70, y, ttl, sub, tk, ra * (1 - 0.0), size=42 if qv < 0.5 else 36)
         if qv > 0:
             quote_block(c, BYID["s4_17"]["text"], 540, 520, 30, 44, qv, prog=seg(t, ctx.ls("s4_17"), ctx.frac("s4_17", 0.6)),
-                        src="Hickson et al., 1971")
+                        src="Hickson et al., ASQ 16(2), 1971, p. 219")
         # the maintenance node levels up with each tick
         ma = ease(seg(t, ctx.ls("s4_21"), ctx.ls("s4_21") + 0.6))
         if ma > 0:
@@ -745,7 +799,10 @@ def sc_s5(c, ctx):
         fa = ease(seg(t, ctx.ls("s5_05"), ctx.ls("s5_05") + 0.6))
         if fa > 0:
             c.drawRect(skia.Rect.MakeXYWH(0, 980, W, 200), paint(PAPER, 0.92 * fa))
-            draw_text(c, "规章越细 → 剩下的余地越金贵", 540, 1075, "serif_heavy", 50, INK, fa, align="center")
+            draw_text(c, "规章越细 → 剩下的余地越金贵", 540, 1050, "serif_heavy", 50, INK, fa, align="center")
+            fq = ease(seg(t, word_time(ctx, "s5_05", "克罗齐耶的原话"), word_time(ctx, "s5_05", "克罗齐耶的原话") + 0.6))
+            draw_text(c, "“parallel power increases in direct ratio to its rarity”  Crozier 1964, p. 192", 540, 1120,
+                      "garamond_it", 27, INK2, fq, align="center")
         c.restore()
 
 
@@ -806,7 +863,7 @@ def sc_s6(c, ctx):
         c.restore()
         draw_text(c, "恶性循环", cx, cy + 60, "serif_heavy", 54, INK, va, align="center")
         c.restore()
-    a = ctx.win("s6_06", "s6_09")
+    a = ctx.win("s6_06", "s6_08b")
     if a > 0:
         lay = c.saveLayerAlpha(None, int(255 * a))
         for k in range(4):
@@ -824,13 +881,24 @@ def sc_s6(c, ctx):
             draw_text(c, "规章", 0, -30, "serif_heavy", 64, INK, sp, align="center")
             draw_text(c, "对事不对人", 0, 50, "serif_heavy", 36, INK2, sp, align="center")
             c.restore()
-        ha = ease(seg(t, word_time(ctx, "s6_07", "最想要更多规章"), word_time(ctx, "s6_07", "最想要更多规章") + 0.5))
-        label(c, "最想要更多规章的：女工", 300, 470, 38, INK, ha, box=True, font_name="serif_heavy")
+        ha = ease(seg(t, word_time(ctx, "s6_07", "反而会推着"), word_time(ctx, "s6_07", "反而会推着") + 0.5))
+        label(c, "下面的人：要新规章，限制上面的权力", 420, 470, 36, INK, ha, box=True, font_name="serif_heavy")
+        draw_text(c, "Crozier 1964, pp. 160–161", 420, 525, "sans", 24, INK3, ha, align="center")
+        c.restore()
+    a = ctx.win("s6_08b", "s6_09")
+    if a > 0:
+        lay = c.saveLayerAlpha(None, int(255 * a))
+        draw_text(c, "科层系统的心理动机：躲开……", 540, 450, "serif_heavy", 42, INK, ctx.at("s6_08b", 0.6, 0.6), align="center")
+        items = [("当面的上下级紧张", "当面的"), ("当事人说：专断、偏袒", "当事人"), ("说到底：人对人的依附", "说到底")]
+        for k, (s_, anchor) in enumerate(items):
+            ia = ease(seg(t, word_time(ctx, "s6_08b", anchor), word_time(ctx, "s6_08b", anchor) + 0.4))
+            label(c, s_, 540, 610 + k * 150, 50, INK, ia, box=True, font_name="serif_heavy", pad=26)
+        draw_text(c, "Crozier, Sociologie du travail, 1960", 540, 1090, "sans", 24, INK3, ctx.at("s6_08b", 0.6, 0.6), align="center")
         c.restore()
     a = ctx.win("s6_09", "s6_10")
     if a > 0:
         def ex(cc, ww, hh):
-            k = ease(seg(t, word_time(ctx, "s6_09", "它减少了"), word_time(ctx, "s6_09", "它减少了") + 0.6))
+            k = ease(seg(t, word_time(ctx, "s6_09", "让每个人"), word_time(ctx, "s6_09", "让每个人") + 0.6))
             figure_side(cc, -230, hh / 2 - 50, 200, "worker", face=1, a=k)
             figure_side(cc, 230, hh / 2 - 50, 200, "maint", face=-1, a=k)
             shield(cc, 0, hh / 2 - 150, 150, CARD, INK, k, stroke=4)
@@ -842,13 +910,16 @@ def sc_s6(c, ctx):
         lay = c.saveLayerAlpha(None, int(255 * a))
         for k in range(3):
             figure_side(c, 120 + k * 110, 1080, 300, "worker", face=1)
-        label(c, "生产工人：要更多科层制", 290, 560, 36, INK, ctx.at("s6_10", 0.5, 1.0), box=True, font_name="serif_heavy")
-        sh = ctx.at("s6_10", 0.8, 2.6)
+        l1 = ease(seg(t, word_time(ctx, "s6_10", "受人拿捏"), word_time(ctx, "s6_10", "受人拿捏") + 0.5))
+        label(c, "受人拿捏的一方：", 290, 540, 34, INK, l1, box=False, font_name="serif_heavy")
+        label(c, "要对事不对人的规矩", 290, 600, 34, INK, l1, box=False, font_name="serif_heavy")
+        sh = ease(seg(t, word_time(ctx, "s6_10", "维修工要的"), word_time(ctx, "s6_10", "维修工要的") + 0.8))
         c.drawOval(skia.Rect.MakeXYWH(640, 820, 380, 300), paint(INK, 0.32 * sh, blur=30))
         figure_side(c, 830, 1080, 340, "maint", face=-1, dim=0.3 * sh)
-        label(c, "维修工：保住“阴影地带”", 800, 560, 36, INK, sh, box=True, font_name="serif_heavy")
-        draw_text(c, "（规章照不到的地方）", 800, 640, "sans", 28, INK3, sh, align="center")
-        draw_text(c, "研究者的概括", 540, 1150, "sans", 26, INK3, ctx.at("s6_10", 0.5, 0.5), align="center")
+        label(c, "维修工：", 800, 540, 34, INK, sh, box=False, font_name="serif_heavy")
+        label(c, "自己的地盘，不许外人插手", 800, 600, 34, INK, sh, box=False, font_name="serif_heavy")
+        draw_text(c, "每一群人都在争：保住、扩大自己说了算的地方", 540, 450, "serif_bold", 34, INK, ctx.at("s6_10", 0.5, 0.3), align="center")
+        draw_text(c, "Crozier 1964, pp. 153, 156", 540, 1160, "sans", 24, INK3, ctx.at("s6_10", 0.5, 0.5), align="center")
         c.restore()
     a = ctx.win("s6_11", None, fout=0.6)
     if a > 0:
@@ -919,12 +990,17 @@ def sc_s7(c, ctx):
         machine_side(c, 120, 1020, 440, 250, t, running=r, a=1)
         if r < 1:
             c.drawCircle(120 + 440 * 0.28, 1020 - 250 * 0.62, 60, paint(ACCENT, 0.85 * (1 - r), stroke=6))
-        rb = ease(seg(t, word_time(ctx, "s7_06", "维修写成了"), word_time(ctx, "s7_06", "维修写成了") + 0.6))
+        rb = ease(seg(t, word_time(ctx, "s7_06", "把维修写成"), word_time(ctx, "s7_06", "把维修写成") + 0.6))
+        pm = ease(seg(t, word_time(ctx, "s7_06", "预防性维护"), word_time(ctx, "s7_06", "预防性维护") + 0.5)) * (1 - rb)
+        if pm > 0:
+            note_card(c, 560, 560, ["预防性维护", "不等机器坏，提前定期保养"], pm, size=34)
         rulebook(c, 690, 760, 170, INK2, rb, label="流程")
         lv = 1 - ease(seg(t, word_time(ctx, "s7_06", "就会消失"), word_time(ctx, "s7_06", "就会消失") + 1.0))
         node(c, 880, 900, "maint", 0.62, 1, rings=lv * 0.9, dim=0.5 * (1 - lv), sub=False, t=t)
-        hk = ease(seg(t, word_time(ctx, "s7_06", "希克森"), word_time(ctx, "s7_06", "希克森") + 0.6))
+        hk = ease(seg(t, ctx.ls("s7_06a"), ctx.ls("s7_06a") + 0.6))
         draw_text(c, "办法写下来、看得见 → 替代的人找得到", 540, 470, "serif_heavy", 38, INK, hk, align="center")
+        he = ease(seg(t, word_time(ctx, "s7_06a", "他们还估计"), word_time(ctx, "s7_06a", "他们还估计") + 0.5))
+        draw_text(c, "Hickson 等估计：这家厂的维修工会抵制（1971, p. 224）", 540, 525, "sans", 26, INK2, he, align="center")
         cl = ease(seg(t, ctx.ls("s7_06b"), ctx.ls("s7_06b") + 0.8))
         if cl > 0:
             for k in range(6):
@@ -974,6 +1050,8 @@ def sc_end(c, ctx):
         src = ["Michel Crozier, Le phénomène bureaucratique, Seuil, 1963",
                "（英译 The Bureaucratic Phenomenon, Univ. of Chicago Press, 1964；",
                "2010 年 Transaction 再版，Erhard Friedberg 导言）",
+               "M. Crozier, « Les relations de pouvoir dans un système d'organisation",
+               "bureaucratique », Sociologie du travail, 1960, pp. 61–75",
                "Michel Crozier & Erhard Friedberg, L'Acteur et le système, Seuil, 1977",
                "D. J. Hickson et al., “A Strategic Contingencies' Theory of",
                "Intraorganizational Power”, ASQ 16(2), 1971, pp. 216–229",

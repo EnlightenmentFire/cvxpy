@@ -74,7 +74,12 @@ def synth(ids, max_tries=4, batch=4):
                                       dtype=torch.bfloat16)
     prompt = m.create_voice_clone_prompt(ref_audio=REF_WAV, ref_text=REF_TEXT)
     q = load_qc()
-    todo = [i for i in ids if BY_ID[i]["tts"] and not q.get(i, {}).get("ok")]
+    # a line whose text changed since its take was made must be redone
+    for i in ids:
+        r = q.get(i)
+        if r and r.get("text") is not None and r["text"] != BY_ID[i]["tts"]:
+            q.pop(i)
+    todo = [i for i in ids if BY_ID[i]["tts"] and not q.get(i, {}).get("ok") and not q.get(i, {}).get("flag")]
     tries = {i: q.get(i, {}).get("tries", 0) for i in todo}
     while todo:
         chunk = todo[:batch]
@@ -94,6 +99,7 @@ def synth(ids, max_tries=4, batch=4):
             rec = q.get(i, {"takes": []})
             rec["takes"].append(dict(path=path, f0=round(f0, 1), err=round(err, 3), hyp=hyp, dur=round(len(w) / sr, 2)))
             rec["tries"] = tries[i]
+            rec["text"] = BY_ID[i]["tts"]
             if ok_f0 and ok_asr:
                 rec["ok"] = True
                 rec["best"] = path

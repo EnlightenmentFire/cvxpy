@@ -354,7 +354,7 @@ S1_CARDS = [
     ("s1_03", (0, 1), "巴黎统一定", "PARIS"),
     ("s1_04", (0, 2), "三十家厂一个样", "~30 USINES"),
     ("s1_05", (1, 0), "车间编制", "L'ATELIER"),
-    ("s1_07", (1, 1), "计件工资", "AUX PIÈCES"),
+    ("s1_07", (1, 1), "底薪加计件", "SALAIRE"),
     ("s1_08", (1, 2), "资历排队", "ANCIENNETÉ"),
     ("s1_09", (2, 0), "照章办事", "RÈGLEMENT"),
     ("s1_10", (2, 2), "个人拿主意：最低", "MINIMUM"),
@@ -386,17 +386,19 @@ def card_body(cid):
     def b03(cc, w, h):
         star(cc, -230, -10, 30, INK)
         draw_text(cc, "巴黎总部", -230, 45, "sans_bold", 26, INK, 1, align="center")
-        for k, s in enumerate(["原料", "价格", "工资标准"]):
+        for k, s in enumerate(["工作定额", "工资", "大小事务"]):
             yy = -50 + k * 52
             arrow(cc, -170, -10, 60, yy, INK2, 4, 1, head=14)
             draw_text(cc, s, 80, yy, "serif_bold", 34, INK, 1)
-        draw_text(cc, "统一定，下面照办", 0, h / 2 - 34, "serif_semi", 30, INK2, 1, align="center")
+        draw_text(cc, "全国统一定 · 卖价归另一个政府部门管", 0, h / 2 - 34, "serif_semi", 30, INK2, 1, align="center")
 
     def b04(cc, w, h):
         for i in range(3):
             for j in range(10):
-                factory_icon(cc, -300 + j * 66, -40 + i * 50, 40, INK3)
-        draw_text(cc, "约 30 家工厂 · 组织方式几乎一模一样", 0, h / 2 - 34, "serif_semi", 30, INK2, 1, align="center")
+                k = i * 10 + j
+                factory_icon(cc, -300 + j * 66, -40 + i * 50, 40, INK if k < 3 else (INK3 if k < 23 else INK4))
+        cc.drawRRect(_rrect(-334, -86, 200, 56, 10), paint(INK, 1, stroke=3))
+        draw_text(cc, "30 家厂一个样 · 细看巴黎三家 · 粗看二十家", 0, h / 2 - 34, "serif_semi", 29, INK2, 1, align="center")
 
     def b05(cc, w, h):
         bust(cc, -260, -40, 24, "chief")
@@ -407,19 +409,24 @@ def card_body(cid):
         draw_text(cc, "生产工人 60–120", 0, 58, "sans_bold", 27, INK, 1, align="center")
         for j in range(3):
             bust(cc, 220 + j * 40, -40, 14, "maint")
-        draw_text(cc, "维修工 几人到十来人", 260, 58, "sans_bold", 27, INK, 1, align="center")
-        draw_text(cc, "生产工人多为女工 · 维修工是男性技术工人", 0, h / 2 - 34, "serif_semi", 28, INK2, 1, align="center")
+        draw_text(cc, "维修工 十来人", 260, 58, "sans_bold", 27, INK, 1, align="center")
+        draw_text(cc, "生产工人多为女工 · 维修工每人包几台机器", 0, h / 2 - 34, "serif_semi", 28, INK2, 1, align="center")
 
     def b07(cc, w, h):
-        tt = cc_time[0]
-        n = int(tt * 3) % 9 + 1
-        for k in range(n):
-            cc.drawRect(skia.Rect.MakeXYWH(-300 + k * 26, -30, 18, 60), paint(CARD))
-            cc.drawRect(skia.Rect.MakeXYWH(-300 + k * 26, -30, 18, 60), paint(INK2, 1, stroke=1.5))
-        arrow(cc, -40, 0, 60, 0, INK2, 5, 1, head=16)
-        for k in range(n):
-            coin(cc, 140 + (k % 3) * 46, 30 - (k // 3) * 22, 20)
-        draw_text(cc, "做多少件，拿多少钱", 0, h / 2 - 34, "serif_semi", 32, INK2, 1, align="center")
+        # output bar against the standard: below 85% penalised, 85% = flat hourly pay, above = piece bonus
+        x0, x1, y = -330, 330, -10
+        m = lerp(x0, x1, 0.85 / 1.3)
+        cc.drawRect(skia.Rect.MakeXYWH(x0, y - 22, m - x0, 44), paint(mix(CARD, INK4, 0.55)))
+        cc.drawRect(skia.Rect.MakeXYWH(m, y - 22, x1 - m, 44), paint((214, 190, 130)))
+        cc.drawRect(skia.Rect.MakeXYWH(x0, y - 22, x1 - x0, 44), paint(INK2, 1, stroke=2.5))
+        cc.drawLine(m, y - 40, m, y + 40, paint(INK, 1, stroke=4))
+        draw_text(cc, "定额的 85%", m, y - 58, "sans_bold", 26, INK, 1, align="center")
+        draw_text(cc, "做不到：扣钱", (x0 + m) / 2, y + 62, "sans_bold", 26, INK2, 1, align="center")
+        draw_text(cc, "固定小时工资", m, y + 62, "sans_bold", 0.1, INK2, 0)
+        draw_text(cc, "超出：按件算奖金", (m + x1) / 2 + 10, y + 62, "sans_bold", 26, INK, 1, align="center")
+        for k in range(3):
+            coin(cc, m + 40 + k * 42, y, 16)
+        draw_text(cc, "做到 85%：固定小时工资", 0, h / 2 - 34, "serif_semi", 30, INK2, 1, align="center")
 
     def b08(cc, w, h):
         years = ["1931", "1937", "1946", "1950", "1955"]
@@ -428,17 +435,17 @@ def card_body(cid):
             figure_side(cc, xx, 60, 110, "worker", face=-1, arm=0.1)
             draw_text(cc, y, xx, 82, "courier_bold", 22, INK2, 1, align="center")
         cc.drawLine(-300, 66, 300, 66, paint(INK3, 1, stroke=2))
-        draw_text(cc, "按进厂年头排队：谁先来，谁先挑", 0, h / 2 - 30, "serif_semi", 30, INK2, 1, align="center")
+        draw_text(cc, "有空位：最老的先挑 · 要挪窝：最浅的先走", 0, h / 2 - 30, "serif_semi", 29, INK2, 1, align="center")
 
     def b09(cc, w, h):
-        items = ["干什么：写明", "怎么干：写明", "谁来分：照章"]
+        items = ["车间主任：记产量", "临时调岗：照章", "其余：规章写死"]
         for k, s in enumerate(items):
             yy = -50 + k * 46
             cc.drawRect(skia.Rect.MakeXYWH(-200, yy - 14, 28, 28), paint(INK2, 1, stroke=2.5))
             p = skia.Path().moveTo(-195, yy).lineTo(-187, yy + 9).lineTo(-170, yy - 12)
             cc.drawPath(p, paint(INK, 1, stroke=4))
             draw_text(cc, s, -150, yy, "serif_bold", 32, INK, 1)
-        draw_text(cc, "几乎没有什么，留给个人拿主意", 0, h / 2 - 34, "serif_semi", 30, INK2, 1, align="center")
+        draw_text(cc, "至少在纸面上，谁也没有拿主意的余地", 0, h / 2 - 34, "serif_semi", 30, INK2, 1, align="center")
 
     def b10(cc, w, h):
         dial(cc, 0, 50, 110, 0.04, "个人拿主意", "")
