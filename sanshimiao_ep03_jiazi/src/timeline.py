@@ -52,7 +52,9 @@ def build(vt, lines_txt):
 
     # musical grid: the final click (answer hit) must sit exactly on a beat; tempo ~120
     t_ans = L["L8"]["start"] - 0.10
-    kb = max(range(30, 70), key=lambda k: -abs(60 * k / t_ans - 120))
+    # the answer hit must be a downbeat (beat index divisible by 4) so the post-answer bars and the
+    # loop back to t=0 share one 4/4 grid; tempo stays within 110-130
+    kb = max([k for k in range(36, 64, 4) if 110 <= 60 * k / t_ans <= 130], key=lambda k: -abs(60 * k / t_ans - 120))
     bpm = 60 * kb / t_ans
     beat = 60 / bpm
     eighth = beat / 2
@@ -60,11 +62,11 @@ def build(vt, lines_txt):
     steps = []
     # 1..10: one click per beat; the 10th (-> 甲戌, 天干转满一圈) lands on 圈, so the
     # gears start turning around "用两套字配对"
-    t10 = q(an["quan"] - 0.05)
+    t10 = round((an["quan"] + 0.02) / beat) * beat        # clicks 1-10 exactly on beats
     steps += [t10 - (10 - k) * beat for k in range(1, 11)]
     # 11..59 accelerating spin
     Ta = L["L5"]["start"] + 0.05
-    Tb = L["L7"]["end"] - 0.30           # counter reaches 60 a beat before the question ends
+    Tb = q(L["L7"]["end"] - 0.30)        # counter reaches 60 just before the question ends (eighth grid)
     D = Tb - Ta
     best = None
     for p in np.linspace(1.0, 3.0, 21):
@@ -113,7 +115,7 @@ def build(vt, lines_txt):
         "chou_x": an["chou"] - 0.05,
         "tags_off": s_time(54),
         "spin": {"p": round(float(p), 2), "r0": round(float(r0), 2), "r_end": round(float(r0 + c), 2)},
-        "bpm": bpm, "beat": beat, "ans_beat": kb, "total_beats": nb, "stop": steps[58],
+        "bpm": bpm, "beat": beat, "ans_beat": kb, "total_beats": nb, "stop": steps[58], "drop": Tb,
     }
     W = lambda segs: [[s, h] for s, h in segs]
     caps = [

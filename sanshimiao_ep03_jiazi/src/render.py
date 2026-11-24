@@ -689,6 +689,21 @@ def surf_to_rgb(surf):
     return a[..., [2, 1, 0]].copy()
 
 
+def frame_blurred(sc, t):
+    """Motion blur: average sub-frames over a half-frame shutter centred on t when the gears move fast."""
+    tl = sc.tl
+    sh = 0.5 / FPS
+    ds = abs(tl.s_at(t + sh / 2) - tl.s_at(t - sh / 2)) if t > 0 else 0.0
+    nsub = int(min(8, max(1, np.ceil(ds / 0.05))))
+    if nsub == 1:
+        return surf_to_rgb(sc.frame(t))
+    acc = np.zeros((H, W, 3), np.float32)
+    for j in range(nsub):
+        tj = t - sh / 2 + sh * (j + 0.5) / nsub
+        acc += surf_to_rgb(sc.frame(tj))
+    return (acc / nsub + 0.5).astype(np.uint8)
+
+
 def main():
     mode = sys.argv[1]
     tl = TL(json.load(open(sys.argv[2])))
@@ -699,16 +714,19 @@ def main():
         surf = sc.frame(t)
         surf.write_to_png(out)
     elif mode == "video":
+        # python render.py video timeline.json out.mp4 [first_frame last_frame_exclusive]
         out = sys.argv[3]
         nfr = int(round(tl.dur * FPS))
+        f0, f1 = (int(sys.argv[4]), int(sys.argv[5])) if len(sys.argv) > 5 else (0, nfr)
+        f1 = min(f1, nfr)
         cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
-               "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-preset", "slow", "-crf", "16", "-pix_fmt", "yuv420p",
-               "-r", str(FPS), out]
+               "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-preset", "veryfast", "-crf", "8",
+               "-pix_fmt", "yuv444p", "-r", str(FPS), out]
         p = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-        for i in range(nfr):
-            p.stdin.write(surf_to_rgb(sc.frame(i / FPS)).tobytes())
-            if i % 60 == 0:
-                print(f"frame {i}/{nfr}", flush=True)
+        for i in range(f0, f1):
+            p.stdin.write(frame_blurred(sc, i / FPS).tobytes())
+            if (i - f0) % 60 == 0:
+                print(f"frame {i} ({f0}-{f1})", flush=True)
         p.stdin.close()
         p.wait()
 

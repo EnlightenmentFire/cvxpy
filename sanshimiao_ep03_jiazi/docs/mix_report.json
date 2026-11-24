@@ -1,0 +1,19 @@
+{
+ "bed_gain_db": 4.59,
+ "duck_diff_db": 11.0,
+ "premix": {
+  "input_i": "-18.51",
+  "input_tp": "1.29",
+  "input_lra": "2.80",
+  "input_thresh": "-28.51",
+  "output_i": "-16.05",
+  "output_tp": "-1.50",
+  "output_lra": "1.60",
+  "output_thresh": "-26.05",
+  "normalization_type": "dynamic",
+  "target_offset": "0.05"
+ },
+ "final_I": "-16.11",
+ "final_TP": "-1.86",
+ "final_LRA": "2.30"
+}
