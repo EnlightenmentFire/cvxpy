@@ -501,12 +501,12 @@ def question_map():
 
 
 S01_ORDER = [(None, "door"), ("guillotine_shadow", "guillo"), ("s01_03", "father"), ("s01_04", "alexis"),
-             ("two_judges", "judges"), ("prison_corridor", "plan"), ("s01_10", "map")]
+             ("two_judges", "judges"), ("s01_08", "plan"), ("s01_10", "map")]
 
 
 def s01(c):
     cur, prev, x = c.phase(S01_ORDER)
-    walk = c.p("prison_corridor", 9.0, smooth=False)
+    walk = c.p("s01_08", 9.0, smooth=False)
     builders = {"door": prison_door, "guillo": guillotine, "father": father, "alexis": alexis, "judges": two_judges,
                 "plan": lambda: prison_plan(0.0), "map": question_map}
 
@@ -742,14 +742,14 @@ def excluded(k):
             person(out_l, gx + j * 60 - (len(members) - 1) * 30, 1180, 170, "stand", 1 if gx < 500 else -1, hat, dress)
     out_l.apply(ill, hexc("#77726a"), 0.75, grain=0.05)
     for gi, (gx, members, lab) in enumerate(groups):
-        op = ease((k - gi * 0.25) / 0.2)
+        op = ease((k - 0.5 - gi * 0.1) / 0.12)
         if op > 0:
             label(ill, gx, 960 if gx < 500 else 940 + gi * 0, lab, 34, (70, 60, 50, 255), op=op, bold=True)
     label(ill, (dx0 + dx1) / 2, 380, "能在镇民大会上举手的人", 32, bold=True)
     return ill
 
 
-S03_ORDER = [(None, "town"), ("meeting_hall", "hall"), ("s03_13", "chalk"), ("s03_14", "town"), ("excluded", "excl"), ("s03_18", "town")]
+S03_ORDER = [(None, "town"), ("meeting_hall", "hall"), ("s03_13", "chalk"), ("excluded", "excl"), ("s03_18", "town")]
 
 
 def s03(c):
@@ -981,13 +981,13 @@ def loop_diagram(rot):
     return ill
 
 
-S04_ORDER = [(None, "icons"), ("dots_gather", "split"), ("s04_12", "alone"), ("loop", "loop")]
+S04_ORDER = [(None, "icons"), ("dots_gather", "split"), ("loop", "loop")]
 
 
 def s04(c):
     cur, prev, x = c.phase(S04_ORDER)
-    a3, b3 = c.at("s04_03"), c.end("s04_03")
-    n_icons = 2 if a3 is None or c.tq < a3 else min(6, 2 + int((c.tq - a3) / max(0.5, (b3 - a3) / 4.2)))
+    a3, b3 = c.at("s04_01"), c.end("s04_02")
+    n_icons = 1 if a3 is None or c.tq < a3 else min(6, 1 + int((c.tq - a3) / max(0.5, (b3 - a3) / 5.5)))
     gather = c.p("dots_gather", 6.0, smooth=False)
     flying = c.p("letters_fly", 0.6)
     fly_t = max(0.0, c.since("letters_fly"))
@@ -1798,7 +1798,7 @@ def final_card(lines, vign=None):
     return ill
 
 
-S10_ORDER = [(None, "sea"), ("books", "books"), ("s10_03", "alexis"), ("s10_06", "play"), ("s10_07", "road"),
+S10_ORDER = [(None, "sea"), ("books", "books"), ("s10_03", "alexis"), ("s10_07", "road"),
              ("final1", "f1"), ("final2", "f2"), ("final3", "f3")]
 
 

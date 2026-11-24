@@ -35,7 +35,11 @@ def main():
     for d in lines:
         meta_p = f"{OUT}/{d['id']}.json"
         if os.path.exists(meta_p) and not force:
-            continue
+            try:
+                if json.load(open(meta_p)).get("text") == d["say"]:
+                    continue
+            except Exception:
+                pass
         best = None
         for attempt, seed in enumerate([1000 + 7 * i for i in range(int(os.environ.get("NSEEDS", 5)))]):
             torch.manual_seed(seed); np.random.seed(seed)

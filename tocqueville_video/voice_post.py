@@ -11,7 +11,7 @@ from script_data import all_lines
 RAW = "/tmp/claude-0/work/tts/raw"
 OUT = "/tmp/claude-0/work/tts/proc"
 SR = 48000
-TEMPO = {"n": 1.15, "q": 1.03}
+TEMPO = {"n": 1.2, "q": 1.06}
 MAX_PAUSE = 0.40
 TARGET_RMS_DB = -18.0
 
