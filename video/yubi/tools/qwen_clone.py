@@ -12,7 +12,7 @@ REF = json.load(open(os.path.join(sys.argv[1], 'design.json')))
 OUT = os.environ.get('LINES_DIR', os.path.join(ROOT, 'audio', 'lines_qwen')); os.makedirs(OUT, exist_ok=True)
 ONLY = [int(x) for x in sys.argv[2].split(',')] if len(sys.argv) > 2 and sys.argv[2] else list(range(len(L)))
 # Qwen 用原文朗读；只替换少数生僻字/易错多音字为同音字（字幕不受影响）
-QFIX = [('《', ''), ('》', ''), ('——', '，'), ('……', '。'), ('以扞之', '以捍之'), ('木栅', '木炸'), ('祖珽', '祖挺'), ('一行字', '一杭字'), ('这行字', '这杭字')]
+QFIX = [('《', ''), ('》', ''), ('——', '，'), ('……', '。'), ('以扞之', '以捍之'), ('木栅', '木炸'), ('祖珽', '祖挺'), ('一行字', '一杭字'), ('这行字', '这杭字'), ('松麻俱落', '松麻俱洛')]
 def qtext(t):
     for a, b in QFIX: t = t.replace(a, b)
     return t
@@ -57,7 +57,7 @@ logp = os.path.join(OUT, 'qwen_log.json'); log = json.load(open(logp)) if os.pat
 for i in ONLY:
     l = L[i]; txt = qtext(l[2]); nch = len(re.findall(r'[一-鿿]', l[2])); best = None; t0 = time.time()
     for k, seed in enumerate((7, 19, 31, 43)):
-        torch.manual_seed(seed + 1000 * i)
+        torch.manual_seed(seed + 1000 * i + int(os.environ.get('SEED_OFFSET', '0')))
         wavs, sr = model.generate_voice_clone(text=txt, language="Chinese", voice_clone_prompt=prompt)
         w = np.asarray(wavs[0], np.float32); med, p90 = f0(w, sr); dur = len(w) / sr; cps = nch / max(0.1, dur)
         ok = 85 <= med <= 105 and p90 <= 165 and 1.8 <= cps <= 7.0
