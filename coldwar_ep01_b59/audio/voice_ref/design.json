@@ -1,0 +1,42 @@
+{
+ "candidates": [
+  {
+   "seed": 101,
+   "path": "/tmp/claude-0/-home-user-cvxpy/c6f191ba-c6fe-598c-beeb-d3aef80994fb/scratchpad/tts/qwen_design/design_seed101.wav",
+   "sr": 24000,
+   "dur": 14.96,
+   "f0_median": 86.0,
+   "gen_s": 47.3,
+   "rate_cps": 3.14
+  },
+  {
+   "seed": 102,
+   "path": "/tmp/claude-0/-home-user-cvxpy/c6f191ba-c6fe-598c-beeb-d3aef80994fb/scratchpad/tts/qwen_design/design_seed102.wav",
+   "sr": 24000,
+   "dur": 14.16,
+   "f0_median": 83.6,
+   "gen_s": 41.5,
+   "rate_cps": 3.32
+  },
+  {
+   "seed": 103,
+   "path": "/tmp/claude-0/-home-user-cvxpy/c6f191ba-c6fe-598c-beeb-d3aef80994fb/scratchpad/tts/qwen_design/design_seed103.wav",
+   "sr": 24000,
+   "dur": 12.4,
+   "f0_median": 74.5,
+   "gen_s": 38.0,
+   "rate_cps": 3.79
+  }
+ ],
+ "chosen": {
+  "seed": 101,
+  "path": "/tmp/claude-0/-home-user-cvxpy/c6f191ba-c6fe-598c-beeb-d3aef80994fb/scratchpad/tts/qwen_design/design_seed101.wav",
+  "sr": 24000,
+  "dur": 14.96,
+  "f0_median": 86.0,
+  "gen_s": 47.3,
+  "rate_cps": 3.14
+ },
+ "desc": "四十多岁男中音，醇厚偏低沉，历史纪录片旁白，凝重克制，语速中等偏慢",
+ "ref_text": "一九六二年的秋天，大西洋深处，一艘潜艇在黑暗里航行。没有人知道它带着什么，也没有人知道，接下来会发生什么。"
+}
