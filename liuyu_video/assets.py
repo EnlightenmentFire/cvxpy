@@ -401,6 +401,8 @@ def woodcut_layers(mood="dawn", figure=True):
         set_col(c, "#c99a5b", 0.95); c.set_line_width(5)
         c.arc(766, 1080, 13, 0, 2 * math.pi); c.stroke()
         c.move_to(770, 1092); c.curve_to(782, 1150, 772, 1230, 800, 1306); c.stroke()
+    layers["near"] = s
+    s, c = _surface()
     # 芦苇（左前景）
     for i in range(60):
         x0 = rng.uniform(-30, 300) if i < 48 else rng.uniform(880, 1110)
@@ -415,19 +417,28 @@ def woodcut_layers(mood="dawn", figure=True):
             set_col(c, "#0a0806")
             c.save(); c.translate(x0 + bend, y0 - h0); c.rotate(math.atan2(-h0, bend) + math.pi / 2)
             c.scale(1, 3.2); c.arc(0, 0, 7, 0, 2 * math.pi); c.restore(); c.fill()
-    layers["near"] = s
+    layers["reeds"] = s
     return layers
 
 
-def draw_woodcut(ctx, t_norm, alpha=1.0, mood="dawn", push=(1.0, 1.08), focus=(700, 1000), figure=True):
-    """t_norm 0..1：镜头缓推 + 视差"""
+def draw_woodcut(ctx, t_norm, alpha=1.0, mood="dawn", push=(1.0, 1.08), focus=(700, 1000), figure=True, t_abs=0.0):
+    """t_norm 0..1：镜头缓推 + 视差；t_abs：芦苇随风、江面微光"""
     L = woodcut_layers(mood, figure)
     z = push[0] + (push[1] - push[0]) * t_norm
-    for name, par in (("sky", 0.25), ("far", 0.45), ("river", 0.65), ("near", 1.0)):
+    for name, par in (("sky", 0.25), ("far", 0.45), ("river", 0.65), ("near", 1.0), ("reeds", 1.08)):
         zz = 1 + (z - 1) * par
         ctx.save()
         ctx.translate(focus[0], focus[1]); ctx.scale(zz, zz); ctx.translate(-focus[0], -focus[1])
         ctx.translate(-(t_norm * 18) * par, 0)
+        if name == "reeds":
+            k = 0.018 * math.sin(t_abs * 1.15) + 0.008 * math.sin(t_abs * 2.7 + 1.0)
+            ctx.transform(cairo.Matrix(1, 0, k, 1, -k * 1450, 0))
         ctx.set_source_surface(L[name], 0, 0)
-        ctx.paint_with_alpha(alpha)
+        if name == "river":
+            ctx.paint_with_alpha(alpha * 0.82)
+            ctx.translate(6 * math.sin(t_abs * 0.9), 0)
+            ctx.set_source_surface(L[name], 0, 0)
+            ctx.paint_with_alpha(alpha * (0.18 + 0.12 * math.sin(t_abs * 1.7)))
+        else:
+            ctx.paint_with_alpha(alpha)
         ctx.restore()

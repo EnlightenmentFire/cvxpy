@@ -4,3 +4,5 @@ out/segments/
 out/*.mp4
 !out/final/
 __pycache__/
+samples/*/mix_full_tmp.wav
+samples/*/*.mp4

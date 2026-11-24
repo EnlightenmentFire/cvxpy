@@ -10,6 +10,7 @@ from assets import MapView, PLACES, MODERN
 from engine import (W, H, C, clamp, prog, ease_out, ease_in, ease_io, ease_back, smooth, lerp, fade,
                     draw_text, text_size, set_col, rect, rrect_path, line, circle, polyline, point_along, arrow,
                     arrow_head, draw_seal, paper_texture, paint_surface, new_frame, postprocess, smooth_path)
+from timeline import TITLE_CARD
 from widgets import (draw_subtitles, chapter_tag, chapter_card, vquote, Dots, tag, card, name_tile, strike, cross,
                      big_number, takeaway, icon_house, icon_flag, icon_tree, icon_boat, icon_crown, icon_gate,
                      icon_granary, icon_coins, icon_dice, icon_person, icon_robe, icon_fire, wind_arrows, TOP_Y)
@@ -51,7 +52,7 @@ class Film:
                 t0, t1 = T.sec_start[k], T.sec_end[k]
                 chapter_tag(ctx, t, i, TITLES[k], t0 + 1.2, t1 - 0.3)
                 chapter_card(ctx, t, i, TITLES[k], t0 - 0.25, 1.75)
-        if T.title_start <= t < T.title_start + 3.4:
+        if T.title_start <= t < T.title_start + TITLE_CARD:
             self.title_card(ctx, t)
         draw_subtitles(ctx, t, self.subs)
         if t >= T.end_card:
@@ -81,14 +82,14 @@ class Film:
     # ── 片名卡 ────────────────────────────────────────────
     def title_card(self, ctx, t):
         t0 = self.T.title_start
-        a = fade(t, t0, t0 + 3.0, 0.5, 0.4)
+        a = fade(t, t0, t0 + TITLE_CARD - 0.4, 0.45, 0.4)
         rect(ctx, 0, 0, W, H, "#0a0806", 0.62 * a)
-        sc = 1.0 + 0.03 * ease_out(prog(t, t0, 3.4))
+        sc = 1.0 + 0.03 * ease_out(prog(t, t0, TITLE_CARD))
         draw_text(ctx, "京口起兵", W / 2, 700, family="serif", weight="Black", size=150, color=C["ink"], alpha=a,
                   anchor="cm", tracking=0.18, shadow=10, scale=sc)
         line(ctx, W / 2 - 300 * ease_out(prog(t, t0 + 0.2, 0.8)), 820, W / 2 + 300 * ease_out(prog(t, t0 + 0.2, 0.8)), 820,
              C["gold"], 1.6, a * 0.8)
-        a2 = fade(t, t0 + 0.5, t0 + 3.0, 0.5, 0.4)
+        a2 = fade(t, t0 + 0.4, t0 + TITLE_CARD - 0.4, 0.45, 0.4)
         draw_text(ctx, "一个还不上债的人", W / 2, 885, family="sans", weight="Medium", size=42, color=C["ink"],
                   alpha=a2, anchor="cm", tracking=0.08)
         draw_text(ctx, "怎么用一千多人推翻了皇帝", W / 2, 945, family="sans", weight="Medium", size=42, color=C["ink"],
@@ -119,8 +120,8 @@ class Film:
     # ══ S0 冷启动 ═════════════════════════════════════════
     def draw_S0(self, ctx, t):
         T = self.T
-        te = T.title_start + 3.4
-        assets.draw_woodcut(ctx, clamp(t / te), push=(1.0, 1.12), focus=(650, 980))
+        te = T.title_start + TITLE_CARD
+        assets.draw_woodcut(ctx, clamp(t / te), push=(1.0, 1.12), focus=(650, 980), t_abs=t)
         ts = T.title_start
         # 信息槽：依次替换
         a = fade(t, T.start("s0a") - 0.1, T.start("s0c") - 0.2, 0.6, 0.4)
@@ -233,7 +234,7 @@ class Film:
         # 开头回到马桩（特写）
         aw = 1 - ease_in(prog(t, T.word("s2a", "欠的") - 0.2, 0.6))
         if aw > 0:
-            assets.draw_woodcut(ctx, 0.2 + 0.2 * prog(t, t0, 4), push=(1.55, 1.6), focus=(690, 980))
+            assets.draw_woodcut(ctx, 0.2 + 0.2 * prog(t, t0, 4), push=(1.55, 1.6), focus=(690, 980), t_abs=t)
         self.bg(ctx, alpha=1 - aw)
         # 两种说法
         tA, tB = T.word("s2a", "欠的"), T.start("s2c") - 0.2
@@ -253,7 +254,7 @@ class Film:
             draw_text(ctx, "输了不给钱", 785, 530, family="sans", weight="Regular", size=26, color=C["dim"], alpha=aR, anchor="cm")
             icon_dice(ctx, 785, 640, 60, C["red2"], aR * 0.9)
             vquote(ctx, t, T, "s2b", 785, 850, size=50, frame=False, src=False, t_out=tB, alpha=a)
-            ao = ease_out(prog(t, T.word("s2b", "这一笔") - 0.2, 0.4)) * a
+            ao = ease_out(prog(t, T.word("s2b", "马桩这个") - 0.2, 0.4)) * a
             tag(ctx, "捆在马桩：仅见《通鉴》", 600, 1090, alpha=ao, col=C["red2"], size=28)
             draw_text(ctx, "胡三省注：枊，系马柱也", 785, 1140, family="sans", weight="Regular", size=24,
                       color=C["dim"], alpha=ao * 0.9, anchor="cm")
@@ -298,24 +299,29 @@ class Film:
         a = fade(t, tE, T.start("s2g"), 0.5, 0.4)
         if a > 0:
             name_tile(ctx, W / 2, 320, "王谧", "琅邪王氏 · 王导之孙", alpha=a, col=C["gold2"], w=380)
-            vquote(ctx, t, T, "s2e", W / 2, 760, size=62, t_out=T.start("s2f") + 0.4)
+            vquote(ctx, t, T, "s2e", W / 2, 760, size=62, t_out=T.word("s2e", "这回") - 0.4)
+            ah = fade(t, T.word("s2e", "这回") + 0.15, T.word("s2e", "从此") - 0.2, 0.4, 0.3)
+            draw_text(ctx, "责逵 · 释之 · 代之还直", W / 2, 760, family="serif", weight="Black", size=58, color=C["ink"],
+                      alpha=ah, anchor="cm", shadow=6)
+            draw_text(ctx, "——《通鉴》卷一百一十三", W / 2, 840, family="serif", weight="SemiBold", size=28, color=C["gold"],
+                      alpha=ah, anchor="cm")
             tf = T.start("s2f")
             an = ease_out(prog(t, tf - 0.1, 0.4)) * a
             tag(ctx, "《宋书》：王谧「密以钱代还」", 90, 545, alpha=an, col=C["gold"], size=32)
             # 恨 / 德
-            tq = T.word("s2f", "从此")
+            tq = T.word("s2e", "从此")
             ar = ease_out(prog(t, tq, 0.5)) * a
             name_tile(ctx, W / 2, 700, "刘裕", None, alpha=ar, col=C["red2"], w=200)
             name_tile(ctx, 230, 960, "刁逵", None, alpha=ar, col=C["dim"], w=200)
             name_tile(ctx, 850, 960, "王谧", None, alpha=ar, col=C["gold2"], w=200)
-            arrow(ctx, [(480, 790), (300, 950)], C["red"], 5, ar, frac=ease_out(prog(t, T.word("s2f", "恨透"), 0.5)))
+            arrow(ctx, [(480, 790), (300, 950)], C["red"], 5, ar, frac=ease_out(prog(t, T.word("s2e", "恨透"), 0.5)))
             draw_text(ctx, "憾", 360, 850, family="serif", weight="Black", size=56, color=C["red2"],
-                      alpha=ar * ease_out(prog(t, T.word("s2f", "恨透"), 0.4)), anchor="cm")
-            arrow(ctx, [(600, 790), (780, 950)], C["gold2"], 5, ar, frac=ease_out(prog(t, T.word("s2f", "记住"), 0.5)))
+                      alpha=ar * ease_out(prog(t, T.word("s2e", "恨透"), 0.4)), anchor="cm")
+            arrow(ctx, [(600, 790), (780, 950)], C["gold2"], 5, ar, frac=ease_out(prog(t, T.word("s2e", "记住"), 0.5)))
             draw_text(ctx, "德", 720, 850, family="serif", weight="Black", size=56, color=C["gold2"],
-                      alpha=ar * ease_out(prog(t, T.word("s2f", "记住"), 0.4)), anchor="cm")
+                      alpha=ar * ease_out(prog(t, T.word("s2e", "记住"), 0.4)), anchor="cm")
             draw_text(ctx, "《通鉴》：裕深憾逵而德谧", W / 2, 1110, family="serif", weight="SemiBold", size=30, color=C["gold"],
-                      alpha=ar * ease_out(prog(t, T.word("s2f", "记住"), 0.4)), anchor="cm")
+                      alpha=ar * ease_out(prog(t, T.word("s2e", "记住"), 0.4)), anchor="cm")
         takeaway(ctx, t, T.start("s2g"), T.sec_end["S2"] + 0.3, ["底层人往上走", "得有人看得上他"], y=620)
 
     # ══ S3 北府 ═══════════════════════════════════════════
@@ -524,7 +530,7 @@ class Film:
                 strike(ctx, x - w_ / 2 - 6, 1040, x + w_ / 2 + 6, prog(t, T.word("s4e", "老将") + j * 0.08, 0.25), ak, width=4)
             draw_text(ctx, "桓玄所杀北府旧将（《通鉴》卷一一二）", W / 2, 1110, family="sans", weight="Regular", size=26,
                       color=C["dim"], alpha=ak * 0.9, anchor="cm")
-            aw = fade(t, T.word("s4e", "所以不急") - 0.2, T.sec_end["S4"] + 0.2, 0.4, 0.3)
+            aw = fade(t, T.word("s4e", "不急着") - 0.2, T.sec_end["S4"] + 0.2, 0.4, 0.3)
             draw_text(ctx, "等", 850, 760, family="serif", weight="Black", size=150, color=C["ink"], alpha=aw, anchor="cm", shadow=8)
 
     # ══ S5 起兵 ═══════════════════════════════════════════
@@ -657,7 +663,7 @@ class Film:
         # 桓玄两万（每点≈10人）
         fzx, fzy = v.place("东陵")
         Pb = self.d_blue_2000.blob(fzx - 10, fzy + 8, 0.12 * v.k, 0.1 * v.k)
-        ab = fade(t, T.start("s6a") + 0.2, None, 0.6)
+        ab = fade(t, T.word("s6e", "两万人") - 0.3, None, 0.6)
         disperse = ease_in(prog(t, T.word("s6g", "两万人") - 0.6, 2.2))
         alphas = None
         col_core = None
@@ -675,7 +681,7 @@ class Film:
                 ctx.move_to(Pb[i, 0] + rr, Pb[i, 1]); ctx.arc(Pb[i, 0], Pb[i, 1], rr, 0, 2 * math.pi)
             ctx.fill()
         bx, by = v.place("覆舟山")
-        lab_a = ab * (1 - ease_in(prog(t, tb - 0.4, 0.4))) + fade(t, te + 0.8, tf + 0.2, 0.4, 0.4) * ab
+        lab_a = fade(t, T.word("s6e", "两万人") - 0.3, tf + 0.2, 0.4, 0.4)
         draw_text(ctx, "桓玄军 约两万", fzx - 0.02 * v.k, fzy + 0.17 * v.k, family="sans", weight="Bold", size=34,
                   color=C["blue2"], alpha=lab_a, anchor="cm", shadow=4)
         draw_text(ctx, "（每点约十人）", fzx - 0.02 * v.k, fzy + 0.17 * v.k + 44, family="sans", weight="Regular",
@@ -726,7 +732,7 @@ class Film:
             back = ease_out(prog(t, t_bi - 0.1, 0.5))
             ring2 = self.d_blue_300.ring(cx, cy, 200, 330)
             Pring = ring + (ring2 - ring) * back
-            t_arrow = T.word("s6d", "一箭射中")
+            t_arrow = T.word("s6d", "一箭正中")
             Psc = self.d_blue_300.scatter_from(ring2, cx, cy, 420)
             Pring = self.d_blue_300.lerp(Pring, Psc, t, t_arrow + 0.4, 1.4, spread=0.5)
             self.d_blue_300.draw(ctx, Pring, C["blue"], r=4, alpha=a * (1 - 0.7 * prog(t, t_arrow + 0.8, 1.0)))
@@ -759,6 +765,8 @@ class Film:
             aq = ease_out(prog(t, T.word("s6e", "不知有多少"), 0.4)) * a
             draw_text(ctx, "“裕军四塞，不知多少”", 90, 540, family="serif", weight="Bold", size=38, color=C["blue2"],
                       alpha=aq, shadow=4)
+        # 起兵前桓玄的一问
+        vquote(ctx, t, T, "s6a", W / 2, 760, size=60, t_out=T.start("s6b") - 0.2)
         # 关键一句
         vquote(ctx, t, T, "s6f", 790, 520, size=50, t_out=tg + 0.2, maxcol=5)
         if t >= tf:
@@ -924,7 +932,7 @@ class Film:
                 x = 420 + k * 300
                 name_tile(ctx, x, 345, nm, "用" if ok else "杀", alpha=a, col=C["gold2"] if ok else C["dim"], w=220)
                 if not ok:
-                    cross(ctx, x, 395, 40, prog(t, T.word("s8a", "他杀"), 0.3), a)
+                    cross(ctx, x, 395, 40, prog(t, T.word("s8a", "杀掉"), 0.3), a)
             line(ctx, 90, 560, 990, 560, C["faint"], 1.5, a * 0.6)
             draw_text(ctx, "京口寒人", 110, 680, family="serif", weight="Black", size=60, color=C["red2"], alpha=a, anchor="lm")
             names = ["刘裕", "刘毅", "何无忌", "孟昶", "檀道济", "刘道规"]
@@ -966,7 +974,7 @@ class Film:
         T = self.T
         t0 = T.sec_start["S9"]
         tn = clamp((t - t0) / (T.total - t0))
-        assets.draw_woodcut(ctx, tn, mood="dusk", figure=False, push=(1.04, 1.12), focus=(700, 1000))
+        assets.draw_woodcut(ctx, tn, mood="dusk", figure=False, push=(1.04, 1.12), focus=(700, 1000), t_abs=t)
         rect(ctx, 0, 0, W, H, "#0a0806", 0.25)
         for k, (lid, txt, col) in enumerate((("s9a", "他欠下三万钱，被捆在马桩上。", C["ink"]),
                                              ("s9b", "他攒下的，是一支军队的信任。", C["gold2"]),
