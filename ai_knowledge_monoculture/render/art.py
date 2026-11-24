@@ -352,10 +352,10 @@ def meander(ctx, x, y, w, h, color, alpha=1.0, lw=None):
 # ====================================================================== corn plant (top view)
 def corn_plant(ctx, cx, cy, r, healthy=1.0, rot=0.0, seed=0):
     """Top-down maize plant: eight leaves radiating from a centre. healthy 1 = green, 0 = blighted."""
-    green = np.array(hexrgb("#4E8A35")[:3])
-    green2 = np.array(hexrgb("#7FB04A")[:3])
-    sick = np.array(hexrgb("#B79A3A")[:3])
-    dead = np.array(hexrgb("#7A5A2A")[:3])
+    green = np.array(hexrgb("#3E8F2E")[:3])
+    green2 = np.array(hexrgb("#86C24A")[:3])
+    sick = np.array(hexrgb("#D2B04A")[:3])
+    dead = np.array(hexrgb("#6E4A22")[:3])
     h = max(0.0, min(1.0, healthy))
     base = green * h + (sick * min(1, (1 - h) * 2) + dead * max(0, (1 - h) * 2 - 1)) * (1 - h) / max(1e-6, (1 - h)) * (1 - h) if h < 1 else green
     if h < 1:

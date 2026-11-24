@@ -223,3 +223,13 @@ def title_card(ctx, lt):
 
 # ============================================================================ registry
 RENDERERS = {"coldopen": coldopen}
+
+import segments_a  # noqa: E402
+
+RENDERERS.update(segments_a.RENDERERS)
+
+import segments_b  # noqa: E402
+import segments_c  # noqa: E402
+
+RENDERERS.update(segments_b.RENDERERS)
+RENDERERS.update(segments_c.RENDERERS)

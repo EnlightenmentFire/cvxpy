@@ -1,0 +1,65 @@
+[
+ {
+  "key": "open",
+  "seconds": 25,
+  "versions": 3,
+  "layer": "铺底",
+  "prompt": "dark ambient soundscape, deep sustained synth drone, subtle low pulse, mysterious, cinematic, sparse, no drums, no melody, no vocals"
+ },
+ {
+  "key": "bed",
+  "seconds": 25,
+  "versions": 3,
+  "layer": "铺底",
+  "prompt": "minimal soft piano with warm synth pad, reflective, calm, slow, sparse notes, A minor, 70 bpm, no drums, no vocals"
+ },
+ {
+  "key": "push",
+  "seconds": 25,
+  "versions": 3,
+  "layer": "推进",
+  "prompt": "minimal modern electronic pulse with soft piano, steady, thoughtful, light percussion, 90 bpm, A minor, no vocals"
+ },
+ {
+  "key": "tension",
+  "seconds": 25,
+  "versions": 3,
+  "layer": "推进",
+  "prompt": "tense minimal electronic pulse, soft ticking hi-hat, low synth drone, suspenseful but restrained, steady, 100 bpm, D minor, no vocals"
+ },
+ {
+  "key": "climax",
+  "seconds": 25,
+  "versions": 3,
+  "layer": "高潮",
+  "prompt": "cinematic uplifting piano and strings with soft electronic pulse and deep drums, building, hopeful, emotional, D major, 80 bpm, no vocals"
+ },
+ {
+  "key": "ending",
+  "seconds": 22,
+  "versions": 2,
+  "layer": "结尾",
+  "prompt": "solo piano, warm, gentle, resolving, slow, sparse, reflective ending, D major, no drums, no vocals"
+ },
+ {
+  "key": "victorian",
+  "seconds": 25,
+  "versions": 2,
+  "layer": "铺底·时代色",
+  "prompt": "solo accordion, gentle old english folk waltz, quiet, sparse, nostalgic, slow, 3/4 time, no drums, no vocals"
+ },
+ {
+  "key": "lyre",
+  "seconds": 25,
+  "versions": 2,
+  "layer": "铺底·时代色",
+  "prompt": "ancient greek lyre and harp plucks with low cello drone, solemn, tragic, slow, sparse, D minor, no drums, no vocals"
+ },
+ {
+  "key": "baroque",
+  "seconds": 25,
+  "versions": 2,
+  "layer": "高潮前·时代色",
+  "prompt": "harpsichord with soft string ensemble, stately baroque, calm, measured, D major, 80 bpm, no drums, no vocals"
+ }
+]

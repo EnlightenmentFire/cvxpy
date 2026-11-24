@@ -13,7 +13,7 @@
 | `stills/` | 风格静帧（确认用） |
 | `samples/` | 样音、声音候选、冷启动动画小样 |
 | `render/` | 画面：`engine.py` 基础绘制、`art.py` 插画、`scenes.py` 场景、`segments.py` 动画段落、`timeline.py` 时间轴与字幕切分、`video.py` 逐帧渲染 |
-| `audio/` | 声音：`synth.py` 合成乐器与音效、`plan.py` 每段的声音设计、`mix.py` 混音与压低音乐、`build_audio.py` |
+| `audio/` | 声音：`musicgen_gen.py` 用 MusicGen 生成配乐片段（`music_plan.json` 是提示词）、`music_select.py` 给每个版本打“抢人声”分并检测人声、`music_build.py` 按三层起伏编排、`final_mix.py` 按《配乐规范》侧链混音与两遍 loudnorm、`checks.py` 导出前自检、`synth.py`/`plan.py` 音效 |
 | `tts/` | 配音：`voice_design.py` 设计声音、`narrate.py` 克隆并逐句合成（音高 + ASR 校验）、`postprocess.py` 后期、`robot_voice.py` 英文机器腔 |
 
 ## 配音流程
@@ -31,6 +31,16 @@ python render/stills.py stills                                  # 风格静帧
 python audio/build_audio.py --voice <voice_dir> --robot <robot.wav> --out mix.wav
 python render/video.py --voice <voice_dir> --robot <robot.wav> --out video.mp4 --workers 4
 ```
+
+## 配乐与混音（按《配乐规范》）
+
+1. `musicgen_gen.py`：facebook/musicgen-stereo-medium，按层生成 22–25 秒片段，每层 2–3 版（同一批次）。
+2. `music_select.py --asr`：1–4 kHz 能量占比、瞬态密度、响度起伏、断音/削波，以及“音乐里有没有人声”（ASR），选最不抢人声的一版；同调性的其他版本用来轮换，避免听出循环。
+3. `music_build.py`：铺底（开场—雅典）→ 推进（招聘机器—AI 时代）→ 高潮（1788—今天的办法，总结句后旁白停 2 秒）→ 结尾钢琴独奏；段落间 3 秒等功率交叉淡化，淡入 2 秒、淡出 3 秒。
+4. `final_mix.py`：音乐 volume → 3 kHz −4 dB → 侧链压缩（threshold 0.02 / ratio 10 / attack 15 ms / release 500 ms，由旁白触发）→ 与旁白、音效 amix → 两遍 loudnorm（−16 LUFS，TP −1.5 dBTP，LRA 11）。音乐音量自动迭代到“有旁白时比人声低 16.5 dB 左右”。
+5. `checks.py`：纯人声 / 加配乐 / 模拟手机外放三种情况的 ASR 对比，音乐突然冒出来的位置，导出高潮段单听。
+
+**授权提醒**：MusicGen 权重是 CC-BY-NC-4.0（不可商用）。商业发布请用 `*_nomusic.mp4`，再在视频号里加音乐库配乐（音量 15–25%）。
 
 ## 授权
 
