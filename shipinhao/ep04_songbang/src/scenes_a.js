@@ -109,6 +109,8 @@ scene('meeting', at('1.1') + 1.75, at('1.5') - LEAD, (R, tl, t0) => {
   // 座位
   const seats = h(`<div class="abs" style="left:139px;top:440px;width:802px;height:300px"></div>`, C); const dots = [];
   for (let i = 0; i < 55; i++) { const d = h(`<div class="abs" style="left:${(i % 11) * 73 + 8}px;top:${Math.floor(i / 11) * 60}px;width:42px;height:42px;border-radius:50%;background:#8b7c63"></div>`, seats); dots.push(d); tl.set(d, { o: 0 }); tl.to(d, { o: .85 }, t0 + .2 + (i % 11) * .03 + Math.floor(i / 11) * .08, .3); }
+  const f1 = h(`<div class="abs c" style="left:0;right:0;top:820px"><div style="font:700 36px/50px Hei;color:var(--gold);letter-spacing:10px">本来的议程</div><div style="font:900 124px/170px Song;color:#fff;margin-top:10px">交流经验</div></div>`, C);
+  tl.in(f1, t0 + .3, .5, 20); tl.out(f1, at('1.2') - .1, .35);
   const A = dots[2], B = dots[8];
   [A, B].forEach(d => { d.style.background = '#c9a45c'; d.style.boxShadow = '0 0 0 0 rgba(201,164,92,.5)'; });
   tl.fn(at('1.2'), .6, p => { [A, B].forEach(d => { d.style.boxShadow = `0 0 0 ${(p * 9).toFixed(1)}px rgba(201,164,92,.35)`; d.style.background = p > 0 ? '#e8c273' : '#8b7c63'; }); });
@@ -174,6 +176,7 @@ scene('draft', at('2.1') + 1.5, at('2.3') - LEAD, (R, tl, t0) => {
   const C = R.querySelector('.cam');
   const w1 = who(C, '黄文麟', '时任福建省经委副主任、省企业管理协会副会长 · 50岁', 262, 70); tl.in(w1, t0, .5);
   const w2 = who(C, '滕能香', '时任福建省企业管理协会秘书长', 412, 70); tl.in(w2, cl('2.2', 1) - .2, .5);
+  const gl = src(C, '省经委：省经济委员会，企业的上级主管部门之一', 540, 70); tl.in(gl, t0 + .6, .5, 0);
   const P = h(`<div class="paper lined" style="left:110px;top:590px;width:860px;height:700px;transform-origin:50% 50%"></div>`, C);
   tl.set(P, { o: 0, y: 60, r: -1.6 }); tl.to(P, { o: 1, y: 0 }, t0 + .2, .7);
   const tt = h(`<div class="abs pen blue c" style="left:0;right:0;top:92px;font-size:92px;line-height:150px;letter-spacing:6px">请给我们“松绑”</div>`, P);
@@ -185,7 +188,7 @@ scene('draft', at('2.1') + 1.5, at('2.3') - LEAD, (R, tl, t0) => {
     let d = `M70 ${288 + r * 78}`; let x = 70; const end = r === 3 ? 520 : 790;
     while (x < end) { const dx = 14 + rnd() * 22; d += ` q${(dx / 2).toFixed(1)} ${(-(8 + rnd() * 22)).toFixed(1)} ${dx.toFixed(1)} ${(rnd() * 6 - 3).toFixed(1)}`; x += dx; if (rnd() < .16) { d += ` m${14 + rnd() * 10} 0`; x += 20; } }
     const p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', d); p.setAttribute('fill', 'none'); p.setAttribute('stroke', '#22346d'); p.setAttribute('stroke-width', 3.2); p.setAttribute('stroke-linecap', 'round'); p.setAttribute('opacity', .8); sv.appendChild(p);
-    tl.set(p, { dash: 0 }); tl.to(p, { dash: 1 }, at('2.2') + r * 1.1, 1.3, E.lin);
+    tl.set(p, { dash: 0, o: 0 }); tl.to(p, { o: 1 }, at('2.2') + r * 1.1, .05, E.lin); tl.to(p, { dash: 1 }, at('2.2') + r * 1.1, 1.3, E.lin);
   }
   h(`<div class="src dark" style="left:60px;top:640px">信纸与笔迹为示意</div>`, P);
   const dt = h(`<div class="abs" style="left:520px;top:1010px;width:480px;height:250px;background:rgba(12,10,8,.9);border-left:10px solid var(--gold);padding:22px 30px"><div style="font:700 30px/40px Hei;color:var(--gold);letter-spacing:6px">信上的日期</div><div class="num" style="font-size:112px;line-height:130px;color:var(--cream);white-space:nowrap">3<span style="font:900 56px Song">月</span>22<span style="font:900 56px Song">日</span></div><div style="font:400 24px/30px Hei;color:var(--dim)">据《人民日报》1984年3月30日</div></div>`, C);
@@ -195,11 +198,11 @@ scene('draft', at('2.1') + 1.5, at('2.3') - LEAD, (R, tl, t0) => {
 
 // ═════════ 五样权力 ═════════
 const POW = [
-  { k: '一', n: '用人', id: ['2.4', '2.5'], q: '「副职应由厂长提名……其余干部通通由企业自行任免，上面不要干预。」', bt: '在这之前', b: '连一个车间主任，<br>都要主管部门来任命。', bs: '据黄文麟回忆' },
-  { k: '二', n: '提拔', id: ['2.6', '2.7'], q: '「破除“终身制”和“铁交椅”……真正做到能上能下，能“干”能“工”。」', bt: '名词 · 铁交椅', b: '干部只能上、不能下，<br>坐上去就是一辈子。<br>能干的工人，也上不去。', bs: '能“干”能“工”：干部可以回去当工人' },
-  { k: '三', n: '发奖金', id: ['2.8', '2.9'], q: '「奖金随税利增减而浮动，不封顶，不保底。」可以实行「浮动工资」。', bt: '名词 · 大锅饭 / 浮动工资', b: '大锅饭：干多干少一个样。<br>浮动工资：工资跟着干得好坏上下浮动。', bs: '在这之前，发加班费都要先报批（据黄文麟回忆）' },
-  { k: '四', n: '卖多出来的产品', id: ['2.10', '2.11'], q: '「在完成国家计划指标的情况下，企业自己组织原材料所增产的产品，允许企业自销。」', bt: '在这之前', b: '生产多少，按计划来；<br>生产出来的东西，统购包销。', bs: '据黄文麟回忆' },
-  { k: '五', n: '厂长说了算', id: ['2.12', '2.12'], q: '「改革企业领导制度，试行厂长（经理）负责制，扩大厂长权力。」', bt: '名词 · 厂长负责制', b: '厂里的事厂长说了算，<br>不用层层请示。', bs: '信里只建议：先选几个厂进行试点' },
+  { k: '一', n: '用人', id: ['2.4', '2.5'], q: '「副职应由厂长提名……其余干部通通由企业自行任免，上面不要干预。」', bt: '在这之前', b: '连一个车间主任，<br>都要主管部门来任命。', bs: '副职：副厂长一级 · “在这之前”据黄文麟回忆' },
+  { k: '二', n: '提拔', id: ['2.6', '2.7'], q: '「破除“终身制”和“铁交椅”……真正做到能上能下，能“干”能“工”……」', bt: '名词 · 铁交椅', b: '干部只能上、不能下，<br>坐上去就是一辈子。<br>能干的工人，也上不去。', bs: '能“干”能“工”：干部可以回去当工人' },
+  { k: '三', n: '发奖金', id: ['2.8', '2.9'], q: '「奖金随税利增减而浮动，不封顶，不保底。」可以实行「浮动工资」。', bt: '名词 · 大锅饭 / 浮动工资', b: '大锅饭：干多干少一个样。<br>浮动工资：工资跟着干得好坏上下浮动。', bs: '税利：上交国家的税和利润 · 发加班费要先报批：据黄文麟回忆' },
+  { k: '四', n: '卖多出来的产品', id: ['2.10', '2.11'], q: '「在完成国家计划指标的情况下，企业自己组织原材料所增产的产品，允许企业自销……」', bt: '在这之前', b: '生产多少，按计划来；<br>生产出来的东西，统购包销。', bs: '统购包销：产品由国家统一收购、统一销售 · 据黄文麟回忆' },
+  { k: '五', n: '厂长说了算', id: ['2.12', '2.12'], q: '「改革企业领导制度，试行厂长（经理）负责制，扩大厂长权力……」', bt: '名词 · 厂长负责制', b: '厂里的事厂长说了算，<br>不用层层请示。', bs: '信里只建议：先选几个厂进行试点' },
 ];
 scene('five', at('2.3') - LEAD, en('2.14') + .5, (R, tl, t0) => {
   R.innerHTML = `<div class="bg-desk"></div><div class="cam"></div>`;

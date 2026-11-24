@@ -129,11 +129,16 @@ function buildSubs(max = 19) {
     }
     if (cur) subs.push(cur);
   }
-  for (let i = 0; i < subs.length; i++) {
-    subs[i].text = strip(subs[i].text);
-    const nx = subs[i + 1];
-    subs[i].end = nx ? Math.min(subs[i].end + .28, nx.start - .02) : subs[i].end + .5;
-    subs[i].start -= .04;
+  // 没有标点可切的长句：手工断行，时间按字数分
+  const SPLIT = { '国务院发出《关于进一步扩大国营工业企业自主权的暂行规定》': ['国务院发出', '《关于进一步扩大国营工业', '企业自主权的暂行规定》'] };
+  const outp = [];
+  for (const s of subs) {
+    s.text = strip(s.text); const parts = SPLIT[s.text];
+    if (!parts) { outp.push(s); continue; }
+    const n = parts.join('').length; let t = s.start;
+    for (const p of parts) { const d = (s.end - s.start) * p.length / n; outp.push({ text: p, start: t, end: t + d }); t += d; }
   }
-  return subs;
+  for (const s of outp) s.start -= .04;
+  for (let i = 0; i < outp.length; i++) { const nx = outp[i + 1]; outp[i].end = nx ? Math.min(outp[i].end + .28, nx.start - .01) : outp[i].end + .5; }
+  return outp;
 }
