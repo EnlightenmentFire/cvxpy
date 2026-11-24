@@ -29,7 +29,7 @@ from script_data import BY_ID, LINES  # noqa: E402
 
 F0_LO, F0_HI = 85.0, 105.0
 ASR_MAX = 0.06
-TEMPO = {"narr": 1.18, "quote": 1.08}
+TEMPO = {"narr": 1.25, "quote": 1.12}
 PAUSE_CAP = 0.40
 
 

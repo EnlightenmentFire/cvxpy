@@ -16,11 +16,14 @@
 | `src/scenes_a.py` `src/scenes_b.py` | 各段动画（冷启动、规章铺满工厂、组织图变形、三条件打分、恶性循环、盾牌……） |
 | `src/render.py` | 合成每一帧，多进程渲染，ffmpeg 编码 |
 | `src/tts.py` | 配音流水线：Qwen3-TTS VoiceDesign 设计参考音 → Base 克隆逐句合成 → 音高/ASR 校验 → 变速、限停顿、高通、电平 |
-| `src/music.py` `src/mix.py` | 程序合成配乐（卷烟机节拍、手风琴、钢琴、停机嗡鸣）与混音（人声下自动压低） |
+| `src/music_gen.py` | 按《配乐规范》用 MusicGen（facebook/musicgen-stereo-medium）分层生成配乐：铺底 / 推进 / 高潮 / 收束 / 结尾，每层两版择优，用音频续写保持调性连贯 |
+| `src/music.py` `src/mix.py` | 音效（冷启动的卷烟机节拍、停机：咔—静半秒—低频嗡鸣）与混音：配乐 3 kHz 削 4 dB、侧链压缩避让人声、两遍 loudnorm 到 -16 LUFS / -1.5 dBTP |
+| `src/final_check.py` | 导出前自检：响度与真峰值、人声下配乐电平、逐句 ASR（纯人声 / 成片 / 模拟手机外放） |
 
-## 依赖（均为可商用许可）
+## 依赖与许可（配乐模型除外，均可商用）
 
 - 配音：Qwen3-TTS-12Hz-1.7B-VoiceDesign / -Base（Apache-2.0）；备选 Kokoro-82M-v1.1-zh（Apache-2.0）
+- 配乐：MusicGen stereo medium —— **模型权重为 CC-BY-NC 4.0（非商用）**。账号如有商业变现，请用同时导出的“无配乐版”，发布时用视频号曲库配乐（规范三之 3）
 - 校验：faster-whisper large-v3-turbo（MIT）、praat-parselmouth（GPL，仅本地分析用，不随成片分发）
 - 字体：思源宋体 / 思源黑体（SIL OFL）、EB Garamond、Parisienne、Caveat、Courier Prime、Special Elite（OFL / Apache）
 - 渲染：skia-python、numpy、Pillow、ffmpeg；变速：rubberband（保留共振峰）
