@@ -7,7 +7,10 @@
 | `龙场不是书斋顿悟.mp4` | 成片 |
 | `01_史实清单.md` | 片中每一句史实的出处与原文，以及与流行说法不符之处 |
 | `02_脚本与分镜.md` | 逐句的时间、画面、旁白、屏幕文字、出处标注（由程序从分镜数据生成，与成片一致） |
+| `封面.png` | 片名画面，可作封面 |
 | `src/` | 全部制作脚本 |
+| `assets/voice_prompt.wav` | 旁白的参考音色（由 Kokoro 预置男声生成，供 CosyVoice2 沿用同一音色） |
+| `assets/timeline.json` | 成片的时间线 |
 
 ## 素材与授权
 
@@ -42,6 +45,7 @@
 
 ```bash
 python src/fetch_map.py  <work>                 # 抓高程瓦片与 Natural Earth
+python src/make_voice_prompt.py zm_029       # 生成参考音色（已附在 assets/voice_prompt.wav，放到 <work>/audio/prompt/zm_029_prompt.wav）
 python src/tts_run.py    <work>                 # 逐句合成旁白（需要 CosyVoice2 模型与参考音色）
 python src/prep_narr.py  <work> 1.09            # 裁静音、统一响度、整体提速 9%
 python src/make_timeline.py <work>              # 由配音时长生成时间线
