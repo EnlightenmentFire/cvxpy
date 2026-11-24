@@ -75,7 +75,7 @@ function chairSVG(parent,x,y,sc){const g=svg('g',{transform:`translate(${x},${y}
   svg('path',{d:'M-70,-210 Q0,-232 70,-210'},g);svg('path',{d:'M-56,-212 L-56,0 M56,-212 L56,0'},g);svg('rect',{x:-18,y:-208,width:36,height:120},g);
   svg('path',{d:'M-78,-88 L78,-88 L78,-66 L-78,-66 Z',fill:'#1b1814'},g);svg('path',{d:'M-70,-66 L-70,90 M70,-66 L70,90 M-70,40 L70,40'},g);
   svg('path',{d:'M-78,-88 L-96,-150 L-56,-150 M78,-88 L96,-150 L56,-150'},g);return g;}
-E.add({id:'seats',a:C('c0_4')-.05,b:C('c1_1')-2.3,chap:'',
+E.add({id:'seats',a:C('c0_4')-.05,b:C('c1_1')-2.05,chap:'',
   build(r,s){h('div','bg light',null,r);
     const sv=svg('svg',{width:1080,height:1920,style:'position:absolute;left:0;top:0'},r);
     s.cols=[['革命黨','1903 —',190],['袁世凱','1912 —',540],['段祺瑞','1924 —',890]].map(([n,y,x],i)=>{
@@ -112,7 +112,7 @@ E.add({id:'subao',nokb:true,a:C('c1_1')-.1,b:C('c1_2')-.05,chap:CH1,
   },
   update(t,lt,s){const a=C('c1_1'),d=CE('c1_1')-a;const z=P(t,a,d+1,ease.io2);
     s.cam.style.transform=`scale(${lerp(1.04,1,z)})`;
-    s.heads.forEach((c,i)=>{c.style.opacity=P(t,a+d*.62+i*.28,.4);});
+    s.heads.forEach((c,i)=>{c.style.opacity=P(t,a+d*.22+i*.3,.4);});
     fin(s.tag,t,a+d*.2,.5,24);fin(s.def,t,a+d*.38,.6,24);s.cap.style.opacity=P(t,a+d*.7,.5);}
 });
 E.add({id:'list',a:C('c1_2')-.1,b:C('c1_3')-.05,chap:CH1,

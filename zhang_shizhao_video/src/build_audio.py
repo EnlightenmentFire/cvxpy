@@ -7,9 +7,9 @@ sys.path.insert(0,HERE)
 from script import S
 SR=48000
 SEG=os.path.join(ROOT,'audio',os.environ.get('VOICE','seg_A'))
-START=0.9; GAP=0.30; GAP_Q=0.42; CH_GAP=2.9
+START=0.9; GAP=0.27; GAP_Q=0.40; CH_GAP=2.6
 EXTRA={'c0_2':1.3,'c6_6':.5,'c6_13':1.3,'c7_1':.9,'c7_2':.9,'c7_3':1.6}
-TAIL=6.5
+TAIL=5.5
 
 def load(i,est):
     f=f'{SEG}/{i}.wav'
@@ -85,7 +85,7 @@ last={c:max(tim[s[0]][1] for s in S if s[1]==c) for c in chs}
 MOOD={'c0':((1,2),(0,4),4.0,False),'c1':((2,3),(1,7),4.0,False),'c2':((3,4),(4,10),3.2,False),'c3':((2,3),(1,7),3.6,True),
       'c4':((1,3),(2,8),4.4,False),'c5':((3,4),(4,10),3.0,False),'c6':((2,3),(0,6),3.6,True),'c7':((1,2),(1,6),4.8,False)}
 for ci,c in enumerate(chs):
-    t0=first[c]-(2.6 if c not in('c0','c7') else 0.5); t1=(first[chs[ci+1]]-2.9) if ci+1<len(chs) else total-1.5
+    t0=first[c]-(2.4 if c not in('c0','c7') else 0.5); t1=(first[chs[ci+1]]-2.6) if ci+1<len(chs) else total-1.5
     (n0,n1),(lo,hi),bar,pulse=MOOD[c]; idx=rng.integers(lo,hi); tb=t0
     while tb<t1-1:
         k=rng.integers(n0,n1+1); slots=sorted(rng.choice(8,size=k,replace=False))
@@ -97,7 +97,7 @@ for ci,c in enumerate(chs):
         if pulse:
             for q in range(2): add(thud()*0.5,tb+q*bar/2,pan=.5,g=.5)
         tb+=bar
-    if c not in('c0','c7'): add(bell(P['D3'],5.0),first[c]-2.6,pan=.5,g=.55)
+    if c not in('c0','c7'): add(bell(P['D3'],5.0),first[c]-2.4,pan=.5,g=.55)
 add(bell(P['D2']*2,6.0),0.15,pan=.5,g=.5)
 add(pluck(P['D3'],6,0.9),total-5.5,g=.9); add(pluck(P['A3'],6,0.9),total-5.4,g=.6); add(pluck(P['D4'],6,0.9),total-5.3,g=.5)
 # 持续低音
@@ -132,7 +132,7 @@ def hit(t0,g=1.0):
     b=thud(); a=int(t0*SR)
     if a+len(b)<N: sfx[a:a+len(b),0]+=b*g; sfx[a:a+len(b),1]+=b*g
 hit(C('c0_2')+.55+.2,1.0)
-for c in ['c1','c2','c3','c4','c5','c6']: hit(first[c]-2.75+.15+.2,.7)
+for c in ['c1','c2','c3','c4','c5','c6']: hit(first[c]-2.5+.15+.2,.7)
 d=CE('c0_4')-C('c0_4')
 for i in range(3): hit(C('c0_4')+d*.42+i*.18+.2,.5)
 hit(C('c1_2')+.25+.2,.8)

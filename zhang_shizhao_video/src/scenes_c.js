@@ -116,10 +116,10 @@ E.add({id:'luxun',a:C('c5_5')-.1,b:C('c5_6')-.05,chap:CH5,
     s.n.style.opacity=P(t,a+d*.24,.5);reveal(s.qs,t,a+d*.45,d*.5);s.g.style.opacity=P(t,a+d*.97,.5);fin(s.src,t,a+1,.6,12);}
 });
 quoteScene({id:'reply',a:C('c5_6')-.1,b:C('c5_7')-.05,chap:CH5,tag:['章士钊','两年后 · 重刊此文时加的按语','di'],who:'《甲寅》周刊<br>1925 年 9 月',
-  cols:['此等小節','寧關謀篇本旨'],x:900,y:520,fs:104,pitch:200,dots:[null,[0,1]],
+  cols:['此等小節','寧關謀篇本旨'],x:900,y:500,fs:92,pitch:190,dots:[null,[0,1]],
   qa:C('c5_6')+(CE('c5_6')-C('c5_6'))*.3,qd:(CE('c5_6')-C('c5_6'))*.3,
   gloss:[['寧＝难道',420,560]],
-  plain:{html:'这点小地方，<mark>跟文章的主旨有什么关系？</mark>',at:C('c5_6')+(CE('c5_6')-C('c5_6'))*.64,y:1180},
+  plain:{html:'这点小地方，<mark>跟文章的主旨有什么关系？</mark>',at:C('c5_6')+(CE('c5_6')-C('c5_6'))*.64,y:1160,fs:44},
   src:['原文','《甲寅》周刊第1卷第9号（1925年9月12日）按语；据《鲁迅全集》注释引文'],
 });
 takeWebScene({id:'take5',a:C('c5_7')-.1,b:CE('c5_7')+.9,chap:CH5,html:'他那支笔，头一回碰上了<span class="red">不买账的人。</span>',fs:46,old:['zsz','ymz','zty','wzh','szs','wrn','wcq','hx','ysk'],add:['lx'],labels:{'zsz-lx':'笔战'}});
