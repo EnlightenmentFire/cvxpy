@@ -12,6 +12,8 @@ import sys
 import cv2
 import numpy as np
 
+cv2.setNumThreads(1)       # 并行渲染时每个进程只用一个线程，免得互相抢
+
 import gfx
 from gfx import (W, H, FPS, rgb, PAPER, BRIGHT, GREY, DIM, EMBER, COOL, FACT, text_sprite, blit, blit_blur,
                  add_glow, smooth, ease, ramp, window, flicker)
@@ -62,8 +64,24 @@ class Film:
              (t0('f02'), 'pai'), (t0('f03'), 'map'), (t0('f04'), 'ember'), (t0('f07'), 'map'), (t0('f08'), 'dawn2'),
              (t0('g01'), 'map'), (t0('g06'), 'last'), (t0('h01'), 'dark2'), (t0('h03'), 'ridge3'),
              (t0('h04'), 'map'), (self.tl['end'][0], 'endcard')]
-        # 新场景比那句话早 0.55 秒到位
-        self.schedule = [(max(t - 0.55, 0.0), k) for t, k in s]
+        # 新场景比那句话早 0.45 秒到位
+        self.schedule = [(max(t - 0.45, 0.0), k) for t, k in s]
+        # 换场景前的最后一句：字要先淡出，背景再交叠
+        def scene_at(t):
+            key = self.schedule[0][1]
+            for ts, k in self.schedule:
+                if t >= ts:
+                    key = k
+            return key
+        self.early = set()
+        for i, bid in enumerate(sb.ORDER):
+            nxt_t = self.t0(sb.ORDER[i + 1]) if i + 1 < len(sb.ORDER) else self.tl['end'][0]
+            if scene_at(self.t0(bid) + 0.01) != scene_at(nxt_t + 0.01):
+                self.early.add(bid)
+
+    def t_out(self, bid):
+        """这一句的字淡出完毕的时刻。"""
+        return self.B[bid][2] - (0.80 if bid in self.early else 0.04)
 
     def scene(self, key):
         if key not in self._scenes:
@@ -97,7 +115,7 @@ class Film:
         GZ, GZb = Camera(108.2, 25.4, 23.5, .45), Camera(108.6, 25.5, 23.0, .45)
         SOUTH, SOUTHb = Camera(113.6, 25.5, 26.5, .40), Camera(113.85, 25.45, 25.8, .40)
         LC0, LC, LCb = Camera(109.6, 27.2, 15.0, .44), Camera(106.75, 26.95, 8.4, .40), Camera(106.6, 27.0, 8.0, .40)
-        LC2, LC2b = Camera(106.1, 27.05, 7.4, .26), Camera(105.95, 27.08, 7.1, .26)
+        LC2, LC2b = Camera(106.1, 27.05, 7.4, .30), Camera(105.95, 27.08, 7.1, .30)
         NG0, NG, NGb = Camera(114.2, 25.9, 13.5, .42), Camera(114.95, 25.25, 8.6, .38), Camera(115.0, 25.2, 8.3, .38)
         NG2, NG2b = Camera(114.75, 25.15, 7.4, .36), Camera(114.8, 25.12, 7.2, .36)
         NG3, NG3b = Camera(114.7, 25.1, 7.2, .36), Camera(114.74, 25.08, 7.0, .36)
@@ -140,10 +158,11 @@ class Film:
             t0, _, tnx = self.B[bid]
             if tg is None:
                 continue
-            if runs and runs[-1][0] == tg and abs(runs[-1][2] - t0) < 0.05:
-                runs[-1][2] = tnx
+            if runs and runs[-1][0] == tg and abs(runs[-1][3] - t0) < 0.05:
+                runs[-1][2] = self.t_out(bid) + 0.09
+                runs[-1][3] = tnx
             else:
-                runs.append([tg, t0, tnx])
+                runs.append([tg, t0, self.t_out(bid) + 0.09, tnx])
         self.tag_runs = runs
         secs = []
         for i, (bid, name) in enumerate(sb.SECTIONS):
@@ -204,8 +223,8 @@ class Film:
     def bg_dawn(self, t):
         if t < self.t0('e12'):
             a = ramp(t, self.seg('e11', 0) + 1.2, self.seg('e11', 0) + 3.2)          # 盖起一间屋
-            return self._dawn(t, self.t0('e10'), -90, [(2, 1180, -6, 2.3, 1.0 * a, 1.1)])
-        return self._dawn(t, self.t0('e15'), 20, [(2, 1180 + 0, -6, 2.3, 0.9, 1.1), (1, 760, -5, 1.6, 0.7, 2.2)])
+            return self._dawn(t, self.t0('e10'), -90, [(3, 1830, -7, 2.4, 1.0 * a, 1.1)])
+        return self._dawn(t, self.t0('e15'), 20, [(3, 1830, -7, 2.4, 0.9, 1.1), (2, 560, -6, 1.8, 0.7, 2.2)])
 
     def bg_dawn2(self, t):
         tref = self.t0('f08')
@@ -271,7 +290,7 @@ class Film:
             x = x0 + c_ * (tw + gx)
             y = 190 + r_ * (th + 56)
             lit = float(np.clip(1 - abs(turn - k), 0, 1)) if turn > -0.5 else 0.0
-            col = np.array(PALE, np.float32) * (0.36 + 0.50 * lit) + np.array(WARM, np.float32) * 0.25 * lit
+            col = np.array(PALE, np.float32) * (0.50 + 0.40 * lit) + np.array(WARM, np.float32) * 0.25 * lit
             ov = np.zeros((th + 8, tw + 8), np.uint8)
             cv2.rectangle(ov, (4, 4), (tw + 3, th + 3), 255, 1, cv2.LINE_AA)
             for j in range(4):                              # 牌上的字：几道短竖线示意
@@ -393,7 +412,7 @@ class Film:
             place('贵阳', a * 0.8, size=30, r=3.5, dx=0, dy=34, anchor='c')
             ta = seg('e03', 0) if first else t0('e12') - 3
             a2 = ramp(t, ta + 0.3, ta + 1.6)
-            region_label(105.1, 26.35, '贵州宣慰司　水西安氏', a2 * 0.95, size=34, spacing=8)
+            region_label(105.6, 27.68, '贵州宣慰司　水西安氏', a2 * 0.95, size=34, spacing=8)
             tr = seg('e03', 1) if first else t0('e12') - 3
             a3 = ramp(t, tr - 0.1, tr + 0.6)
             if a3 > 0.004:
@@ -429,9 +448,9 @@ class Film:
             place('田州', a * ramp(t, seg('g01', 1) + 0.9, seg('g01', 1) + 1.6) * fade_w, color=WARM, glow=1.5)
             place('思恩', a * ramp(t, seg('g01', 1) + 0.1, seg('g01', 1) + 0.8) * fade_w, color=WARM, glow=1.5)
             place('南宁', a * 0.8 * fade_w, size=30, r=3.5)
-            a4 = ramp(t, t0('g04') + 1.6, t0('g04') + 2.4) * fade_w
+            a4 = ramp(t, t1('g03') + 0.9, t1('g03') + 1.6) * fade_w
             place('八寨', a4, anchor='c', dx=0, dy=-38)
-            place('断藤峡', ramp(t, t0('g04') + 2.4, t0('g04') + 3.2) * fade_w)
+            place('断藤峡', ramp(t, t1('g03') + 1.5, t1('g03') + 2.2) * fade_w)
             a5 = ramp(t, t0('g05') + 1.5, t0('g05') + 2.5)
             dying = 1 - 0.55 * ramp(t, t1('g05') + 0.3, tn('g05') + 0.4)
             place('南安', a5, '南安 · 青龙铺', color=WARM, glow=1.9 * dying, anchor='r')
@@ -587,7 +606,7 @@ class Film:
         if bid not in self._layouts:
             self._layouts[bid] = self._layout(bid)
         times = sb.seg_times(bid, t0, t1)
-        out = smooth((tnx - 0.04 - t) / 0.36)
+        out = smooth((self.t_out(bid) - t) / 0.36)
         for it, ts in zip(self._layouts[bid], times):
             a_in = smooth((t - ts) / 0.55)
             a = float(a_in * out)
@@ -604,8 +623,9 @@ class Film:
             if sb.BOARD[bid]['pos'] != 'low':
                 continue
             t0, t1, tnx = self.B[bid]
-            if t0 - 0.6 < t < tnx + 0.4:
-                a = max(a, float(smooth((t - t0 + 0.6) / 0.6) * smooth((tnx + 0.4 - t) / 0.6)))
+            te = self.t_out(bid) + (0.25 if bid in self.early else 0.44)
+            if t0 - 0.6 < t < te:
+                a = max(a, float(smooth((t - t0 + 0.6) / 0.6) * smooth((te - t) / 0.6)))
         if a <= 0.004:
             return
         if not hasattr(self, '_scrim'):
@@ -614,7 +634,7 @@ class Film:
         img *= (1 - self._scrim * a)
 
     def _draw_tags(self, img, t):
-        for tg, ta, tb in self.tag_runs:
+        for tg, ta, tb, _ in self.tag_runs:
             a = window(t, ta - 0.1, tb - 0.05, 0.5, 0.4)
             if a <= 0.004:
                 continue
@@ -632,7 +652,7 @@ class Film:
             if not note:
                 continue
             t0, t1, tnx = self.B[bid]
-            a = window(t, t0 + 0.9, tnx - 0.05, 0.6, 0.4)
+            a = window(t, t0 + 0.9, self.t_out(bid), 0.6, 0.4)
             if a <= 0.004:
                 continue
             sp, sw, sh = text_sprite(note, 'sans-l', 28, T3(DIM * 1.5), 1.5, shadow=5.0)
@@ -652,7 +672,7 @@ class Film:
         rows = [('史实', FACT, '注明出处'), ('理论', COOL, '署名'), ('解读', EMBER, '我们自己的，单独标出')]
         d = t1 - t0
         starts = [t0 + d * 0.22, t0 + d * 0.47, t0 + d * 0.66]
-        out = smooth((tnx - 0.12 - t) / 0.5)
+        out = smooth((self.t_out('a05') - t) / 0.4)
         a0 = float(smooth((t - t0 + 0.1) / 0.5) * out)
         sp, _, _ = text_sprite('片中的话，分三种', 'serif-l', 40, T3(GREY), 8.0)
         blit(img, sp, W / 2, 330, a0)
@@ -713,7 +733,7 @@ class Film:
                 idx = i
         key = sch[idx][1]
         img = self.bg(key, t)
-        XF = 1.1
+        XF = 1.0
         if idx + 1 < len(sch) and sch[idx + 1][0] - t < XF / 2 and sch[idx + 1][1] != key:
             u = 0.5 - (sch[idx + 1][0] - t) / XF
             img = img * (1 - smooth(u)) + self.bg(sch[idx + 1][1], t) * smooth(u)
