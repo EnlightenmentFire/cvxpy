@@ -16,5 +16,5 @@ VBR=$(python3 -c "print(int(min(2600, (92*8192/$DUR) - 140)))")
 echo "duration $DUR  video bitrate ${VBR}k"
 X="-c:v libx264 -preset slow -b:v ${VBR}k -maxrate $((VBR*2))k -bufsize $((VBR*4))k -pix_fmt yuv420p -profile:v high -level 4.2 -r 30 -g 60 -x264-params aq-mode=3:aq-strength=1.1:deblock=-1,-1 -color_primaries bt709 -color_trc bt709 -colorspace bt709"
 ffmpeg -y -loglevel error -i ../out/video_raw.mp4 $X -pass 1 -passlogfile ../out/parts/x264 -an -f mp4 /dev/null
-ffmpeg -y -loglevel error -i ../out/video_raw.mp4 -i ../out/audio_mix.wav $X -pass 2 -passlogfile ../out/parts/x264 -af "loudnorm=I=-16:TP=-1.5:LRA=11" -ar 48000 -c:a aac -b:a 128k -movflags +faststart -shortest "../out/刘琨-一座没有后方的孤城.mp4"
+ffmpeg -y -loglevel error -i ../out/video_raw.mp4 -i ../out/audio_mix.wav $X -pass 2 -passlogfile ../out/parts/x264 -af "loudnorm=I=-16:TP=-2:LRA=11,alimiter=limit=0.8:level=false" -ar 48000 -c:a aac -b:a 128k -movflags +faststart -shortest "../out/刘琨-一座没有后方的孤城.mp4"
 ls -la ../out/*.mp4

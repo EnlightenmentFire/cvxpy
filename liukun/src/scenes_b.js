@@ -82,11 +82,6 @@ SC.s06 = (ctx, t, seg) => {
     dashed(ctx, path.slice().reverse(), go, '#b9c7cf', 3.5, [8, 12], .8 * oldMap * (1 - sstep(L1.e, L2.s, t)));
     cityDot(ctx, cam, 'jinyang', '晋阳', { lit: .3 + .7 * come, size: 40 });
     cityDot(ctx, cam, 'pingyang', '刘聪', { dx: -16, color: '#aab6bd', sub: '平阳', alpha: oldMap });
-    // borrowed bar
-    const ba = win(t, L1.s - .2, L2.s - .6, .6, .6); if (ba > 0) { const x0 = 190, y0 = 1090, w = 700, k = easeOut((t - L1.s) / 1.6);
-      ctx.save(); ctx.globalAlpha = ba; ctx.fillStyle = '#d9c48f'; ctx.fillRect(x0, y0, w * .3, 26); ctx.fillStyle = '#8fa9b8'; ctx.fillRect(x0 + w * .3 + 4, y0, (w * .7 - 4) * k, 26); ctx.restore();
-      htext(ctx, '自己的', x0, y0 - 34, 30, '#d9c48f', { align: 'left', alpha: ba, weight: 600, outline: 5 }); htext(ctx, '借来的', x0 + w, y0 - 34, 30, '#a9c0cd', { align: 'right', alpha: ba * k, weight: 600, outline: 5 });
-      htext(ctx, '示意', x0 + w + 16, y0 + 13, 22, '#7f8e97', { align: 'left', alpha: ba, weight: 500 }); }
     // two capitals
     const cap = sstep(L2.s + .3, L2.s + 1.5, t); if (cap > 0) { cityDot(ctx, cam, 'luoyang', '洛阳', { alpha: cap, dx: 16, sq: true, dim: 1, sub: '311 年陷落' }); cityDot(ctx, cam, 'changan', '长安', { alpha: sstep(L2.s + 1.6, L2.s + 2.6, t), dx: -16, sq: true, lit: .8, sub: '愍帝' });
       const ln_ = projAll(cam, [MAP.city.jinyang, [111.2, 36.4], [109.8, 35.2], MAP.city.changan]); dashed(ctx, smoothPath(ln_, 8), sstep(L2.s + 3, L2.e + .3, t), '#d9c48f', 3, [5, 12], .8); htext(ctx, '上表', lerp(ln_[1][0], ln_[2][0], .5) - 20, lerp(ln_[1][1], ln_[2][1], .5), 30, '#d9c48f', { align: 'right', alpha: sstep(L2.s + 3.6, L2.e, t), weight: 600, outline: 5 }); }
@@ -109,7 +104,7 @@ SC.s06 = (ctx, t, seg) => {
     const d = L5.e - L5.s, end = sstep(L7.s - .3, L7.s + 1.5, t);
     const jp = cityDot(ctx, cam, 'jinyang', '晋阳', { lit: 1, size: 42 }); cityDot(ctx, cam, 'pingyang', '刘聪', { dx: -16, color: '#aab6bd', sub: '平阳' }); cityDot(ctx, cam, 'xiangguo', '石勒', { dx: 16, dy: 26, color: '#aab6bd', sub: '襄国' });
     htext(ctx, '孑然', jp[0], jp[1] - 64, 40, '#d9c48f', { alpha: win(t, L5.s + .2, L5.s + d * .3, .4, .5), weight: 600, spacing: 8, outline: 5 });
-    const atk = projAll(cam, smoothPath([[112.45, 37.7], [112.1, 37.1], [111.75, 36.5], [111.55, 36.2]], 8)), rear = projAll(cam, smoothPath([[114.4, 37.1], [113.8, 37.5], [113.2, 37.75], [112.7, 37.85]], 8));
+    const atk = projAll(cam, smoothPath([[112.45, 37.7], [112.1, 37.1], [111.75, 36.5], [111.55, 36.2]], 8)), rear = projAll(cam, smoothPath([[114.4, 37.1], [113.9, 37.55], [113.4, 37.9], [112.95, 38.0]], 8));
     const a1 = sstep(L5.s + d * .5, L5.s + d * .66, t), a2 = sstep(L5.s + d * .66, L5.s + d * .82, t), hold = 1 - end;
     arrow(ctx, atk, a1 * (1 - .45 * a2), '#d9c48f', 10, .92 * hold, 26); htext(ctx, '进讨', atk[12][0] - 26, atk[12][1], 34, '#d9c48f', { align: 'right', alpha: a1 * hold, weight: 700, outline: 5 });
     arrow(ctx, rear, a2, '#07090c', 14, .95 * hold, 30); arrow(ctx, rear, a2, C.red, 4, .75 * hold, 0); htext(ctx, '袭其后', rear[10][0], rear[10][1] - 44, 34, '#c9837b', { alpha: a2 * hold, weight: 700, outline: 5 });
@@ -124,35 +119,35 @@ SC.s06 = (ctx, t, seg) => {
 
 // ══ s07 等不起 ══
 SC.s07 = (ctx, t, seg) => {
-  const [L0, L1, L2, L3, L4, L5, L6] = SEGL.s07;
+  const [L0, Lc, L1, L2, L3, L4, L5, L6] = SEGL.s07;
   const camA = mkCam(113.2, 38.5, 205, 540, 780), camB = mkCam(113.3, 37.8, 240, 540, 760);
-  let cam = t < L1.s ? camA : camLerp(camA, camB, (t - L1.s) / 4); if (t > L6.s - .8) cam = camLerp(camB, CAM_ALL, (t - L6.s + .8) / 3);
+  const toAll = sstep(Lc.s - .6, Lc.s + 1.6, t) * (1 - sstep(L1.s - .8, L1.s + 1.4, t));
+  let cam = camLerp(camA, camB, (t - L1.s + .8) / 3); if (toAll > 0) cam = camLerp(cam, CAM_ALL, toAll);
   const shake = win(t, L3.s, L4.e, .2, 1.2); ctx.save(); ctx.translate(shake * 5 * Math.sin(t * 31), shake * 4 * Math.sin(t * 27 + 1));
   drawMap(ctx, cam); enemyBlots(ctx, cam, 1, t, [ENEMY_BING[0], ENEMY_BING[1], ENEMY_BING[4]]);
-  const late = sstep(L6.s - .8, L6.s + 1, t);
-  // herd/people particles
+  const end = sstep(L6.s, L6.e + .5, t), local = 1 - toAll;
   const d0 = L0.e - L0.s, flow = sstep(L0.s + d0 * .3, L0.e + .5, t), march = sstep(L2.s - .2, L2.e + .3, t), die = sstep(L2.s + (L2.e - L2.s) * .6, L3.s + .8, t);
   const A = proj(cam, [113.3, 40.1]), B = proj(cam, [112.75, 38.15]), Cc = proj(cam, [113.75, 37.55]); const r = rng(21);
-  for (let i = 0; i < 260; i++) { const ph = r(), ox = (r() - .5), oy = (r() - .5), big = i % 4 === 0; const u = clamp(flow * 1.5 - ph * .5), m = clamp(march * 1.4 - ph * .4);
+  for (let i = 0; i < 260; i++) { const ph = r(), ang = r() * 6.283, rad = Math.sqrt(r()) * .6, ox = Math.cos(ang) * rad, oy = Math.sin(ang) * rad, big = i % 4 === 0; const u = clamp(flow * 1.5 - ph * .5), mm = clamp(march * 1.4 - ph * .4);
     let x = lerp(A[0], B[0], easeIO(u)) + ox * cam.scale * (.5 + .4 * Math.sin(ph * 9)), y = lerp(A[1], B[1], easeIO(u)) + oy * cam.scale * .45;
-    x = lerp(x, Cc[0] + ox * cam.scale * .22, easeIO(m)); y = lerp(y, Cc[1] + oy * cam.scale * .2, easeIO(m));
-    const a = sstep(0, .08, u) * (1 - clamp(die * 1.6 - ph * .6)) * (1 - late); if (a > 0) glow(ctx, x, y, big ? 9 : 6, big ? '#e6cf9c' : '#b9c7cf', .8 * a); }
-  htext(ctx, '部众三万 · 马牛羊十万', 540, 330, 38, '#d9c48f', { alpha: win(t, L0.s + d0 * .35, L1.s, .6, .6), weight: 600, spacing: 4, outline: 5 });
-  htext(ctx, '公元 316 年 · 建兴四年', 540, 384, 30, '#9fb0ba', { alpha: win(t, L0.s + .2, L1.s, .6, .6), weight: 500, spacing: 4, outline: 5 });
-  regionLabel(ctx, cam, [114.4, 39.75], '拓跋部内乱', 32, win(t, L0.s + .6, L1.s + 1, .6, 1), '#b9c7cf');
-  cityDot(ctx, cam, 'jinyang', '晋阳', { lit: (.5 + .5 * flow) * (1 - .8 * die), size: 40 });
-  cityDot(ctx, cam, 'xiangguo', '石勒', { dx: 16, color: '#aab6bd', sub: '襄国', alpha: sstep(L1.s, L1.s + 1, t) });
-  cityDot(ctx, cam, 'leping', '乐平', { dx: 14, dy: -26, size: 30, alpha: sstep(L1.s + .5, L1.s + 1.5, t) * (1 - late) });
-  const sl = projAll(cam, smoothPath([[114.45, 37.1], [114.2, 37.35], [113.95, 37.5]], 8)); arrow(ctx, sl, sstep(L1.s + .3, L1.s + 1.8, t), '#07090c', 12, .95 * (1 - late), 26);
-  // ambush closes
-  const amb = sstep(L2.s + (L2.e - L2.s) * .45, L3.s + .3, t) * (1 - late);
-  if (amb > 0) { blot(ctx, Cc[0] - 20, Cc[1] - cam.scale * .5 * (1 - amb), cam.scale * .5, '#020304', .9 * amb, 2, 1); blot(ctx, Cc[0] + 20, Cc[1] + cam.scale * .5 * (1 - amb), cam.scale * .5, '#020304', .9 * amb, 3, 2); glow(ctx, Cc[0], Cc[1], cam.scale * .45, C.red, .5 * win(t, L2.e - .3, L4.e, .5, 2)); htext(ctx, '设伏', Cc[0] + cam.scale * .5, Cc[1] + 12, 34, '#c9837b', { align: 'left', alpha: win(t, L2.s + (L2.e - L2.s) * .5, L4.e, .4, 1), weight: 700, outline: 5 }); }
-  regionLabel(ctx, cam, [112.2, 38.7], '并州', 54, (1 - late) * (1 - .6 * die), '#c8bfa6');
-  // two capitals go dark
-  if (late > 0) { const off = sstep(L6.s + 1.6, L6.s + 3.2, t);
-    cityDot(ctx, cam, 'luoyang', '洛阳', { alpha: late, dx: 16, sq: true, dim: 1, sub: '311 年陷落' });
-    cityDot(ctx, cam, 'changan', '长安', { alpha: late, dx: -16, sq: true, lit: .9 * (1 - off), dim: off > .6 ? 1 : 0, sub: off > .5 ? '316 年冬陷落' : '愍帝' });
-    const jp = proj(cam, MAP.city.jinyang); const bk = sstep(L6.s + 4, L6.e, t); blot(ctx, jp[0], jp[1] + 150, 300 * bk, '#020304', .8 * bk, 1, .5); }
+    x = lerp(x, Cc[0] + ox * cam.scale * .22, easeIO(mm)); y = lerp(y, Cc[1] + oy * cam.scale * .2, easeIO(mm));
+    const al = sstep(0, .08, u) * (1 - clamp(die * 1.6 - ph * .6)); if (al > 0) glow(ctx, x, y, (big ? 9 : 6) * Math.sqrt(cam.scale / 205), big ? '#e6cf9c' : '#b9c7cf', .8 * al); }
+  htext(ctx, '众三万 · 马牛羊十万', 540, 330, 40, '#e6cf9c', { alpha: win(t, L0.s + d0 * .35, Lc.s - .3, .6, .5), weight: 700, spacing: 4, outline: 6 });
+  htext(ctx, '公元 316 年 · 建兴四年（《资治通鉴》系年）', 540, 386, 28, '#b7c4cc', { alpha: win(t, L0.s + .2, Lc.s - .3, .6, .5), weight: 500, spacing: 2, outline: 5 });
+  regionLabel(ctx, cam, [114.4, 39.75], '拓跋部内乱', 32, win(t, L0.s + .6, Lc.s, .6, .6) * local, '#b9c7cf');
+  cityDot(ctx, cam, 'jinyang', '晋阳', { lit: (.5 + .5 * flow) * (1 - .8 * die) * (1 - .7 * end), size: 40 });
+  cityDot(ctx, cam, 'xiangguo', '石勒', { dx: 16, color: '#aab6bd', sub: toAll > .3 ? '' : '襄国', alpha: sstep(L1.s - .5, L1.s + .5, t) });
+  cityDot(ctx, cam, 'leping', '乐平', { dx: 14, dy: -30, size: 32, alpha: sstep(L1.s + .5, L1.s + 1.5, t) });
+  const sl = projAll(cam, smoothPath([[114.45, 37.1], [114.2, 37.35], [113.95, 37.5]], 8)); arrow(ctx, sl, sstep(L1.s + .3, L1.s + 1.8, t), '#07090c', 12, .95 * local, 26);
+  const amb = sstep(L2.s + (L2.e - L2.s) * .45, L3.s + .3, t);
+  if (amb > 0) { blot(ctx, Cc[0] - 20, Cc[1] - cam.scale * .5 * (1 - amb), cam.scale * .5, '#020304', .9 * amb, 2, 1); blot(ctx, Cc[0] + 20, Cc[1] + cam.scale * .5 * (1 - amb), cam.scale * .5, '#020304', .9 * amb, 3, 2); glow(ctx, Cc[0], Cc[1], cam.scale * .45, C.red, .5 * win(t, L2.e - .3, L4.e, .5, 2)); htext(ctx, '设伏', Cc[0] + cam.scale * .5, Cc[1] + 12, 36, '#c9837b', { align: 'left', alpha: win(t, L2.s + (L2.e - L2.s) * .5, L4.e, .4, 1), weight: 700, outline: 5 }); }
+  regionLabel(ctx, cam, [112.2, 38.7], '并州', 54, local * (1 - .6 * die) * (1 - .6 * end), '#c8bfa6');
+  // two capitals go dark (told before the battle, as in the Tongjian's order)
+  if (toAll > 0) { const dc = Lc.e - Lc.s, off = sstep(Lc.s + dc * .25, Lc.s + dc * .5, t);
+    cityDot(ctx, cam, 'luoyang', '洛阳', { alpha: toAll, dx: 16, sq: true, dim: 1, sub: '311 年陷落' });
+    cityDot(ctx, cam, 'changan', '长安', { alpha: toAll, dx: -16, sq: true, lit: .9 * (1 - off), dim: off > .6 ? 1 : 0, sub: off > .5 ? '316 年冬陷落' : '愍帝' });
+    htext(ctx, '两京', 540, 330, 64, '#e2dccb', { fam: F.brush, weight: 400, alpha: toAll * sstep(Lc.s + dc * .6, Lc.s + dc * .8, t), spacing: 30 }); }
+  if (end > 0) { const jp = proj(cam, MAP.city.jinyang); blot(ctx, jp[0], jp[1] + 60, 420 * end, '#020304', .75 * end, 1, .5); htext(ctx, '输一次，就没有第二次', 540, 330, 44, '#e2dccb', { alpha: sstep(L6.s + .3, L6.s + 1.4, t), weight: 700, spacing: 6, outline: 6 }); }
   ctx.restore();
 };
 
@@ -180,14 +175,13 @@ SC.s08 = (ctx, t, seg) => {
       stroke(ctx, [[e[0] - 46, e[1] - 6], [e[0] + 46, e[1] - 10]], 9, C.red, .9 * jk, { taper: .5, u1: bar }); htext(ctx, '屡求返命，朝廷不许', e[0] - 60, e[1] - 12, 28, '#c9a39c', { align: 'right', alpha: bar * jk, weight: 600, outline: 5 }); } }
   // Duan clans gather & scatter
   const g = sstep(L4.s, L4.s + 1, t);
-  if (g > 0) { const d4 = L4.e - L4.s, G = [116.3, 39.35]; const come = sstep(L4.s + .6, L4.s + d4 * .4, t), leave = sstep(L4.s + d4 * .5, L4.s + d4 * .75, t);
+  if (g > 0) { const d4 = L4.e - L4.s, G = [116.3, 39.35]; const come = sstep(L4.s + .6, L4.s + d4 * .3, t), leave = sstep(L4.s + d4 * .36, L4.s + d4 * .6, t);
     cityDot(ctx, cam, 'ji', '', { lit: 1 }); const gp = proj(cam, G); ctx.save(); ctx.globalAlpha = g * .9; ctx.strokeStyle = '#d9c48f'; ctx.lineWidth = 2.5; ctx.setLineDash([5, 7]); ctx.beginPath(); ctx.arc(gp[0], gp[1], 40, 0, 7); ctx.stroke(); ctx.restore(); htext(ctx, '固安 · 会师', gp[0], gp[1] + 70, 30, '#d9c48f', { alpha: g, weight: 600, outline: 5 });
     const mine = projAll(cam, [MAP.city.ji, [116.33, 39.6], [116.31, 39.47]]); arrow(ctx, smoothPath(mine, 6), come, '#e6cf9c', 9, .95 * g, 22); htext(ctx, '刘琨 · 段匹磾', proj(cam, MAP.city.ji)[0] - 26, proj(cam, MAP.city.ji)[1] - 8, 32, '#e6cf9c', { align: 'right', alpha: g, weight: 700, outline: 6 });
     [['疾陆眷（兄）', [118.6, 40.0], [117.3, 39.9]], ['涉复辰（叔）', [118.5, 39.5], [117.3, 39.45]], ['末柸（从弟）', [118.3, 39.0], [117.2, 39.0]]].forEach(([nm, from, mid], i) => {
       const pth = projAll(cam, smoothPath([from, mid, [116.5 + i * .02, 39.42 - i * .05]], 8)); const u = clamp(come - leave * .85); arrow(ctx, pth, .15 + .85 * u, '#9fb6c4', 9, .95 * g, 22);
       htext(ctx, nm, pth[0][0] - 6, pth[0][1] - 30, 30, '#b9c7cf', { align: 'center', alpha: g, weight: 600, outline: 5 }); });
-    { const sa = win(t, L4.s + d4 * .72, L5.s + 1.5, .6, .6); htext(ctx, '《资治通鉴》：以父兄而从子弟，耻也', 540, 1010, 28, '#9fb0ba', { alpha: sa, weight: 500, outline: 4 }); htext(ctx, '《晋书》：末波纳勒厚赂，独不进', 540, 1056, 28, '#9fb0ba', { alpha: sa * sstep(L4.s + d4 * .82, L4.s + d4 * .95, t), weight: 500, outline: 4 }); }
-    htext(ctx, '各引兵还', proj(cam, [117.7, 38.55])[0], proj(cam, [117.7, 38.55])[1], 36, '#c9a39c', { alpha: sstep(L4.s + d4 * .7, L4.s + d4 * .85, t), weight: 700, spacing: 6, outline: 6 });
+    htext(ctx, '联军散去', proj(cam, [117.7, 38.6])[0], proj(cam, [117.7, 38.6])[1], 38, '#c9a39c', { alpha: sstep(L4.s + d4 * .55, L4.s + d4 * .7, t), weight: 700, spacing: 6, outline: 6 });
     const fam = sstep(L5.s + (L5.e - L5.s) * .35, L5.s + (L5.e - L5.s) * .6, t); if (fam > 0) { htext(ctx, '不是一个国家，是一个家族', 540, 330, 40, '#e2dccb', { alpha: fam, weight: 700, spacing: 4, outline: 6 }); } }
 };
 
@@ -219,7 +213,7 @@ SC.s09 = (ctx, t, seg) => {
     const d0 = L0.e - L0.s, u = sstep(L0.s + d0 * .55, L1.s + .4, t) * .56;
     htext(ctx, '段末柸营', 900, 400, 36, '#b9c7cf', { alpha: sstep(L0.s + .5, L0.s + 1.3, t), weight: 700, outline: 5 }); glow(ctx, 900, 470, 70, C.fire, .35);
     htext(ctx, '刘琨 · 征北小城', 240, 1110, 34, '#d9c48f', { alpha: sstep(L0.s + 1.2, L0.s + 2, t), weight: 700, outline: 5 }); glow(ctx, 230, 1040, 60, '#d9c48f', .3);
-    htext(ctx, '俘刘群，使作书，请琨为内应', 540, 300, 32, '#9fb0ba', { alpha: win(t, L0.s + d0 * .4, L1.s, .6, .5), weight: 500, spacing: 3, outline: 5 });
+    htext(ctx, '俘获刘群 · 派人送信 · 请刘琨为内应', 540, 330, 32, '#b7c4cc', { alpha: win(t, L0.s + d0 * .4, L1.s, .6, .5), weight: 500, spacing: 3, outline: 5 });
     dashed(ctx, path, 1, '#6c7880', 2.5, [4, 12], .5); dashed(ctx, path, u, '#e6cf9c', 3.5, [8, 9], .9);
     const p = pointAt(path, u), cut = sstep(L1.s + .3, L1.s + .9, t);
     // patrol slash
@@ -243,9 +237,9 @@ SC.s09 = (ctx, t, seg) => {
 };
 
 // ══ s10 狱中 ══
-const POEM = ['功业未及建', '夕阳忽西流', '何意百炼刚', '化为绕指柔'];
+const POEM = ['何意百炼刚', '化为绕指柔'];
 SC.s10 = (ctx, t, seg) => {
-  const [L0, L2, L3, L4, L5, L6] = SEGL.s10; const death = sstep(L6.s + (L6.e - L6.s) * .55, L6.e + 1.2, t); const d0 = L0.e - L0.s;
+  const [L0, Lp, L2, L3, L4, L5, L6] = SEGL.s10; const death = sstep(L6.s + (L6.e - L6.s) * .55, L6.e + 1.2, t); const d0 = L0.e - L0.s;
   ctx.fillStyle = '#05080b'; ctx.fillRect(0, 0, W, H);
   // window + light shaft
   const wx = 700, wy = 330, ww = 210, wh = 250, la = (1 - death) * (.85 + .15 * noise1(t * .8, 4));
@@ -257,19 +251,19 @@ SC.s10 = (ctx, t, seg) => {
   const px = 150, py = 640, pw = 470, ph = 520; ctx.save(); ctx.translate(px + pw / 2, py + ph / 2); ctx.rotate(-.035); ctx.globalAlpha = .5 + .5 * (1 - death * .8);
   ctx.fillStyle = '#b9b29c'; ctx.shadowColor = 'rgba(0,0,0,.7)'; ctx.shadowBlur = 30; ctx.fillRect(-pw / 2, -ph / 2, pw, ph); ctx.shadowBlur = 0;
   ctx.globalCompositeOperation = 'multiply'; ctx.globalAlpha *= .5; ctx.drawImage(paperTex(), 0, 0, 300, 330, -pw / 2, -ph / 2, pw, ph); ctx.globalCompositeOperation = 'source-over'; ctx.restore();
-  const rv = [sstep(L0.s + d0 * .35, L0.s + d0 * .7, t), sstep(L0.s + d0 * .7, L0.e + .5, t), sstep(L4.s, L4.e, t), sstep(L4.e, L5.e, t)];
+  const rv = [sstep(Lp.s - .3, Lp.e + .8, t), sstep(Lp.e + .8, L2.s + (L2.e - L2.s) * .7, t)];
   ctx.save(); ctx.translate(px + pw / 2, py + ph / 2); ctx.rotate(-.035);
-  POEM.forEach((c, i) => { const x = 165 - i * 108; if (rv[i] > 0) { vtext(ctx, c, x, -180, 74, '#14110c', { fam: F.brush, weight: 400, reveal: rv[i], lh: 1.2, alpha: .96 }); } });
-  if (rv[3] > .95) blot(ctx, 165 - 3 * 108 + 6, -180 + 74 * 1.2 * 4 + 44, 30 * sstep(L5.e, L5.e + 3, t), '#14110c', .55, 2, 1);
+  POEM.forEach((c, i) => { const x = 82 - i * 164; if (rv[i] > 0) { vtext(ctx, c, x, -200, 80, '#14110c', { fam: F.brush, weight: 400, reveal: rv[i], lh: 1.2, alpha: .96 }); } });
+  if (rv[1] > .95) blot(ctx, 82 - 164 + 6, -200 + 80 * 1.2 * 4 + 46, 30 * sstep(L2.e, L2.e + 4, t), '#14110c', .55, 2, 1);
   ctx.restore();
-  htext(ctx, '狱中赠别驾卢谌 · 谌以常词酬和，殊乖琨心', px + pw / 2 + 60, py + ph + 44, 26, '#8fa0aa', { alpha: win(t, L2.s - .5, L3.s, .6, .6), weight: 500, spacing: 2 });
+  htext(ctx, '狱中赠部下卢谌诗 · 末二句', px + pw / 2, py + ph + 46, 28, '#b7c4cc', { alpha: win(t, Lp.s + 1, L6.s, .6, .6), weight: 500, spacing: 2, outline: 4 });
   // seated figure, back view, in the shaft
   figure(ctx, 800, 1260, 330, { sit: true, back: true, color: '#020304', robeW: 1.1 });
   // two sources on Wang Dun
-  const d2 = L2.e - L2.s, s1 = win(t, L2.s + .3, L3.s + .2, .5, .5), s2 = win(t, L2.s + d2 * .68, L3.s + .2, .5, .5);
+  const d2 = L2.e - L2.s, s1 = win(t, L2.s + .3, L3.s + .2, .5, .5), s2 = win(t, L2.s + d2 * .66, L3.s + .2, .5, .5);
   if (s1 > 0) { ctx.save(); ctx.globalAlpha = s1 * .82; ctx.fillStyle = '#060a0e'; ctx.fillRect(60, 300, 560, 190); ctx.restore();
     htext(ctx, '《晋书·刘琨传》', 90, 342, 30, '#d9c48f', { align: 'left', alpha: s1, weight: 700 }); htext(ctx, '会王敦密使匹磾杀琨', 90, 390, 34, '#e2dccb', { align: 'left', alpha: s1, weight: 600 });
-    htext(ctx, '《资治通鉴》卷九十', 90, 442, 30, '#9fb0ba', { align: 'left', alpha: s2, weight: 700 }); htext(ctx, '未载此事', 380, 442, 32, '#b9c7cf', { align: 'left', alpha: s2, weight: 600 }); }
+    htext(ctx, '《资治通鉴》卷九十', 90, 442, 30, '#b7c4cc', { align: 'left', alpha: s2, weight: 700 }); htext(ctx, '未载王敦事', 380, 442, 32, '#d5dde2', { align: 'left', alpha: s2, weight: 600 }); }
   const da = sstep(L6.s + (L6.e - L6.s) * .7, L6.e + .6, t); htext(ctx, '太兴元年（318）五月癸丑', 540, 300, 38, '#b5c2c9', { alpha: da, weight: 600, spacing: 4, outline: 5 }); htext(ctx, '年四十八', 540, 362, 44, '#e2dccb', { alpha: da * sstep(L6.e - .3, L6.e + .8, t), weight: 700, spacing: 12, outline: 5 });
 };
 
@@ -297,13 +291,14 @@ SC.s11 = (ctx, t, seg) => {
     vtext(ctx, '不举琨哀', 930, 600, 58, '#e2dccb', { fam: F.brush, weight: 400, alpha: win(t, L1.e - .4, L3.s, .8, .6), reveal: sstep(L1.e - .4, L2.s + 1, t), lh: 1.25 });
     fadeBlack(ctx, sstep(tM - .3, tM + .4, t));
   } else {
-    const cam = mkCam(116.6, 38.9, 190, 540, 760); drawMap(ctx, cam); const d = L4.e - L4.s, off = sstep(L4.s + d * .3, L4.s + d * .7, t), lost = sstep(L4.s + d * .78, L4.e, t);
+    const cam = mkCam(116.6, 38.9, 190, 540, 760); drawMap(ctx, cam); const d = L4.e - L4.s, off = sstep(L4.s + d * .22, L4.s + d * .5, t), lost = sstep(L4.s + d * .52, L4.s + d * .72, t);
     enemyBlots(ctx, cam, .4 + .6 * lost, t, [[114.5, 37.2, 1.6, 2, 0], [115.6, 38.6, 1.3, 1, .3], [116.4, 39.6, 1.2, 3, .55]]);
     regionLabel(ctx, cam, [117.4, 40.4], '幽州 · 段匹磾', 38, 1 - .5 * lost, '#b9c7cf'); cityDot(ctx, cam, 'ji', '蓟', { lit: 1 - off, dim: lost > .5 ? 1 : 0, size: 42 });
     const r = rng(4); for (let i = 0; i < 26; i++) { const a = r() * 6.28, rr = 40 + r() * 150, jp = proj(cam, MAP.city.ji); const x = jp[0] + Math.cos(a) * rr * (1 + off * 2.2), y = jp[1] + Math.sin(a) * rr * .7 * (1 + off * 2.2); glow(ctx, x, y, 7, i % 2 ? '#e6cf9c' : '#b9c7cf', .8 * (1 - off)); }
-    htext(ctx, '晋人与各部，皆不附', 540, 330, 40, '#e2dccb', { alpha: win(t, L4.s + d * .32, L4.e + 1, .6, .6), weight: 700, spacing: 6, outline: 6 });
+    htext(ctx, '晋人与各部，皆不附', 540, 330, 40, '#e2dccb', { alpha: win(t, L4.s + d * .24, L4.e + 1, .6, .6), weight: 700, spacing: 6, outline: 6 });
     htext(ctx, '公元 319 年 · 段匹磾失幽州，奔乐陵', 540, 388, 30, '#9fb0ba', { alpha: lost, weight: 500, spacing: 2, outline: 5 });
     const esc = projAll(cam, smoothPath([MAP.city.ji, [116.9, 38.9], [117.3, 37.9]], 8)); dashed(ctx, esc, lost, '#9fb6c4', 3.5, [8, 10], .9);
+    { const ea = sstep(L4.s + d * .86, L4.e, t); htext(ctx, '后为石勒所得：“常著朝服，持晋节”', 540, 1040, 32, '#e2dccb', { alpha: ea, weight: 600, outline: 5 }); htext(ctx, '——《资治通鉴》卷九十一', 850, 1086, 24, '#b7c4cc', { alpha: ea, align: 'right', weight: 500, outline: 4 }); }
     fadeBlack(ctx, 1 - sstep(tM + .3, tM + 1, t));
   }
 };
@@ -324,12 +319,12 @@ SC.s12 = (ctx, t, seg) => {
         if (off > 0 && off < 1) blot(ctx, xs[i] + (i < 2 ? -30 : 30), y + 40, 90 * off, '#05080b', .5 * (1 - off), 1 + i % 3, i); }); }
     fadeBlack(ctx, sstep(tC - .3, tC + .4, t));
   } else if (t < tD + .4) { // C: Zu Ti
-    const cam = mkCam(115.2, 34.6, 150, 540, 760); drawMap(ctx, cam); const d = L4.e - L4.s, lit = sstep(L4.s + .3, L4.s + d * .3, t), off = sstep(L4.s + d * .75, L4.e + .8, t);
+    const cam = mkCam(115.2, 34.2, 150, 540, 700); drawMap(ctx, cam); const d = L4.e - L4.s, lit = sstep(L4.s + .3, L4.s + d * .3, t), off = sstep(L4.s + d * .75, L4.e + .8, t);
     enemyBlots(ctx, cam, 1, t, [[114.5, 37.0, 1.5, 2, 0], [112.0, 36.6, 1.4, 1, 0], [116.5, 38.2, 1.2, 3, 0]]);
     [[114.8, 34.4, 1.5, 1], [116.2, 33.9, 1.3, 2], [113.6, 34.1, 1.1, 3]].forEach(([lo, la, rd, sd]) => { const p = proj(cam, [lo, la]); blot(ctx, p[0], p[1], rd * cam.scale, '#d9c48f', .2 * lit * (1 - off), sd, sd); });
     regionLabel(ctx, cam, [115.2, 33.45], '祖逖收复河南地', 36, lit * (1 - off), '#d9c48f');
     cityDot(ctx, cam, 'yongqiu', '雍丘', { lit: lit * (1 - off), dim: off > .6 ? 1 : 0, size: 40, sub: off > .5 ? '321 年 · 祖逖卒，年五十六' : '祖逖' }); cityDot(ctx, cam, 'luoyang', '洛阳', { dim: 1, sq: true, dx: -16 }); cityDot(ctx, cam, 'jiankang', '建康', { dx: 16, lit: .5, sub: '朝廷' });
-    const ctl = projAll(cam, smoothPath([MAP.city.jiankang, [117.6, 32.6], [116.4, 33.6], [115.1, 34.4]], 8)); arrow(ctx, ctl, sstep(L4.s + d * .35, L4.s + d * .6, t), '#8fa9b8', 6, .9 * (1 - off), 18); const cp = pointAt(ctl, .45); htext(ctx, '遣戴渊来统', cp[0] + 24, cp[1] + 30, 28, '#a9bcc8', { align: 'left', alpha: sstep(L4.s + d * .45, L4.s + d * .6, t) * (1 - off), weight: 600, outline: 5 });
+    const ctl = projAll(cam, smoothPath([MAP.city.jiankang, [118.2, 32.1], [117.7, 32.0], [117.3, 31.9]], 8)); arrow(ctx, ctl, sstep(L4.s + d * .35, L4.s + d * .6, t), '#8fa9b8', 6, .9 * (1 - off), 18); const cp = pointAt(ctl, 1); glow(ctx, cp[0], cp[1], 40, '#8fa9b8', .4 * sstep(L4.s + d * .5, L4.s + d * .6, t) * (1 - off)); htext(ctx, '戴渊都督六州，镇合肥', cp[0] - 10, cp[1] + 52, 30, '#b7c4cc', { align: 'center', alpha: sstep(L4.s + d * .45, L4.s + d * .6, t) * (1 - off), weight: 600, outline: 5 });
     fadeBlack(ctx, Math.max(1 - sstep(tC + .3, tC + 1, t), sstep(tD - .3, tD + .4, t)));
   } else if (t < tE + .4 || t >= tF + .4) { // D / F: the courtyard, one sword
     const z = 1 + .07 * easeIO((t - tD) / (seg.e - tD)); ctx.save(); ctx.translate(560, 1050); ctx.scale(z, z); ctx.translate(-560, -1050);
@@ -345,7 +340,7 @@ SC.s12 = (ctx, t, seg) => {
     const cam = CAM_ALL; drawMap(ctx, cam); enemyBlots(ctx, cam, 1, t, [[112.6, 37.4, 2.2, 1, 0], [115.5, 38.6, 2.4, 2, 0], [114.2, 35.6, 2.0, 3, 0], [110.0, 35.2, 1.8, 2, 0], [117.2, 36.2, 1.8, 1, 0]]);
     const d = L6.e - L6.s; cityDot(ctx, cam, 'ji', '蓟', { dim: 1, dx: 16, sub: '318 年 · 刘琨' , alpha: sstep(tE + .5, tE + 1.2, t) }); cityDot(ctx, cam, 'yongqiu', '雍丘', { dim: 1, dx: 16, sub: '321 年 · 祖逖', alpha: sstep(L6.s + d * .5, L6.s + d * .7, t) });
     cityDot(ctx, cam, 'luoyang', '洛阳', { dim: 1, sq: true, dx: -16 }); cityDot(ctx, cam, 'changan', '长安', { dim: 1, sq: true, dx: -16 }); cityDot(ctx, cam, 'jiankang', '建康', { dx: 16, lit: .5 });
-    regionLabel(ctx, cam, [113.6, 36.3], '中原', 80, .5, '#6c7880');
+    regionLabel(ctx, cam, [113.25, 33.8], '中原', 84, .95, '#9aa7af');
     fadeBlack(ctx, Math.max(1 - sstep(tE + .3, tE + 1, t), sstep(tF - .3, tF + .4, t)));
   }
 };

@@ -1,0 +1,1442 @@
+[
+ {
+  "id": "n002_42",
+  "file": "n002_42.wav",
+  "text": "深夜鸡叫，古人当作恶声。一个却踢醒另一个，说：",
+  "segments": [
+   "深夜鸡叫，古人当作恶声。一个却踢醒另一个，说："
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 5.689,
+  "cjk_chars": 19,
+  "sec_per_char": 0.299,
+  "synth_wall_sec": 23.5,
+  "rtf": 4.131,
+  "warnings": []
+ },
+ {
+  "id": "n002_7",
+  "file": "n002_7.wav",
+  "text": "深夜鸡叫，古人当作恶声。一个却踢醒另一个，说：",
+  "segments": [
+   "深夜鸡叫，古人当作恶声。一个却踢醒另一个，说："
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 4.748,
+  "cjk_chars": 19,
+  "sec_per_char": 0.25,
+  "synth_wall_sec": 17.0,
+  "rtf": 3.581,
+  "warnings": []
+ },
+ {
+  "id": "n004_42",
+  "file": "n004_42.wav",
+  "text": "这不是坏声音。两人起身而舞，后世叫它闻鸡起舞。",
+  "segments": [
+   "这不是坏声音。两人起身而舞，后世叫它闻鸡起舞。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 4.528,
+  "cjk_chars": 20,
+  "sec_per_char": 0.226,
+  "synth_wall_sec": 16.81,
+  "rtf": 3.713,
+  "warnings": []
+ },
+ {
+  "id": "n004_7",
+  "file": "n004_7.wav",
+  "text": "这不是坏声音。两人起身而舞，后世叫它闻鸡起舞。",
+  "segments": [
+   "这不是坏声音。两人起身而舞，后世叫它闻鸡起舞。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 3.901,
+  "cjk_chars": 20,
+  "sec_per_char": 0.195,
+  "synth_wall_sec": 15.5,
+  "rtf": 3.973,
+  "warnings": []
+ },
+ {
+  "id": "n005_42",
+  "file": "n005_42.wav",
+  "text": "踢人的叫祖替，被踢醒的叫刘昆。两人常说：要是天下大乱，就各去中原闯一片天。",
+  "segments": [
+   "踢人的叫祖替，被踢醒的叫刘昆。两人常说：要是天下大乱，就各去中原闯一片天。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 7.245,
+  "cjk_chars": 32,
+  "sec_per_char": 0.226,
+  "synth_wall_sec": 29.98,
+  "rtf": 4.138,
+  "warnings": []
+ },
+ {
+  "id": "n005_7",
+  "file": "n005_7.wav",
+  "text": "踢人的叫祖替，被踢醒的叫刘昆。两人常说：要是天下大乱，就各去中原闯一片天。",
+  "segments": [
+   "踢人的叫祖替，被踢醒的叫刘昆。两人常说：要是天下大乱，就各去中原闯一片天。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 6.815,
+  "cjk_chars": 32,
+  "sec_per_char": 0.213,
+  "synth_wall_sec": 27.66,
+  "rtf": 4.059,
+  "warnings": []
+ },
+ {
+  "id": "n007_42",
+  "file": "n007_42.wav",
+  "text": "刘昆本不是一块铁。他出身名门，年轻时在洛阳出入富豪石崇的金谷园，又投在权贵门下。史臣说，他那时不过是个轻浮、会钻营的人。",
+  "segments": [
+   "刘昆本不是一块铁。他出身名门，年轻时在洛阳出入富豪石崇的金谷园，又投在权贵门下。史臣说，他那时不过是个轻浮、会钻营的人。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 11.598,
+  "cjk_chars": 53,
+  "sec_per_char": 0.219,
+  "synth_wall_sec": 53.44,
+  "rtf": 4.607,
+  "warnings": []
+ },
+ {
+  "id": "n007_7",
+  "file": "n007_7.wav",
+  "text": "刘昆本不是一块铁。他出身名门，年轻时在洛阳出入富豪石崇的金谷园，又投在权贵门下。史臣说，他那时不过是个轻浮、会钻营的人。",
+  "segments": [
+   "刘昆本不是一块铁。他出身名门，年轻时在洛阳出入富豪石崇的金谷园，又投在权贵门下。史臣说，他那时不过是个轻浮、会钻营的人。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 10.484,
+  "cjk_chars": 53,
+  "sec_per_char": 0.198,
+  "synth_wall_sec": 46.93,
+  "rtf": 4.476,
+  "warnings": []
+ },
+ {
+  "id": "n012_42",
+  "file": "n012_42.wav",
+  "text": "他向朝廷要粮，朝廷答应了。送到没有，史书没写。",
+  "segments": [
+   "他向朝廷要粮，朝廷答应了。送到没有，史书没写。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 3.936,
+  "cjk_chars": 19,
+  "sec_per_char": 0.207,
+  "synth_wall_sec": 14.83,
+  "rtf": 3.769,
+  "warnings": []
+ },
+ {
+  "id": "n012_7",
+  "file": "n012_7.wav",
+  "text": "他向朝廷要粮，朝廷答应了。送到没有，史书没写。",
+  "segments": [
+   "他向朝廷要粮，朝廷答应了。送到没有，史书没写。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 4.133,
+  "cjk_chars": 19,
+  "sec_per_char": 0.218,
+  "synth_wall_sec": 15.31,
+  "rtf": 3.704,
+  "warnings": []
+ },
+ {
+  "id": "n016_42",
+  "file": "n016_42.wav",
+  "text": "可这是一座孤岛。西南，是起兵反晋的刘渊、刘聪父子；东边，后来又多了石勒。能指望的只有朝廷，而朝廷自己，也快撑不住了。",
+  "segments": [
+   "可这是一座孤岛。西南，是起兵反晋的刘渊、刘聪父子；东边，后来又多了石勒。能指望的只有朝廷，而朝廷自己，也快撑不住了。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 13.201,
+  "cjk_chars": 49,
+  "sec_per_char": 0.269,
+  "synth_wall_sec": 58.87,
+  "rtf": 4.459,
+  "warnings": []
+ },
+ {
+  "id": "n016_7",
+  "file": "n016_7.wav",
+  "text": "可这是一座孤岛。西南，是起兵反晋的刘渊、刘聪父子；东边，后来又多了石勒。能指望的只有朝廷，而朝廷自己，也快撑不住了。",
+  "segments": [
+   "可这是一座孤岛。西南，是起兵反晋的刘渊、刘聪父子；东边，后来又多了石勒。能指望的只有朝廷，而朝廷自己，也快撑不住了。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 11.947,
+  "cjk_chars": 49,
+  "sec_per_char": 0.244,
+  "synth_wall_sec": 51.88,
+  "rtf": 4.343,
+  "warnings": []
+ },
+ {
+  "id": "n024_42",
+  "file": "n024_42.wav",
+  "text": "他宠信一个懂音律的徐润。部将灵狐盛劝他除掉此人，反被诬告。刘昆不查，杀了灵狐盛。刘昆的母亲说：",
+  "segments": [
+   "他宠信一个懂音律的徐润。部将灵狐盛劝他除掉此人，反被诬告。刘昆不查，杀了灵狐盛。刘昆的母亲说："
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 8.022,
+  "cjk_chars": 41,
+  "sec_per_char": 0.196,
+  "synth_wall_sec": 33.66,
+  "rtf": 4.196,
+  "warnings": []
+ },
+ {
+  "id": "n024_7",
+  "file": "n024_7.wav",
+  "text": "他宠信一个懂音律的徐润。部将灵狐盛劝他除掉此人，反被诬告。刘昆不查，杀了灵狐盛。刘昆的母亲说：",
+  "segments": [
+   "他宠信一个懂音律的徐润。部将灵狐盛劝他除掉此人，反被诬告。刘昆不查，杀了灵狐盛。刘昆的母亲说："
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 9.439,
+  "cjk_chars": 41,
+  "sec_per_char": 0.23,
+  "synth_wall_sec": 40.28,
+  "rtf": 4.267,
+  "warnings": []
+ },
+ {
+  "id": "n028_42",
+  "file": "n028_42.wav",
+  "text": "太平地方，看错一个人是丢官。孤城里，是城破家亡。",
+  "segments": [
+   "太平地方，看错一个人是丢官。孤城里，是城破家亡。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 4.075,
+  "cjk_chars": 20,
+  "sec_per_char": 0.204,
+  "synth_wall_sec": 14.75,
+  "rtf": 3.619,
+  "warnings": []
+ },
+ {
+  "id": "n028_7",
+  "file": "n028_7.wav",
+  "text": "太平地方，看错一个人是丢官。孤城里，是城破家亡。",
+  "segments": [
+   "太平地方，看错一个人是丢官。孤城里，是城破家亡。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 5.375,
+  "cjk_chars": 20,
+  "sec_per_char": 0.269,
+  "synth_wall_sec": 20.42,
+  "rtf": 3.799,
+  "warnings": []
+ },
+ {
+  "id": "n029_42",
+  "file": "n029_42.wav",
+  "text": "他向北边的拓跋部借兵，那是代地的一支鲜卑势力。他们帮他夺回晋阳，留下部将基旦协守，主力就回去了。",
+  "segments": [
+   "他向北边的拓跋部借兵，那是代地的一支鲜卑势力。他们帮他夺回晋阳，留下部将基旦协守，主力就回去了。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 7.906,
+  "cjk_chars": 43,
+  "sec_per_char": 0.184,
+  "synth_wall_sec": 35.15,
+  "rtf": 4.446,
+  "warnings": []
+ },
+ {
+  "id": "n029_7",
+  "file": "n029_7.wav",
+  "text": "他向北边的拓跋部借兵，那是代地的一支鲜卑势力。他们帮他夺回晋阳，留下部将基旦协守，主力就回去了。",
+  "segments": [
+   "他向北边的拓跋部借兵，那是代地的一支鲜卑势力。他们帮他夺回晋阳，留下部将基旦协守，主力就回去了。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 9.474,
+  "cjk_chars": 43,
+  "sec_per_char": 0.22,
+  "synth_wall_sec": 43.82,
+  "rtf": 4.626,
+  "warnings": []
+ },
+ {
+  "id": "n030_42",
+  "file": "n030_42.wav",
+  "text": "从此，他能在冰州立足，靠的是借来的兵。",
+  "segments": [
+   "从此，他能在冰州立足，靠的是借来的兵。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 4.017,
+  "cjk_chars": 16,
+  "sec_per_char": 0.251,
+  "synth_wall_sec": 14.08,
+  "rtf": 3.505,
+  "warnings": []
+ },
+ {
+  "id": "n030_7",
+  "file": "n030_7.wav",
+  "text": "从此，他能在冰州立足，靠的是借来的兵。",
+  "segments": [
+   "从此，他能在冰州立足，靠的是借来的兵。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 3.646,
+  "cjk_chars": 16,
+  "sec_per_char": 0.228,
+  "synth_wall_sec": 12.9,
+  "rtf": 3.537,
+  "warnings": []
+ },
+ {
+  "id": "n031_42",
+  "file": "n031_42.wav",
+  "text": "洛阳早已被刘聪攻陷，皇族在长安另立皇帝。刘昆上表，把处境说得最清楚：",
+  "segments": [
+   "洛阳早已被刘聪攻陷，皇族在长安另立皇帝。刘昆上表，把处境说得最清楚："
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 7.558,
+  "cjk_chars": 30,
+  "sec_per_char": 0.252,
+  "synth_wall_sec": 31.73,
+  "rtf": 4.198,
+  "warnings": []
+ },
+ {
+  "id": "n031_7",
+  "file": "n031_7.wav",
+  "text": "洛阳早已被刘聪攻陷，皇族在长安另立皇帝。刘昆上表，把处境说得最清楚：",
+  "segments": [
+   "洛阳早已被刘聪攻陷，皇族在长安另立皇帝。刘昆上表，把处境说得最清楚："
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 7.361,
+  "cjk_chars": 30,
+  "sec_per_char": 0.245,
+  "synth_wall_sec": 30.56,
+  "rtf": 4.152,
+  "warnings": []
+ },
+ {
+  "id": "n033_42",
+  "file": "n033_42.wav",
+  "text": "东北方向八个州，石勒灭了七个。朝廷任命的人，只剩我一个。",
+  "segments": [
+   "东北方向八个州，石勒灭了七个。朝廷任命的人，只剩我一个。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 5.457,
+  "cjk_chars": 24,
+  "sec_per_char": 0.227,
+  "synth_wall_sec": 21.86,
+  "rtf": 4.006,
+  "warnings": []
+ },
+ {
+  "id": "n033_7",
+  "file": "n033_7.wav",
+  "text": "东北方向八个州，石勒灭了七个。朝廷任命的人，只剩我一个。",
+  "segments": [
+   "东北方向八个州，石勒灭了七个。朝廷任命的人，只剩我一个。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 4.47,
+  "cjk_chars": 24,
+  "sec_per_char": 0.186,
+  "synth_wall_sec": 17.35,
+  "rtf": 3.881,
+  "warnings": []
+ },
+ {
+  "id": "n036_42",
+  "file": "n036_42.wav",
+  "text": "这就是没有后方：他有盟友，却没有一个能退、能要粮要兵的地方。",
+  "segments": [
+   "这就是没有后方：他有盟友，却没有一个能退、能要粮要兵的地方。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 5.004,
+  "cjk_chars": 26,
+  "sec_per_char": 0.192,
+  "synth_wall_sec": 17.47,
+  "rtf": 3.492,
+  "warnings": []
+ },
+ {
+  "id": "n036_7",
+  "file": "n036_7.wav",
+  "text": "这就是没有后方：他有盟友，却没有一个能退、能要粮要兵的地方。",
+  "segments": [
+   "这就是没有后方：他有盟友，却没有一个能退、能要粮要兵的地方。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 6.362,
+  "cjk_chars": 26,
+  "sec_per_char": 0.245,
+  "synth_wall_sec": 22.53,
+  "rtf": 3.541,
+  "warnings": []
+ },
+ {
+  "id": "n037_42",
+  "file": "n037_42.wav",
+  "text": "公元三一六年，拓跋部内乱。基旦带着三万部众、十万头马牛羊来投。刘昆一下子有了本钱。",
+  "segments": [
+   "公元三一六年，拓跋部内乱。基旦带着三万部众、十万头马牛羊来投。刘昆一下子有了本钱。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 7.059,
+  "cjk_chars": 36,
+  "sec_per_char": 0.196,
+  "synth_wall_sec": 29.07,
+  "rtf": 4.118,
+  "warnings": []
+ },
+ {
+  "id": "n037_7",
+  "file": "n037_7.wav",
+  "text": "公元三一六年，拓跋部内乱。基旦带着三万部众、十万头马牛羊来投。刘昆一下子有了本钱。",
+  "segments": [
+   "公元三一六年，拓跋部内乱。基旦带着三万部众、十万头马牛羊来投。刘昆一下子有了本钱。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 7.059,
+  "cjk_chars": 36,
+  "sec_per_char": 0.196,
+  "synth_wall_sec": 28.02,
+  "rtf": 3.969,
+  "warnings": []
+ },
+ {
+  "id": "n038_42",
+  "file": "n038_42.wav",
+  "text": "这年冬天，长安城破，皇帝投降。两座京城，都没了。",
+  "segments": [
+   "这年冬天，长安城破，皇帝投降。两座京城，都没了。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 4.888,
+  "cjk_chars": 19,
+  "sec_per_char": 0.257,
+  "synth_wall_sec": 18.4,
+  "rtf": 3.764,
+  "warnings": []
+ },
+ {
+  "id": "n038_7",
+  "file": "n038_7.wav",
+  "text": "这年冬天，长安城破，皇帝投降。两座京城，都没了。",
+  "segments": [
+   "这年冬天，长安城破，皇帝投降。两座京城，都没了。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 4.923,
+  "cjk_chars": 19,
+  "sec_per_char": 0.259,
+  "synth_wall_sec": 17.36,
+  "rtf": 3.527,
+  "warnings": []
+ },
+ {
+  "id": "n039_42",
+  "file": "n039_42.wav",
+  "text": "紧接着，石勒来攻。刘昆要趁新兵的锐气决战。基旦劝他：人刚到，还管不住，不如关起门，种地养兵。",
+  "segments": [
+   "紧接着，石勒来攻。刘昆要趁新兵的锐气决战。基旦劝他：人刚到，还管不住，不如关起门，种地养兵。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 7.883,
+  "cjk_chars": 38,
+  "sec_per_char": 0.207,
+  "synth_wall_sec": 31.79,
+  "rtf": 4.033,
+  "warnings": []
+ },
+ {
+  "id": "n039_7",
+  "file": "n039_7.wav",
+  "text": "紧接着，石勒来攻。刘昆要趁新兵的锐气决战。基旦劝他：人刚到，还管不住，不如关起门，种地养兵。",
+  "segments": [
+   "紧接着，石勒来攻。刘昆要趁新兵的锐气决战。基旦劝他：人刚到，还管不住，不如关起门，种地养兵。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 8.452,
+  "cjk_chars": 38,
+  "sec_per_char": 0.222,
+  "synth_wall_sec": 33.89,
+  "rtf": 4.01,
+  "warnings": []
+ },
+ {
+  "id": "n040_42",
+  "file": "n040_42.wav",
+  "text": "他不听，命基旦领兵先上，中了石勒的埋伏。",
+  "segments": [
+   "他不听，命基旦领兵先上，中了石勒的埋伏。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 3.669,
+  "cjk_chars": 17,
+  "sec_per_char": 0.216,
+  "synth_wall_sec": 12.39,
+  "rtf": 3.378,
+  "warnings": []
+ },
+ {
+  "id": "n040_7",
+  "file": "n040_7.wav",
+  "text": "他不听，命基旦领兵先上，中了石勒的埋伏。",
+  "segments": [
+   "他不听，命基旦领兵先上，中了石勒的埋伏。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 3.437,
+  "cjk_chars": 17,
+  "sec_per_char": 0.202,
+  "synth_wall_sec": 12.66,
+  "rtf": 3.684,
+  "warnings": []
+ },
+ {
+  "id": "n042_42",
+  "file": "n042_42.wav",
+  "text": "晋书说，全军覆没，冰州震动。",
+  "segments": [
+   "晋书说，全军覆没，冰州震动。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 2.566,
+  "cjk_chars": 11,
+  "sec_per_char": 0.233,
+  "synth_wall_sec": 9.01,
+  "rtf": 3.513,
+  "warnings": []
+ },
+ {
+  "id": "n042_7",
+  "file": "n042_7.wav",
+  "text": "晋书说，全军覆没，冰州震动。",
+  "segments": [
+   "晋书说，全军覆没，冰州震动。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 2.949,
+  "cjk_chars": 11,
+  "sec_per_char": 0.268,
+  "synth_wall_sec": 10.17,
+  "rtf": 3.45,
+  "warnings": []
+ },
+ {
+  "id": "n043_42",
+  "file": "n043_42.wav",
+  "text": "这和错杀灵狐盛是同一种毛病：急。部下后来替他申冤说：他若肯苟且自保，本可以在冰州安稳下去；只是天子受辱，他于心不安。",
+  "segments": [
+   "这和错杀灵狐盛是同一种毛病：急。部下后来替他申冤说：他若肯苟且自保，本可以在冰州安稳下去；只是天子受辱，他于心不安。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 10.971,
+  "cjk_chars": 51,
+  "sec_per_char": 0.215,
+  "synth_wall_sec": 50.19,
+  "rtf": 4.575,
+  "warnings": []
+ },
+ {
+  "id": "n043_7",
+  "file": "n043_7.wav",
+  "text": "这和错杀灵狐盛是同一种毛病：急。部下后来替他申冤说：他若肯苟且自保，本可以在冰州安稳下去；只是天子受辱，他于心不安。",
+  "segments": [
+   "这和错杀灵狐盛是同一种毛病：急。部下后来替他申冤说：他若肯苟且自保，本可以在冰州安稳下去；只是天子受辱，他于心不安。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 10.902,
+  "cjk_chars": 51,
+  "sec_per_char": 0.214,
+  "synth_wall_sec": 49.9,
+  "rtf": 4.578,
+  "warnings": []
+ },
+ {
+  "id": "n044_42",
+  "file": "n044_42.wav",
+  "text": "一座孤城，输一次，就没有第二次。冰州，守不住了。",
+  "segments": [
+   "一座孤城，输一次，就没有第二次。冰州，守不住了。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 4.772,
+  "cjk_chars": 19,
+  "sec_per_char": 0.251,
+  "synth_wall_sec": 15.43,
+  "rtf": 3.234,
+  "warnings": []
+ },
+ {
+  "id": "n044_7",
+  "file": "n044_7.wav",
+  "text": "一座孤城，输一次，就没有第二次。冰州，守不住了。",
+  "segments": [
+   "一座孤城，输一次，就没有第二次。冰州，守不住了。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 4.551,
+  "cjk_chars": 19,
+  "sec_per_char": 0.24,
+  "synth_wall_sec": 14.5,
+  "rtf": 3.187,
+  "warnings": []
+ },
+ {
+  "id": "n045_42",
+  "file": "n045_42.wav",
+  "text": "幽州一带，是鲜卑段部的地盘。段部里占着季城的段匹低来信相邀，刘昆去了季城，就是今天的北京一带。两人结为兄弟。",
+  "segments": [
+   "幽州一带，是鲜卑段部的地盘。段部里占着季城的段匹低来信相邀，刘昆去了季城，就是今天的北京一带。两人结为兄弟。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 10.797,
+  "cjk_chars": 48,
+  "sec_per_char": 0.225,
+  "synth_wall_sec": 47.02,
+  "rtf": 4.355,
+  "warnings": []
+ },
+ {
+  "id": "n045_7",
+  "file": "n045_7.wav",
+  "text": "幽州一带，是鲜卑段部的地盘。段部里占着季城的段匹低来信相邀，刘昆去了季城，就是今天的北京一带。两人结为兄弟。",
+  "segments": [
+   "幽州一带，是鲜卑段部的地盘。段部里占着季城的段匹低来信相邀，刘昆去了季城，就是今天的北京一带。两人结为兄弟。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 10.136,
+  "cjk_chars": 48,
+  "sec_per_char": 0.211,
+  "synth_wall_sec": 43.25,
+  "rtf": 4.267,
+  "warnings": []
+ },
+ {
+  "id": "n046_42",
+  "file": "n046_42.wav",
+  "text": "这时，晋朝皇族在江东的建康，今天的南京，另立朝廷。这是他最后还能指望的后方。他派妻子的外甥温较南下，嘱咐他：",
+  "segments": [
+   "这时，晋朝皇族在江东的建康，今天的南京，另立朝廷。这是他最后还能指望的后方。他派妻子的外甥温较南下，嘱咐他："
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 11.076,
+  "cjk_chars": 47,
+  "sec_per_char": 0.236,
+  "synth_wall_sec": 52.3,
+  "rtf": 4.722,
+  "warnings": []
+ },
+ {
+  "id": "n046_7",
+  "file": "n046_7.wav",
+  "text": "这时，晋朝皇族在江东的建康，今天的南京，另立朝廷。这是他最后还能指望的后方。他派妻子的外甥温较南下，嘱咐他：",
+  "segments": [
+   "这时，晋朝皇族在江东的建康，今天的南京，另立朝廷。这是他最后还能指望的后方。他派妻子的外甥温较南下，嘱咐他："
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 10.6,
+  "cjk_chars": 47,
+  "sec_per_char": 0.226,
+  "synth_wall_sec": 50.4,
+  "rtf": 4.755,
+  "warnings": []
+ },
+ {
+  "id": "n048_42",
+  "file": "n048_42.wav",
+  "text": "我在黄河以北立功，你去江南，替我们说话。温较到了建康，屡次请求北归，朝廷不许。",
+  "segments": [
+   "我在黄河以北立功，你去江南，替我们说话。温较到了建康，屡次请求北归，朝廷不许。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 7.593,
+  "cjk_chars": 33,
+  "sec_per_char": 0.23,
+  "synth_wall_sec": 30.86,
+  "rtf": 4.065,
+  "warnings": []
+ },
+ {
+  "id": "n048_7",
+  "file": "n048_7.wav",
+  "text": "我在黄河以北立功，你去江南，替我们说话。温较到了建康，屡次请求北归，朝廷不许。",
+  "segments": [
+   "我在黄河以北立功，你去江南，替我们说话。温较到了建康，屡次请求北归，朝廷不许。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 7.314,
+  "cjk_chars": 33,
+  "sec_per_char": 0.222,
+  "synth_wall_sec": 31.6,
+  "rtf": 4.321,
+  "warnings": []
+ },
+ {
+  "id": "n049_42",
+  "file": "n049_42.wav",
+  "text": "北边，各部约好会师讨石勒，段匹低的堂弟段末杯却带头撤了。资治通鉴说，他嫌长辈听晚辈指挥丢人；晋书说，他收了石勒的厚礼。",
+  "segments": [
+   "北边，各部约好会师讨石勒，段匹低的堂弟段末杯却带头撤了。资治通鉴说，他嫌长辈听晚辈指挥丢人；晋书说，他收了石勒的厚礼。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 10.426,
+  "cjk_chars": 52,
+  "sec_per_char": 0.2,
+  "synth_wall_sec": 48.02,
+  "rtf": 4.606,
+  "warnings": []
+ },
+ {
+  "id": "n049_7",
+  "file": "n049_7.wav",
+  "text": "北边，各部约好会师讨石勒，段匹低的堂弟段末杯却带头撤了。资治通鉴说，他嫌长辈听晚辈指挥丢人；晋书说，他收了石勒的厚礼。",
+  "segments": [
+   "北边，各部约好会师讨石勒，段匹低的堂弟段末杯却带头撤了。资治通鉴说，他嫌长辈听晚辈指挥丢人；晋书说，他收了石勒的厚礼。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 11.25,
+  "cjk_chars": 52,
+  "sec_per_char": 0.216,
+  "synth_wall_sec": 53.21,
+  "rtf": 4.73,
+  "warnings": []
+ },
+ {
+  "id": "n050_42",
+  "file": "n050_42.wav",
+  "text": "刘昆靠的不是一个国家，是一个家族。而这个家族，正在内斗。",
+  "segments": [
+   "刘昆靠的不是一个国家，是一个家族。而这个家族，正在内斗。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 4.644,
+  "cjk_chars": 24,
+  "sec_per_char": 0.193,
+  "synth_wall_sec": 15.43,
+  "rtf": 3.323,
+  "warnings": []
+ },
+ {
+  "id": "n050_7",
+  "file": "n050_7.wav",
+  "text": "刘昆靠的不是一个国家，是一个家族。而这个家族，正在内斗。",
+  "segments": [
+   "刘昆靠的不是一个国家，是一个家族。而这个家族，正在内斗。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 4.098,
+  "cjk_chars": 24,
+  "sec_per_char": 0.171,
+  "synth_wall_sec": 13.9,
+  "rtf": 3.391,
+  "warnings": []
+ },
+ {
+  "id": "n051_42",
+  "file": "n051_42.wav",
+  "text": "公元三一八年，段部内讧。段末杯俘虏了刘昆的儿子刘群，派人带着刘群的信，请刘昆做内应。",
+  "segments": [
+   "公元三一八年，段部内讧。段末杯俘虏了刘昆的儿子刘群，派人带着刘群的信，请刘昆做内应。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 8.034,
+  "cjk_chars": 37,
+  "sec_per_char": 0.217,
+  "synth_wall_sec": 31.67,
+  "rtf": 3.942,
+  "warnings": []
+ },
+ {
+  "id": "n051_7",
+  "file": "n051_7.wav",
+  "text": "公元三一八年，段部内讧。段末杯俘虏了刘昆的儿子刘群，派人带着刘群的信，请刘昆做内应。",
+  "segments": [
+   "公元三一八年，段部内讧。段末杯俘虏了刘昆的儿子刘群，派人带着刘群的信，请刘昆做内应。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 7.663,
+  "cjk_chars": 37,
+  "sec_per_char": 0.207,
+  "synth_wall_sec": 30.1,
+  "rtf": 3.928,
+  "warnings": []
+ },
+ {
+  "id": "n056_42",
+  "file": "n056_42.wav",
+  "text": "段匹低本没想害他，打算放他回去。段匹低的弟弟叔军却说：",
+  "segments": [
+   "段匹低本没想害他，打算放他回去。段匹低的弟弟叔军却说："
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 5.492,
+  "cjk_chars": 24,
+  "sec_per_char": 0.229,
+  "synth_wall_sec": 19.9,
+  "rtf": 3.624,
+  "warnings": []
+ },
+ {
+  "id": "n056_7",
+  "file": "n056_7.wav",
+  "text": "段匹低本没想害他，打算放他回去。段匹低的弟弟叔军却说：",
+  "segments": [
+   "段匹低本没想害他，打算放他回去。段匹低的弟弟叔军却说："
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 5.828,
+  "cjk_chars": 24,
+  "sec_per_char": 0.243,
+  "synth_wall_sec": 23.14,
+  "rtf": 3.971,
+  "warnings": []
+ },
+ {
+  "id": "n059_42",
+  "file": "n059_42.wav",
+  "text": "叔军算的不是私怨，是段部的存亡。刘昆被扣下了：越得人心，越不能放。",
+  "segments": [
+   "叔军算的不是私怨，是段部的存亡。刘昆被扣下了：越得人心，越不能放。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 6.339,
+  "cjk_chars": 28,
+  "sec_per_char": 0.226,
+  "synth_wall_sec": 21.78,
+  "rtf": 3.435,
+  "warnings": []
+ },
+ {
+  "id": "n059_7",
+  "file": "n059_7.wav",
+  "text": "叔军算的不是私怨，是段部的存亡。刘昆被扣下了：越得人心，越不能放。",
+  "segments": [
+   "叔军算的不是私怨，是段部的存亡。刘昆被扣下了：越得人心，越不能放。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 7.221,
+  "cjk_chars": 28,
+  "sec_per_char": 0.258,
+  "synth_wall_sec": 26.1,
+  "rtf": 3.615,
+  "warnings": []
+ },
+ {
+  "id": "n060_42",
+  "file": "n060_42.wav",
+  "text": "刘昆自知必死。他离开晋阳时，就想到过这一天，只盼以一片至诚，搏一个万一。",
+  "segments": [
+   "刘昆自知必死。他离开晋阳时，就想到过这一天，只盼以一片至诚，搏一个万一。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 6.362,
+  "cjk_chars": 31,
+  "sec_per_char": 0.205,
+  "synth_wall_sec": 23.85,
+  "rtf": 3.749,
+  "warnings": []
+ },
+ {
+  "id": "n060_7",
+  "file": "n060_7.wav",
+  "text": "刘昆自知必死。他离开晋阳时，就想到过这一天，只盼以一片至诚，搏一个万一。",
+  "segments": [
+   "刘昆自知必死。他离开晋阳时，就想到过这一天，只盼以一片至诚，搏一个万一。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 6.455,
+  "cjk_chars": 31,
+  "sec_per_char": 0.208,
+  "synth_wall_sec": 24.48,
+  "rtf": 3.792,
+  "warnings": []
+ },
+ {
+  "id": "n061_42",
+  "file": "n061_42.wav",
+  "text": "有人密谋救他，事败被杀。段匹低怕部众再反。",
+  "segments": [
+   "有人密谋救他，事败被杀。段匹低怕部众再反。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 4.156,
+  "cjk_chars": 18,
+  "sec_per_char": 0.231,
+  "synth_wall_sec": 15.68,
+  "rtf": 3.772,
+  "warnings": []
+ },
+ {
+  "id": "n061_7",
+  "file": "n061_7.wav",
+  "text": "有人密谋救他，事败被杀。段匹低怕部众再反。",
+  "segments": [
+   "有人密谋救他，事败被杀。段匹低怕部众再反。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 3.529,
+  "cjk_chars": 18,
+  "sec_per_char": 0.196,
+  "synth_wall_sec": 13.4,
+  "rtf": 3.795,
+  "warnings": []
+ },
+ {
+  "id": "n062_42",
+  "file": "n062_42.wav",
+  "text": "据晋书，江东朝廷最有兵权的大将王敦，这时又派来密使，要他杀掉刘昆；资治通鉴没有记王敦这一层。",
+  "segments": [
+   "据晋书，江东朝廷最有兵权的大将王敦，这时又派来密使，要他杀掉刘昆；资治通鉴没有记王敦这一层。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 9.718,
+  "cjk_chars": 41,
+  "sec_per_char": 0.237,
+  "synth_wall_sec": 42.45,
+  "rtf": 4.368,
+  "warnings": []
+ },
+ {
+  "id": "n062_7",
+  "file": "n062_7.wav",
+  "text": "据晋书，江东朝廷最有兵权的大将王敦，这时又派来密使，要他杀掉刘昆；资治通鉴没有记王敦这一层。",
+  "segments": [
+   "据晋书，江东朝廷最有兵权的大将王敦，这时又派来密使，要他杀掉刘昆；资治通鉴没有记王敦这一层。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 8.916,
+  "cjk_chars": 41,
+  "sec_per_char": 0.217,
+  "synth_wall_sec": 35.7,
+  "rtf": 4.004,
+  "warnings": []
+ },
+ {
+  "id": "n063_42",
+  "file": "n063_42.wav",
+  "text": "刘昆对身边的儿子说：",
+  "segments": [
+   "刘昆对身边的儿子说："
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 1.637,
+  "cjk_chars": 9,
+  "sec_per_char": 0.182,
+  "synth_wall_sec": 5.86,
+  "rtf": 3.58,
+  "warnings": []
+ },
+ {
+  "id": "n063_7",
+  "file": "n063_7.wav",
+  "text": "刘昆对身边的儿子说：",
+  "segments": [
+   "刘昆对身边的儿子说："
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 1.335,
+  "cjk_chars": 9,
+  "sec_per_char": 0.148,
+  "synth_wall_sec": 5.06,
+  "rtf": 3.788,
+  "warnings": []
+ },
+ {
+  "id": "n069_42",
+  "file": "n069_42.wav",
+  "text": "段匹低依然强大，朝廷还指望他去打石勒。所以，连刘昆的丧，都不肯发。",
+  "segments": [
+   "段匹低依然强大，朝廷还指望他去打石勒。所以，连刘昆的丧，都不肯发。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 6.606,
+  "cjk_chars": 28,
+  "sec_per_char": 0.236,
+  "synth_wall_sec": 23.57,
+  "rtf": 3.568,
+  "warnings": []
+ },
+ {
+  "id": "n069_7",
+  "file": "n069_7.wav",
+  "text": "段匹低依然强大，朝廷还指望他去打石勒。所以，连刘昆的丧，都不肯发。",
+  "segments": [
+   "段匹低依然强大，朝廷还指望他去打石勒。所以，连刘昆的丧，都不肯发。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 6.316,
+  "cjk_chars": 28,
+  "sec_per_char": 0.226,
+  "synth_wall_sec": 22.2,
+  "rtf": 3.515,
+  "warnings": []
+ },
+ {
+  "id": "n071_42",
+  "file": "n071_42.wav",
+  "text": "而段匹低也没撑多久。刘昆一死，晋人和各部都不再归附他。第二年，他丢了幽州；后来落到石勒手里，至死穿着晋朝的朝服。",
+  "segments": [
+   "而段匹低也没撑多久。刘昆一死，晋人和各部都不再归附他。第二年，他丢了幽州；后来落到石勒手里，至死穿着晋朝的朝服。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 10.182,
+  "cjk_chars": 49,
+  "sec_per_char": 0.208,
+  "synth_wall_sec": 45.1,
+  "rtf": 4.429,
+  "warnings": []
+ },
+ {
+  "id": "n071_7",
+  "file": "n071_7.wav",
+  "text": "而段匹低也没撑多久。刘昆一死，晋人和各部都不再归附他。第二年，他丢了幽州；后来落到石勒手里，至死穿着晋朝的朝服。",
+  "segments": [
+   "而段匹低也没撑多久。刘昆一死，晋人和各部都不再归附他。第二年，他丢了幽州；后来落到石勒手里，至死穿着晋朝的朝服。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.12,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 9.857,
+  "cjk_chars": 49,
+  "sec_per_char": 0.201,
+  "synth_wall_sec": 42.71,
+  "rtf": 4.333,
+  "warnings": []
+ },
+ {
+  "id": "n074_42",
+  "file": "n074_42.wav",
+  "text": "千锤百炼的钢，怎么就成了能绕在手指上的软东西？",
+  "segments": [
+   "千锤百炼的钢，怎么就成了能绕在手指上的软东西？"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 5.642,
+  "cjk_chars": 21,
+  "sec_per_char": 0.269,
+  "synth_wall_sec": 19.18,
+  "rtf": 3.399,
+  "warnings": []
+ },
+ {
+  "id": "n074_7",
+  "file": "n074_7.wav",
+  "text": "千锤百炼的钢，怎么就成了能绕在手指上的软东西？",
+  "segments": [
+   "千锤百炼的钢，怎么就成了能绕在手指上的软东西？"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 5.166,
+  "cjk_chars": 21,
+  "sec_per_char": 0.246,
+  "synth_wall_sec": 17.08,
+  "rtf": 3.307,
+  "warnings": []
+ },
+ {
+  "id": "n075_42",
+  "file": "n075_42.wav",
+  "text": "不是他软了。是能让他硬下去的东西，一样一样，都没了。",
+  "segments": [
+   "不是他软了。是能让他硬下去的东西，一样一样，都没了。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 4.551,
+  "cjk_chars": 22,
+  "sec_per_char": 0.207,
+  "synth_wall_sec": 14.64,
+  "rtf": 3.216,
+  "warnings": []
+ },
+ {
+  "id": "n075_7",
+  "file": "n075_7.wav",
+  "text": "不是他软了。是能让他硬下去的东西，一样一样，都没了。",
+  "segments": [
+   "不是他软了。是能让他硬下去的东西，一样一样，都没了。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 4.029,
+  "cjk_chars": 22,
+  "sec_per_char": 0.183,
+  "synth_wall_sec": 12.71,
+  "rtf": 3.154,
+  "warnings": []
+ },
+ {
+  "id": "n078_42",
+  "file": "n078_42.wav",
+  "text": "一个死于猜忌，一个死于忧愤。",
+  "segments": [
+   "一个死于猜忌，一个死于忧愤。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 2.589,
+  "cjk_chars": 12,
+  "sec_per_char": 0.216,
+  "synth_wall_sec": 8.31,
+  "rtf": 3.209,
+  "warnings": []
+ },
+ {
+  "id": "n078_7",
+  "file": "n078_7.wav",
+  "text": "一个死于猜忌，一个死于忧愤。",
+  "segments": [
+   "一个死于猜忌，一个死于忧愤。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 2.473,
+  "cjk_chars": 12,
+  "sec_per_char": 0.206,
+  "synth_wall_sec": 8.16,
+  "rtf": 3.301,
+  "warnings": []
+ },
+ {
+  "id": "n079_42",
+  "file": "n079_42.wav",
+  "text": "中原，谁也没有回去。",
+  "segments": [
+   "中原，谁也没有回去。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 42,
+  "sample_rate": 22050,
+  "duration_sec": 1.858,
+  "cjk_chars": 8,
+  "sec_per_char": 0.232,
+  "synth_wall_sec": 6.11,
+  "rtf": 3.29,
+  "warnings": []
+ },
+ {
+  "id": "n079_7",
+  "file": "n079_7.wav",
+  "text": "中原，谁也没有回去。",
+  "segments": [
+   "中原，谁也没有回去。"
+  ],
+  "speaker": "中文男",
+  "speed": 1.04,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 1.892,
+  "cjk_chars": 8,
+  "sec_per_char": 0.237,
+  "synth_wall_sec": 6.24,
+  "rtf": 3.295,
+  "warnings": []
+ },
+ {
+  "id": "n073_7",
+  "file": "n073_7.wav",
+  "text": "何意百炼刚，化为绕指柔。",
+  "segments": [
+   "何意百炼刚，化为绕指柔。"
+  ],
+  "speaker": "中文男",
+  "speed": 0.88,
+  "seed": 7,
+  "sample_rate": 22050,
+  "duration_sec": 3.808,
+  "cjk_chars": 10,
+  "sec_per_char": 0.381,
+  "synth_wall_sec": 10.68,
+  "rtf": 2.804,
+  "warnings": []
+ },
+ {
+  "id": "n073_123",
+  "file": "n073_123.wav",
+  "text": "何意百炼刚，化为绕指柔。",
+  "segments": [
+   "何意百炼刚，化为绕指柔。"
+  ],
+  "speaker": "中文男",
+  "speed": 0.88,
+  "seed": 123,
+  "sample_rate": 22050,
+  "duration_sec": 2.833,
+  "cjk_chars": 10,
+  "sec_per_char": 0.283,
+  "synth_wall_sec": 7.87,
+  "rtf": 2.779,
+  "warnings": []
+ },
+ {
+  "id": "n073_2024",
+  "file": "n073_2024.wav",
+  "text": "何意百炼刚，化为绕指柔。",
+  "segments": [
+   "何意百炼刚，化为绕指柔。"
+  ],
+  "speaker": "中文男",
+  "speed": 0.88,
+  "seed": 2024,
+  "sample_rate": 22050,
+  "duration_sec": 2.763,
+  "cjk_chars": 10,
+  "sec_per_char": 0.276,
+  "synth_wall_sec": 7.88,
+  "rtf": 2.851,
+  "warnings": []
+ },
+ {
+  "id": "n073_99",
+  "file": "n073_99.wav",
+  "text": "何意百炼刚，化为绕指柔。",
+  "segments": [
+   "何意百炼刚，化为绕指柔。"
+  ],
+  "speaker": "中文男",
+  "speed": 0.88,
+  "seed": 99,
+  "sample_rate": 22050,
+  "duration_sec": 3.622,
+  "cjk_chars": 10,
+  "sec_per_char": 0.362,
+  "synth_wall_sec": 10.25,
+  "rtf": 2.829,
+  "warnings": []
+ }
+]

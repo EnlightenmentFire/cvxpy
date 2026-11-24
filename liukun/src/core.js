@@ -224,7 +224,7 @@ function cityDot(ctx, cam, key, label, { alpha = 1, color = C.pale, size = 34, d
   ctx.beginPath(); if (sq) ctx.rect(p[0] - 7, p[1] - 7, 14, 14); else ctx.arc(p[0], p[1], 6.5, 0, 7); ctx.fill(); ctx.stroke();
   ctx.restore();
   if (label) { htext(ctx, label, p[0] + dx, p[1] + dy, size, dim ? '#6c7880' : color, { align: dx >= 0 ? 'left' : 'right', alpha, weight: 700, outline: 5 });
-    if (sub) htext(ctx, sub, p[0] + dx, p[1] + dy + size * .95, size * .62, rgba(C.mist, 1), { align: dx >= 0 ? 'left' : 'right', alpha: alpha * .9, weight: 500, outline: 4 }); }
+    if (sub) htext(ctx, sub, p[0] + dx, p[1] + dy + size * 1.0, Math.max(26, size * .74), '#b7c4cc', { align: dx >= 0 ? 'left' : 'right', alpha: alpha, weight: 500, outline: 5 }); }
   return p;
 }
 function regionLabel(ctx, cam, lonlat, str, size, alpha = 1, color = '#9fb0ba') { const p = proj(cam, lonlat); htext(ctx, str, p[0], p[1], size, color, { alpha: alpha * .75, weight: 500, spacing: size * .5, outline: 4 }); }

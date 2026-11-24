@@ -71,6 +71,7 @@ SC.s01 = (ctx, t, seg) => {
       if (na > 0) { const nx = (who ? 800 : 340); vtext(ctx, who ? '刘琨' : '祖逖', nx, 760, 46, C.pale, { alpha: na, weight: 700, outline: 5 }); ctx.save(); ctx.globalAlpha = na * .6; ctx.fillStyle = C.yellowDim; ctx.fillRect(nx - 1, 846, 2, 44); ctx.restore(); }
     }
     ctx.restore();
+    htext(ctx, '原文：“因起舞”。舞剑，为后世说法', 540, 330, 30, '#b7c4cc', { alpha: win(t, L3.s + 1.2, L4.s - .2, .6, .5), weight: 500, spacing: 2, outline: 5 });
     // sword flash → split
     const fl = win(t, tSplit - .12, tSplit + .55, .1, .45);
     if (fl > 0) { ctx.save(); ctx.globalAlpha = fl; ctx.translate(540, 860); ctx.rotate(-.42); const gg = ctx.createLinearGradient(0, -40, 0, 40); gg.addColorStop(0, 'rgba(255,255,255,0)'); gg.addColorStop(.5, 'rgba(240,248,252,1)'); gg.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = gg; ctx.fillRect(-900, -40 * (1.2 - fl * .5), 1800, 80 * (1.2 - fl * .5)); ctx.restore(); ctx.fillStyle = `rgba(230,240,245,${fl * .14})`; ctx.fillRect(0, 0, W, H); }
@@ -101,7 +102,7 @@ SC.s01 = (ctx, t, seg) => {
       figure(ctx, bx - 10, by + 2, 104, { arm: .5 + .25 * Math.sin(t * 2.2), color: '#04070a' });
       const ax = bx + 26, ay = by - 62; ctx.strokeStyle = '#04070a'; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(ax - 10, ay - 4); ctx.lineTo(ax + 70, by + 26); ctx.stroke();
       vtext(ctx, '祖逖', bx - 130, by - 190, 38, C.pale, { alpha: sstep(tSplit + 1.0, tSplit + 1.8, t), weight: 700, outline: 5 });
-      htext(ctx, '中流击楫', bx + 210, by - 110, 30, '#9fb0ba', { alpha: sstep(tSplit + 2.2, tSplit + 3.0, t) * .95, weight: 500, spacing: 5, outline: 4 });
+      htext(ctx, '北渡长江 · 中流击楫', bx + 190, by - 120, 32, '#b7c4cc', { alpha: sstep(tSplit + 2.2, tSplit + 3.0, t), weight: 500, spacing: 3, outline: 5 });
       htext(ctx, '南', 930, mid + 110, 96, rgba('#aebcc5', .9), { fam: F.brush, weight: 400, alpha: .55 });
       ctx.restore();
       ctx.save(); ctx.globalAlpha = sp * (1 - toTitle) * .7; ctx.fillStyle = '#93a7b3'; ctx.fillRect(0, mid - 1, W, 2); ctx.restore();
@@ -183,7 +184,7 @@ function ruins(ctx, t, k, seed = 7) { // k = rebuild progress 0..1
   ctx.restore();
 }
 SC.s03 = (ctx, t, seg) => {
-  const Ls = SEGL.s03, [L0, L1, L2, L3, L4, L5, L6, L7] = Ls;
+  const Ls = SEGL.s03, [L0, L1, L2, L3, Lr, L4, L5, L6, L7] = Ls;
   const inRuins = t >= L4.s - .2 && t < L7.s - .2;
   if (!inRuins) {
     const back = t >= L7.s - .2;
@@ -203,15 +204,15 @@ SC.s03 = (ctx, t, seg) => {
       dashed(ctx, route, ru, '#d9c48f', 3.5, [9, 11], .85 * (1 - sstep(L3.s, L3.s + 2, t)));
       cityDot(ctx, cam, 'huguan', '壶关', { alpha: win(t, L1.s + .6, L3.s + 1, .6, .8), dx: 16, sub: '今山西长治一带', size: 32 });
       // request to court
-      const ra = win(t, L3.s + 2.2, L4.s - .6, .6, .5); if (ra > 0) { htext(ctx, '请谷五百万斛 · 绢五百万匹 · 绵五百万斤', 540, 1196, 34, '#d9c48f', { alpha: ra, weight: 600, outline: 5 }); htext(ctx, '朝廷许之', 540, 1246, 30, '#9fb0ba', { alpha: ra * sstep(L3.s + 3, L3.s + 3.8, t), weight: 500, spacing: 6, outline: 4 }); }
+      const ra = win(t, Lr.s - .1, L4.s - .5, .5, .4); if (ra > 0) { htext(ctx, '请谷五百万斛 · 绢五百万匹 · 绵五百万斤', 540, 1010, 38, '#e6cf9c', { alpha: ra, weight: 700, outline: 6 }); htext(ctx, '“朝廷许之” —— 是否运到，史无明文', 540, 1068, 30, '#b7c4cc', { alpha: ra * sstep(Lr.s + (Lr.e - Lr.s) * .4, Lr.s + (Lr.e - Lr.s) * .6, t), weight: 500, spacing: 2, outline: 5 }); }
       const ya = win(t, L0.s + .2, L1.s, .6, .6); htext(ctx, '公元 307 年 · 永嘉元年', 540, 330, 36, '#b5c2c9', { alpha: ya, weight: 500, spacing: 4, outline: 5 }); }
     else { const k2 = sstep(L7.s + 1, L7.s + 4, t);
-      cityDot(ctx, cam, 'pingyang', '刘聪', { alpha: k2, dx: -16, color: '#aab6bd', sub: '平阳' }); cityDot(ctx, cam, 'xiangguo', '石勒', { alpha: sstep(L7.s + 2.6, L7.s + 3.6, t), dx: 16, color: '#aab6bd', sub: '襄国' });
+      { const d7 = L7.e - L7.s; cityDot(ctx, cam, 'pingyang', '刘渊·刘聪', { alpha: k2, dx: -16, color: '#aab6bd', sub: '汉国' }); cityDot(ctx, cam, 'xiangguo', '石勒', { alpha: sstep(L7.s + d7 * .42, L7.s + d7 * .52, t), dx: 16, color: '#aab6bd', sub: '312 年起据襄国' }); }
       const cline = projAll(cam, smoothPath([MAP.city.jinyang, [113.0, 37.0], MAP.city.huguan, [112.9, 35.4], MAP.city.luoyang], 8));
-      const ca = sstep(L7.s + 4.5, L7.s + 5.5, t), fade = 1 - .8 * sstep(L7.e - 2.2, L7.e, t);
+      const ca = sstep(L7.s + (L7.e - L7.s) * .58, L7.s + (L7.e - L7.s) * .7, t), fade = 1 - .8 * sstep(L7.e - 1.6, L7.e + .4, t);
       dashed(ctx, cline, ca, '#d9c48f', 3, [6, 14], .8 * fade * (.7 + .3 * Math.sin(t * 5)));
       const lp = proj(cam, MAP.city.luoyang); glow(ctx, lp[0], lp[1], 60, '#d9c48f', .35 * ca * fade);
-      htext(ctx, '粮，只能向朝廷讨', lp[0] + 20, lp[1] + 78, 30, '#d9c48f', { alpha: ca * fade, align: 'left', weight: 600, outline: 5 }); }
+      htext(ctx, '能指望的，只有朝廷', lp[0] + 20, lp[1] + 86, 32, '#d9c48f', { alpha: ca * fade, align: 'left', weight: 600, outline: 5 }); }
   } else {
     const k = sstep(L4.s + 3.5, L6.e, t); ruins(ctx, t, k);
     htext(ctx, '晋阳', 540, 360, 120, '#e2dccb', { fam: F.brush, weight: 400, alpha: win(t, L4.s, L4.s + 4.5, .8, 1) * .9, spacing: 24 });

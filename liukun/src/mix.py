@@ -173,9 +173,9 @@ S = SEG
 # pads
 chordseq(2.5, S["s01"]["e"], [Dm, Bb, Dm, Gm], .50, 480, 1)
 chordseq(S["s02"]["s"], S["s02"]["e"], [F, Dm], .46, 620, 10)
-chordseq(S["s03"]["s"], ln("s03", 4)["s"], [Dm, Gm], .50, 470, 20)
-chordseq(ln("s03", 4)["s"], ln("s03", 7)["s"], [Bb, F], .50, 600, 24)
-chordseq(ln("s03", 7)["s"], S["s03"]["e"], [Dm], .52, 450, 28)
+chordseq(S["s03"]["s"], ln("s03", 5)["s"], [Dm, Gm], .50, 470, 20)
+chordseq(ln("s03", 5)["s"], ln("s03", 8)["s"], [Bb, F], .50, 600, 24)
+chordseq(ln("s03", 8)["s"], S["s03"]["e"], [Dm], .52, 450, 28)
 chordseq(S["s04"]["s"], S["s04"]["e"], [Dlow, Dlow], .30, 380, 30)
 chordseq(S["s05"]["s"], ln("s05", 6)["s"], [Dm, Gm, Am], .46, 470, 40)
 chordseq(ln("s05", 6)["s"], S["s05"]["e"], [Dlow], .26, 330, 45)
@@ -198,8 +198,8 @@ tT = ln("s01", 5)["e"] + .4
 play(MOT, tT, "xiao", .75, solo, seed=1)                                         # title
 play(MOT2, ln("s02", 0)["s"] + 1.0, "xiao", .34, music, seed=2)
 play(LOWX, ln("s03", 1)["s"], "xun", .42, music, seed=3)
-play([("F4", 1.4), ("A4", .7), ("C5", 2.2), ("A4", .8), ("G4", .8), ("F4", 2.6)], ln("s03", 5)["s"] - .3, "xiao", .36, music, seed=4)   # the warm moment
-play(LOWX, ln("s03", 7)["s"] + 2.5, "xun", .40, music, seed=5)
+play([("F4", 1.4), ("A4", .7), ("C5", 2.2), ("A4", .8), ("G4", .8), ("F4", 2.6)], ln("s03", 6)["s"] - .3, "xiao", .36, music, seed=4)   # the warm moment
+play(LOWX, ln("s03", 8)["s"] + 2.5, "xun", .40, music, seed=5)
 # s04: whistle, then the hujia — solo in the gap
 L = LN["s04"]; tw = L[0]["s"] + (L[0]["e"] - L[0]["s"]) * .62
 sfx.add(reverb(whistle(2.8), 3.5, .55, 9), tw, .13)
@@ -219,7 +219,7 @@ play([("A4", 1.6), ("G4", .7), ("F4", .9), ("D4", 4.5)], L[7]["e"] + .5, "xiao",
 
 # ambience
 amb.add(wind(S["s01"]["e"] + 2, 1), 0, .10)
-amb.add(wind(ln("s03", 7)["s"] - ln("s03", 4)["s"] + 3, 2) * fade(int((ln("s03", 7)["s"] - ln("s03", 4)["s"] + 3) * SR), 2, 3)[:, None], ln("s03", 4)["s"] - 1, .16)
+amb.add(wind(ln("s03", 8)["s"] - ln("s03", 5)["s"] + 3, 2) * fade(int((ln("s03", 8)["s"] - ln("s03", 5)["s"] + 3) * SR), 2, 3)[:, None], ln("s03", 5)["s"] - 1, .16)
 d = S["s04"]["e"] - S["s04"]["s"]; amb.add(wind(d, 3) * fade(int(d * SR), 2, 3)[:, None], S["s04"]["s"], .13)
 t0 = ln("s09", 1)["s"]; d = S["s11"]["s"] - t0 + 2; amb.add(wind(d, 4, 180, 900) * fade(int(d * SR), 4, 4)[:, None], t0, .20)
 t0 = ln("s12", 4)["e"]; d = TOTAL - t0; amb.add(wind(d, 5) * fade(int(d * SR), 3, 2.5)[:, None], t0, .14)
@@ -227,7 +227,7 @@ t0 = ln("s12", 4)["e"]; d = TOTAL - t0; amb.add(wind(d, 5) * fade(int(d * SR), 3
 # sfx
 rc = reverb(lp(rooster(), 4200), 2.6, .5, 4)
 sfx.add(rc, 1.6, .16, 0); sfx.add(rc, ln("s01", 1)["s"] + .2, .12)
-sfx.add(reverb(lp(rooster(1), 2600), 3.2, .7, 5), ln("s03", 5)["s"] + .6, .035)       # far, when the town comes back
+sfx.add(reverb(lp(rooster(1), 2600), 3.2, .7, 5), ln("s03", 6)["s"] + .6, .035)       # far, when the town comes back
 L = LN["s01"]; t = L[3]["s"] + 1.2; k = 0
 while t < L[5]["s"] - .6:
     sfx.add(reverb(whoosh(.36 + .1 * (k % 2), 600, 2600, k), 1.2, .3, k), t, .05, pan=(-.4 if k % 2 else .4)); t += 1.02 + .21 * (k % 3); k += 1
@@ -237,9 +237,9 @@ L = LN["s05"]; d = L[3]["e"] - L[3]["s"]; sfx.add(reverb(drum(60), 2.2, .3, 8), 
 sfx.add(reverb(chime(hz("D5")), 4, .6, 9), L[6]["s"] + (L[6]["e"] - L[6]["s"]) * .66, .10)
 L = LN["s06"]; sfx.add(reverb(drum(50), 2.5, .35, 10), L[5]["s"] + (L[5]["e"] - L[5]["s"]) * .7, .2)
 L = LN["s07"]
-for i in range(6): sfx.add(drum(64, 1.2, i), L[2]["s"] + i * .42, .10 + .02 * i)
-sfx.add(reverb(drum(46, 3.0), 3, .4, 11), L[2]["e"] - .1, .42)
-sfx.add(reverb(chime(hz("A4")), 4, .6, 12), L[6]["s"] + 2.0, .09)
+for i in range(6): sfx.add(drum(64, 1.2, i), L[3]["s"] + i * .42, .10 + .02 * i)
+sfx.add(reverb(drum(46, 3.0), 3, .4, 11), L[3]["e"] - .1, .42)
+sfx.add(reverb(chime(hz("A4")), 4, .6, 12), L[1]["s"] + (L[1]["e"] - L[1]["s"]) * .4, .09)
 L = LN["s09"]; sfx.add(reverb(whoosh(.3, 500, 1800, 60), 1.2, .3, 13), L[1]["s"] + .3, .09); sfx.add(reverb(drum(55, 1.8), 2, .3, 14), L[1]["s"] + .55, .22)
 sfx.add(reverb(drum(42, 3.2), 3, .4, 15), L[8]["s"] + (L[8]["e"] - L[8]["s"]) * .34, .26)
 L = LN["s10"]; sfx.add(reverb(chime(hz("D4"), 8), 5, .7, 16), L[-1]["e"] + .3, .11)

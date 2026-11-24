@@ -48,7 +48,7 @@ function subtitles(ctx, t) {
   if (l.kind === 'q') {
     const pg = l.pages.find((p, i) => t < p.e || i === l.pages.length - 1); const first = pg === l.pages[0], last = pg === l.pages[l.pages.length - 1];
     const a = Math.min(first ? sstep(l.s - .05, l.s + .25, t) : sstep(pg.s - .05, pg.s + .15, t), last ? 1 - sstep(l.e + Math.min(.45, l.gap * .6) - .25, l.e + Math.min(.45, l.gap * .6), t) : 1);
-    const size = 62, lh = 88, y0 = 1372 - (pg.rows.length - 1) * lh / 2; let acc = 0;
+    const size = 62, lh = 88, y0 = 1348 - (pg.rows.length - 1) * lh / 2; let acc = 0;
     ctx.save(); ctx.globalAlpha = a * .55; ctx.fillStyle = '#04070a'; ctx.beginPath(); ctx.roundRect(60, y0 - 62, 960, pg.rows.length * lh + 82, 8); ctx.fill();
     ctx.globalAlpha = a; ctx.fillStyle = C.yellowDim; ctx.fillRect(60, y0 - 62, 4, pg.rows.length * lh + 82); ctx.restore();
     pg.rows.forEach((r, i) => { const n = cnChars(r); const rv = clamp(((t - pg.s) / Math.max(.2, pg.e - pg.s) * pg.n - acc + 1.5) / n);
