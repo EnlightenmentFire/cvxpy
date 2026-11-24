@@ -20,12 +20,14 @@ def narration():
     for l in TL['lines']:
         a, sr = sf.read(os.path.join(os.environ.get("LINES_DIR", f"{ROOT}/audio/lines"), f"{l['i']:03d}.wav")); a = librosa.resample(a.astype(np.float32), orig_sr=sr, target_sr=SR)
         i = int(l['start'] * SR); buf[i:i + len(a)] += a[: N - i]
-    buf = fft_filter(buf, 70, None, 2)
-    # 轻微加厚低频（男声更沉）
-    low = fft_filter(buf, 90, 260, 2); buf = buf + 0.18 * low
+    buf = fft_filter(buf, 50, None, 4)          # 50 Hz 高通
     w = int(0.03 * SR); e = np.sqrt(np.convolve(buf ** 2, np.ones(w) / w, 'same')) + 1e-6
     thr = 0.09; g = np.where(e > thr, (thr / e) ** 0.45, 1.0); g = np.convolve(g, np.ones(w) / w, 'same')
-    buf = buf * g; return buf / np.abs(buf).max() * 0.86
+    buf = buf * g
+    # 人声统一到约 -18 dBFS RMS（只按有声段计算）
+    w2 = int(0.05 * SR); en = np.sqrt(np.convolve(buf ** 2, np.ones(w2) / w2, 'same')); act = en > en.max() * 0.05
+    rms = np.sqrt((buf[act] ** 2).mean()); buf = buf * (10 ** (-18 / 20) / rms)
+    return buf
 
 
 def music():
@@ -189,12 +191,15 @@ def main():
     mus = mus * g[:, None] + amb * (0.22 - 0.08 * gate)[:, None]
     fade = np.minimum(np.arange(N) / (0.25 * SR), 1) * np.minimum((N - np.arange(N)) / (3.0 * SR), 1); mus *= fade[:, None]
     sf.write(f"{ROOT}/audio/music.wav", mus, SR, subtype='PCM_16')
-    mix = mus + nar[:, None] * 0.92
-    mix = np.tanh(mix * 1.1) / np.tanh(1.1); mix = mix / np.abs(mix).max() * 0.89
-    sf.write(f"{ROOT}/audio/mix_raw.wav", mix, SR, subtype='PCM_16')
-    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', f"{ROOT}/audio/mix_raw.wav", '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11', '-ar', '48000', f"{ROOT}/audio/mix.wav"], check=True)
+    # 音乐整体电平：无旁白处的音乐 RMS 约比人声低 6 dB，有旁白处由上面的 ducking 再压约 9 dB
+    w3 = int(0.05 * SR); en = np.sqrt(np.convolve(nar ** 2, np.ones(w3) / w3, 'same')); act = en > en.max() * 0.05
+    mrms = np.sqrt((mus[~act] ** 2).mean()); mus = mus * (10 ** (-24 / 20) / (mrms + 1e-9))
+    mix = mus + nar[:, None]
+    pk = np.abs(mix).max(); lim = 10 ** (-1.0 / 20)
+    if pk > lim: mix = np.tanh(mix / lim * 0.98) * lim          # 只压峰值，不改人声电平
+    sf.write(f"{ROOT}/audio/mix.wav", mix, SR, subtype='PCM_16')
     def db(x): return 20 * np.log10(np.sqrt((x ** 2).mean()) + 1e-9)
-    print("dur %.1f  nar %.1f dB  music %.1f dB" % (N / SR, db(nar[np.abs(nar) > 0.01]), db(mus)))
+    print("dur %.1f  voice RMS(active) %.1f dBFS  music RMS(no voice) %.1f dBFS  peak %.1f dBFS" % (N / SR, db(nar[act]), db(mus[~act]), 20 * np.log10(np.abs(mix).max())))
 
 
 if __name__ == "__main__":
