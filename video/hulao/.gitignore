@@ -1,0 +1,10 @@
+cache/
+fonts/*.ttf
+audio/lines/
+audio/*.wav
+assets/*.jpg
+sources/alt/
+out/*.wav
+out/gucheng01_v*.mp4
+node_modules/
+__pycache__/
