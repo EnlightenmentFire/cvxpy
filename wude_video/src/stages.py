@@ -1132,8 +1132,12 @@ def chain_pos(i):
 def st_chain(cv, c):
     a = c.alpha * ease(c.lt / 0.6)
     ln = c.line("S6_04")
-    prog = (c.t - ln["t0"]) / ln["dur"] if ln else 1.0
-    lit = clamp(prog) * 12.5 if prog < 1.2 else 12.5
+    if ln:
+        start = c.kw_time("S6_04", "从伏羲")      # light the chain while 伏羲 … 汉 is being read
+        prog = (c.t - start) / max(0.5, ln["t1"] - start)
+    else:
+        prog = 1.0
+    lit = clamp(prog) * 12.5
     if c.t > (ln["t1"] if ln else 0):
         lit = 12.5
     gap_t = c.fx("chain_gap")

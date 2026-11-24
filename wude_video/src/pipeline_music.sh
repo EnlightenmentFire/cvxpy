@@ -7,7 +7,8 @@ R=/home/user/cvxpy/wude_video
 PY=/home/user/venv/bin/python
 LOG=$B/music_pipeline.log
 echo "[$(date +%T)] waiting for TTS to finish" >> $LOG
-while ! grep -q "ALL DONE" $B/tts_full.log; do sleep 30; done
+# wait until the picture pipeline has finished BOTH TTS passes (it logs "voice post" afterwards)
+while ! grep -q "voice post" $B/pipeline.log; do sleep 30; done
 while pgrep -f tts_batch.py > /dev/null; do sleep 10; done
 echo "[$(date +%T)] MusicGen versions" >> $LOG
 MG_BATCH=4 THREADS=4 $PY $R/src/music_gen.py versions >> $LOG 2>&1

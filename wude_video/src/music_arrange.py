@@ -34,15 +34,19 @@ def load_material(choice):
             if sr != SR:
                 a = resample_poly(a, SR, sr, axis=0)
             parts.append(a)
-        # join the alternates with 3 s crossfades
+        # loudness-match each clip first (so alternates do not jump in level), then join with 3 s crossfades
+        parts = [p * (10 ** (-20 / 20) / (np.sqrt(np.mean(p ** 2)) + 1e-9)) for p in parts]
         out = parts[0]
+        offsets = [0]
         for b in parts[1:]:
+            offsets.append(len(out) - int(3.0 * SR))
             out = xfade_concat(out, b, 3.0)
-        # loudness-match the layer material (rough RMS normalisation, per layer)
-        rms = np.sqrt(np.mean(out ** 2)) + 1e-9
-        out = out * (10 ** (-20 / 20) / rms)
         mat[layer] = out
+        OFFSETS[layer] = offsets
     return mat
+
+
+OFFSETS = {}
 
 
 def xfade_concat(a, b, secs):
@@ -85,6 +89,10 @@ def build(sections, total, mat, stops=()):
         xf_next = sections[i + 1][3] if i + 1 < len(sections) else 0.0
         if layer in ("DROP", "STOP"):
             continue
+        if "@" in layer:  # start this section at the beginning of a specific clip of the layer
+            layer, k = layer.split("@")
+            offs = OFFSETS.get(layer, [0])
+            cur.pos[layer] = offs[min(int(k), len(offs) - 1)]
         a = max(0.0, t0 - xf / 2)
         b = min(total, t1 + xf_next / 2)
         na, nb = int(a * SR), int(b * SR)

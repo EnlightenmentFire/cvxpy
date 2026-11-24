@@ -40,22 +40,22 @@ def plan(tl):
     """(t, layer, extra_gain_db, crossfade_s) — the three layers follow the story."""
     flip_t = tl.wk_flip[0]
     S = [
-        (0.0, "base", 0.0, 0.0),                                   # 铺底: 冷启动 + 邹衍
+        (0.0, "base@0", 0.0, 0.0),                                 # 铺底: 冷启动 + 邹衍
         (seg(tl, "S2")["t0"] - 1.0, "push_cold", 0.0, 3.0),         # 推进: 秦
         (sfx_t(tl, "drum_stop"), "DROP", 0.0, 0.0),                # 鼓声停，「刚毅戾深」
         (line(tl, "S2_20")["t0"], "base", -2.0, 3.0),               # 低铺底
         (seg(tl, "S3")["t0"] - 1.0, "push_tension", 0.0, 3.0),      # 推进: 汉初的别扭
-        (fx_t(tl, "dragon") - 0.3, "climax", -2.0, 1.5),            # 黄龙: 音乐单独出来
+        (fx_t(tl, "dragon") - 0.3, "climax@2", -2.0, 1.5),          # 黄龙: 音乐单独出来
         (line(tl, "S4_14")["t0"], "push_tension", 0.0, 3.0),
         (sfx_t(tl, "cut"), "STOP", 0.0, 0.0),                      # 新垣平: 骤停一拍
         (sfx_t(tl, "cut") + 1.1, "base", -2.0, 2.0),
         (seg(tl, "S5")["t0"] - 1.0, "push_warm", 0.0, 3.0),         # 太初
-        (flip_t, "climax", 0.0, 1.0),                              # 全片高潮: 轮盘翻面
+        (flip_t, "climax@0", 0.0, 1.0),                            # 全片高潮: 轮盘翻面
         (line(tl, "S6_09")["t0"], "push_tension", 0.0, 4.0),        # 闰位、王莽
         (line(tl, "S6_27")["t0"], "push_warm", 0.0, 3.0),           # 收束 → 东汉
         (seg(tl, "S8")["t0"] - 1.0, "base", 0.0, 4.0),              # "终始": 回到铺底
-        (seg(tl, "S9")["t0"] - 0.5, "climax", -3.0, 4.0),           # 尾声上扬
-        (line(tl, "S9_03")["t0"] + 0.5, "ending", 0.0, 3.0),        # 收成单件古琴 + 余音
+        (seg(tl, "S9")["t0"] - 0.5, "climax@1", -3.0, 4.0),         # 尾声上扬
+        (line(tl, "S9_03")["t0"] + 0.5, "ending@0", 0.0, 3.0),      # 收成单件古琴 + 余音
     ]
     return S
 
@@ -95,7 +95,11 @@ def sfx_track(tl):
 
 
 def main():
-    sel = json.load(open(sys.argv[1]))
+    sel = json.load(open(sys.argv[1]))["choice"]
+    for layer, paths in sel.items():   # use the continued (longer) version of the chosen clip when present
+        ext = paths[0][:-4] + "_ext.wav"
+        if os.path.exists(ext):
+            paths[0] = ext
     out = sys.argv[2]
     os.makedirs(out, exist_ok=True)
     segs = json.load(open(f"{BUILD}/script.json", encoding="utf-8"))
