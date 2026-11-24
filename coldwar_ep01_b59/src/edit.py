@@ -114,8 +114,23 @@ def _tokens(seg):
 
 
 def _hard_split(seg, max_w):
+    """Split at word boundaries; when two rows suffice, balance them."""
+    toks = _tokens(seg)
+    total = _w(seg.rstrip("，：、；。"))
+    if total <= 2 * max_w and len(toks) > 1:
+        best, best_k = None, None
+        for k in range(1, len(toks)):
+            a = "".join(toks[:k])
+            b = "".join(toks[k:])
+            wa, wb = _w(a), _w(b.rstrip("，：、；。"))
+            if wa <= max_w and wb <= max_w:
+                score = max(wa, wb)
+                if best is None or score < best:
+                    best, best_k = score, k
+        if best_k is not None:
+            return ["".join(toks[:best_k]), "".join(toks[best_k:])]
     rows, cur = [], ""
-    for tok in _tokens(seg):
+    for tok in toks:
         if _w(cur + tok) <= max_w or not cur:
             cur += tok
         else:
@@ -142,13 +157,13 @@ def split_subs(text, max_w=16.0):
         rows = []
         cur = ""
         for seg in re.split(r"(?<=[，：、])", p):
-            if _w(cur + seg.rstrip("，：、")) <= max_w:
+            if _w((cur + seg).rstrip("，：、；。")) <= max_w:
                 cur += seg
             else:
                 if cur:
                     rows.append(cur)
                     cur = ""
-                if _w(seg.rstrip("，：、")) > max_w:
+                if _w(seg.rstrip("，：、；。")) > max_w:
                     pieces = _hard_split(seg, max_w)
                     rows += pieces[:-1]
                     cur = pieces[-1]

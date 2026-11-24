@@ -441,7 +441,13 @@ def subtitle(canvas, text, alpha=1.0, y=SUB_Y, size=50, color=NEU):
     plate = np.zeros((int(total + 70), int(maxw + 150)), np.float32)
     plate[35:-35, 75:-75] = 1
     plate = cv2.GaussianBlur(plate, (0, 0), 22)
-    blit_mask(canvas, plate, W / 2 - plate.shape[1] / 2, y0 - 35, (0, 0, 0), 0.55 * alpha)
+    # adaptive plate: darker when the picture under the subtitle is bright
+    x0 = int(max(0, W / 2 - maxw / 2))
+    x1 = int(min(W, W / 2 + maxw / 2))
+    y_a, y_b = int(max(0, y0)), int(min(H, y0 + total))
+    lum = float(canvas[y_a:y_b, x0:x1].mean()) if (y_b > y_a and x1 > x0) else 0.0
+    pa = 0.55 + 0.37 * min(1.0, max(0.0, (lum - 0.12) / 0.35))
+    blit_mask(canvas, plate, W / 2 - plate.shape[1] / 2, y0 - 35, (0, 0, 0), pa * alpha)
     for i, l in enumerate(lines):
         draw_text(canvas, l, W / 2, y0 + i * lh, size=size, weight="bold", color=color, alpha=alpha,
                   anchor="mt", shadow=0.8)

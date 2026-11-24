@@ -2,7 +2,9 @@
 
 微信视频号竖屏片（1080×1920 · 30fps · H.264 · < 100MB）。
 
-## 当前状态：全片制作（8 分钟版）
+## 当前状态：成片完成（8 分钟版）
+
+成片：`output/coldwar_ep01_haidi_naye.mp4`（1080×1920 · 30fps · 7:56 · 90.3 MiB）。自审记录见 `docs/self_review.md`。
 - `docs/script.md` 旁白稿 v1（约 2700 字，预计 9.5–10 分钟）
 - `docs/factcheck.md` 20 条史料逐条核对表（已对上原文 / 有出入 / 说法不一）
 - `stills/` 8 张关键静帧 + `00_contact_sheet.jpg` 总览
