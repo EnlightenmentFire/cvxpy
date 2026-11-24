@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>黄仁勋 01</title>
+<style>
+@font-face{font-family:"Noto Sans SC";src:url("../../fonts/NotoSansSC%5Bwght%5D.ttf");font-weight:100 900}
+@font-face{font-family:"Noto Serif SC";src:url("../../fonts/NotoSerifSC%5Bwght%5D.ttf");font-weight:200 900}
+@font-face{font-family:"Inter";src:url("../../fonts/Inter%5Bopsz,wght%5D.ttf");font-weight:100 900;font-style:normal}
+@font-face{font-family:"Inter";src:url("../../fonts/Inter-Italic%5Bopsz,wght%5D.ttf");font-weight:100 900;font-style:italic}
+@font-face{font-family:"Plex";src:url("../../fonts/IBMPlexMono-Regular.ttf");font-weight:400}
+@font-face{font-family:"Plex";src:url("../../fonts/IBMPlexMono-Medium.ttf");font-weight:500}
+html,body{margin:0;background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#0A0C0B;
+  font-family:"Noto Sans SC",sans-serif;color:#E8EDE9}
+#stage svg{position:absolute;left:0;top:0}
+.abs{position:absolute}
+.sub{position:absolute;left:70px;width:940px;top:1262px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.sub .zh{font-size:52px;line-height:72px;text-wrap:balance;font-weight:700;letter-spacing:1px;text-shadow:0 2px 14px rgba(0,0,0,.9)}
+.sub .zh.q{color:#DFFBE9}
+.sub .en{margin-top:14px;font-family:"Inter";font-style:italic;font-size:26px;line-height:35px;text-wrap:balance;color:#AEB8B1;font-weight:450;max-width:900px}
+.sub .src{margin-top:8px;font-family:"Plex","Noto Sans SC";font-size:20px;line-height:26px;color:#3fbf78;letter-spacing:.5px}
+.vig{position:absolute;inset:0;background:radial-gradient(ellipse 75% 62% at 50% 44%,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%);pointer-events:none}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="../../build/timeline.js"></script>
+<script src="core.js"></script>
+<script src="scenes_a.js"></script>
+<script src="scenes_b.js"></script>
+<script src="scenes_c.js"></script>
+<script>
+window.ready = (async () => {
+  const fams = ['900 60px "Noto Sans SC"','700 60px "Noto Sans SC"','500 60px "Noto Sans SC"','400 60px "Noto Sans SC"',
+    '700 60px "Noto Serif SC"','italic 450 26px "Inter"','600 26px "Inter"','400 20px "Plex"','500 20px "Plex"'];
+  await Promise.all(fams.map(f => document.fonts.load(f, '黄仁勋Aa1')));
+  await document.fonts.ready;
+  window.renderFrame(0);
+  return true;
+})();
+</script>
+</body>
+</html>
