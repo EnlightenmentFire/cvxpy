@@ -148,12 +148,19 @@ class Overlay:
         return canvas
 
 
-_OV = {}
+from collections import OrderedDict
+_OV = OrderedDict()
+_OV_MAX = 24
 
 
 def overlay(key, fn):
-    if key not in _OV:
+    """LRU cache of affine overlays (subtitles, quote cards) - bounded to keep worker memory small"""
+    if key in _OV:
+        _OV.move_to_end(key)
+    else:
         _OV[key] = Overlay(fn)
+        if len(_OV) > _OV_MAX:
+            _OV.popitem(last=False)
     return _OV[key]
 
 

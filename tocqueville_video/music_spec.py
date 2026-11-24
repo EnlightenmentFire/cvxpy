@@ -49,6 +49,16 @@ def segment(name, t0, dur, target_db):
     return seg * 10 ** (g / 20)
 
 
+def movavg(x, w):
+    """centred moving average via cumulative sums (O(n))"""
+    c = np.concatenate([[0.0], np.cumsum(x)])
+    n = len(x)
+    i = np.arange(n)
+    a = np.clip(i - w // 2, 0, n)
+    b = np.clip(i + w // 2 + 1, 0, n)
+    return (c[b] - c[a]) / np.maximum(1, b - a)
+
+
 def place_xf(buf, seg, start, fade_in=XF, fade_out=XF):
     n = len(seg)
     fi, fo = int(fade_in * SR), int(fade_out * SR)
@@ -113,13 +123,12 @@ def main():
         i, j = int(a * SR), min(len(buf), int(b * SR))
         tgt[i:j] = np.maximum(tgt[i:j], lvl)
     win = int(3 * SR)
-    mono = buf.mean(1)
-    pw = np.convolve(mono ** 2, np.ones(win, np.float32) / win, mode="same")
+    mono = buf.mean(1).astype(np.float64)
+    pw = movavg(mono ** 2, win)
     cur = 10 * np.log10(pw + 1e-12)
     g = np.clip(tgt - cur, -6, 6) * 0.7
     g[(cur < -60) | (tgt < -90)] = 0.0
-    k = int(4 * SR)
-    g = np.convolve(g, np.ones(k, np.float32) / k, mode="same")
+    g = movavg(g.astype(np.float64), int(4 * SR)).astype(np.float32)
     buf *= (10 ** (g / 20))[:, None]
 
     # climax: let the full piece come up during the narration pause before "自由不是一句口号"

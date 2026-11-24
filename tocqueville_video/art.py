@@ -95,14 +95,19 @@ PAPER_TONES = {
 }
 
 
-_PAPER = {}
+from collections import OrderedDict
+_PAPER = OrderedDict()
 
 
 def paper(tone="warm", seed=1, w=W, h=H):
     k = (tone, seed, w, h)
-    if k not in _PAPER:
-        _PAPER[k] = _paper(tone, seed, w, h)
-    return _PAPER[k].copy()
+    if k in _PAPER:
+        _PAPER.move_to_end(k)
+    else:
+        _PAPER[k] = _paper(tone, seed, w, h).astype(np.float16)
+        if len(_PAPER) > 16:
+            _PAPER.popitem(last=False)
+    return _PAPER[k].astype(np.float32)
 
 
 def _paper(tone="warm", seed=1, w=W, h=H):
