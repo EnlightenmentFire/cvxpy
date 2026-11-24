@@ -1,0 +1,77 @@
+:root{
+  --paper:#e8ddc5; --paper2:#d9cbac; --ink:#1b1814; --ink2:#3a332b; --ink3:#6b6052;
+  --red:#a5281d; --red2:#c23a2b; --gold:#a67c2e; --blue:#2c4563; --grey:#6f6a62; --dark:#15120f;
+  --serif:'Noto Serif CJK SC','Noto Serif CJK TC',serif;
+  --serift:'Noto Serif CJK TC','Noto Serif CJK SC',serif;
+  --sans:'Noto Sans CJK SC',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#000;overflow:hidden}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--dark);font-family:var(--serif);color:var(--ink)}
+#scenes,.scene,#hud{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.scene{overflow:hidden;will-change:opacity}
+.abs{position:absolute}
+.bg{position:absolute;left:-40px;top:-40px;width:1160px;height:2000px;background-size:cover;background-position:center}
+.bg.light{background-image:url(../assets/paper_light.jpg)}
+.bg.old{background-image:url(../assets/paper_old.jpg)}
+.bg.dark{background-image:url(../assets/paper_dark.jpg)}
+.v{writing-mode:vertical-rl;text-orientation:upright}
+.trad{font-family:var(--serift)}
+.black{font-weight:900}.bold{font-weight:700}.semi{font-weight:600}.med{font-weight:500}
+.sans{font-family:var(--sans)}
+.red{color:var(--red)}.gold{color:var(--gold)}.paperc{color:var(--paper)}
+.inkf{filter:url(#ink)}
+
+/* 字幕 */
+#subs{position:absolute;left:0;width:1080px;top:1392px;text-align:center;z-index:50}
+#subtext{display:inline-block;font-family:var(--sans);font-weight:500;font-size:45px;line-height:1.25;letter-spacing:1px;color:#f4ecd9;
+  background:rgba(18,15,12,.84);padding:13px 30px 15px;border-radius:6px;max-width:980px;box-shadow:0 2px 0 rgba(0,0,0,.25)}
+#subtext.q{color:#ffe2a8}
+#subtext:empty{display:none}
+
+/* 顶部栏 */
+#hud .bar{position:absolute;left:64px;top:236px;font-family:var(--sans);font-size:25px;letter-spacing:5px;font-weight:500;opacity:.72;display:flex;align-items:center;gap:14px}
+#hud .bar i{display:inline-block;width:11px;height:11px;background:var(--red2);transform:rotate(45deg)}
+#hud.onlight .bar{color:var(--ink2)} #hud.ondark .bar{color:#cdbf9f}
+#hud .chap{position:absolute;right:64px;top:236px;font-family:var(--sans);font-size:25px;letter-spacing:4px;font-weight:500;opacity:.72}
+#hud.onlight .chap{color:var(--ink2)} #hud.ondark .chap{color:#cdbf9f}
+
+/* 出处标签 */
+.src{position:absolute;left:64px;right:64px;top:1296px;font-family:var(--sans);font-size:27px;line-height:1.35;letter-spacing:1px;color:var(--ink3);display:flex;gap:12px;align-items:flex-start}
+.src b{flex:none;font-weight:700;color:var(--paper);background:var(--ink2);padding:1px 10px 2px;font-size:23px;letter-spacing:3px;margin-top:3px}
+.src.dk{color:#a99c82}.src.dk b{background:#a99c82;color:var(--dark)}
+.src em{font-style:normal;color:var(--red);font-weight:700}
+.src.dk em{color:#e0705f}
+
+/* 人物名牌 */
+.tag{position:absolute;display:flex;align-items:stretch;gap:0}
+.tag .barv{width:10px;background:var(--red)}
+.tag .tx{padding:8px 22px 10px 18px;background:rgba(27,24,20,.93);color:var(--paper)}
+.tag .nm{font-weight:900;font-size:50px;letter-spacing:6px;line-height:1.15}
+.tag .rl{font-family:var(--sans);font-size:26px;letter-spacing:2px;opacity:.86;margin-top:4px;font-weight:400}
+.tag.lt .tx{background:rgba(232,221,197,.95);color:var(--ink)}
+
+/* 印章 */
+.seal{position:absolute;color:var(--red);border:9px solid var(--red);font-family:var(--serift);font-weight:900;display:grid;place-items:center;mix-blend-mode:multiply;
+  -webkit-mask-image:url(../assets/seal_mask.png);-webkit-mask-size:340px 340px}
+.seal.fill{background:var(--red);color:#efe3ca;border:none;mix-blend-mode:normal}
+.seal.ondark{mix-blend-mode:normal;color:var(--red2);border-color:var(--red2)}
+
+/* 章节卡 */
+.chapnum{font-family:var(--serift);font-weight:900}
+.rule{position:absolute;height:2px;background:currentColor}
+
+/* 竖排铅字引文 */
+.quote{position:absolute;white-space:nowrap;writing-mode:vertical-rl;text-orientation:upright;font-family:var(--serift);font-weight:900;color:var(--ink);letter-spacing:.06em}
+.quote span{display:inline-block}
+.quote .dot{position:relative}
+.quote .dot::after{content:'';position:absolute;right:-.36em;top:.34em;width:.2em;height:.2em;border-radius:50%;background:var(--red)}
+.plain{position:absolute;font-family:var(--serif);font-weight:700;color:var(--ink);line-height:1.5}
+.plain .lab{display:inline-block;font-family:var(--sans);font-weight:700;font-size:26px;letter-spacing:6px;color:var(--paper);background:var(--red);padding:3px 12px 4px 16px;margin-bottom:16px}
+.plain mark{background:linear-gradient(transparent 62%,rgba(165,40,29,.28) 62%);color:inherit}
+.take{position:absolute;font-family:var(--serif);font-weight:900;line-height:1.35}
+
+/* 报纸栏线 */
+.cols{background-image:repeating-linear-gradient(to left,transparent 0,transparent calc(var(--pitch) - 2px),rgba(165,40,29,.55) calc(var(--pitch) - 2px),rgba(165,40,29,.55) var(--pitch))}
+.kv{font-family:var(--sans);font-weight:500}
+.hl{background:rgba(165,40,29,.16);box-shadow:0 0 0 6px rgba(165,40,29,.16)}
