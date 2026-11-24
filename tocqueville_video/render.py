@@ -52,7 +52,7 @@ def build_timeline():
             dd.setdefault("gap", 0.3)
             dur = line_dur(dd)
             lines.append(dict(id=dd["id"], k=dd["k"], start=round(t, 3), end=round(t + dur, 3), sub=dd["sub"],
-                              fr=dd.get("fr"), src=dd.get("src"), cue=dd.get("cue")))
+                              fr=dd.get("fr"), src=dd.get("src"), cue=dd.get("cue"), low=dd.get("low", False)))
             gap = max(0.38, dd["gap"] + 0.12)
             if i + 1 < len(s["lines"]) and s["lines"][i + 1]["k"] != dd["k"]:
                 gap += 0.25
@@ -244,6 +244,19 @@ def camera_apply(ill, zoom, fx, fy):
     return np.asarray(im).astype(np.float32) / 255
 
 
+def low_quote(cv, fr_text, src):
+    from art import FONT_FR_I, wrap_words, draw_text_rgba, over
+    f = font(FONT_FR_I, 27)
+    lines = wrap_words("« " + fr_text + " »", f, 940)
+    items = [(W / 2, 1272 + i * 33, ln, f, (52, 60, 72, 255), "ma") for i, ln in enumerate(lines)]
+    rgba = draw_text_rgba((W, H), items)
+    a = rgba[..., 3]
+    from art import blur
+    halo = blur(a, 10) * 0.6
+    cv[:] = cv * (1 - halo[..., None]) + np.array([0.90, 0.92, 0.94], np.float32) * halo[..., None]
+    over(cv, rgba)
+
+
 # ------------------------------------------------------------------ frame
 
 class Renderer:
@@ -255,7 +268,7 @@ class Renderer:
         self.subs = []
         for s in self.scenes:
             for ln in s["lines"]:
-                if ln["k"] == "n":
+                if ln["k"] == "n" or ln.get("low"):
                     for a, b, c in chunk_sub(ln["sub"], ln["start"], ln["end"]):
                         self.subs.append((a - 0.08, b + 0.12, c, s["id"]))
         self._ill_cache = {}
@@ -291,6 +304,12 @@ class Renderer:
         # quote cards
         for ln in s["lines"]:
             if ln["k"] != "q":
+                continue
+            if ln.get("low"):
+                a, b = ln["start"] - 0.2, ln["end"] + 0.3
+                if a - 0.4 <= t <= b + 0.4:
+                    op = min(ease((t - (a - 0.4)) / 0.4), ease(((b + 0.4) - t) / 0.4))
+                    overlay(("qlow", ln["id"]), lambda cv, ln=ln: low_quote(cv, ln["fr"], ln["src"])).apply(fr, op)
                 continue
             a, b = ln["start"] - 0.35, ln["end"] + 0.45
             if a - 0.4 <= t <= b + 0.4:
