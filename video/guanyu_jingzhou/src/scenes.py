@@ -20,7 +20,7 @@ C_TH = Cam(112.35, 31.05, 5.4, ay=AY)
 C_WIDE = Cam(108.4, 31.2, 12.6, ay=AY)
 C_FAN = Cam(112.12, 32.06, 1.7, ay=AY)
 C_NORTH = Cam(112.9, 32.85, 5.6, ay=AY)
-C_REAR = Cam(112.0, 30.85, 3.9, ay=690)
+C_REAR = Cam(112.0, 30.85, 3.9, ay=730)
 C_XIANG = Cam(112.6, 28.9, 7.0, ay=AY)
 C_EAST = Cam(115.4, 30.9, 8.6, ay=AY)
 C_FLEET = Cam(114.35, 30.0, 4.4, ay=AY)
@@ -223,7 +223,7 @@ def plan_river(c, a):
     text(c, '长 江', 110, PKY + 18, 28, '#BFE0EC', 'serifm', 0.8 * a, spacing=10)
 def plan_alpha(t):
     a = 1 - ss(ramp(t, S('a3') - 0.2, S('a3') + 1.6)) if t < S('a3') + 2 else 0.0
-    return max(a, fade(t, S('e4') + 0.9, S('e7') + 0.9, 0.9, 0.9))
+    return max(a, fade(t, S('e4') + 0.3, S('e7') + 0.9, 0.9, 0.9))
 # ------------------------------------------------------------------ 江陵城示意
 def city_plan(c, t, a, gate, flag=0.0, cx=540, cy=PCY, R_=PR, name='江陵城', amb=0.0, warm=0.0, sub='（示意）'):
     """方城示意图：城墙、四门、街坊；gate∈[0,1] 南门开启；flag 0=刘 1=孙。"""
@@ -462,7 +462,7 @@ def card_mi(c, t):
     """c3–c4：麋芳其人。"""
     a = fade(t, S('c3') + 0.2, E('c4') + 0.2, 0.6, 0.5)
     if a <= 0.003: return
-    x, y, w, h = 64, 326, 872, 470
+    x, y, w, h = 64, 392, 872, 470
     dim(c, 0.30 * a)
     panel(c, x, y, w, h, a, r=10, fa=0.88)
     rrect(c, x, y, 8, h, 3, LIU, a)
@@ -532,7 +532,7 @@ def sec3(c, t, cam):
         x, y, _ = along(hp, kgo)
         if kgo > 0.01: line(c, trim(hp, 0, kgo), SUN_L, 3.5, 0.55 * v3, dash=(10, 8))
         unit(c, x, y - 44, 'sun', '吕蒙' + ('（称病）' if kgo > 0.05 else ''), kv, 0.95, 'fleet', label_side='t')
-        klu = ss(ramp(t, S('d4') + 3.4, S('d4') + 4.4)) * v3
+        klu = ss(ramp(t, S('d4') + 2.4, S('d4') + 3.2)) * v3
         unit(c, lx + 6, ly + 56, 'sun', '陆逊', klu, 0.78, label_side='r', sub='“未有远名，非羽所忌”')
         # 书信
         kl = ramp(t, S('d4') + 5.0, S('d4') + 7.0); fx, fy = P(cam, '樊城')
@@ -598,7 +598,7 @@ def sec4(c, t, cam):
         text(c, '↑ 关羽主力在樊城', 930, 372, 26, LIU_L, 'sans', v1 * 0.95, 'r', stroke=5)
         river_labels(c, cam, v1 * 0.9, ('长江',))
     # e3 公安
-    v3 = fade(t, S('e3') + 0.6, S('e4') + 1.0, 0.8, 0.8)
+    v3 = fade(t, S('e3') + 0.6, S('e4') + 0.5, 0.8, 0.6)
     if v3 > 0.01:
         cities(c, cam, t, ['江陵', '公安'], v3, major=('江陵', '公安'), size=38)
         gx, gy = P(cam, '公安'); jx, jy = P(cam, '江陵')
@@ -616,7 +616,7 @@ def sec4(c, t, cam):
         tag(c, gx - 250, gy + 40, '士仁：流涕而降', '#FFB199', kk, 28, fname='serif')
         pulse(c, gx, gy, t, SUN_L, 14, 70, 1.5, kk)
     # e4-e6 江陵城
-    v4 = fade(t, S('e4') + 0.9, S('e7') + 0.9, 0.9, 0.9)
+    v4 = fade(t, S('e4') + 0.3, S('e7') + 0.9, 0.9, 0.9)
     if v4 > 0.01:
         dim(c, 0.46 * v4)
         g = ease(ramp(t, S('e4') + GATE_OFF, S('e4') + GATE_OFF + 2.2))
@@ -953,8 +953,10 @@ def sec7(c, t, cam):
     territories(c, cam, t, 0.9)
     k1 = fade(t, S('h1') - 0.6, S('h2') - 0.3, 0.6, 0.5); k2 = fade(t, S('h2') - 0.2, S('h3') - 0.3, 0.6, 0.5); k3 = ss(ramp(t, S('h3') - 0.2, S('h3') + 0.8))
     if k1 > 0.01:
-        cities(c, cam, t, ['江陵', '公安'], k1, major=('江陵',), size=40)
-        x, y = P(cam, '江陵'); pulse(c, x, y, t, SUN_L, 18, 90, 1.8, 0.8 * k1)
+        dim(c, 0.34 * k1)
+        c.save(); c.translate(540, 620); c.scale(0.8, 0.8); c.translate(-540, -PCY)
+        city_plan(c, t, k1, ease(ramp(t, S('h1') - 0.4, S('h1') + 1.2)), 1.0, sub='')
+        c.restore()
     if k2 > 0.01:
         pth = mkpath(PL(cam, D.T_JING), True)
         pp = skia.Paint(AntiAlias=True, Color=rgba(PAPER, 0.9 * k2), Style=skia.Paint.kStroke_Style, StrokeWidth=4); pp.setPathEffect(skia.DashPathEffect.Make([14, 10], -(t * 18) % 24))
@@ -1036,7 +1038,7 @@ def stamp(c, t):
         if b0 in ('c3',): continue
         w = max(tw(s1, 'serif', 30), tw(s2, 'sans', 24)) + 44
         # 被整屏面板遮住的时段隐藏
-        if S('f4') < t < S('h1'): continue
+        if S('f4') < t < S('h1') or S('f1') - 0.2 < t < S('f3'): continue
         panel(c, 64, 250, w, 96, a, r=6, fa=0.72)
         rrect(c, 64, 250, 6, 96, 2, GOLD, a)
         text(c, s1, 86, 290, 30, PAPER, 'serif', a); text(c, s2, 86, 328, 24, '#D9D2C2', 'sansm', a)

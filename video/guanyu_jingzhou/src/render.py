@@ -12,7 +12,7 @@ def render_seg(args):
     path = f'{OUT}/seg_{k:03d}.mp4'
     if os.path.exists(path + '.done'): return k, 0
     t0 = time.time()
-    ct = 'bgra' if skia.kN32_ColorType == skia.kBGRA_8888_ColorType else 'rgba'
+    ct = 'bgra'   # Image.tobytes() 实测为 BGRA 字节序（见 colortest）
     p = subprocess.Popen(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', ct, '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-',
                           '-c:v', 'libx264', '-preset', 'veryfast', '-qp', '10', '-pix_fmt', 'yuv420p', '-threads', '1',
                           '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', path], stdin=subprocess.PIPE)
