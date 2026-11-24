@@ -524,10 +524,13 @@ def plymouth(ctx, t, c):
             draw_text(ctx, "← 猜低的　　误差互相抵消　　猜高的 →", W / 2, 860, "serif_bold", 32, INK, k13, "ms")
         ctx.pop_group_to_source()
         ctx.paint_with_alpha(main)
-    k3 = win(t, c.s("c3_3"), c.e("c3_3"), 0.4, 0.4)
+    k3 = win(t, c.s("c3_3"), c.e("c3_4"), 0.4, 0.4)
     if k3 > 0:
         ctx.push_group()
         _ticket(ctx, t, c, 1.0)
+        if t >= c.s("c3_4"):
+            a = clamp((t - c.s("c3_4")) / 0.4)
+            draw_text(ctx, "屠夫 · 农夫 · 看牛的高手 · 凭感觉的人", W / 2, 980, "serif_bold", 34, INK, a, "ms")
         ctx.pop_group_to_source()
         ctx.paint_with_alpha(k3)
     if cond > 0:

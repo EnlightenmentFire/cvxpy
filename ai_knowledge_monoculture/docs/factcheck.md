@@ -32,7 +32,7 @@ Published 24 July 2024（印刷版 25 July 2024）。https://www.nature.com/arti
 | 1906 年 | 原文只说"recently held"，没写年份。Galton《Memories of My Life》（1908）："A little more than a year ago, I happened to be at Plymouth…" | ✏️ 稿中只说"1906 年"，删去"秋天"（季节无据） |
 | 牵出一头**活**肥牛，猜它宰好、收拾干净以后多重 | "A fat ox having been selected, competitors bought stamped and numbered cards, for 6d. each, on which to inscribe their respective names, addresses, and estimates of what the ox would weigh after it had been slaughtered and 'dressed.'" 表题："estimates of the dressed weight of a particular **living** ox" | ✏️ 原简报写"一头宰好的牛"，已改 |
 | 六便士一张 | "for 6d. each"；"The sixpenny fee deterred practical joking" | ✅ |
-| （成片已删）有屠夫和农夫，有的是行家；也有人凭听来的消息和自己的感觉 | "The competitors included butchers and farmers, some of whom were highly expert in judging the weight of cattle; others were probably guided by such information as they might pick up, and by their own fancies." | ✏️ 原稿"压根不懂牛的普通人"改为贴近原文；为控制时长，成片删去此句 |
+| 有屠夫和农夫，有的是行家；也有人凭听来的消息和自己的感觉 | "The competitors included butchers and farmers, some of whom were highly expert in judging the weight of cattle; others were probably guided by such information as they might pick up, and by their own fancies." | ✏️ 原稿"压根不懂牛的普通人"改为贴近原文 |
 | 787 张有效票 | "About 800 tickets were issued … After weeding thirteen cards out of the collection, as being defective or illegible, there remained 787 for discussion." | ✅ |
 | 中位数 1207 磅，实际 1198 磅，差 9 磅（0.8%） | "Now the middlemost estimate is 1207 lb., and the weight of the dressed ox proved to be 1198 lb.; so the vox populi was in this case 9 lb., or 0·8 per cent. of the whole weight too high." | ✅ |
 | 没被情绪左右，也没被谁的演说带偏 | "The judgments were unbiassed by passion and uninfluenced by oratory and the like." | ✅（原文拼作 unbiassed，屏幕照原文） |
