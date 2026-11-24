@@ -1,0 +1,68 @@
+[
+ {
+  "lang": "a",
+  "voice": "am_michael",
+  "text": "That's a really interesting idea. Let's circle back on this.",
+  "out": "/tmp/claude-0/-home-user-cvxpy/3146234e-c880-5dd6-b7f5-20b7a9aa7973/scratchpad/audio/raw/s01_03_en.wav"
+ },
+ {
+  "lang": "a",
+  "voice": "af_heart",
+  "text": "Hey, how are you?",
+  "out": "/tmp/claude-0/-home-user-cvxpy/3146234e-c880-5dd6-b7f5-20b7a9aa7973/scratchpad/audio/raw/s05_02_en.wav"
+ },
+ {
+  "lang": "a",
+  "voice": "am_eric",
+  "text": "We should grab coffee sometime.",
+  "out": "/tmp/claude-0/-home-user-cvxpy/3146234e-c880-5dd6-b7f5-20b7a9aa7973/scratchpad/audio/raw/s05_04_en.wav"
+ },
+ {
+  "lang": "a",
+  "voice": "am_michael",
+  "text": "That's an interesting idea. Tell me more.",
+  "out": "/tmp/claude-0/-home-user-cvxpy/3146234e-c880-5dd6-b7f5-20b7a9aa7973/scratchpad/audio/raw/s05_06_en.wav"
+ },
+ {
+  "lang": "a",
+  "voice": "am_michael",
+  "text": "That's an interesting idea... but let's park that for now.",
+  "out": "/tmp/claude-0/-home-user-cvxpy/3146234e-c880-5dd6-b7f5-20b7a9aa7973/scratchpad/audio/raw/s05_07_en.wav"
+ },
+ {
+  "lang": "a",
+  "voice": "am_michael",
+  "text": "I hear you.",
+  "out": "/tmp/claude-0/-home-user-cvxpy/3146234e-c880-5dd6-b7f5-20b7a9aa7973/scratchpad/audio/raw/s05_09_en.wav"
+ },
+ {
+  "lang": "a",
+  "voice": "am_michael",
+  "text": "Let's circle back on this.",
+  "out": "/tmp/claude-0/-home-user-cvxpy/3146234e-c880-5dd6-b7f5-20b7a9aa7973/scratchpad/audio/raw/s05_11_en.wav"
+ },
+ {
+  "lang": "a",
+  "voice": "af_sarah",
+  "text": "Meets expectations.",
+  "out": "/tmp/claude-0/-home-user-cvxpy/3146234e-c880-5dd6-b7f5-20b7a9aa7973/scratchpad/audio/raw/s05_13_en.wav"
+ },
+ {
+  "lang": "a",
+  "voice": "af_heart",
+  "text": "Just to make sure we're on the same page...",
+  "out": "/tmp/claude-0/-home-user-cvxpy/3146234e-c880-5dd6-b7f5-20b7a9aa7973/scratchpad/audio/raw/s05_15_en.wav"
+ },
+ {
+  "lang": "b",
+  "voice": "bm_george",
+  "text": "With the greatest respect...",
+  "out": "/tmp/claude-0/-home-user-cvxpy/3146234e-c880-5dd6-b7f5-20b7a9aa7973/scratchpad/audio/raw/s06_12_en.wav"
+ },
+ {
+  "lang": "b",
+  "voice": "bm_george",
+  "text": "I'll bear it in mind.",
+  "out": "/tmp/claude-0/-home-user-cvxpy/3146234e-c880-5dd6-b7f5-20b7a9aa7973/scratchpad/audio/raw/s06_13_en.wav"
+ }
+]
