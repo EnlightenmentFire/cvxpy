@@ -27,14 +27,21 @@ MG = os.path.join(WORK, "musicgen")
 XF = 3.0  # crossfade between layers (规范: 2–4 s)
 
 
+# loudness of each layer before the bus gain: 铺底 quiet, 推进 a little up, 高潮 fullest (规范 二)
+LAYER_LUFS = {"L1_base": -24.0, "L2_drive": -22.5, "L3_peak": -20.0, "L4_release": -23.5, "L5_end": -24.5}
+
+
 def layer_audio(name):
     import librosa
+    import pyloudnorm as pyln
     rep = json.load(open(os.path.join(MG, "report.json")))
     a, sr = sf.read(rep[name]["chosen_full"], dtype="float32", always_2d=True)
-    a = a.T  # (2, n)
     if sr != SR:
-        a = np.stack([librosa.resample(ch, orig_sr=sr, target_sr=SR) for ch in a])
-    return a
+        a = np.stack([librosa.resample(ch, orig_sr=sr, target_sr=SR) for ch in a.T], axis=1)
+    meter = pyln.Meter(SR)
+    lufs = meter.integrated_loudness(a)
+    a = a * (10 ** ((LAYER_LUFS[name] - lufs) / 20))
+    return a.T.astype(np.float32)  # (2, n)
 
 
 def score_plan(tl):
@@ -92,6 +99,14 @@ def build_score(tl, n):
         if i1 < n:
             env[-f:] = np.minimum(env[-f:], np.linspace(1, 0, f))
         out[:, i0:i1] += seg * env * g
+    # 高潮: during the narration hold after s6_05 the music stands alone, lifted ~3 dB
+    L = tl["lines"]
+    h0, h1 = L["s6_05"][1], L["s6_06"][0]
+    a, b = int((h0 - 1.0) * SR), int((h1 + 1.5) * SR)
+    if 0 < a < b <= n:
+        x = np.linspace(0, 1, b - a)
+        bump = 1 + 0.41 * np.sin(np.pi * x) ** 2
+        out[:, a:b] *= bump
     # 规范: fade in 2 s at the start of the music, fade out 3 s at the very end
     title = [c for c in tl["cards"] if c["sec"] == "title"][0]
     s0 = int(title["start"] * SR)

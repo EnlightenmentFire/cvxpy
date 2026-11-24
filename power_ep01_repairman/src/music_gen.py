@@ -26,12 +26,12 @@ BASE = "no vocals, no singing"
 LAYERS = [
     # name, prompt, candidate length (s), extend to (s)
     ("L1_base", "minimal ambient soft piano and warm analog synth pad, sparse, long sustained notes, calm, "
-                "thoughtful, slow, D minor, no drums, " + BASE, 22, 75),
+                "thoughtful, slow, D minor, no drums, " + BASE, 22, 66),
     ("L2_drive", "minimal modern electronic pulse with soft piano, light ticking percussion like a quiet machine, "
-                 "steady, thoughtful, gently building tension, D minor, 90 bpm, " + BASE, 22, 70),
+                 "steady, thoughtful, gently building tension, D minor, 90 bpm, " + BASE, 22, 66),
     ("L3_peak", "cinematic minimal electronic, driving low synth pulse, low strings swelling, soft piano motif, "
-                "light percussion, tense and serious, climax, not aggressive, D minor, 90 bpm, " + BASE, 22, 45),
-    ("L4_release", "warm intimate piano with soft strings pad, reflective, calm, slow, no drums, D minor, " + BASE, 22, 60),
+                "light percussion, tense and serious, climax, not aggressive, D minor, 90 bpm, " + BASE, 22, 44),
+    ("L4_release", "warm intimate piano with soft strings pad, reflective, calm, slow, no drums, D minor, " + BASE, 22, 44),
     ("L5_end", "solo soft piano, slow, gentle, reflective ending, single notes ringing out, fading, " + BASE, 18, 28),
 ]
 
@@ -44,7 +44,9 @@ def model():
         torch.set_num_threads(4)
         from transformers import AutoProcessor, MusicgenForConditionalGeneration
         _m["p"] = AutoProcessor.from_pretrained(MODEL)
-        _m["m"] = MusicgenForConditionalGeneration.from_pretrained(MODEL, torch_dtype=torch.bfloat16)
+        _m["m"] = MusicgenForConditionalGeneration.from_pretrained(MODEL, dtype=torch.bfloat16)
+        # the EnCodec audio encoder stays in float32 so audio prompts (float32) can be encoded
+        _m["m"].audio_encoder.to(torch.float32)
         _m["m"].eval()
     return _m["p"], _m["m"]
 
