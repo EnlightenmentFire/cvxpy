@@ -340,14 +340,14 @@ def quote_card(c, de, zh, cx, cy, alpha=1.0, de_size=40, zh_size=34, maxw=900, d
     if alpha <= 0:
         return
     fname = "garamond_i" if italic else "garamond"
-    lines = wrap_cjk(de, fname, de_size, maxw)
+    lines = balanced_wrap(de, fname, de_size, maxw)
     lh = de_size * 1.3
     y = cy
     for ln in lines:
         draw_text(c, ln, cx, y, fname, de_size, de_color, alpha, align="center")
         y += lh
     y += zh_size * 0.35
-    zl = wrap_cjk(zh, "serif", zh_size, maxw)
+    zl = balanced_wrap(zh, "serif", zh_size, maxw)
     for ln in zl:
         draw_text(c, ln, cx, y + zh_size * 0.2, "serif", zh_size, zh_color, alpha * 0.95, align="center")
         y += zh_size * 1.45

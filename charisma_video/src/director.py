@@ -62,9 +62,9 @@ class Seg:
 def quote_panel(c, de, zh, alpha, y=420, de_size=40, zh_size=32, italic=True):
     if alpha <= 0:
         return
-    lines = wrap_cjk(de, "garamond_i" if italic else "garamond", de_size, 900)
-    zl = wrap_cjk(zh, "serif", zh_size, 900)
-    h = len(lines) * de_size * 1.3 + len(zl) * zh_size * 1.45 + 70
+    lines = balanced_wrap(de, "garamond_i" if italic else "garamond", de_size, 900)
+    zl = balanced_wrap(zh, "serif", zh_size, 900)
+    h = len(lines) * de_size * 1.3 + len(zl) * zh_size * 1.45 + 70 + max(0, de_size - 40) * 0.5
     rect = skia.Rect.MakeXYWH(60, y - 30, 960, h)
     c.drawRRect(skia.RRect.MakeRectXY(rect, 16, 16), paint(INK, 0.82 * alpha))
     c.drawRRect(skia.RRect.MakeRectXY(rect, 16, 16), paint(GOLD_DIM, alpha, stroke=1.6))
@@ -213,7 +213,7 @@ def d_routine(c, seg, t):
         quote_panel(c, "in statu nascendi", "拉丁文：“在诞生的状态中”", na, y=372)
     ca = fade_win(t, seg.cue("L9"), seg.cue("extinguish"))
     if ca > 0:
-        draw_text(c, "不按规矩来  ×  装进规矩", 540, 380, "serif_b", 44, RED, ca, align="center")
+        draw_text(c, "不按规矩来  ×  装进规矩", 540, 1222, "serif_b", 44, RED, ca, align="center")
 
 def d_lot(c, seg, t):
     def story(c, t):
@@ -233,10 +233,11 @@ def d_designate(c, seg, t):
                       focus=5 if t >= seg.cue("commodus") else None, dim=seg.P(t, "commodus", 1.0) * 0.6)
         ca = fade_win(t, seg.cue("caveat"), seg.cue("commodus"))
         if ca > 0:
-            rr = skia.RRect.MakeRectXY(skia.Rect.MakeXYWH(90, 1040, 900, 120), 16, 16)
-            c.drawRRect(rr, paint(INK, 0.85 * ca)); c.drawRRect(rr, paint(GOLD_DIM, ca, stroke=1.6))
-            draw_text(c, "不是有意设计", 540, 1090, "serif_b", 38, GOLD_HI, ca, align="center")
-            draw_text(c, "前几位要么没有儿子，要么儿子没能活下来", 540, 1138, "serif", 30, IVORY, ca, align="center")
+            c.drawRect(skia.Rect.MakeWH(W, H), paint((0, 0, 0), 0.5 * ca))
+            rr = skia.RRect.MakeRectXY(skia.Rect.MakeXYWH(90, 660, 900, 150), 16, 16)
+            c.drawRRect(rr, paint(INK, 0.9 * ca)); c.drawRRect(rr, paint(GOLD_DIM, ca, stroke=1.6))
+            draw_text(c, "不是有意设计", 540, 724, "serif_b", 44, GOLD_HI, ca, align="center")
+            draw_text(c, "前几位要么没有儿子，要么儿子没能活下来", 540, 780, "serif", 32, IVORY, ca, align="center")
         da = seg.P(t, "dio", 0.8) * (1 - seg.P(t, "so", 0.8, 0.5))
         if da > 0:
             c.drawRect(skia.Rect.MakeWH(W, H), paint((0, 0, 0), 0.45 * da))
@@ -250,12 +251,17 @@ def d_elect(c, seg, t):
         bread = 4 - int(3 * clamp((t - seg.cue("roof")) / 6.0)) if t >= seg.cue("roof") else 4
         key = ease(prog(t, seg.cue("key"), 1.8)) * (1 - seg.P(t, "so", 1.0, 1.0))
         inner = seg.P(t, "palace", 1.2) if seg.cue("palace") < 1e8 else 1
+        draw_bg(c, tint=((6, 12, 22), (14, 26, 46)))
+        ga = fade_win(t, seg.cue("L2"), seg.cue("palace") + 0.3)
+        if ga > 0:
+            draw_text(c, "枢机主教", 540, 700, "serif_b", 60, GOLD_HI, ga, align="center", tracking=0.15)
+            draw_text(c, "教会里地位仅次于教皇的高级神职人员", 540, 780, "serif", 34, IVORY, ga, align="center")
+            draw_text(c, "由他们关起门来，选出下一任教皇", 540, 850, "serif", 34, MUTED, ga, align="center")
         c.saveLayerAlpha(None, int(255 * max(0.0, inner)))
         sme.draw_viterbo(c, roof_off=roof, bread=bread, key=key, letter=fade_win(t, seg.cue("letter"), seg.cue("L7") + 0.5))
         c.restore()
         wa = fade_win(t, seg.cue("weber_note"), seg.cue("L2") + 0.4)
         if wa > 0:
-            draw_bg(c)
             quote_panel(c, "Durch Nachfolgerdesignation seitens des charismatisch qualifizierten Verwaltungsstabs und Anerkennung durch die Gemeinde.",
                         "韦伯 §11 d)：由有魅力资格的班底指定，再由众人认可", wa, y=640)
         # year counter
@@ -264,9 +270,10 @@ def d_elect(c, seg, t):
             span = max(1.0, seg.cue("L7") - seg.cue("months"))
             yr = 1268 + int(3.75 * clamp((t - seg.cue("months")) / span) * 1.0)
             yr = min(yr, 1271)
-            draw_text(c, str(yr), 160, 1240, "cinzel", 64, GOLD_HI, ya, align="left")
+            draw_text(c, str(yr), 150, 470, "cinzel", 72, GOLD_HI, ya, align="left")
             if t >= seg.cue("L7"):
-                draw_text(c, "1271.9.1  格里高利十世", 920, 1240, "serif_sb", 34, GOLD_HI, seg.P(t, "L7", 0.8), align="right")
+                draw_text(c, "1271.9.1", 150, 520, "cinzel", 30, GOLD_HI, seg.P(t, "L7", 0.8), align="left")
+                draw_text(c, "格里高利十世当选", 150, 562, "serif_sb", 30, IVORY, seg.P(t, "L7", 0.8), align="left")
         ra = fade_win(t, seg.cue("rule"), seg.cue("key"))
         if ra > 0:
             c.drawRect(skia.Rect.MakeWH(W, H), paint((0, 0, 0), 0.5 * ra))
@@ -525,9 +532,11 @@ class Director:
             for ln in seg.lines:
                 if seg.d["id"] == "end" and ln.get("cue") in ("l1", "l2", "l3"):
                     continue
-                for (c0, c1, txt) in ln["chunks"]:
-                    if c0 - 0.05 <= T < c1 + 0.15:
-                        sa = min(1.0, (T - c0 + 0.05) / 0.12, (c1 + 0.15 - T) / 0.12)
+                nch = len(ln["chunks"])
+                for j, (c0, c1, txt) in enumerate(ln["chunks"]):
+                    end = c1 + (0.25 if j == nch - 1 else 0.0)
+                    if c0 <= T < end:
+                        sa = min(1.0, (T - c0) / 0.08 + 0.35, (end - T) / 0.08)
                         subtitle(c, txt, clamp(sa))
         # global fade in at start, fade to black at very end
         if T < 1.0:
