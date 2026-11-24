@@ -1,0 +1,6 @@
+fonts/
+audio/*.wav
+sources/*.jpg
+sources/*.html
+out/*.mp4
+!out/预览_*.mp4

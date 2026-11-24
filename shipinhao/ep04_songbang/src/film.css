@@ -1,0 +1,89 @@
+@font-face{font-family:"Song";src:url("../fonts/NotoSerifSC-400.ttf");font-weight:400}
+@font-face{font-family:"Song";src:url("../fonts/NotoSerifSC-600.ttf");font-weight:600}
+@font-face{font-family:"Song";src:url("../fonts/NotoSerifSC-900.ttf");font-weight:900}
+@font-face{font-family:"Hei";src:url("../fonts/NotoSansSC-400.ttf");font-weight:400}
+@font-face{font-family:"Hei";src:url("../fonts/NotoSansSC-500.ttf");font-weight:500}
+@font-face{font-family:"Hei";src:url("../fonts/NotoSansSC-700.ttf");font-weight:700}
+@font-face{font-family:"Hei";src:url("../fonts/NotoSansSC-900.ttf");font-weight:900}
+@font-face{font-family:"Pen";src:url("../fonts/MaShanZheng.ttf")}
+@font-face{font-family:"Brush";src:url("../fonts/MaShanZheng.ttf")}
+@font-face{font-family:"Cao";src:url("../fonts/ZhiMangXing.ttf")}
+
+:root{
+  --desk:#15110d; --desk2:#2a221a; --paper:#ece2cc; --paper2:#e2d6bb; --ink:#1b1814; --ink2:#4a4338;
+  --red:#b02a1f; --red2:#8e1f17; --blue:#22346d; --gold:#c9a45c; --cream:#f1e9d8; --dim:#9b907c;
+  --news:#d9d0b9; --news2:#cfc5ab;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+body{font-family:"Hei";color:var(--cream);-webkit-font-smoothing:antialiased}
+#stage{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:hidden;background:#0b0907}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.bg-desk{position:absolute;inset:-80px;background:radial-gradient(ellipse 75% 55% at 50% 40%,#34291d 0%,#1d1711 48%,#0c0a08 100%)}
+.bg-black{position:absolute;inset:0;background:#070605}
+.bg-lamp{position:absolute;inset:-80px;background:radial-gradient(ellipse 62% 42% at 50% 38%,rgba(255,214,140,.30) 0%,rgba(255,200,120,.10) 42%,rgba(0,0,0,0) 72%),radial-gradient(ellipse 80% 60% at 50% 40%,#30261b 0%,#17120d 55%,#0a0806 100%)}
+.cam{position:absolute;inset:0;transform-origin:540px 860px}
+.abs{position:absolute}
+.song{font-family:"Song"} .hei{font-family:"Hei"} .pen{font-family:"Pen"} .brush{font-family:"Brush"}
+.c{text-align:center}
+
+/* 字幕 */
+#sub{position:absolute;left:60px;right:60px;top:1418px;height:80px;text-align:center;font:700 46px/80px "Hei";color:#fff;
+  text-shadow:0 0 10px rgba(0,0,0,.95),0 3px 4px rgba(0,0,0,.9),0 0 26px rgba(0,0,0,.8);letter-spacing:1px;white-space:nowrap}
+
+/* 顶部时间轴 */
+#strip{position:absolute;left:70px;right:70px;top:232px;height:104px}
+#strip .line{position:absolute;left:30px;right:30px;top:22px;height:2px;background:rgba(201,164,92,.28)}
+#strip .fill{position:absolute;left:30px;top:22px;height:2px;background:var(--gold);width:0}
+#strip .n{position:absolute;top:0;width:150px;margin-left:-75px;text-align:center}
+#strip .n i{display:block;width:14px;height:14px;border-radius:50%;border:2px solid var(--gold);background:#15110d;margin:15px auto 10px}
+#strip .n.on i{background:var(--gold);box-shadow:0 0 0 5px rgba(201,164,92,.22)}
+#strip .n b{display:block;font:700 27px/32px "Hei";color:var(--cream);white-space:nowrap}
+#strip .n s{display:block;text-decoration:none;font:500 23px/28px "Hei";color:var(--dim);white-space:nowrap}
+#strip .n.off b,#strip .n.off s{opacity:.28} #strip .n.off i{opacity:.4}
+
+/* 纸张 */
+.paper{position:absolute;background:linear-gradient(175deg,#f0e7d2 0%,#e9dfc8 60%,#e0d4b8 100%);color:var(--ink);
+  box-shadow:0 30px 70px rgba(0,0,0,.55),0 2px 0 rgba(255,255,255,.35) inset,0 0 80px rgba(120,90,40,.12) inset}
+.paper.lined{background-image:linear-gradient(175deg,rgba(240,231,210,0) 0%,rgba(224,212,184,.55) 100%),repeating-linear-gradient(to bottom,transparent 0,transparent 77px,rgba(176,42,31,.42) 77px,rgba(176,42,31,.42) 79px);background-color:#eee5cf}
+.news{position:absolute;background:linear-gradient(178deg,#ddd4bd 0%,#d5cbb1 70%,#cbbfa3 100%);color:#22201b;
+  box-shadow:0 30px 70px rgba(0,0,0,.6),0 0 90px rgba(90,70,30,.18) inset}
+.greek{background:repeating-linear-gradient(to bottom,rgba(40,36,28,.42) 0,rgba(40,36,28,.42) 5px,transparent 5px,transparent 19px)}
+.doc{position:absolute;background:linear-gradient(176deg,#f6f1e4 0%,#efe8d6 100%);color:var(--ink);box-shadow:0 30px 70px rgba(0,0,0,.6)}
+
+/* 名词卡 */
+.term{position:absolute;left:90px;width:900px;background:linear-gradient(176deg,#f1e8d3,#e6dbc1);color:var(--ink);padding:26px 40px 30px 40px;border-top:8px solid var(--red);box-shadow:0 18px 40px rgba(0,0,0,.5)}
+.term .k{display:inline-block;font:700 24px/38px "Hei";color:#fff;background:var(--red);padding:0 14px;letter-spacing:4px;margin-right:22px;vertical-align:middle;position:relative;top:-6px}
+.term .t{font:900 60px/76px "Song";vertical-align:middle}
+.term .d{font:500 39px/58px "Hei";color:#3a342a;margin-top:10px}
+
+/* 这说明什么 */
+.so{position:absolute;left:70px;width:940px;padding:26px 36px 32px 44px;background:linear-gradient(90deg,rgba(12,10,8,.94),rgba(12,10,8,.80));border-left:10px solid var(--gold)}
+.so .k{font:700 30px/44px "Hei";color:var(--gold);letter-spacing:8px}
+.so .t{font:900 55px/80px "Song";color:var(--cream);margin-top:6px}
+
+/* 人名条 */
+.who{position:absolute;left:90px;height:120px}
+.who svg{position:absolute;left:0;top:6px}
+.who .nm{position:absolute;left:128px;top:0;font:900 62px/72px "Song";color:var(--cream);white-space:nowrap}
+.who .ti{position:absolute;left:130px;top:78px;font:500 31px/40px "Hei";color:var(--gold);white-space:nowrap}
+.who .bar{position:absolute;left:108px;top:8px;width:4px;height:106px;background:var(--gold)}
+
+/* 出处角标 */
+.src{position:absolute;font:400 25px/34px "Hei";color:rgba(241,233,216,.62);letter-spacing:1px;white-space:nowrap}
+.src.dark{color:rgba(40,34,24,.62)}
+.shiyi{position:absolute;font:500 24px/34px "Hei";color:rgba(241,233,216,.75);border:1.5px solid rgba(241,233,216,.5);padding:0 12px;letter-spacing:4px}
+
+/* 章节卡 */
+.chap .no{position:absolute;left:0;right:0;top:640px;text-align:center;font:900 44px/60px "Hei";color:var(--gold);letter-spacing:22px}
+.chap .tt{position:absolute;left:0;right:0;top:730px;text-align:center;font:900 150px/190px "Song";color:var(--cream);letter-spacing:10px}
+.chap .rule{position:absolute;left:390px;width:300px;top:950px;height:3px;background:var(--gold)}
+.chap .sb{position:absolute;left:0;right:0;top:990px;text-align:center;font:500 40px/60px "Hei";color:var(--dim);letter-spacing:6px}
+
+.big{font:900 118px/168px "Song";color:#fff;letter-spacing:4px}
+.q{font-family:"Song";font-weight:900}
+.hl{background:linear-gradient(transparent 62%,rgba(176,42,31,.38) 62%,rgba(176,42,31,.38) 94%,transparent 94%)}
+.red{color:var(--red)} .gold{color:var(--gold)} .blue{color:var(--blue)}
+.stamp{position:absolute;border:5px solid var(--red);color:var(--red);font:900 44px/1 "Song";padding:16px 20px;border-radius:10px;letter-spacing:6px;text-align:center;background:rgba(176,42,31,.06);box-shadow:0 0 0 2px rgba(176,42,31,.25) inset}
+.stamp small{display:block;font:700 22px/30px "Hei";letter-spacing:6px;margin-top:8px;opacity:.85}
+.num{font-family:"Hei";font-weight:900;font-variant-numeric:tabular-nums}
