@@ -308,18 +308,21 @@ class Hall(Scene):
     def draw(self, L, t, t0, trig, seg):
         appear(L, self.board(), 160, 40, t, t0, 0.5, "up", 12)
         appear(L, pfront((86, 96, 110), 230, None), 60, 240, t, t0 + 0.2, 0.45, "up")
-        for i in range(6):
-            x = 150 + i * 150
-            im = gfx.person_front([C_SAND, C_GRAY, C_OLIVE, C_BROWN, C_PLUM, C_MIKE][i], 150)
-            appear(L, im, x, 520 + (i % 2) * 14, t, t0 + 0.35 + i * 0.06, 0.4, "up")
-        appear(L, footnote("示意图 · 1950 年代前半，美国国务院外交学院（Foreign Service Institute）的课堂"),
-               60, 700, t, t0 + 0.6, 0.4, "up", 6)
+        appear(L, footnote("示意图 · 1950 年代前半 · 美国国务院外交学院的课堂"), 60, 676, t, t0 + 0.6, 0.4, "up", 6)
+        for i in range(4):
+            x = 90 + i * 125
+            im = gfx.person_front([C_SAND, C_GRAY, C_OLIVE, C_BROWN][i], 150)
+            appear(L, im, x, 500 + (i % 2) * 14, t, t0 + 0.35 + i * 0.06, 0.4, "up")
         b1 = trig.get("book1959")
         if b1 is not None:
-            appear(L, self.book("The Silent\nLanguage", "1959", (150, 112, 86)), 560, 300, t, b1, 0.5, "pop")
+            bk = self.book("The Silent\nLanguage", "1959", (150, 112, 86))
+            bk = bk.resize((int(bk.width * 0.84), int(bk.height * 0.84)), Image.LANCZOS)
+            appear(L, bk, 600, 430, t, b1, 0.5, "pop")
         b2 = trig.get("book1976")
         if b2 is not None:
-            appear(L, self.book("Beyond\nCulture", "1976", (86, 110, 148)), 790, 330, t, b2, 0.5, "pop")
+            bk = self.book("Beyond\nCulture", "1976", (86, 110, 148))
+            bk = bk.resize((int(bk.width * 0.84), int(bk.height * 0.84)), Image.LANCZOS)
+            appear(L, bk, 820, 410, t, b2, 0.5, "pop")
 
     def overlay(self, fr, t, t0, trig, seg):
         q = trig.get("book1976")
@@ -384,7 +387,7 @@ class Soup(Scene):
             appear(L, bub("这是在抱怨？\n是让我别喝了？", 32, "m", 300, "br"), 650, 20, t, guest_t + 0.3, 0.35, "pop", t1=expl)
             appear(L, P("客人：一头雾水", "b", 26, WHITE, C_PLUM), 870, 612, t, guest_t + 0.8, 0.35, "up", 8, anchor="tc")
         if expl is not None:
-            b = bub("汤咸了，我兑点开水；盐罐先拿开，别再加了。", 36, "m", 640, "bl")
+            b = bub("汤咸了，我兑点开水；盐罐先拿开，别再加了。", 36, "m", 800, "bl")
             appear(L, b, 120, 10, t, expl, 0.4, "pop", t1=trig.get("defs"))
 
     def overlay(self, fr, t, t0, trig, seg):
@@ -669,17 +672,18 @@ class Caveat(Scene):
             ((trig.get("caveat2") or 0) + 3.2 if trig.get("caveat2") else None, "另一种排法",
              "霍尔（1976）：美国“偏低，但不是最低”；德国、瑞士德语区、北欧更低"),
         ]
-        y = 200
+        y = 190
         for (tt, lab, txt) in items:
-            card = Sprite(940, 150)
-            card.rrect((0, 0, 939, 149), 22, fill=WHITE, outline=LINE, width=2)
+            ls = wrap(txt, font("m", 31), 880)[:2]
+            h = 84 + 44 * len(ls)
+            card = Sprite(940, h)
+            card.rrect((0, 0, 939, h - 1), 22, fill=WHITE, outline=LINE, width=2)
             pl = pill(lab, "b", 26, WHITE, INK2, padx=14, pady=6)
-            card.paste(pl, 26, 22)
-            ls = wrap(txt, font("m", 32), 880)
-            for i, l in enumerate(ls[:2]):
-                card.text((28, 72 + i * 42), l, "m", 32, INK)
+            card.paste(pl, 26, 20)
+            for i, l in enumerate(ls):
+                card.text((28, 70 + i * 44), l, "m", 31, INK)
             appear(L, card.img(), 70, y, t, tt, 0.45, "up", 16)
-            y += 170
+            y += h + 22
 
 
 def pill(txt, fnt, size, fg, bg, padx=16, pady=7):
@@ -783,7 +787,7 @@ class Dict(Scene):
                     s.circle(44, y + 34, 8, fill=INK)
                 s.text((70, y + 34), r, "b" if hl else "m", 28, INK if hl else INK3, anchor="lm")
             appear(L, s.img(), 160, 120, t, t0, 0.45, "pop")
-            appear(L, gfx.icon_email(130), 120, 60, t, t0 + 0.3, 0.4, "pop")
+            appear(L, gfx.icon_email(130), 800, 70, t, t0 + 0.3, 0.4, "pop")
 
     def draw(self, L, t, t0, trig, seg):
         vs = trig.get("vignettes", [])

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Synthesised music bed + SFX + voice placement + ducking -> stereo 48 kHz WAV.
+"""Voice placement + three-layer music (music.py) + SFX + band-split sidechain -> stereo 48 kHz WAV.
 
 usage: python mix.py clips_dir durations.json out.wav [t_end]
 All music and sound effects are generated here from scratch (no samples).
@@ -15,6 +15,7 @@ from scipy.signal import butter, sosfilt, sosfiltfilt
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import render  # noqa: E402
+import music  # noqa: E402
 
 SR = 48000
 RNG = np.random.default_rng(1234)
@@ -22,128 +23,6 @@ RNG = np.random.default_rng(1234)
 
 def db(x):
     return 10 ** (x / 20)
-
-
-# ------------------------------------------------------------------ instruments
-def midi_hz(m):
-    return 440.0 * 2 ** ((m - 69) / 12)
-
-
-def pluck(freq, dur=1.6, vel=1.0, bright=1.0):
-    n = int(dur * SR)
-    t = np.arange(n) / SR
-    out = np.zeros(n, np.float32)
-    for k in range(1, 9):
-        f = freq * k * (1 + 0.0007 * k * k)
-        if f > 9000:
-            break
-        amp = (1.0 / k ** 1.4) * (bright if k > 2 else 1.0)
-        dec = 2.2 + 1.6 * k
-        out += (amp * np.exp(-dec * t) * np.sin(2 * np.pi * f * t + RNG.uniform(0, 6.28))).astype(np.float32)
-    att = np.minimum(1, t / 0.006)
-    return (out * att * vel * 0.35).astype(np.float32)
-
-
-def bass(freq, dur=1.3, vel=1.0):
-    n = int(dur * SR)
-    t = np.arange(n) / SR
-    env = np.minimum(1, t / 0.01) * np.exp(-2.4 * t)
-    w = np.sin(2 * np.pi * freq * t) + 0.25 * np.sin(4 * np.pi * freq * t)
-    return (w * env * vel * 0.32).astype(np.float32)
-
-
-def pad(freqs, dur, att=2.5, rel=2.5, vel=1.0, cutoff=900):
-    n = int(dur * SR)
-    t = np.arange(n) / SR
-    out = np.zeros(n, np.float32)
-    for f in freqs:
-        for det in (-0.004, 0.0, 0.0045):
-            ph = RNG.uniform(0, 1)
-            saw = 2 * ((t * f * (1 + det) + ph) % 1.0) - 1
-            out += saw.astype(np.float32)
-    sos = butter(2, cutoff, btype="lowpass", fs=SR, output="sos")
-    out = sosfilt(sos, out).astype(np.float32)
-    env = np.minimum(1, t / att) * np.minimum(1, (dur - t) / rel)
-    env = np.clip(env, 0, 1)
-    lfo = 1 + 0.08 * np.sin(2 * np.pi * 0.11 * t)
-    return (out * env * lfo * vel * 0.05).astype(np.float32)
-
-
-CHORDS = {
-    "Cmaj9": [48, 55, 59, 62, 64], "Am7": [45, 52, 55, 60, 64], "Fmaj7": [41, 53, 57, 60, 64],
-    "G6": [43, 50, 55, 59, 64], "Em7": [40, 52, 55, 59, 62], "Dm7": [38, 50, 53, 57, 60],
-    "G7sus": [43, 50, 55, 60, 65], "Cmaj7": [48, 55, 59, 64, 67], "Fadd9": [41, 53, 57, 60, 67],
-}
-PROGS = {
-    "A": ["Cmaj9", "Am7", "Fmaj7", "G6"],
-    "B": ["Fmaj7", "G6", "Em7", "Am7"],
-    "C": ["Dm7", "G7sus", "Cmaj7", "Am7"],
-}
-# segment -> (progression, style)
-STYLE = {"s01": ("A", "arp"), "s02": ("A", "arp"), "title": ("A", "hit"), "s03": ("B", "sparse"),
-         "s04": ("C", "sparse"), "s05": ("A", "arp"), "s06": ("C", "arp"), "s07": ("B", "sparse"),
-         "s08": (None, "drone"), "s10": ("C", "sparse"), "s11": ("A", "end")}
-BPM = 92
-
-
-def render_music(tl, total):
-    n = int(total * SR) + SR * 4
-    L = np.zeros(n, np.float32)
-    R = np.zeros(n, np.float32)
-    beat = 60 / BPM
-    bar = beat * 4
-
-    def add(sig, t0, pan=0.0, gain=1.0):
-        i = int(t0 * SR)
-        if i >= n:
-            return
-        j = min(n, i + len(sig))
-        gl = math.cos((pan + 1) * math.pi / 4) * gain
-        gr = math.sin((pan + 1) * math.pi / 4) * gain
-        L[i:j] += sig[: j - i] * gl
-        R[i:j] += sig[: j - i] * gr
-
-    for seg in tl["segs"]:
-        prog, style = STYLE.get(seg["id"], ("A", "sparse"))
-        t0, t1 = seg["t0"], seg["t1"]
-        if style == "drone":
-            dur = t1 - t0 + 3
-            add(pad([midi_hz(33), midi_hz(40), midi_hz(45)], dur, att=3, rel=3, vel=1.0, cutoff=600), t0 - 0.5, 0, 1.0)
-            add(pad([midi_hz(57), midi_hz(64)], dur, att=5, rel=4, vel=0.35, cutoff=1200), t0 + 2, 0.3, 1.0)
-            continue
-        if style == "hit":
-            for k, m in enumerate(CHORDS["Cmaj9"]):
-                add(pluck(midi_hz(m + 12), 3.0, 0.9), t0 + 0.05 + k * 0.05, -0.4 + k * 0.2)
-            add(bass(midi_hz(36), 2.5, 1.0), t0 + 0.05)
-            continue
-        chords = PROGS[prog]
-        bt = t0 + (0.3 if seg.get("chapter_t") is None else 1.2)
-        k = 0
-        while bt < t1 - 0.2:
-            ch = CHORDS[chords[k % 4]]
-            fade = min(1.0, (t1 - bt) / 1.5)
-            add(bass(midi_hz(ch[0] - 12 if ch[0] > 40 else ch[0]), bar * 0.95, 0.9 * fade), bt)
-            if style == "arp":
-                pat = [1, 2, 3, 4, 3, 2, 4, 3]
-                for e in range(8):
-                    m = ch[pat[e]] + 12
-                    vel = (0.75 if e % 2 == 0 else 0.5) * fade
-                    add(pluck(midi_hz(m), 1.4, vel, 0.8), bt + e * beat / 2, -0.35 + 0.1 * (e % 8))
-            elif style == "sparse":
-                for e, idx in enumerate([1, 3, 2, 4]):
-                    add(pluck(midi_hz(ch[idx] + 12), 2.2, 0.55 * fade, 0.7), bt + e * beat, -0.3 + 0.2 * e)
-            elif style == "end":
-                for e, idx in enumerate([1, 2, 3, 4]):
-                    add(pluck(midi_hz(ch[idx] + 12), 2.6, 0.5 * fade, 0.7), bt + e * beat * 1.0, -0.3 + 0.2 * e)
-            bt += bar
-            k += 1
-        if style == "end":
-            for kk, m in enumerate(CHORDS["Cmaj9"]):
-                add(pluck(midi_hz(m + 12), 4.0, 0.7), t1 - 1.0 + kk * 0.06, -0.4 + kk * 0.2)
-    sos = butter(2, [60, 9000], btype="bandpass", fs=SR, output="sos")
-    L = sosfiltfilt(sos, L).astype(np.float32)
-    R = sosfiltfilt(sos, R).astype(np.float32)
-    return L, R
 
 
 # ------------------------------------------------------------------ sfx
@@ -232,6 +111,47 @@ def room_tone(dur):
 
 
 # ------------------------------------------------------------------ main mix
+MUSIC_RMS = -24.0      # music bus level before sidechain (dBFS RMS)
+SC_THR = -46.0         # detector threshold on the voice track (dBFS)
+SC_RATIO = 4.0
+SC_MAX = {"low": 7.0, "mid": 12.0, "high": 8.0}   # max gain reduction per band (dB)
+SC_ATT, SC_REL = 0.015, 0.30                       # seconds
+
+
+def sidechain(mL, mR, key):
+    """Duck the music where the voice is, harder in the 250 Hz-4 kHz speech band."""
+    n = len(mL)
+    hop = 240  # 5 ms
+    m = n // hop + 1
+    k = np.pad(key, (0, m * hop - len(key)))[: m * hop].reshape(m, hop)
+    lvl = 10 * np.log10((k ** 2).mean(1) + 1e-12)
+    # look-ahead 20 ms so the duck starts with the first syllable
+    lvl = np.maximum(lvl, np.concatenate([lvl[4:], np.full(4, -120.0)]))
+    over = np.maximum(0.0, lvl - SC_THR)
+    gr_static = over * (1 - 1 / SC_RATIO)
+    a_att = 1 - math.exp(-hop / SR / SC_ATT)
+    a_rel = 1 - math.exp(-hop / SR / SC_REL)
+    gr = np.zeros(m, np.float32)
+    cur = 0.0
+    for i in range(m):
+        tgt = gr_static[i]
+        cur += (tgt - cur) * (a_att if tgt > cur else a_rel)
+        gr[i] = cur
+    gr = np.repeat(gr, hop)[:n]
+    bands = {
+        "low": butter(4, 250, btype="lowpass", fs=SR, output="sos"),
+        "mid": butter(4, [250, 4000], btype="bandpass", fs=SR, output="sos"),
+        "high": butter(4, 4000, btype="highpass", fs=SR, output="sos"),
+    }
+    outL = np.zeros(n, np.float32)
+    outR = np.zeros(n, np.float32)
+    for name, sos in bands.items():
+        gain = db(-np.minimum(gr, SC_MAX[name]))
+        outL += sosfiltfilt(sos, mL).astype(np.float32) * gain
+        outR += sosfiltfilt(sos, mR).astype(np.float32) * gain
+    return outL, outR
+
+
 def build(clips_dir, dur_path, t_end=None):
     tl, _ = render.make(dur_path)
     total = tl["total"] if t_end is None else t_end
@@ -246,33 +166,18 @@ def build(clips_dir, dur_path, t_end=None):
         i = int(c["t"] * SR)
         j = min(n, i + len(a))
         voice[i:j] += a[: j - i]
-    # ducking envelope
-    win = int(0.02 * SR)
-    m = n // win
-    rms = np.sqrt((voice[: m * win].reshape(m, win) ** 2).mean(1) + 1e-12)
-    act = (20 * np.log10(rms + 1e-12) > -42).astype(np.float32)
-    # attack 60 ms, release 450 ms smoothing
-    g = np.zeros(m, np.float32)
-    cur = 0.0
-    a_att, a_rel = 1 - math.exp(-1 / 3.0), 1 - math.exp(-1 / 22.0)
-    # look-ahead: start ducking slightly before speech
-    act = np.maximum(act, np.concatenate([act[4:], np.zeros(4, np.float32)]))
-    for i in range(m):
-        cur += (act[i] - cur) * (a_att if act[i] > cur else a_rel)
-        g[i] = cur
-    duck = np.repeat(g, win)
-    duck = np.concatenate([duck, np.zeros(n - len(duck), np.float32)])
-    mL, mR = render_music(tl, total)
-    mL, mR = mL[:n], mR[:n]
+    # ---- music: three-layer stems (music.py) ----
+    mL, mR = music.render(tl, total)
     if len(mL) < n:
         mL = np.pad(mL, (0, n - len(mL)))
         mR = np.pad(mR, (0, n - len(mR)))
-    # normalise music bed then apply level + duck
+    mL, mR = mL[:n], mR[:n]
     mrms = np.sqrt((mL ** 2 + mR ** 2).mean() / 2 + 1e-12)
-    base = db(-25.0) / (mrms + 1e-9)
-    mg = base * (1 - (1 - db(-9.0)) * duck)
-    mL *= mg
-    mR *= mg
+    g = db(MUSIC_RMS) / (mrms + 1e-9)
+    mL *= g
+    mR *= g
+    # ---- 侧链：voice-keyed, band-split compressor on the music bus ----
+    mL, mR = sidechain(mL, mR, voice)
     # sfx
     sL = np.zeros(n, np.float32)
     sR = np.zeros(n, np.float32)
