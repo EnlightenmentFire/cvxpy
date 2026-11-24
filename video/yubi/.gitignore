@@ -1,6 +1,6 @@
 cache/
 fonts/*.ttf
-audio/lines/
+audio/lines*/
 audio/*.wav
 assets/macro.jpg
 assets/local.jpg
