@@ -1,0 +1,116 @@
+// ===== 五 差点下马 / 六 一笔账 / 七 出铁 / 收尾 =====
+(function(){
+const G=(sv,tf)=>{const g=document.createElementNS(NS,'g');if(tf)g.setAttribute('transform',tf);sv.appendChild(g);return g};
+const PATH=(par,d,cls,style)=>{const p=document.createElementNS(NS,'path');p.setAttribute('d',d);p.setAttribute('class',cls||'ln');if(style)p.style.cssText=style;par.appendChild(p);return p};
+// ---------- 五 差点下马 ----------
+{const A=SEC.halt;const f2=T('f2'),f3=T('f3'),f4=T('f4'),f5=T('f5'),f6=T('f6'),f7=T('f7'),f9=T('f9');
+ chapter('halt','五','差点下马','1980 — 1981',A.start,f2-.1);
+ {const s=Film.scene('ht1',f2-.1,f4-.2,{cls:'paper',theme:'paper'});
+  const a=s.add('div','left:64px;top:330px;font-size:84px;line-height:1.2','abs serif','可钱还是紧');s.io(a,f2,K('f2','1980')-.2,{y:16});
+  const hd=s.add('div','left:64px;top:318px','abs');hd.innerHTML=`<div class="mono" style="font-size:40px;color:#9c3a1c;letter-spacing:.06em">1980 年底</div><div class="serif" style="font-size:66px;margin-top:4px">国务院通知</div>`;s.io(hd,K('f2','1980')-.1,null,{y:10});
+  [['一期停缓',K('f2','一期'),-2.5,64],['二期不谈',K('f2','二期'),1.6,150],['两板退货',K('f2','两板'),-1.2,90]].forEach((q,i)=>{const e=s.add('div',`left:${q[3]}px;top:${520+i*190}px;font-size:124px;line-height:1.15`,'stamp',q[0]);
+   s.on(t=>{const p=P(t,q[1]-.08,q[1]+.14);e.style.opacity=p>0?.92:0;e.style.transform=`rotate(${q[2]}deg) scale(${lerp(1.7,1,E.o(p))})`})});
+  const df=s.add('div','left:64px;top:1110px;width:952px;display:flex;align-items:center;gap:26px','abs');
+  const roll=l=>`<svg width="150" height="100" viewBox="0 0 150 100" style="position:relative;flex:none"><g fill="none" stroke="#1e1a15" stroke-width="5"><circle cx="45" cy="28" r="22"/><circle cx="45" cy="74" r="22"/><circle cx="105" cy="28" r="22"/><circle cx="105" cy="74" r="22"/><path d="M0,51 L150,51" stroke="#c23b2a" stroke-width="7"/></g></svg>`;
+  df.innerHTML=`${roll()}<div style="font-size:34px;line-height:1.45;font-weight:500;color:#3a342b"><b class="serif" style="font-size:46px;color:#1e1a15">「两板」</b><br>热轧钢板、冷轧钢板两套设备</div>`;s.io(df,f3-.1,null,{y:16});}
+ {const s=Film.scene('ht2',f4-.2,f6-.2,{cls:'dark'});
+  const hd=s.add('div','left:64px;top:318px;width:952px','abs');hd.innerHTML=`<div class="mono" style="font-size:44px;color:#ff9a4a;letter-spacing:.08em">1980.12.23</div><div class="serif" style="font-size:62px;line-height:1.25;margin-top:4px">中央财经领导小组会议</div><div style="font-size:28px;color:#aeb7bf;font-weight:500;margin-top:8px">距打下第一根桩，整两年</div>`;s.io(hd,f4,null,{y:16});
+  const six=s.add('div','left:64px;top:600px;width:952px','abs');six.innerHTML=['调整','退够','下好'].map(w=>`<div class="w serif" style="font-size:170px;line-height:1.16;letter-spacing:.12em">${w}</div>`).join('');
+  const ws=six.querySelectorAll('.w');[K('f4','调整'),K('f4','退够'),K('f4','下好')].forEach((tt,i)=>s.on(t=>{const p=E.o(P(t,tt-.15,tt+.3));const o=1-E.i(P(t,f5-.4,f5));ws[i].style.opacity=p*o;ws[i].style.transform=`translateX(${(1-p)*-30}px)`}));
+  // photo held up
+  nameTag(s,'谷牧','时任国务院副总理',64,560,K('f5','谷牧')-.3,null);
+  const ph=s.add('div','left:170px;top:650px;width:740px;height:560px;background:#efe8d6;padding:22px 22px 70px;box-shadow:0 20px 60px #000c','abs');
+  ph.innerHTML=`<div style="position:relative;width:100%;height:100%;background:#1b2a3a;overflow:hidden"><svg width="696" height="468" viewBox="0 0 696 468" style="left:0;top:0"><g id="phg" transform="translate(300,440) scale(.72)"></g></svg></div><div style="position:absolute;left:22px;right:22px;bottom:16px;display:flex;justify-content:space-between;font-size:24px;color:#4a4338"><span class="serif" style="font-size:30px">高炉正在吊装</span><span>示意图 · 非原照片</span></div>`;
+  s.io(ph,K('f5','举起')-.2,null,{y:60,rot:-3,din:.7});const g=ph.querySelector('#phg');
+  // partially built furnace + crane
+  const P2=(d,st)=>PATH(g,d,'ln',(st||'')+';stroke:#cfe3f3;stroke-width:3.4');
+  P2('M-420,0 L520,0');P2('M-78,0 L-78,-70 L-100,-130 L-100,-175 L-80,-285 M78,0 L78,-70 L100,-130 L100,-175 L80,-285 M-78,-70 L78,-70 M-100,-130 L100,-130 M-100,-175 L100,-175 M-80,-285 L80,-285');
+  P2('M-128,0 L-128,-330 M128,0 L128,-330 M-128,-180 L128,-180 M-128,-330 L128,-330 M-128,-180 L128,-330 M128,-180 L-128,-330 M-128,0 L128,-180 M128,0 L-128,-180','opacity:.55');
+  P2('M330,0 L330,-560 M370,0 L370,-560 M330,-560 L370,-560 '+Array.from({length:9},(_,i)=>`M330,${-i*62} L370,${-i*62-62} M370,${-i*62} L330,${-i*62-62}`).join(' ')+' M350,-560 L350,-610 L-40,-520 L330,-520 M350,-610 L470,-540 L370,-520','opacity:.9');
+  const seg=G(g);PATH(seg,'M-70,0 L-58,-110 L58,-110 L70,0 Z M-64,-55 L64,-55','ln','stroke:#ff9a4a;stroke-width:4');const rope=PATH(g,'M0,-522 L0,-400','ln','stroke:#ff9a4a;stroke-width:2.4');
+  s.on(t=>{const u=t-K('f5','高炉');const y=-470+clamp(u/3.2)*120+Math.sin(t*1.1)*3;seg.setAttribute('transform',`translate(0,${y+110})`);rope.setAttribute('d',`M0,-522 L0,${y}`)});
+  const qt=s.add('div','left:64px;top:1250px;width:952px;font-size:27px;color:#c9d1d8;font-weight:500','abs','谷牧说：已经搞到这个程度，下马确实损失太大。');s.io(qt,f5+2.2,null,{y:0});}
+ {const s=Film.scene('ht3',f6-.2,f7-.2,{cls:'paper',theme:'paper'});
+  const hd=s.add('div','left:64px;top:318px','abs');hd.innerHTML=`<div class="mono" style="font-size:40px;color:#9c3a1c;letter-spacing:.06em">1980.12.30</div><div class="serif" style="font-size:66px;margin-top:4px">陈锦华写信算账</div>`;s.io(hd,f6,null,{y:10});
+  const rows=[['36','万吨','一号高炉系统的进口设备',K('f6','36')],['95','%','到 1981 年底都会到货',K('f6','95')],['6','万多人','施工队伍（现场职工共 7 万多人）',K('f6','6万')]];
+  rows.forEach((r,i)=>{const e=s.add('div',`left:64px;top:${520+i*238}px;width:952px;border-top:3px solid #1e1a15;padding-top:10px`,'abs');e.innerHTML=`<div style="display:flex;align-items:baseline;gap:10px"><span class="num" style="font-size:176px;line-height:1;color:${i==1?'#c23b2a':'#1e1a15'}" id="v">${r[0]}</span><span style="font-size:52px;font-weight:900;color:${i==1?'#c23b2a':'#1e1a15'}">${r[1]}</span></div><div style="font-size:32px;font-weight:700;color:#4a4338;margin-top:2px">${r[2]}</div>${i==1?'<div style="position:absolute;right:0;top:64px;width:400px;height:40px;border:3px solid #1e1a15"><div id="pb" style="height:100%;background:#c23b2a;width:0"></div></div>':''}`;
+   s.io(e,r[3]-.3,null,{y:20});if(i==1){const pb=e.querySelector('#pb'),v=e.querySelector('#v');s.on(t=>{const p=E.io(P(t,r[3]-.1,r[3]+1.4));pb.style.width=(95*p)+'%';v.textContent=Math.round(95*p)})}});}
+ {const s=Film.scene('ht4',f7-.2,A.end,{cls:'bp'});s.add('div','','bpgrid');
+  const hd=s.add('div','left:64px;top:318px;width:952px','abs');hd.innerHTML=`<div class="serif" style="font-size:88px;line-height:1.2">以厂房代仓库</div><div style="font-size:32px;color:#c3d6e6;font-weight:500;margin-top:10px;line-height:1.45">不另建仓库：厂房照原设计建完，<br>设备装进去，就地维护</div>`;s.io(hd,K('f7','以厂房')-.4,f9-.3,{y:16});
+  const sv=svg(1080,1920,'left:0;top:0');s.add(sv);const g=G(sv,'translate(64,1180)');
+  const shed=PATH(g,'M0,0 L952,0 M20,0 L20,-300 L136,-370 L136,-300 L252,-370 L252,-300 L368,-370 L368,-300 L484,-370 L484,-300 L600,-370 L600,-300 L716,-370 L716,-300 L832,-370 L832,-300 L932,-360 L932,0 M20,-300 L932,-300 '+[136,252,368,484,600,716,832].map(x=>`M${x},-300 L${x},0`).join(' '),'ln','stroke-width:2.6');s.draw(shed,f7,1.6);
+  const R=rng(9);const boxes=[];for(let c=0;c<8;c++){let y=0;const x0=30+c*116;const n=2+Math.floor(R()*3);for(let k=0;k<n;k++){const h=44+R()*40,w=60+R()*36;boxes.push([x0+R()*(96-w),-y-h,w,h,R()]);y+=h+4}}
+  const tb=K('f7','工地');boxes.forEach((b,i)=>{const r=document.createElementNS(NS,'rect');r.setAttribute('x',b[0]);r.setAttribute('y',b[1]);r.setAttribute('width',b[2]);r.setAttribute('height',b[3]);r.setAttribute('fill','rgba(255,122,26,.16)');r.setAttribute('stroke','#ff9a4a');r.setAttribute('stroke-width',2.4);g.appendChild(r);const tt=tb+.4+b[4]*3;s.on(t=>{const p=E.o(P(t,tt,tt+.4));r.style.opacity=p;r.setAttribute('transform',`translate(0,${(1-p)*-60})`)})});
+  nameTag(s,'陆兆琦','时任宝钢工程指挥部副总指挥',64,560,K('f7','陆兆琦')-.3,f9-.3);
+  const nm=s.add('div','left:64px;top:650px;width:952px;display:flex;gap:40px;align-items:flex-end','abs');nm.innerHTML=`<div class="n"><span style="font-size:30px;font-weight:700">近 </span><span class="num" style="font-size:140px;line-height:1">40</span><span style="font-size:34px;font-weight:900"> 万吨</span><div style="font-size:28px;color:#c3d6e6;font-weight:500">设备</div></div><div class="n"><span class="num" style="font-size:140px;line-height:1">20</span><span style="font-size:34px;font-weight:900"> 万吨</span><div style="font-size:28px;color:#c3d6e6;font-weight:500">材料</div></div><div class="n serif" style="font-size:66px;color:#ff9a4a;line-height:1.15;padding-bottom:6px">无一<br>丢失</div>`;
+  s.io(nm,K('f7','近40')-.2,f9-.3,{y:0});const ns=nm.querySelectorAll('.n');[K('f7','近40'),K('f7','20万'),K('f7','无一')].forEach((tt,i)=>s.on(t=>{const p=E.o(P(t,tt-.15,tt+.3));ns[i].style.opacity=p;ns[i].style.transform=`translateY(${(1-p)*18}px)`}));
+  const z=s.add('div','left:64px;top:330px;width:952px','abs');z.innerHTML=`<div class="serif" style="font-size:92px;line-height:1.3">工程停了，<br>东西没散。</div><div class="serif" style="font-size:72px;line-height:1.3;color:#ffb070;margin-top:26px">干不干，看一笔账。</div>`;s.io(z,f9,null,{y:20});}}
+// ---------- 六 一笔账 ----------
+{const A=SEC.ledger;const g1=T('g1'),g2=T('g2'),g3=T('g3'),g5=T('g5'),g6=T('g6'),g7=T('g7'),g8=T('g8'),g9=T('g9'),g10=T('g10');
+ chapter('ledger','六','一笔账','1981.2.10',A.start,g1-.1);
+ {const s=Film.scene('lg1',g1-.1,g6-.2,{cls:'paper',theme:'paper'});
+  s.add('div','left:0;top:300px;width:1080px;height:1000px;background-image:linear-gradient(rgba(30,26,21,.13) 2px,transparent 2px);background-size:100% 76px','abs');
+  s.add('div','left:232px;top:300px;width:2px;height:1000px;background:rgba(194,59,42,.35)','abs');
+  const hd=s.add('div','left:64px;top:312px','abs');hd.innerHTML=`<div class="mono" style="font-size:40px;color:#9c3a1c;letter-spacing:.06em">1981.02.10 · 国务院宝钢问题会议</div>`;s.io(hd,g1,g5-.3,{y:10});
+  nameTag(s,'马成德','时任冶金部副部长、宝钢工程指挥部副指挥',64,384,K('g1','马成德')-.3,g5-.3);
+  const row=(lab,val,col,y,tt,note)=>{const e=s.add('div',`left:64px;top:${y}px;width:952px;display:flex;align-items:baseline;justify-content:space-between`,'abs');e.innerHTML=`<div><span class="serif" style="font-size:76px;color:${col}">${lab}</span><div style="font-size:28px;color:#4a4338;font-weight:700">${note}</div></div><div style="color:${col}"><span class="num" style="font-size:210px;line-height:1">${val}</span><span style="font-size:54px;font-weight:900"> 亿元</span></div>`;s.io(e,tt,g3-.3,{y:20});return e};
+  row('下马','15','#1e1a15',480,K('g2','下马')-.2,'国内投资也需要');row('续建','25','#c23b2a',740,K('g2','继续')-.2,'继续搞下去，只需要');
+  const df=s.add('div','left:64px;top:1010px;width:952px;border-top:5px double #1e1a15;padding-top:10px;display:flex;justify-content:space-between;align-items:baseline','abs');df.innerHTML=`<span class="serif" style="font-size:60px">相差</span><span><span class="num" style="font-size:150px;line-height:1">10</span><span style="font-size:48px;font-weight:900"> 亿元</span></span>`;s.io(df,TE('g2')-.4,g3-.3,{y:16});
+  // g3: 10亿 vs 100多亿 blocks
+  const tq=K('g3','多用');const bl=s.add('div','left:64px;top:470px;width:952px','abs');
+  bl.innerHTML=`<div style="font-size:34px;font-weight:700;color:#4a4338">会上有人问（马成德回忆）：</div><div style="display:flex;align-items:flex-end;gap:18px;margin-top:22px"><div><div class="k" style="width:84px;height:84px;background:#c23b2a"></div><div class="num" style="font-size:60px;color:#c23b2a;line-height:1.1">10<span style="font-size:26px;font-family:'Noto Sans CJK SC';font-weight:900">亿</span></div></div><div class="serif" style="font-size:54px;padding-bottom:70px">救活</div><div style="flex:1"><div id="hund" style="display:grid;grid-template-columns:repeat(6,84px);gap:8px">${Array.from({length:11},(_,i)=>`<div class="h" style="width:84px;height:84px;background:#1e1a15"></div>`).join('')}<div class="h serif" style="width:84px;height:84px;font-size:52px;line-height:70px;text-align:center">…</div></div><div class="num" style="font-size:60px;line-height:1.1">100<span style="font-size:26px;font-family:'Noto Sans CJK SC';font-weight:900"> 多亿　已经投进去的</span></div></div></div>
+   <div class="serif" id="ans" style="font-size:72px;margin-top:40px;line-height:1.3">他答：<span style="color:#c23b2a">是这个意思。</span></div>`;
+  s.io(bl,g3,g5-.3,{y:20});const hs=bl.querySelectorAll('.h');const th=K('g3','救活');hs.forEach((h,i)=>s.on(t=>{const p=P(t,th+i*.07,th+i*.07+.3);h.style.opacity=.25+.75*p}));const ans=bl.querySelector('#ans');s.on(t=>{ans.style.opacity=E.o(P(t,K('g3','他答')-.2,K('g3','他答')+.3))});
+  // g5: plain recap
+  const rc=s.add('div','left:64px;top:330px;width:952px','abs');rc.innerHTML=`<div style="font-size:38px;font-weight:700;color:#4a4338">换成大白话</div>
+   <div class="r" style="display:flex;justify-content:space-between;align-items:baseline;border-top:3px solid #1e1a15;margin-top:16px;padding-top:6px"><span class="serif" style="font-size:66px">停</span><span style="font-size:36px;font-weight:700">要花 <span class="num" style="font-size:130px;line-height:1">15</span> 亿</span></div>
+   <div class="r" style="display:flex;justify-content:space-between;align-items:baseline;border-top:3px solid #1e1a15;padding-top:6px"><span class="serif" style="font-size:66px">做完</span><span style="font-size:36px;font-weight:700">只要 <span class="num" style="font-size:130px;line-height:1">25</span> 亿</span></div>
+   <div class="r" style="border-top:5px double #1e1a15;padding-top:18px;margin-top:6px"><div style="font-size:44px;font-weight:900;line-height:1.5">多花 <span class="num" style="font-size:110px;line-height:1;color:#c23b2a">10</span> 亿</div><div class="serif" style="font-size:70px;line-height:1.3;color:#c23b2a">前面 100 多亿<br>就不白花</div></div>`;
+  s.io(rc,g5,null,{y:16});const rr=rc.querySelectorAll('.r');[K('g5','停'),K('g5','做完'),K('g5','多花')].forEach((tt,i)=>s.on(t=>{const p=E.o(P(t,tt-.15,tt+.3));rr[i].style.opacity=p}));}
+ {const s=Film.scene('lg2',g6-.2,g7-.2,{cls:'paper',theme:'paper'});
+  const hd=s.add('div','left:64px;top:330px;width:952px','abs');hd.innerHTML=`<div class="mono" style="font-size:54px;color:#9c3a1c;letter-spacing:.06em">1981.08.07</div><div class="serif" style="font-size:60px;line-height:1.35;margin-top:14px">国家计委、国家建委通知：</div><div class="serif" style="font-size:76px;line-height:1.35;margin-top:10px">宝钢一期工程<br>改列</div>`;s.io(hd,g6,null,{y:16});
+  const st=s.add('div','left:300px;top:820px;font-size:200px;line-height:1.12;border-width:10px;padding:10px 40px','stamp','续建');const tt=K('g6','改列')+.5;s.on(t=>{const p=P(t,tt-.08,tt+.14);st.style.opacity=p>0?.92:0;st.style.transform=`rotate(-5deg) scale(${lerp(1.8,1,E.o(p))})`});
+  const nt=s.add('div','left:64px;top:1180px;font-size:30px;font-weight:700;color:#4a4338','abs','停缓 8 个多月之后');s.io(nt,tt+.4,null,{y:0});}
+ {const s=Film.scene('lg3',g7-.2,A.end,{cls:'dark'});
+  const hd=s.add('div','left:64px;top:318px','abs');hd.innerHTML=`<div class="mono" style="font-size:44px;color:#ff9a4a;letter-spacing:.08em">1984.02</div><div class="serif" style="font-size:62px;margin-top:4px;line-height:1.25">谈宝钢二期，也是算账</div>`;s.io(hd,g7,g10-.3,{y:16});
+  nameTag(s,'邓小平','2 月 15 日到宝钢，24 日在北京谈话',64,500,K('g7','邓小平')-.3,g10-.3);
+  const rows=[[`每年进口钢材 <span class="num" style="font-size:120px;color:#fff;line-height:1">1,000</span> 万吨`,K('g8','每年')],[`进口一吨 <span class="num" style="font-size:120px;color:#fff;line-height:1">300</span> 美元`,K('g8','一吨')],[`二期早投产一年<br>少进口 <span class="num" style="font-size:120px;color:#ff7a1a;line-height:1">300</span> <span style="color:#ff7a1a">万吨</span>`,K('g8','二期')]];
+  rows.forEach((r,i)=>{const e=s.add('div',`left:64px;top:${600+[0,150,300][i]}px;width:952px;font-size:40px;font-weight:700;color:#c9d1d8;line-height:1.15`,'abs',r[0]);s.io(e,r[1]-.2,g9-.3,{y:16})});
+  const cal=s.add('div','left:64px;top:1150px;width:952px;border-top:2px solid #59636d;padding-top:14px','abs');cal.innerHTML=`<span class="num" style="font-size:54px;color:#c9d1d8">300 万吨 × 300 美元 = </span><span class="num" style="font-size:96px;color:#ff7a1a;line-height:1">9 亿美元</span><span style="font-size:24px;color:#8b959f">　本片按原话数字相乘</span>`;s.io(cal,TE('g8')-.3,g9-.3,{y:10});
+  const q=s.add('div','left:64px;top:620px;width:952px;font-size:86px','q');q.innerHTML=`「宁肯<span style="color:#ff7a1a">借点债</span>，<br>付点利息，<br>也要<span style="color:#ff7a1a">争取时间</span>。」`;s.io(q,K('g9','宁肯')-.3,g10-.3,{y:20});
+  const z=s.add('div','left:64px;top:420px;width:952px','abs');z.innerHTML=`<div style="font-size:46px;font-weight:700;color:#c9d1d8">让宝钢活下来的</div><div class="serif" style="font-size:112px;line-height:1.28;margin-top:16px">是一笔<br>谁都看得懂的<br><span style="color:#ff7a1a">账</span></div>`;s.io(z,g10,null,{y:20});}}
+// ---------- 七 出铁 ----------
+{const A=SEC.iron;const h0=T('h0'),h1=T('h1'),h2=T('h2'),h3=T('h3'),h4=T('h4');
+ chapter('iron','七','出铁','1985.9',A.start,h0-.1);
+ {const s=Film.scene('ir1',h0-.1,h1-.2,{cls:'dark'});
+  const hd=s.add('div','left:64px;top:318px;width:952px','abs');hd.innerHTML=`<div class="mono" style="font-size:44px;color:#ff9a4a;letter-spacing:.08em">1978</div><div style="font-size:38px;font-weight:700;margin-top:6px">中国钢产量 <span class="num" style="font-size:130px;line-height:1">3,178</span> 万吨</div>`;s.io(hd,h0,null,{y:16});
+  const gr=s.add('div','left:250px;top:540px;width:580px;display:grid;grid-template-columns:repeat(10,1fr);gap:8px','abs');gr.innerHTML=Array.from({length:100},(_,i)=>`<div style="aspect-ratio:1;background:#39434d;position:relative;overflow:hidden"><div class="f" style="position:absolute;left:0;top:0;bottom:0;width:${i<4?100:i==4?42:0}%;background:#ff7a1a"></div></div>`).join('');
+  s.io(gr,K('h0','只占')-.5,null,{y:20});const fs=gr.querySelectorAll('.f');const tf=K('h0','4.4');fs.forEach((f,i)=>s.on(t=>{f.style.opacity=P(t,tf+i*.12,tf+i*.12+.2)}));
+  const pc=s.add('div','left:64px;top:1136px;width:952px;text-align:center','abs');pc.innerHTML=`<span style="font-size:36px;font-weight:700">占全世界 </span><span class="num" style="font-size:120px;color:#ff7a1a;line-height:1">4.4%</span><span style="font-size:32px;font-weight:700;color:#c9d1d8">　每 100 吨钢，中国不到 5 吨</span>`;s.io(pc,tf-.2,null,{y:16});}
+ {const s=Film.scene('ir2',h1-.2,A.end,{cls:'',xout:1.0,push:.06});s.root.style.background='radial-gradient(110% 70% at 50% 62%,#131a22 0%,#090d12 60%,#030507 100%)';
+  const cv=canvas(s);const c=cv.getContext('2d');
+  const sv=svg(1080,1920,'left:0;top:0');s.add(sv);const g=G(sv,'translate(470,1210) scale(1.0)');const parts=addFurnace(s,g,{tin:h1-.1,stagger:.07,dur:1.2,stroke:'#93a1ad',sw:2.4});
+  const plt=s.add('div','left:0;top:0;width:1080px;height:920px;background:linear-gradient(#070a0e 0%,rgba(7,10,14,.97) 72%,rgba(7,10,14,0) 100%)','abs');s.on(t=>{plt.style.opacity=lerp(.45,1,E.io(P(t,h2-.5,h2+.2)))});
+  // tuyere / hearth glow
+  const glow=s.add('div','left:270px;top:1000px;width:400px;height:290px;background:radial-gradient(closest-side,rgba(255,170,60,.95),rgba(255,110,20,.45) 45%,rgba(255,90,10,0));mix-blend-mode:screen','abs');
+  const tIg=K('h1','点火');s.on(t=>{const p=E.o(P(t,tIg-.1,tIg+2.5));const fl=1+.06*Math.sin(t*9)+.04*Math.sin(t*23);glow.style.opacity=p*.75*fl*(.75+.25*P(t,h3,h4));glow.style.transform=`scale(${.3+.7*p})`;
+    for(const k of ['shell','bands','bustle','house'])parts[k].style.stroke=`rgb(${lerp(147,255,p*.8)|0},${lerp(161,150,p*.8)|0},${lerp(173,80,p*.8)|0})`});
+  // iron stream + sparks
+  const tap=[548,1206];const tFlow=TE('h3')+1.1;const R=rng(21);const sp=Array.from({length:260},()=>[R(),R(),R(),R(),R()]);
+  const path=[[548,1206],[640,1222],[760,1262],[900,1330],[1090,1440]];const pt=u=>{const n=path.length-1;const f=clamp(u)*n;const i=Math.min(n-1,Math.floor(f));const k=f-i;return[lerp(path[i][0],path[i+1][0],k),lerp(path[i][1],path[i+1][1],k)]};
+  s.on(t=>{c.clearRect(0,0,W,H);const u=t-tFlow;if(u<0)return;const head=E.o(clamp(u/2.6));
+    c.lineCap='round';c.lineJoin='round';for(const [w,col] of [[70,'rgba(255,110,20,.10)'],[40,'rgba(255,130,30,.22)'],[20,'rgba(255,160,50,.9)'],[8,'rgba(255,236,170,1)']]){c.strokeStyle=col;c.lineWidth=w*(1+.05*Math.sin(t*14));c.beginPath();c.moveTo(tap[0],tap[1]);for(let q=0;q<=40;q++){const p=pt(head*q/40);c.lineTo(p[0],p[1]+Math.sin(q*.7+t*8)*1.2)}c.stroke()}
+    const gl=c.createRadialGradient(tap[0]+40,tap[1],10,tap[0]+40,tap[1],380);gl.addColorStop(0,`rgba(255,160,60,${.42*clamp(u/1.2)})`);gl.addColorStop(1,'rgba(255,160,60,0)');c.fillStyle=gl;c.fillRect(0,700,W,900);
+    for(const q of sp){const life=1.1+q[2]*.9;const ph=((u*(.6+q[3]*.7)+q[0]*life)%life)/life;if(u<q[0]*.8)continue;const o=pt(Math.min(head,q[4]*.55));const ang=-Math.PI/2+(q[1]-.5)*2.4;const v=120+q[3]*260;const x=o[0]+Math.cos(ang)*v*ph,y=o[1]+Math.sin(ang)*v*ph+260*ph*ph;c.fillStyle=`rgba(255,${190+q[2]*60|0},${90+q[1]*90|0},${(1-ph)*.95})`;c.fillRect(x,y,2.4+q[2]*2.2,2.4+q[2]*2.2)}});
+  const runner=PATH(sv,'M556,1228 L640,1244 L760,1284 L900,1352 L1090,1462','ln','stroke:#93a1ad;stroke-width:2.2;opacity:.7');s.draw(runner,h1+.6,1.2);
+  const hd=s.add('div','left:64px;top:318px;width:952px','abs');hd.innerHTML=`<div class="mono" style="font-size:48px;color:#ff9a4a;letter-spacing:.06em">1985.09.15　10:28</div><div class="serif" style="font-size:84px;line-height:1.2;margin-top:6px">宝钢一号高炉 点火</div>`;s.io(hd,h1,h3-.3,{y:16});
+  const vol=s.add('div','left:64px;top:540px;width:952px','abs');vol.innerHTML=`<div><span class="num" style="font-size:190px;line-height:1">4,063</span><span style="font-size:52px;font-weight:900"> 立方米</span></div><div style="font-size:34px;font-weight:700;color:#c9d1d8;margin-top:4px;line-height:1.5">宝钢一号高炉（1985）<br><span style="color:#ff9a4a">= 君津三号高炉（1971）</span>　一样大</div>`;s.io(vol,h2,h3-.3,{y:16});
+  const tm=s.add('div','left:64px;top:330px;width:952px','abs');tm.innerHTML=`<div style="font-size:40px;font-weight:700;color:#c9d1d8">24 小时后</div><div class="mono" style="font-size:66px;color:#ff9a4a;letter-spacing:.04em;margin-top:6px">1985.09.16</div><div class="num" style="font-size:300px;line-height:1">10:15</div>`;s.io(tm,h3,h4-.25,{y:16});
+  const fin=s.add('div','left:64px;top:330px;width:952px','abs');fin.innerHTML=`<div class="mono" style="font-size:44px;color:#ff9a4a;letter-spacing:.04em">1985.09.16　10:15</div><div class="serif" style="font-size:132px;line-height:1.22;margin-top:10px">第一炉铁水<br><span style="color:#ff9a4a">流了出来</span></div>`;s.io(fin,h4,null,{y:16});
+  const fn2=s.add('div','left:64px;top:740px;font-size:30px;color:#c9d1d8;font-weight:500','abs','到当天中午，共出铁水 278 吨');s.io(fn2,h4+1.0,null,{y:0});}}
+// ---------- 收尾 ----------
+{const A=SEC.end;const s=Film.scene('end',A.start,TL.dur,{hud:false,xin:1.0,xout:0,push:0});s.root.style.background='#030405';
+ const L=[['1977','一个代表团<br>带回来一组数字','z1'],['1978','有人当着几百名记者说<br>先承认落后','z2'],['1985.9','第一炉铁水<br>流了出来','z3']];
+ const tEnd=TE('z3')+.9;
+ L.forEach((q,i)=>{const e=s.add('div',`left:90px;top:${400+i*330}px;width:900px;display:flex;gap:34px;align-items:flex-start`,'abs');e.innerHTML=`<div class="num" style="font-size:${i==2?92:112}px;line-height:1;color:#ff7a1a;width:250px;flex:none">${q[0]}</div><div class="serif" style="font-size:54px;line-height:1.36;padding-top:4px">${q[1]}</div>`;s.io(e,T(q[2]),tEnd,{y:14,din:.8,dout:.7})});}
+})();
