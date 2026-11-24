@@ -50,7 +50,7 @@ const sceneStart = k => SECS[k].a - (k === 's1' ? 1.2 : .75);
 
 /* ---- S0 cold open + title ---- */
 SC.push({ a: 0, b: sceneStart('s1'), draw(t) {
-  const tPull = a('s0.6'), tTitle = z('s0.7') + .25;
+  const tPull = a('s0.7'), tTitle = z('s0.7') + .25;
   setCam(camKeys(t, [[0, [112.92, 35.80, 1500]], [tPull, [112.92, 35.80, 1650], x => x], [z('s0.7') - .2, V.region]]));
   const br = lerp(.30, .72, ease(seg(t, tPull, z('s0.7'))));
   drawMap(0, br * fade(t, 0, 1e9, 1.2, .1));
@@ -60,7 +60,7 @@ SC.push({ a: 0, b: sceneStart('s1'), draw(t) {
   const ya = fade(t, .25, a('s0.2') + .2, .5, .5);
   txt('公元前', W / 2, 640, { size: 46, w: 600, color: C.goldDim, a: ya, ls: 14 }); txt('260', W / 2, 790, { size: 250, w: 900, color: C.bone, a: ya, ls: 6 }); txt('年', W / 2, 950, { size: 46, w: 600, color: C.goldDim, a: ya }); txt('赵国 · 临阵换将', W / 2, 1090, { size: 56, w: 700, color: C.gold, a: ya * ease(seg(t, a('s0.1') + 1.2, a('s0.1') + 2)), ls: 4 });
   // the mother's memorial as vertical slips
-  const la = fade(t, a('s0.2') + .3, a('s0.6') + .5, .6, .7);
+  const la = fade(t, a('s0.2') + .3, a('s0.7') + .3, .6, .7);
   if (la > 0) {
     const cols = [['括不可使将', a('s0.2') + 1.6, z('s0.2')], ['王终遣之即有如不称', a('s0.4') + .6, a('s0.4') + 2.6], ['妾得无随坐乎', a('s0.4') + 2.6, z('s0.4')]];
     txt('赵括之母上书', W / 2, 360, { size: 40, w: 700, color: C.goldDim, a: la, ls: 10 });
@@ -187,7 +187,7 @@ SC.push({ a: sceneStart('s3'), b: sceneStart('s4'), draw(t) {
     const path = [PL.xianyang, [110.6, 35.6], [112.6, 36.6], PL.handan]; const p1 = seg(t, a('s3.1') + .8, z('s3.1') + 1); dashLine(path, { color: C.gold, a: far * .7, width: 2.5, dash: [3, 9], p: p1 }); grainDots(path, t, far * seg(t, a('s3.1') + 1, a('s3.1') + 2), 12, .16, 1, C.gold);
     const q = P(110.7, 36.0); txt('千金 · 反间', q[0], q[1] - 40, { size: 40, w: 800, color: C.gold, a: far * p1, stroke: 4 }); const q2 = P(...PL.xianyang); plate(q2[0] + 40, q2[1] + 62, '应侯 范雎', { side: 'qin', a: far * seg(t, a('s3.1'), a('s3.1') + .6), size: 28, sub: '秦相' }); }
   quoteCard('「秦之所恶，独畏马服子赵括将耳，\n廉颇易与，且降矣。」', '《史记·白起王翦列传》', onq(t, 's3.2'), { y: 470, size: 54, max: 16, p: lp(t, 's3.2') * 1.5, rows: 1 });
-  termCard('马服君', '赵括之父、名将赵奢的封号', on(t, 's3.3', 's3.3', .3, .4), { y: 1040 });
+  termCard('马服君', '赵括之父、名将赵奢的封号', on(t, 's3.3', 's3.3', .3, .4), { y: 470 });
   // battlefield
   danHi(near * .9); wall(ZW, { color: '#4a1a12', rim: C.zhaoHi, a: near }); wall(QW, { a: near });
   const jit = 0;
@@ -205,7 +205,7 @@ SC.push({ a: sceneStart('s3'), b: sceneStart('s4'), draw(t) {
   // father and son
   const c5 = on(t, 's3.5', 's3.6', .4, .4);
   if (c5 > 0) { band(350, 1250, .8 * c5, 40); txt('赵括之母上书', W / 2, 398, { size: 36, w: 700, color: C.goldDim, a: c5, ls: 10 }); rule(120, 960, 440, c5 * .8);
-    const pa = c5 * ease(seg(t, a('s3.5') + 1.8, a('s3.5') + 2.6)); txt('父 · 赵奢', 150, 510, { size: 44, w: 800, color: C.bone, align: 'left', a: pa }); ['「大王及宗室所赏赐者，', '尽以予军吏士大夫；', '受命之日，不问家事。」'].forEach((r, i) => txt(r, 150, 590 + i * 70, { size: 50, w: 700, color: C.gold, align: 'left', a: pa }));
+    const pa = c5 * ease(seg(t, a('s3.5') + .5, a('s3.5') + 1.2)); txt('父 · 赵奢', 150, 510, { size: 44, w: 800, color: C.bone, align: 'left', a: pa }); ['「大王及宗室所赏赐者，', '尽以予军吏士大夫；', '受命之日，不问家事。」'].forEach((r, i) => txt(r, 150, 590 + i * 70, { size: 50, w: 700, color: C.gold, align: 'left', a: pa }));
     const pb = c5 * ease(seg(t, a('s3.6'), a('s3.6') + .8)); rule(150, 930, 800, pb * .5, C.goldDim, 1); txt('子 · 赵括', 150, 860, { size: 44, w: 800, color: C.zhaoHi, align: 'left', a: pb }); ['「王所赐金帛，归藏于家，', '而日视便利田宅', '可买者买之。」'].forEach((r, i) => txt(r, 150, 940 + i * 70, { size: 50, w: 700, color: C.gold, align: 'left', a: pb }));
     txt('——《史记·廉颇蔺相如列传》', W / 2, 1180, { size: 28, fam: HEI, w: 500, color: C.goldDim, a: c5 }); rule(120, 960, 1226, c5 * .8); }
   quoteCard('「军中有敢泄\n武安君将者斩。」', '《史记·白起王翦列传》', onq(t, 's3.8', 's3.9'), { y: 880, size: 76, max: 11, p: lp(t, 's3.8') * 1.4, rows: 1 });
@@ -395,12 +395,12 @@ SC.push({ a: sceneStart('s7'), b: sceneStart('s8'), draw(t) {
 function grid(x0, y0, cols, rows, gap, r, fn) { for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) fn(x0 + i * gap, y0 + j * gap, i + j * cols, r); }
 SC.push({ a: sceneStart('s8'), b: sceneStart('s9'), draw(t) {
   setCam(camKeys(t, [[a('s8.1'), [112.87, 35.805, 2250]], [z('s8.3'), [112.90, 35.82, 1500]]]));
-  const gone = seg(t, a('s8.3') + 1.2, z('s8.3') - 1.2); const black = Math.max(.25 * on(t, 's8.2'), ease(seg(t, a('s8.3') + 1, z('s8.3'))));
+  const gone = seg(t, a('s8.3') + 1.2, z('s8.3') - 1.2); const black = Math.max(.25 * on(t, 's8.2'), .82 * ease(seg(t, a('s8.3') + 1, z('s8.3') - .5)), ease(seg(t, z('s8.3'), a('s8.4') - .1)));
   drawMap(1, .68 * (1 - black));
   if (black < 1) { danHi(.5 * (1 - black)); rings(1 - black); qinRings(t, 1 - black, 1); trapped(t, { dim: .72 + .2 * seg(t, a('s8.1'), z('s8.1')), alive: .84 * (1 - gone), a_: 1 - black * .5 });
     const s1 = on(t, 's8.1', 's8.1', .4, .4); if (s1 > 0) { band(400, 560, .7 * s1, 40); txt('「卒四十万人降武安君」', W / 2, 470, { size: 60, w: 700, color: C.gold, a: s1 }); txt('——《史记·白起王翦列传》', W / 2, 540, { size: 26, fam: HEI, w: 500, color: C.goldDim, a: s1 }); }
-    const k3 = seg(t, a('s8.3') + (z('s8.3') - a('s8.3')) * .55, z('s8.3')); if (k3 > 0) { const d = spline([[113.0, 35.85], [113.12, 36.0], [113.3, 36.12]], 10); ctx.save(); for (let i = 0; i < 6; i++) { const q = along(d, clamp(k3 * 1.1 - i * .04)); const [x, y] = P(q[0], q[1]); ctx.globalAlpha = 1; ctx.fillStyle = C.zhaoHi; ctx.beginPath(); ctx.arc(x, y, 3, 0, 7); ctx.fill(); } ctx.restore(); const q = P(113.14, 36.02); txt('二百四十人 归赵', q[0] + 20, q[1] + 44, { size: 32, w: 700, color: C.zhaoHi, a: seg(k3, .1, .3) * (1 - seg(k3, .85, 1)), stroke: 5 }); } }
-  const q2 = onq(t, 's8.2'); speaker('武安君 白起', 420, q2); quoteCard('「非尽杀之，恐为乱。」', '《史记·白起王翦列传》', q2, { y: 510, size: 80, max: 11, p: seg(lp(t, 's8.2'), .55, 1) * 1.6 });
+    const k3 = seg(t, a('s8.3') + (z('s8.3') - a('s8.3')) * .55, z('s8.3')); if (k3 > 0) { const d = spline([[113.0, 35.85], [113.12, 36.0], [113.3, 36.12]], 10); ctx.save(); for (let i = 0; i < 6; i++) { const q = along(d, clamp(k3 * 1.1 - i * .04)); const [x, y] = P(q[0], q[1]); ctx.globalAlpha = 1; ctx.fillStyle = C.zhaoHi; ctx.shadowColor = C.zhaoHi; ctx.shadowBlur = 10; ctx.beginPath(); ctx.arc(x, y, 4, 0, 7); ctx.fill(); } ctx.restore(); const q = P(113.14, 36.02); txt('二百四十人 归赵', Math.min(q[0] + 30, 1020), q[1] + 60, { align: 'right', size: 42, w: 700, color: C.zhaoHi, a: seg(k3, .1, .3) * (1 - seg(k3, .85, 1)), stroke: 5 }); } }
+  const q2 = onq(t, 's8.2') * ease(seg(lp(t, 's8.2'), .42, .55)); speaker('武安君 白起', 420, q2); quoteCard('「非尽杀之，恐为乱。」', '《史记·白起王翦列传》', q2, { y: 510, size: 80, max: 11, p: seg(lp(t, 's8.2'), .55, 1) * 1.6 });
   const s3 = on(t, 's8.3', 's8.3', .5, .5) * (1 - seg(lp(t, 's8.3'), .5, .62)); if (s3 > 0) { band(400, 520, .7 * s3, 40); txt('「挟诈而尽坑杀之」', W / 2, 462, { size: 60, w: 700, color: C.gold, a: s3 }); }
   // the number
   const n4 = fade(t, a('s8.4') - .2, z('s8.5') + .3, .6, .5); if (n4 > 0) { txt('史载', W / 2, 520, { size: 44, w: 600, color: C.goldDim, a: n4, ls: 16 }); txt('四十五万', W / 2, 730, { size: 220, w: 900, color: C.bone, a: n4, ls: 4 }); const tg = ease(seg(t, a('s8.5'), a('s8.5') + .6)); ctx.save(); ctx.globalAlpha = n4 * (.55 + .45 * tg); ctx.strokeStyle = '#ffb39c'; ctx.lineWidth = 2.5; ctx.strokeRect(700, 858, 290, 62); ctx.restore(); txt('数字有争议', 845, 890, { size: 38, fam: HEI, w: 600, color: '#ffb39c', a: n4 * (.55 + .45 * tg), shadow: 0 });
@@ -429,7 +429,7 @@ SC.push({ a: sceneStart('s8'), b: sceneStart('s9'), draw(t) {
 /* ---- S9 尾声 ---- */
 SC.push({ a: sceneStart('s9'), b: sceneStart('s10'), draw(t) {
   ctx.fillStyle = '#050607'; ctx.fillRect(0, 0, W, H);
-  const al = fade(t, a('s9.1'), z('s9.3') + .6, .6, .8);
+  const al = fade(t, a('s9.1') + 1.35, z('s9.3') + .6, .6, .8);
   txt('秦昭王五十年十一月', W / 2, 470, { size: 40, w: 600, color: C.goldDim, a: al, ls: 6 }); txt('杜邮', W / 2, 560, { size: 84, w: 900, color: C.bone, a: al, ls: 20 });
   speaker('武安君 白起', 700, al * seg(t, a('s9.1') + 2, a('s9.1') + 2.8));
   quoteCard('「长平之战，\n赵卒降者数十万人，\n我诈而尽坑之，\n是足以死。」', '《史记·白起王翦列传》', onq(t, 's9.2', 's9.3'), { y: 790, size: 68, max: 12, p: lp(t, 's9.2') * 1.3, rows: 1, bg: 0 });
