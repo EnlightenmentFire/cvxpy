@@ -9,7 +9,8 @@ from common import SCRATCH
 
 COLD_OPEN_SILENT = 13.4      # imagined sky runs before the first word
 TITLE_HOLD = 4.2             # title card after o4
-CHAPTER_GAP = 1.6            # breath + chapter card between sections
+CHAPTER_GAP = 1.3            # chapter card between sections (music bridge, not a narration pause)
+MAX_PAUSE = 0.4              # narration pauses are capped at 0.4 s
 EN_GAP = 0.35
 END_TAIL = 6.0
 
@@ -109,7 +110,7 @@ def build(meta_dir):
                 dd = d * wgt / tot
                 subs.append({'start': tc, 'end': tc + dd, 'text': c})
                 tc += dd
-            t += d + pause
+            t += d + min(pause, MAX_PAUSE)
             for k in ('EN1', 'EN2'):
                 if k in tags:
                     t += EN_GAP
@@ -123,7 +124,7 @@ def build(meta_dir):
                         subs.append({'start': tc, 'end': tc + dd, 'text': z, 'en': True})
                         tc += dd
                     cues[k + '_end'] = t + en_dur[k]
-                    t += en_dur[k] + 0.5
+                    t += en_dur[k] + MAX_PAUSE
             if 'TITLE' in tags:
                 cues['TITLE_START'] = t
                 t += TITLE_HOLD

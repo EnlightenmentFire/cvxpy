@@ -35,8 +35,7 @@ def build(tts_dir, t0=0.0, t1=None):
         if ln['start'] > total:
             continue
         w, sr = load_wav(os.path.join(tts_dir, ln['id'] + '.wav'))
-        v = A.voice_chain(w, sr)
-        A.place(voice, A.norm(v, 0.85), ln['start'])
+        A.place(voice, A.voice_place(w, sr), ln['start'])
     # ---------------- Reagan clips (WHCA recording, public domain)
     for c in tl['clips']:
         if c['start'] > total:
@@ -46,7 +45,7 @@ def build(tts_dir, t0=0.0, t1=None):
             from scipy.signal import resample_poly
             w = resample_poly(w, SR, sr)
         w = A.bp(w, 160, 6500)
-        A.place(voice, A.norm(w, 0.8), c['start'])
+        A.place(voice, A.to_rms(w, -18.0), c['start'])
 
     # ---------------- score
     title_t = cue.get('TITLE_START', 40.0)
@@ -109,11 +108,15 @@ def build(tts_dir, t0=0.0, t1=None):
         A.place(music, slow * 0.6, end_t)
 
     # ---------------- duck + master
+    voice = A.to_rms(voice, -18.0)
     g = A.duck_curve(voice, depth_db=11)
-    mix = voice + music * g[:, None] * 0.9 + sfx * (0.55 + 0.45 * g[:, None])
+    # music bed sits well under the voice (-18 dBFS RMS): bring it to about -27 dBFS before ducking
+    mus = A.to_rms(music, -27.0) if np.abs(music).max() > 0 else music
+    fxs = A.to_rms(sfx, -30.0) if np.abs(sfx).max() > 0 else sfx
+    mix = voice + mus * g[:, None] + fxs * (0.55 + 0.45 * g[:, None])
     i0, i1 = A.secs(t0), A.secs(total)
     mix = mix[i0:i1]
-    return A.master(mix, 0.95)
+    return A.limiter(mix, 0.89)
 
 
 if __name__ == '__main__':

@@ -506,3 +506,34 @@ def master(mix, target_peak=0.95):
     x = x * g[:, None]
     x = np.tanh(x * 1.1) / 1.1
     return norm(x, target_peak)
+
+
+def rms_db(x):
+    """RMS (dBFS) over active frames of a mono/stereo signal."""
+    m = x if x.ndim == 1 else x.mean(1)
+    hop = int(0.02 * SR)
+    r = np.array([np.sqrt(np.mean(m[i:i + hop] ** 2)) for i in range(0, len(m) - hop, hop)] or [0.0])
+    act = r[r > max(1e-4, np.percentile(r, 40))]
+    return 20 * np.log10(np.sqrt(np.mean(act ** 2)) + 1e-12) if len(act) else -120.0
+
+
+def to_rms(x, db=-18.0):
+    return x * 10 ** ((db - rms_db(x)) / 20)
+
+
+def limiter(x, ceiling=0.89, release=0.08):
+    """peak limiter that leaves levels below the ceiling untouched."""
+    pk = np.abs(x).max(1) if x.ndim == 2 else np.abs(x)
+    g = np.minimum(1.0, ceiling / np.maximum(pk, 1e-9))
+    # smooth gain: instant attack, exponential release
+    a = math.exp(-1 / (release * SR))
+    gs = signal.lfilter([1 - a], [1, -a], g - 1.0) + 1.0
+    gs = np.minimum(gs, g)
+    return x * (gs[:, None] if x.ndim == 2 else gs)
+
+
+def voice_place(v, sr_in=24000, room=0.06):
+    """narration already processed (50 Hz HPF, -18 dBFS RMS): resample + light room only."""
+    from scipy.signal import resample_poly
+    v = resample_poly(v, SR, sr_in) if sr_in != SR else v
+    return reverb(v, 0.8, room, pre=0.01, bright=5000)

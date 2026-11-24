@@ -148,6 +148,40 @@ EN_CLIPS = {
 }
 
 
+# genuine quotations (read slightly slower than narration), exactly as they appear in the text
+QUOTES = {
+    'r6': ['救人性命，难道不比报仇更好吗？'],
+    'k10': ['你们连石油设备、牛奶厂的设备都不肯给我们，分享星球大战？那简直是第二次美国革命。'],
+    'k13': ['“我会被叫作傻瓜，而不是领导人”', '这只是一个词的问题。', '这是原则问题。'],
+    'k15': ['那就到此为止，忘了雷克雅未克吧。', '“要么实验室，要么再见。”'],
+    'k16': ['“我错了吗？”', '“没有，你是对的。”', '“我不知道我还能做什么。”', '“你本可以说‘好’。”'],
+}
+
+
+def tts_segments(lid, text):
+    """[(kind, tts_text)] with kind 'n' narration / 'q' quotation."""
+    marks = []
+    for q in QUOTES.get(lid, []):
+        i = text.find(q)
+        if i >= 0:
+            marks.append((i, i + len(q)))
+    marks.sort()
+    out, cur = [], 0
+    for a, b in marks:
+        if a > cur:
+            out.append(('n', text[cur:a]))
+        out.append(('q', text[a:b]))
+        cur = b
+    if cur < len(text):
+        out.append(('n', text[cur:]))
+    res = []
+    for k, t in out:
+        tt = tts_text(t).strip('，、').lstrip('。；：')
+        if any('\u4e00' <= ch <= '\u9fff' for ch in tt):
+            res.append((k, tt))
+    return res
+
+
 def all_lines():
     for sec, chapter, lines in SECTIONS:
         for (lid, text, pause, tags) in lines:

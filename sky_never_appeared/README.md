@@ -5,15 +5,19 @@
 - `script/script.md` — 解说稿 v1（逐段旁白 + 画面说明）
 - `script/notes_sources.md` — 史料核对表、对原提纲的更正、主要来源
 - `stills/` — 风格确认用的关键静帧（`00_contact_sheet.jpg` 为总览）
-- `audio/` — 20 秒样音（主选声线 zm_098，成片语速；另附 3 个备选声线和一版带配乐的）
+- `audio/qwen_sample_1min_*.m4a` — 1 分钟配音样音（Qwen3-TTS 设计音色 + 克隆，纯人声 / 带配乐），检测数据见 `audio/voice_report.md`
+- `audio/sample_*.m4a` — 上一轮 Kokoro 样音（备选方案）
 - `preview/preview_cold_open.mp4` — 冷启动 + 片名的动态预览（约 38 秒，按成片码率编码）
 - `src/` — 渲染代码（numpy + OpenCV 逐帧合成，ffmpeg 编码）
 
 ## 渲染
 
 ```
-# 旁白（Kokoro-82M v1.1-zh，Apache-2.0，需在 Python 3.12 venv 里跑）
-python src/tts.py lines.json out_dir zm_098 1.2
+# 旁白（Qwen3-TTS，Apache-2.0，Python 3.12 venv）：先设计音色，再克隆逐句合成
+python src/qwen_design.py design_dir 3 90
+python src/qwen_narrate.py lines.json design_dir/design.json out_dir
+# 备选：Kokoro-82M v1.1-zh
+python src/tts.py lines.json out_dir zm_014 1.0
 # 画面（并行渲染，按时间段）
 NPROC=4 python3 src/render.py <tts_dir> video.mp4 [t0 t1]
 # 声音（配乐与音效全部程序合成）
