@@ -1,0 +1,5 @@
+build/
+fonts/*.ttf
+tools/__pycache__/
+__pycache__/
+assets/geo/*.json
