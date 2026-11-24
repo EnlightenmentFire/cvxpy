@@ -78,7 +78,11 @@ elif sys.argv[1] == 'cont':
             c = np.corrcoef(out[0, pr.shape[1] // 2: pr.shape[1]], pr[0, pr.shape[1] // 2:])[0, 1]; print(f'  {f}: prompt corr {c:.2f}', flush=True)
         o = pr.shape[1] if inc else 0; new = out[:, o: o + int(float(sc) * SR)]
         dup = sum(1 for j in jobs if j[0] == f and j[1] == ly); seen[(f, ly)] = seen.get((f, ly), -1) + 1
-        full = np.concatenate([w, new], 1); name = f.replace('.wav', '') + f'+{ly}{seed}' + (f'v{seen[(f, ly)]}' if dup > 1 else '') + '.wav'
+        if inc:      # 接缝：原文件最后 0.5 秒与输出里重新解码的同一段交叉，避免两次解码相接处的爆音
+            xf = int(0.5 * SR); r = np.linspace(0, 1, xf)[None, :]
+            full = np.concatenate([w[:, :-xf], w[:, -xf:] * (1 - r) + out[:, o - xf:o] * r, new], 1)
+        else: full = np.concatenate([w, new], 1)
+        name = f.replace('.wav', '') + f'+{ly}{seed}' + (f'v{seen[(f, ly)]}' if dup > 1 else '') + '.wav'
         sf.write(os.path.join(OUT, name), full.T, SR, subtype='FLOAT')
         log[name] = dict(model=MID, prompt=PROMPTS[ly], secs=float(sc), seed=seed, mode='cont', src=f, prompt_secs=ps)
         print(f'cont {name} total {full.shape[1] / SR:.1f}s', flush=True)

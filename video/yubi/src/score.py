@@ -19,9 +19,12 @@ _cache = {}
 
 
 def clip(name):
-    """读入片段（32 kHz → 48 kHz），统一到 -20 LUFS。"""
+    """读入片段（32 kHz → 48 kHz），统一到 -20 LUFS。第一轮续写是直接拼接的，接缝处做 10 毫秒的淡出淡入去爆音。"""
     if name not in _cache:
         w, sr = sf.read(os.path.join(MD, name)); w = librosa.resample(w.T.astype(np.float32), orig_sr=sr, target_sr=SR).T
+        for sec in CL.get('hard_seams', {}).get(name, []):
+            i = int(sec * SR); n = int(0.005 * SR); r = np.cos(np.linspace(0, np.pi / 2, n))[:, None]
+            w[i - n:i] *= r; w[i:i + n] *= r[::-1]
         _cache[name] = w * 10 ** ((REF - lufs(w)) / 20)
     return _cache[name]
 
