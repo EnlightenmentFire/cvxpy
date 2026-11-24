@@ -85,18 +85,35 @@ def build(tts_dir, t0=0.0, t1=None):
     if at('LETTER'):
         times = list(np.cumsum(np.random.default_rng(3).uniform(0.06, 0.16, 40)) + at('LETTER') + 0.4)
         A.place(sfx, A.typewriter(times) * 0.35, 0.0)
+    def hypo_synth(t0, t1, dark=0.2, bpm=104, seed=0):
+        d = t1 - t0
+        th = A.synth_theme(d + 0.5, bpm=bpm, intensity=0.55, drums=False, arp=True, dark=dark, seed=seed)
+        th[:A.secs(0.8)] *= np.linspace(0, 1, A.secs(0.8))[:, None]
+        th = A.tape_stop(th[:A.secs(d)], 0.35)
+        A.place(music, th * 0.9, t0)
+    if at('BOOST') and at('NEVADA'):
+        hypo_synth(at('BOOST') - 0.3, at('NEVADA') - 0.25, dark=0.15, seed=1)
+        A.place(sfx, A.impact(2.5) * 0.5, at('NEVADA') - 0.25)
+    if at('HYPO_SU') and at('LAUNCH'):
+        hypo_synth(at('HYPO_SU') - 0.3, at('LAUNCH') - 0.25, dark=0.6, bpm=96, seed=2)
+        A.place(sfx, A.impact(2.5) * 0.5, at('LAUNCH') - 0.25)
     if at('NEVADA'):
-        A.place(sfx, A.rumble(7.0) * 0.5, at('NEVADA') + 1.0)
+        A.place(sfx, A.rumble(7.0) * 0.4, at('NEVADA') + 1.0)
+        A.place(sfx, A.boom(3.0, 1.3) * 0.8, at('NEVADA') + 4.55)
     if at('HIT'):
-        A.place(sfx, A.impact(3.0) * 0.6, at('HIT') + 2.0)
+        A.place(sfx, A.impact(3.0) * 0.6, at('HIT') + 3.25)
     if at('LAB'):
-        A.place(sfx, A.crack(1.5) * 0.8, at('LAB') + 1.0)
+        A.place(sfx, A.crack(1.5) * 0.8, at('LAB') + 1.15)
+    if at('FALL'):
+        A.place(sfx, A.whoosh(2.5, up=False) * 0.8, at('FALL') + 0.2)
+    if at('VERDICT'):
+        A.place(sfx, A.impact(2.5) * 0.35, at('VERDICT') - 0.2)
     if at('HOUSE'):
         clk = A.clock(sec['reykjavik']['end'] - at('HOUSE'), 1.0, 0.35)
         A.place(music, clk, at('HOUSE'))
         A.place(music, A.strings([50, 57, 62, 65], sec['reykjavik']['end'] - at('HOUSE'), 0.5), at('HOUSE'))
     if at('TUMBLE'):
-        A.place(sfx, A.descending_tone(8.0) * 0.6, at('TUMBLE') + 2.0)
+        A.place(sfx, A.descending_tone(7.5) * 0.6, at('TUMBLE') + 0.75)
     if at('LAUNCH'):
         A.place(sfx, A.rumble(9.0) * 0.7, at('LAUNCH'))
     if at('REPLAY'):

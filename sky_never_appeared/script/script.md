@@ -32,7 +32,7 @@
 
 - 1983年3月23日晚，里根在白宫发表全国电视讲话，最后抛出了一个问题。  `[EN1]`
     - 〔原声〕*What if free people could live secure in the knowledge that their security did not rest upon the threat of instant U.S. retaliation to deter a Soviet attack, that we could intercept and destroy strategic ballistic missiles before they reached our own soil or that of our allies?*
-    - 〔字幕〕如果自由的人们能够安心生活，因为知道他们的安全不再依靠美国立即报复的威胁，来吓阻苏联的进攻，如果我们能在战略弹道导弹，落到我们或盟友的土地之前，就把它拦截、摧毁，那会怎样？
+    - 〔字幕〕如果自由的人们能够安心生活，因为知道他们的安全，不再依靠美国立即报复的威胁，来吓阻苏联的进攻，如果我们能在战略弹道导弹，落到我们或盟友的土地之前，就把它拦截、摧毁，那会怎样？
 - 他在问：安全能不能不再靠“你敢打我，我就立刻毁灭你”？能不能在导弹落地之前就把它打下来？
 - 这话的分量在于：他质疑的，正是恐怖平衡本身。
 - 接着，他号召当年造出核武器的科学家们——  `[EN2]`

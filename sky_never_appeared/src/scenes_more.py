@@ -82,11 +82,11 @@ def speech_card(t, clip=None, en_text='', highlight=None):
     if en_text:
         k = smooth(remap(t, 0.3, 1.0))
         lines = wrap_en(en_text, 30)
+        y0 = 700 if len(lines) > 6 else 760
         for i, ln in enumerate(lines):
-            col = WHITE
-            text(c, ln, W / 2, 760 + i * 62, 'type', 42, col, k)
+            text(c, ln, W / 2, y0 + i * 54, 'type', 41, WHITE, k)
         if highlight:
-            text(c, highlight, W / 2, 760 + len(lines) * 62 + 40, 'typeb', 46, AMBER, smooth(remap(t, 1.0, 1.6)))
+            text(c, highlight, W / 2, y0 + len(lines) * 54 + 50, 'typeb', 54, AMBER, smooth(remap(t, 1.0, 1.6)))
     return c, e
 
 
@@ -312,22 +312,31 @@ def nevada(t, phase=0):
         ring(c, W / 2, 760, 26 * (1 + 2.5 * dive), (0.85, 0.85, 0.8), 3, 1 - dive, add=False)
         text(c, '内华达试验场 · 地下', W / 2, 330, 'bold', 40, WHITE, smooth(remap(t, 0.2, 0.7)) * (1 - dive))
     if dive > 0:
-        # cross-section: ground layers, shaft, chamber
+        # cross-section: sky band, desert surface, rock strata, shaft, device chamber
         g = dive
-        rect(c, 0, 520, W, H, hexc('2a2219') * g, 1.0)
-        for k in range(6):
-            draw_polyline(c, [(0, 600 + k * 130 + 10 * math.sin(k)), (W, 620 + k * 130)], hexc('3a3024') * g, 2, 1.0)
-        rect(c, W / 2 - 10, 520, W / 2 + 10, 1000, hexc('0a0a0a'), g)
-        tb = 4.6
+        rect(c, 0, 0, W, 520, hexc('0c0e12') * g, 1.0)
+        rect(c, 0, 520, W, H, hexc('4a3b2a') * g, 1.0)
+        for k in range(7):
+            y = 560 + k * 120
+            col = [hexc('5a4834'), hexc('4c3c2b'), hexc('5e4c37'), hexc('463726'), hexc('544330'), hexc('3f3123'), hexc('4d3d2c')][k]
+            rect(c, 0, y, W, y + 120, col * g, 1.0)
+            draw_polyline(c, [(0, y), (W, y + 6 * math.sin(k * 1.7))], hexc('2a2118') * g, 2, 1.0)
+        rect(c, W / 2 - 9, 520, W / 2 + 9, 1010, hexc('0b0b0b'), g)
+        rect(c, W / 2 - 40, 1010, W / 2 + 40, 1070, hexc('1a1a1a'), g)
+        text(c, '地表', 150, 495, 'bold', 30, GREY, g, anchor='lc')
+        text(c, '竖井', W / 2 + 40, 760, 'bold', 30, GREY, g, anchor='lc')
+        text(c, '核装置 + 测量设备', W / 2 + 70, 1040, 'bold', 30, GREY, g * (1 - smooth(remap(t, 4.4, 4.8))), anchor='lc')
+        tb = 4.8
         if t > tb:
             tau = t - tb
-            r = 60 + 260 * (1 - math.exp(-tau * 2))
-            splat(e, W / 2, 1040, r * 0.5, (1.0, 0.85, 0.6), 2.5 * math.exp(-tau / 0.5))
+            r = 60 + 300 * (1 - math.exp(-tau * 1.8))
+            splat(e, W / 2, 1040, r * 0.45, (1.0, 0.85, 0.6), 3.0 * math.exp(-tau / 0.6))
             for k in range(4):
-                ring(e, W / 2, 1040, r * (0.6 + 0.35 * k), (1.0, 0.7, 0.4), 3, 0.5 * math.exp(-tau / (0.6 + 0.3 * k)))
-            # dust lift at the surface
-            lift = 40 * (1 - math.exp(-max(tau - 0.3, 0) * 1.5))
-            rect(c, 0, 520 - lift, W, 522, hexc('6a5a45'), min(1.0, lift / 20))
+                ring(e, W / 2, 1040, r * (0.55 + 0.35 * k), (1.0, 0.65, 0.35), 4, 0.6 * math.exp(-tau / (0.7 + 0.3 * k)))
+            lift = 70 * (1 - math.exp(-max(tau - 0.4, 0) * 1.2))
+            if lift > 1:
+                fill_poly(c, [(0, 520), (W, 520), (W, 520 - lift * 0.4), (W / 2 + 260, 520 - lift), (W / 2 - 260, 520 - lift), (0, 520 - lift * 0.4)],
+                          hexc('7a6448'), 0.9)
     return c, e
 
 
@@ -564,9 +573,9 @@ def memoir_lines(t):
     c = bg_reality('plain'); e = np.zeros_like(c)
     text(c, '据舒尔茨回忆', W / 2, 340, 'bold', 40, GREY, smooth(remap(t, 0, 0.5)))
     a1 = smooth(remap(t, 0.3, 0.9))
-    card(c, 110, 430, W - 110, 690, a1, fill=hexc('e9e4d8') * 0.9, border=hexc('8a7a66'))
-    text(c, '“我错了吗？”', W / 2, 520, 'black', 58, hexc('202020'), a1)
-    text(c, '“没有，你是对的。”', W / 2, 620, 'bold', 44, hexc('404040'), smooth(remap(t, 1.6, 2.1)))
+    card(c, 180, 430, W - 180, 690, a1, fill=hexc('e9e4d8') * 0.9, border=hexc('8a7a66'))
+    text(c, '纸条：“我错了吗？”', W / 2, 515, 'black', 52, hexc('202020'), a1)
+    text(c, '“没有，你是对的。”', W / 2, 615, 'bold', 44, hexc('404040'), smooth(remap(t, 1.6, 2.1)))
     a2 = smooth(remap(t, 3.4, 4.0))
     text(c, '“我不知道我还能做什么。”', W / 2, 820, 'black', 50, AMBER, a2)
     text(c, '“你本可以说‘好’。”', W / 2, 910, 'black', 50, BLUE, smooth(remap(t, 4.6, 5.2)))
@@ -615,11 +624,11 @@ def energia_launch(t):
     fill_poly(c, [(cx + 70, base - 470), (cx + 91, base - 520), (cx + 112, base - 470)], hexc('121417'))
     ign = smooth(remap(t, 0.2, 1.0))
     if ign > 0:
-        fx.tapered_beam(e, (cx, base + 10), (cx, base + 300 + 300 * ign), (1.0, 0.7, 0.35), 90, 10, 1.4 * ign)
-        splat(e, cx, base + 40, 90, (1, .85, .6), 1.4 * ign)
+        fx.tapered_beam(e, (cx, base + 10), (cx, base + 220 + 160 * ign), (1.0, 0.6, 0.28), 70, 8, 0.55 * ign)
+        splat(e, cx, base + 30, 38, (1, .9, .7), 0.9 * ign)
         rng = np.random.default_rng(int(t * 30))
         for _ in range(30):
-            splat(e, cx + rng.normal(0, 120), min(1250, base + 200 + rng.normal(0, 100)), rng.uniform(20, 60), (0.5, 0.45, 0.4), 0.15 * ign)
+            splat(c, cx + rng.normal(0, 150), min(1250, base + 260 + rng.normal(0, 90)), rng.uniform(25, 70), (0.42, 0.40, 0.38), 0.10 * ign)
     text(c, '1987 年 5 月 15 日', W / 2, 330, 'black', 50, WHITE, smooth(remap(t, 0, 0.5)))
     text(c, '“能源号”首次发射', W / 2, 400, 'bold', 38, GREY, smooth(remap(t, 0.2, 0.7)))
     text(c, '黑色的“极地”号挂在箭体一侧', W / 2, 470, 'medium', 32, GREY, smooth(remap(t, 1.0, 1.5)))

@@ -94,13 +94,17 @@ def station_charge(si, tt):
 
 
 def aim_dir(si, t):
-    """station orientation: turns toward its current/next target."""
+    """station orientation: turns toward its current/next target, then holds on its last one."""
     pos, _ = STATIONS[si]
+    mine = [(kt, mi) for kt, s, mi in KILLS if s == si]
     tgt = None
-    for kt, s, mi in KILLS:
-        if s == si and kt + 0.4 >= t:
+    for kt, mi in mine:
+        if kt + 0.4 >= t:
             tgt = MISSILES[mi].pos(min(t, kt))
             break
+    if tgt is None and mine:
+        kt, mi = mine[-1]
+        tgt = MISSILES[mi].pos(kt)
     if tgt is None:
         tgt = pos + np.array([0.0, 0.3, 1.0])
     d = tgt - pos

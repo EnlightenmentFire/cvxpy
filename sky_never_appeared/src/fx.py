@@ -106,6 +106,10 @@ def chapter_label(canvas, num, title, alpha=1.0, color=None):
 def subtitle(canvas, s, alpha=1.0, y=SUB_Y, size=50, color=(0.96, 0.97, 0.98)):
     if not s or alpha <= 0:
         return
+    # never wider than the safe width: shrink the font if a line would overflow
+    wmax = max(font('bold', size).getlength(x) for x in s.split('\n'))
+    if wmax > W - 120:
+        size = int(size * (W - 120) / wmax)
     text(canvas, s, W / 2, y, kind='bold', size=size, color=color, alpha=alpha, anchor='center',
          shadow=0.9, stroke=3, line_gap=1.4)
 

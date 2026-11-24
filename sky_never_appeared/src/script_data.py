@@ -139,7 +139,7 @@ TTS_FIX = [
 EN_CLIPS = {
     'EN1': {
         'en': 'What if free people could live secure in the knowledge that their security did not rest upon the threat of instant U.S. retaliation to deter a Soviet attack, that we could intercept and destroy strategic ballistic missiles before they reached our own soil or that of our allies?',
-        'zh': ['如果自由的人们能够安心生活', '因为知道他们的安全不再依靠美国立即报复的威胁', '来吓阻苏联的进攻', '如果我们能在战略弹道导弹', '落到我们或盟友的土地之前', '就把它拦截、摧毁', '那会怎样？'],
+        'zh': ['如果自由的人们能够安心生活', '因为知道他们的安全', '不再依靠美国立即报复的威胁', '来吓阻苏联的进攻', '如果我们能在战略弹道导弹', '落到我们或盟友的土地之前', '就把它拦截、摧毁', '那会怎样？'],
     },
     'EN2': {
         'en': '…to give us the means of rendering these nuclear weapons impotent and obsolete.',
