@@ -105,9 +105,9 @@ const PATH=(par,d,cls,style)=>{const p=document.createElementNS(NS,'path');p.set
   const kids=b.children;[3,4,5].forEach(i=>{const k=kids[i];s.on(t=>{k.style.opacity=E.o(P(t,t6-.3,t6+.3))})});}
  {const s=Film.scene('db3',e8-.2,e13-.2,{cls:'dark'});
   const cv=canvas(s);const c=cv.getContext('2d');const R=rng(3);const seats=[];for(let r=0;r<13;r++){const rad=250+r*56;const n=Math.round(rad*Math.PI*.78/30);for(let i=0;i<n;i++){const a=Math.PI*(.11+.78*i/(n-1));seats.push([540-Math.cos(a)*rad*1.06,700+Math.sin(a)*rad*.86,R(),r])}}
-  s.on(t=>{c.clearRect(0,0,W,H);const p=P(t,e8,e8+2);const dim=1-.72*E.io(P(t,e10-.4,e10+.3));c.fillStyle=`rgba(143,191,227,${.5*dim})`;c.fillRect(380,640,320,16);c.fillRect(440,610,200,12);
+  s.on(t=>{c.clearRect(0,0,W,H);const p=P(t,e8,e8+2);const dim=1-.6*E.io(P(t,K('e10','5个')-.5,K('e10','5个')+.3));c.fillStyle=`rgba(143,191,227,${.5*dim})`;c.fillRect(380,640,320,16);c.fillRect(440,610,200,12);
    for(const q of seats){const a=clamp(p*1.5-q[2]*.5);if(a<=0)continue;const v=90+q[2]*60|0;c.fillStyle=`rgba(${v},${v+12},${v+24},${a*.75*dim})`;c.beginPath();c.arc(q[0],q[1],7,0,6.3);c.fill();c.fillRect(q[0]-8,q[1]+8,16,8)}});
-  const hd=s.add('div','left:64px;top:318px;width:952px','abs');hd.innerHTML=`<div class="mono" style="font-size:44px;color:#ff9a4a;letter-spacing:.08em">1980.09</div><div class="serif" style="font-size:64px;line-height:1.25;margin-top:4px">五届全国人大三次会议</div>`;s.io(hd,e8,e10-.3,{y:16});
+  const hd=s.add('div','left:64px;top:318px;width:952px','abs');hd.innerHTML=`<div class="mono" style="font-size:44px;color:#ff9a4a;letter-spacing:.08em">1980.09</div><div class="serif" style="font-size:64px;line-height:1.25;margin-top:4px">五届全国人大三次会议</div>`;s.io(hd,e8,K('e10','5个')-.4,{y:16});
   const q0=s.add('div','left:64px;top:520px;font-size:38px;font-weight:700;background:rgba(10,15,21,.8);padding:6px 14px','abs','代表们就宝钢 <span style="color:#ff7a1a">质询</span> 冶金部');s.io(q0,K('e8','代表们'),e9-.2,{y:10});
   const df=defCard(s,'质询','人大代表当面向政府部门提问，<br>部门必须回答',64,480,900,e9,e10-.3);df.style.background='rgba(10,15,21,.86)';df.style.padding='14px 22px';
   // counters

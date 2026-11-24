@@ -3,3 +3,4 @@ assets/geo/*.geojson
 audio/lines/
 audio/out/
 node_modules/
+out/

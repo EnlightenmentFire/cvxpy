@@ -8,16 +8,37 @@ ONLY = set(args['only'].split(',')) if 'only' in args else None
 OUT = f'audio/lines/{VOICE}_{SPEED}'; os.makedirs(OUT, exist_ok=True)
 L = S.lines()
 if ONLY: L = [l for l in L if l['id'] in ONLY]
-pipe = None
+pipe = None; model = None; pack = None
+# 读音校正（在音素层面改，逐条人工核对过 G2P 输出）：
+PH_FIX = [
+ ("ㄧ4ㄐ又3", "ㄧ1ㄐ又3"),            # 年份里的「一九」读 yī，不变调
+ ("ㄅㄚ1ㄧ4ㄋ言2", "ㄅㄚ1ㄧ1ㄋ言2"),    # 一九八一年
+ ("ㄑㄧ1ㄧ4ㄋ言2", "ㄑㄧ1ㄧ1ㄋ言2"),    # 一九七一年
+ ("ㄕ十2ㄧ2ㄐㄝ4", "ㄕ十2ㄧ1ㄐㄝ4"),    # 十一届
+ ("ㄧ4ㄑㄧ1", "ㄧ1ㄑㄧ1"),            # 一期（序数）
+ ("ㄧ2ㄏㄠ4", "ㄧ1ㄏㄠ4"),            # 一号高炉
+ ("ㄨ2/ㄧ4ㄉ又1", "ㄨ2/ㄧ1ㄉ又1"),      # 无一丢失
+ ("ㄎㄚ3/我3ㄇㄣ5", "ㄑ压3/我3ㄇㄣ5"),  # 卡（qiǎ）我们
+ ("ㄖㄣ2/ㄉㄜ5/ㄅㄚ3", "ㄖㄣ2/ㄉㄟ2/ㄅㄚ3"),  # 花钱的人得（děi）把账
+ ("ㄉㄜ2ㄉㄠ4", "ㄉㄜ5ㄉㄠ4"),          # 做得到
+ ("ㄕㄤ4ㄒ压5", "ㄕㄤ4ㄒ压4"),          # 四分之一上下（「下」不读轻声，免得含糊）
+]
+def g2p_fixed(text):
+    ps, _ = pipe.g2p(text)
+    for a_, b_ in PH_FIX: ps = ps.replace(a_, b_)
+    return ps
 def synth(text):
-    global pipe
+    global pipe, model, pack
+    from kokoro import KPipeline, KModel
     if pipe is None:
-        from kokoro import KPipeline, KModel
         REPO = 'hexgrad/Kokoro-82M-v1.1-zh'
-        pipe = KPipeline(lang_code='z', repo_id=REPO, model=KModel(repo_id=REPO).eval())
-    parts = [r.audio.numpy() for r in pipe(text, voice=VOICE, speed=SPEED, split_pattern=r'(?<=[。？！；：])')]
+        model = KModel(repo_id=REPO).eval(); pipe = KPipeline(lang_code='z', repo_id=REPO, model=model); pack = pipe.load_voice(VOICE)
     out = []
-    for p in parts: out += [p, np.zeros(int(SR * 0.12), np.float32)]
+    for part in re.split(r'(?<=[。？！；：])', text):
+        if not part.strip(): continue
+        ps = g2p_fixed(part)
+        o = KPipeline.infer(model, ps, pack, SPEED)
+        out += [o.audio.numpy(), np.zeros(int(SR * 0.12), np.float32)]
     return np.concatenate(out[:-1])
 def silences(w, thr_db=-38, min_len=0.12):
     hop = 240; n = len(w) // hop
