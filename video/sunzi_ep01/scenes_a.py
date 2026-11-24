@@ -241,6 +241,7 @@ def scene_s1(c, ctx):
     sl = pulse(t, ctx.st("s1_05") + 1.4, ctx.st("s1_07") + 0.2, 0.5, 0.5) * a_all
     tag(c, "「軍中不得驅馳」", gx + 96, gy + 84, 32, "gold", sl, kind="serif", weight=700)
     tag(c, "天子的车，也只能按辔徐行", gx + 110, gy + 128, 26, "dim", sl)
+    tag(c, "文帝遣使持节，壁门乃开", gx - 110, gy + 128, 26, "dim", pulse(t, ctx.st("s1_05") + 0.1, ctx.st("s1_07") + 0.2, 0.5, 0.5) * a_all, align="r")
     c.restore()
 
     # 题记与出处
@@ -258,7 +259,7 @@ def scene_s1(c, ctx):
         tag(c, "条侯 · 绛侯周勃之子", W / 2, 562, 32, "dim", na, align="c", kind="serif", weight=600)
         w1 = ctx.fin("s1_08", 0.6, 0.6) * a_all
         tag(c, "前154年", 300, 1196, 34, "gold", w1, align="c", kind="serif", weight=700)
-        tag(c, "三个月平定七国之乱", 300, 1244, 32, "bone", w1, align="c")
+        tag(c, "三个月破吴楚", 300, 1244, 32, "bone", w1, align="c")
         w2 = ctx.fin("s1_09", 0.6, 0.5) * a_all
         tag(c, "前143年", 780, 1196, 34, "red", w2, align="c", kind="serif", weight=700)
         tag(c, "下狱，绝食五日而死", 780, 1244, 32, "bone", w2, align="c")
@@ -450,8 +451,8 @@ def scene_s9(c, ctx):
             tag(c, "后半句：将军自己做不出", 790, 1202, 28, "red", h2, align="c")
         h3 = ctx.fin("s9_05", 0.5, 0.1) * aA
         if h3 > 0:
-            tag(c, "周亚夫那一仗：有", 290, 1262, 30, "bone", h3, align="c", kind="serif", weight=700)
-            tag(c, "章邯最要紧时：无", 790, 1262, 30, "red", h3 * ctx.fin("s9_05", 0.4, 2.0), align="c", kind="serif", weight=700)
+            tag(c, "周亚夫：景帝下诏，却未换将", 290, 1262, 28, "bone", h3, align="c", kind="serif", weight=700)
+            tag(c, "章邯：背后没有这样的人", 790, 1262, 28, "red", h3 * ctx.fin("s9_05", 0.4, 2.0), align="c", kind="serif", weight=700)
     aC = ctx.fin("s9_06", 0.7, -0.2) * a_all
     if aC > 0:
         st = ctx.st("s9_06")

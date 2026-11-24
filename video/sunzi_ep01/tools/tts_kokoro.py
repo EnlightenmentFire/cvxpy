@@ -79,7 +79,7 @@ def main():
         thr = max(0.01, env.max() * 0.02)
         idx = np.where(env > thr)[0]
         if len(idx):
-            w = w[max(0, idx[0] - int(0.04 * SR)): min(len(w), idx[-1] + int(0.08 * SR))]
+            w = w[max(0, idx[0] - int(0.03 * SR)): min(len(w), idx[-1] + int(0.06 * SR))]
         sf.write(wav, w, SR)
         meta[lid] = {"tts": t, "dur": len(w) / SR, "voice": a.voice, "speed": sp}
         print(lid, f"{len(w)/SR:5.2f}s", t, flush=True)

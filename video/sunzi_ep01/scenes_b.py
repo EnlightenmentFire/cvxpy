@@ -180,11 +180,11 @@ def campaign_map(c, ctx):
     hit = hitk * (0.55 + 0.45 * math.sin(t * 9.0))
     shield(c, SY[0], SY[1], 1.0, a, hot=hot, hit=max(0, hit))
     tag(c, "睢阳", SY[0], SY[1] + 70, 28, "bone", a, kind="serif", weight=700, plate=True, align="c")
-    tag(c, "今河南商丘", SY[0], SY[1] + 104, 22, "dim", a * pulse(t, T("s3_09") + 0.5, ctx.en("s3_10"), 0.4, 0.5), align="c", plate=True)
+    tag(c, "今河南商丘", SY[0], SY[1] + 104, 22, "dim", a * pulse(t, T("s3_09") + 0.5, ctx.en("s3_09") + 0.6, 0.4, 0.5), align="c", plate=True)
     tag(c, "「以梁委之」", SY[0] - 40, SY[1] - 50, 30, "gold", a * pulse(t, T("s3_06") + 1.6, ctx.en("s3_07") + 0.4, 0.4, 0.5), kind="serif", weight=700, plate=True, align="c")
     # ---- 汉军：荥阳 → 昌邑 ----
-    mv = ease(ramp(t, T("s3_09") + 0.4, T("s3_09") + 2.6))
-    plan = pulse(t, T("s3_06") + 0.2, T("s3_09") + 0.6, 0.5, 0.4)
+    mv = ease(ramp(t, T("s3_10") + 0.0, T("s3_10") + 1.5))
+    plan = pulse(t, T("s3_06") + 0.2, T("s3_10") + 0.5, 0.5, 0.4)
     route = [XY, geo(114.6, 35.25), CY]
     if plan > 0:
         arrow(c, route, "bone", 4, ease(ramp(t, T("s3_06") + 0.2, T("s3_06") + 1.6)), a * plan * 0.8, head=16, dash=(12, 9))
@@ -193,21 +193,21 @@ def campaign_map(c, ctx):
     thick = ease(ramp(t, T("s3_12"), T("s3_13") + 1.2))
     backing = ease(ramp(t, T("s3_15") + 0.3, T("s3_15") + 1.5))
     han_camp_icon(c, hx, hy, ha, thick=thick * mv, glow=backing, s=lerp(0.85, 1.0, mv))
-    lab_a = ha * (1 - pulse(t, T("s3_09"), T("s3_09") + 2.6, 0.3, 0.3))
+    lab_a = ha * (1 - pulse(t, T("s3_10") - 0.1, T("s3_10") + 1.6, 0.3, 0.3))
     if mv < 0.5:
         tag(c, "太尉 周亚夫", XY[0] + 42, XY[1] - 6, 28, "bone", lab_a, kind="serif", weight=700, plate=True)
         tag(c, "“将三十六将军”（卷106）", XY[0] + 42, XY[1] + 30, 22, "dim", lab_a * pulse(t, T("s3_02") + 0.6, T("s3_05"), 0.4, 0.5), plate=True)
     else:
         tag(c, "昌邑 · 周亚夫", CY[0] - 4, CY[1] - 46, 28, "bone", lab_a, kind="serif", weight=700, plate=True, align="c")
-        tag(c, "今山东巨野、金乡一带", CY[0] - 4, CY[1] - 80, 22, "dim", lab_a * pulse(t, T("s3_09") + 2.6, ctx.en("s3_10"), 0.4, 0.5), align="c", plate=True)
-        tag(c, "驻地：卷57作“昌邑”；卷106作“昌邑南”，后记吴军“走条侯军，会下邑”", GX0 + 4, GY0 + 16, 21, "dim", a * pulse(t, T("s3_09") + 2.8, ctx.en("s3_11"), 0.5, 0.5), plate=True)
+        tag(c, "今山东巨野、金乡一带", CY[0] - 4, CY[1] - 80, 22, "dim", lab_a * pulse(t, T("s3_10") + 1.6, ctx.en("s3_11"), 0.4, 0.5), align="c", plate=True)
+        tag(c, "驻地：卷57作“昌邑”；卷106作“昌邑南”，后记吴军“走条侯军，会下邑”", GX0 + 4, GY0 + 16, 21, "dim", a * pulse(t, T("s3_10") + 1.8, ctx.en("s3_11") + 0.4, 0.5, 0.5), plate=True)
         tag(c, "「堅壁」", CY[0] + 44, CY[1] + 12, 30, "gold", a * pulse(t, T("s3_12") + 0.8, ctx.en("s3_13") + 0.3, 0.4, 0.5), kind="serif", weight=700, plate=True)
     # ---- 绝其粮道：计划（虚线）→ 执行（轻骑） ----
     sp = pulse(t, T("s3_06") + 2.6, T("s4_01") + 0.3, 0.5, 0.4)
     if sp > 0:
         c.drawPath(spline(SUPPLY), P("gold", a * sp * 0.75, 3, dash=(10, 9), trim=(0, ease(ramp(t, T("s3_06") + 2.6, T("s3_06") + 3.8)))))
         tag(c, "「絕其糧道」", *geo(117.85, 34.62), 28, "gold", a * sp * ease(ramp(t, T("s3_06") + 3.4, T("s3_06") + 4.0)) * (1 - ctx.fin("s3_08", 0.3)), kind="serif", weight=700, plate=True)
-    city(c, "淮泗口", a * ease(ramp(t, T("s3_06") + 3.0, T("s3_06") + 3.8)), "淮泗口", dx=18, dy=-14, col="bone", size=26)
+    city(c, "淮泗口", a * ease(ramp(t, T("s3_06") + 3.0, T("s3_06") + 3.8)), "淮泗口（卷106）", dx=18, dy=-14, col="bone", size=26)
     ex = ease(ramp(t, T("s4_01") + 0.4, T("s4_01") + 2.4))
     if t >= T("s4_01"):
         c.drawPath(spline(SUPPLY), P("gold", a * 0.9, 4, trim=(0, ex)))
@@ -218,17 +218,17 @@ def campaign_map(c, ctx):
             x, y = CITY["淮泗口"]
             c.drawLine(x - 20, y - 20, x + 20, y + 20, P("gold", a * cut, 6)); c.drawLine(x + 20, y - 20, x - 20, y + 20, P("gold", a * cut, 6))
             circle(c, x, y, 20 + 46 * cut, "gold", a * (1 - cut) * 0.8, sw=3)
-            tag(c, "轻骑绝吴楚“兵后食道”（卷57）", x - 14, y + 62, 23, "gold", a * cut, align="c", plate=True)
+            tag(c, "轻骑绝吴楚“兵后食道”（卷57；地点据卷106）", x - 40, y + 62, 23, "gold", a * cut, align="c", plate=True)
         tag(c, "吴军“数欲挑战，终不出”", CY[0] - 300, CY[1] + 70, 24, "bone", a * to_han * (1 - ramp(t, t_end - 0.6, t_end)), plate=True)
     # ---- 求救的信使：睢阳 → 昌邑（三拨，都被挡回） ----
     for k in range(3):
-        st = T("s3_10") + 1.0 + k * 0.85
+        st = T("s3_10") + 1.7 + k * 0.75
         pr = ramp(t, st, st + 0.8)
         runner(c, [SY, CY], pr, "bone", 5, a, smooth=False)
         back = ramp(t, st + 0.8, st + 1.3)
         if 0 < back < 1:
             circle(c, CY[0] - 22, CY[1] + 40, 6 + 16 * back, "bone", a * (1 - back), sw=2)
-    tag(c, "梁“日使使请太尉”", (SY[0] + CY[0]) / 2 - 150, (SY[1] + CY[1]) / 2 - 6, 23, "bone", a * pulse(t, T("s3_10") + 1.0, ctx.en("s3_10") + 0.8, 0.3, 0.4), plate=True, align="c")
+    tag(c, "梁“日使使请太尉”", (SY[0] + CY[0]) / 2 - 150, (SY[1] + CY[1]) / 2 - 6, 23, "bone", a * pulse(t, T("s3_10") + 1.7, ctx.en("s3_10") + 0.8, 0.3, 0.4), plate=True, align="c")
     # ---- 梁王上书 → 长安；诏书（光）自西来，到营门前熄灭 ----
     up = ramp(t, T("s3_11") + 0.1, T("s3_11") + 1.3)
     runner(c, [SY, geo(114.3, 34.35), WEST], up, "bone", 5.5, a)
@@ -266,14 +266,13 @@ def scene_s3(c, ctx):
     campaign_map(c, ctx)
     a_all = ease(ramp(t, s0 + 1.7, s0 + 2.4))
     # ---- 顶部题记区 ----
-    ca = pulse(t, s0 + 1.8, T("s3_02") + 2.6, 0.5, 0.4)
+    ca = pulse(t, s0 + 1.8, T("s3_09") - 0.2, 0.5, 0.4)
     caption(c, "汉景帝三年（前154年）· 七国之乱", ca * a_all, y=354)
     tag(c, "太尉：汉朝最高军事长官", W / 2, 404, 28, "dim", a_all * pulse(t, T("s3_02") + 1.6, T("s3_02") + 4.2, 0.4, 0.4) * ca, align="c")
-    # 文帝遗言（画面补注）
-    wa = pulse(t, T("s3_02") + 2.8, T("s3_04") + 1.1, 0.5, 0.4)
-    if wa > 0:
-        text(c, "「即有緩急，周亞夫真可任將兵」", W / 2, 350, font("serif", 800, 42), "gold", wa, align="c")
-        tag(c, "文帝临终嘱咐太子：真有急事，周亚夫可以带兵（卷57）", W / 2, 400, 25, "dim", wa, align="c")
+    # 文帝遗言（画面补注，图下一行）
+    wa = pulse(t, T("s3_02") + 1.2, ctx.en("s3_09") - 0.2, 0.5, 0.4)
+    tag(c, "文帝临终嘱太子：「即有緩急，周亞夫真可任將兵」（卷57）", 64, GY1 + 46, 23, "gold2", wa * a_all, kind="serif", weight=700)
+    tag(c, "真有急事，周亚夫可以带兵", 64, GY1 + 80, 22, "dim", wa * a_all)
     # 请示原文
     qa = pulse(t, T("s3_05") - 0.2, ctx.en("s3_07") + 0.2, 0.4, 0.4)
     quote(c, ["楚兵剽輕，難與爭鋒", "願以梁委之，絕其糧道，乃可制"], W / 2, 346, 46, ctx.prog("s3_05", 0, 0.4), qa, lh=1.42, weight=800, track=2)
@@ -297,9 +296,11 @@ def scene_s3(c, ctx):
             tag(c, plain, 150, y + 196, 30, "dim", ai)
         tag(c, "史书两说并存，这里不替它统一", W / 2, 1190, 28, "dim", sa * ease(ramp(lt, 5.0, 5.6)), align="c")
     # 梁孝王身份
-    la = pulse(t, T("s3_09") - 0.1, ctx.en("s3_11") - 0.6, 0.5, 0.4)
+    la = pulse(t, T("s3_09") - 0.1, T("s3_04") - 0.05, 0.5, 0.4)
+    tag(c, "梁城守坚：吴楚“以梁为限，不敢过而西”（卷58）", 64, GY1 + 46, 23, "dim", a_all * pulse(t, T("s3_13"), s1 - 0.3, 0.5, 0.5))
     caption(c, "梁孝王 · 景帝同母弟（卷58）", la, y=354)
     tag(c, "梁国正挡在吴楚西进的路上", W / 2, 404, 28, "dim", la, align="c")
+    caption(c, "吴楚攻梁 · 梁日日求救", pulse(t, T("s3_10") - 0.1, ctx.en("s3_11") - 0.5, 0.5, 0.4), y=354)
     # 不奉诏
     q2 = pulse(t, T("s3_12") - 0.15, ctx.en("s3_13") + 0.2, 0.3, 0.5)
     quote(c, ["太尉不奉詔，堅壁不出"], W / 2, 384, 76, ctx.prog("s3_12", 0, 0.4), q2, track=3)
@@ -435,6 +436,7 @@ def scene_s4(c, ctx):
         if 0 < bounce < 1:
             circle(c, nw[0], nw[1], 20 + 70 * bounce, "bone", pa * (1 - bounce), sw=4)
         tag(c, "「不得入」", nw[0] + 60, nw[1] - 62, 36, "gold", pa * ease(ramp(bounce, 0.2, 0.7)), kind="serif", weight=900, plate=True)
+    tag(c, "卷106只记一次夜袭：“夜奔条侯壁，惊东南……果从西北入。吴大败”，与卷57不同", W / 2, 1296, 22, "dim", pa, align="c")
     # 饿而退
     q9 = pulse(t, T("s4_09") - 0.15, ctx.en("s4_10") - 0.4, 0.3, 0.5)
     quote(c, ["吳兵既餓，乃引而去"], W / 2, 400, 76, ctx.prog("s4_09", 0, 0.3), q9 * a, track=3)
@@ -448,7 +450,8 @@ def scene_s4(c, ctx):
     if ma > 0:
         rrect(c, 60, 300, 960, 170, 10, "bg", ma * 0.82, blur=14)
         text(c, "三个月", W / 2, 420, font("serif", 900, 112), "bone", ma, align="c", track=10, glow=20, glow_a=0.25)
-        tag(c, "“凡相攻守三月，而吴楚破平”", W / 2, 474, 30, "gold", ma, align="c", kind="serif", weight=700)
+        tag(c, "“凡相攻守三月，而吴楚破平”（卷57）", W / 2, 474, 30, "gold", ma, align="c", kind="serif", weight=700)
+        tag(c, "卷106：正月起兵，“三月皆破，独赵后下”", W / 2, 1290, 24, "dim", ma, align="c")
     # 形篇第二句
     fa = pulse(t, T("s4_12") + 0.1, s1, 0.5, 0.6)
     if fa > 0:
@@ -462,7 +465,7 @@ def scene_s4(c, ctx):
         text(c, "再去开战", 790, y, f, "bone", g * ease(ramp(t, T("s4_14") + 1.4, T("s4_14") + 2.0)), align="c")
         tag(c, "坚壁 · 断粮", 300, y + 58, 30, "dim", g, align="c")
         tag(c, "饿了再追", 790, y + 58, 30, "dim", g * ease(ramp(t, T("s4_14") + 1.4, T("s4_14") + 2.0)), align="c")
-        tag(c, "周亚夫，是先赢了，再打的", W / 2, y + 190, 40, "gold", fa * ease(ramp(t, T("s4_14") + 3.0, T("s4_14") + 3.7)), align="c", kind="serif", weight=800)
+        tag(c, "他的胜算，有一半在背后", W / 2, y + 190, 40, "gold", fa * ease(ramp(t, T("s4_14") + 3.0, T("s4_14") + 3.7)), align="c", kind="serif", weight=800)
 
 
 # ============ s5 巨鹿（示意） ============
@@ -541,10 +544,13 @@ def scene_s5(c, ctx):
         tag(c, "赵王歇 · 张耳", x, y + 44, 22, "dim", a, align="c")
         # 诸侯军（壁上观）
         za = a * ease(ramp(t, s0 + 2.2, s0 + 3.0))
+        for k in range(4):
+            block(c, x - 82 + k * 55, 416, 26, 26, "gray", za * 0.9)
+        tag(c, "陈馀军 · 巨鹿之北", x - 120, 426, 24, "dim", za, align="r")
         for k in range(6):
-            block(c, 130 + (k % 2) * 50, 520 + (k // 2) * 50, 28, 28, "gray", za * 0.9)
-        tag(c, "陈馀等诸侯军", 155, 690, 24, "dim", za, align="c")
-        tag(c, "“莫敢纵兵”", 155, 722, 24, "dim", za, align="c")
+            block(c, 120 + (k % 2) * 50, 560 + (k // 2) * 50, 26, 26, "gray", za * 0.9)
+        tag(c, "诸侯军十余壁", 145, 726, 24, "dim", za, align="c")
+        tag(c, "“莫敢纵兵”", 145, 758, 24, "dim", za, align="c")
         # 王离、涉间围城
         wl_in = ease(ramp(t, s0 + 2.0, s0 + 3.2))
         dead = ease(ramp(t, T("s5_07") + 4.0, T("s5_08") + 0.6))
@@ -573,7 +579,8 @@ def scene_s5(c, ctx):
         rrect(c, ZH[0] - 84, zy - 30, 168, 60, 3, "bone", a * zin * 0.5, sw=1.5)
         text(c, "章邯", ZH[0], zy + 15, font("serif", 900, 44), "bone", a * zin, align="c", track=6)
         tag(c, "「章邯軍其南」", ZH[0] - 250, zy + 12, 28, "gold", a * pulse(t, T("s5_04"), T("s5_06"), 0.4, 0.5), kind="serif", weight=700, align="c", plate=True)
-        tag(c, "主力仍在", ZH[0] - 230, zy + 14, 40, "gold", a * keep, kind="serif", weight=900, align="c")
+        tag(c, "主力仍在", ZH[0] - 230, zy + 6, 40, "gold", a * keep, kind="serif", weight=900, align="c")
+        tag(c, "后随章邯降楚的秦卒“二十余万”（卷7）", ZH[0], zy + 96, 23, "dim", a * keep, align="c", plate=True)
         # 甬道
         yp = ease(ramp(t, T("s5_04") + 0.6, T("s5_04") + 2.8))
         cutk = ease(ramp(t, T("s5_07") + 3.0, T("s5_07") + 3.8))
@@ -591,7 +598,7 @@ def scene_s5(c, ctx):
             rrect(c, 70, 1160, 940, 120, 10, "bg", sm * 0.9, blur=10)
             tag(c, "周亚夫：坚壁 · 断敌粮道", 290, 1206, 32, "bone", sm, align="c", kind="serif", weight=700)
             tag(c, "章邯：居后 · 护己粮道", 790, 1206, 32, "bone", sm, align="c", kind="serif", weight=700)
-            tag(c, "先管住粮食和退路 —— 同一套", W / 2, 1256, 30, "gold", sm * ctx.fin("s5_06", 0.4, 2.0), align="c")
+            tag(c, "两个人盯的，都是粮道", W / 2, 1256, 30, "gold", sm * ctx.fin("s5_06", 0.4, 2.0), align="c")
         # 项羽：渡河、沉船、九战、绝甬道
         xa = a * ease(ramp(t, T("s5_07") - 0.1, T("s5_07") + 0.5))
         cross = ease(ramp(t, T("s5_07") + 0.2, T("s5_07") + 1.6))

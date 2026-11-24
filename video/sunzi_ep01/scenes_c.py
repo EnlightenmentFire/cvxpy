@@ -195,7 +195,7 @@ def scene_s6(c, ctx):
         chase = ease(ramp(t, T("s6_05") + 2.4, T("s6_05") + 4.4)) * 0.62
         rroad = spline(list(reversed(ROAD)))
         c.drawPath(rroad, P("red", ea * 0.9, 5, dash=(4, 12), trim=(0, chase)))
-        tag(c, "趙高“使人追之，不及”", 250, 700, 24, "red", ea * ease(ramp(chase, 0.3, 0.6)), plate=True)
+        tag(c, "赵高“使人追之，不及”", 250, 700, 24, "red", ea * ease(ramp(chase, 0.3, 0.6)), plate=True)
 
     # ---------- 上半屏的原文 ----------
     quote(c, ["章邯軍棘原，項羽軍漳南", "相持未戰"], W / 2, 500, 60, ctx.prog("s6_01", 0, 0.3), q1 * a, lh=1.5, weight=800, track=2)
@@ -288,8 +288,9 @@ def scene_s7(c, ctx):
         tag(c, "也许", CX + 150, CY - 176, 30, "dim", ma * ease(ramp(t, T("s7_05") + 1.4, T("s7_05") + 2.0)), kind="serif", weight=700, plate=True)
         text(c, "等不起了", W / 2, 440, font("serif", 900, 110), "bone", pulse(t, T("s7_06") + 0.2, T("s7_07") - 0.1, 0.4, 0.4) * a, align="c", track=10, glow=20, glow_a=0.25)
     ca = pulse(t, T("s7_07") + 0.1, s1, 0.5, 0.6) * a
-    caption(c, "洹水南 · 殷虚 —— 已盟", ca, y=380, size=40)
+    caption(c, "洹水南 · 殷虚 —— 已盟，章邯降", ca, y=380, size=40)
     tag(c, "殷虚：今河南安阳一带（后世考证）", W / 2, 430, 24, "dim", ca, align="c")
+    tag(c, "降后，项羽立章邯为雍王（卷7）", W / 2, 1296, 23, "dim", ca * ease(ramp(t, T("s7_07") + 2.4, T("s7_07") + 3.2)), align="c")
     tag(c, "“章邯见项羽而流涕，为言赵高”", W / 2, 1250, 32, "gold", ca * ease(ramp(t, T("s7_07") + 2.0, T("s7_07") + 2.8)), kind="serif", weight=700, align="c")
 
 
@@ -399,7 +400,7 @@ def scene_s8(c, ctx):
         aB = pulse(t, T("s8_04") + 0.1, T("s8_07") - 0.05, 0.6, 0.5) * a
         if aB > 0:
             la = aB * (1 - ctx.fin("s8_05", 0.3, -0.3))
-            tag(c, "为丞相：争废栗太子，“景帝由此疏之”", W / 2, 372, 28, "dim", la * ctx.fin("s8_04", 0.4, 0.4), align="c")
+            tag(c, "争废栗太子，“景帝由此疏之”（卷57）", W / 2, 372, 28, "dim", la * ctx.fin("s8_04", 0.4, 0.4), align="c")
             tag(c, "议封皇后兄王信：“非有功不得侯”", W / 2, 416, 28, "dim", la * ctx.fin("s8_04", 0.4, 1.4), align="c")
             tag(c, "景帝中三年（前147年）以病免相；其后，禁中赐食", W / 2, 520, 26, "bone", aB * ctx.fin("s8_04", 0.4, 3.4), align="c")
             meat_still(c, aB * ctx.fin("s8_04", 0.6, 3.0), t, T, ctx)
@@ -419,6 +420,7 @@ def scene_s8(c, ctx):
             c.drawLine(80, gy, 1000, gy, P("bone", sa * 0.8, 3))
             tag(c, "地上", 990, gy - 18, 32, "bone", sa * ctx.fin("s8_08", 0.4, 0.3), kind="serif", weight=700, align="r")
             tag(c, "地下", 990, gy + 50, 32, "red", sa * ctx.fin("s8_08", 0.4, 2.0), kind="serif", weight=700, align="r")
+            tag(c, "雇工“苦之，不予钱”，怒而告发（卷57）", W / 2, 606, 24, "dim", sa * ctx.fin("s8_07", 0.5, 2.6) * (1 - ctx.fin("s8_08", 0.3)), align="c")
             tag(c, "“工官尚方甲楯五百被，可以葬者” —— 陪葬用的器物", W / 2, 560, 26, "dim", sa * ctx.fin("s8_07", 0.5, 1.4) * (1 - ctx.fin("s8_08", 0.3)), align="c")
             qa = pulse(t, T("s8_08") - 0.15, ctx.en("s8_09") + 0.2, 0.3, 0.5) * aC
             quote(c, ["君侯縱不反地上", "即欲反地下耳"], W / 2, 392, 74, ctx.prog("s8_08", 0, 0.3), qa, lh=1.36, track=2)
@@ -431,7 +433,7 @@ def scene_s8(c, ctx):
                     x = 380 + i * 80
                     c.drawLine(x, 760, x, 840, P(mix("bone", "dim2", off), da * (1 - 0.6 * off), 7))
                 tag(c, "不食五日", W / 2, 920, 34, "bone", da, kind="serif", weight=800, align="c")
-                tag(c, "景帝后元元年（前143年）· 距平定七国十一年", W / 2, 1010, 28, "dim", da * ctx.fin("s8_10", 0.5, 1.4), align="c")
+                tag(c, "景帝后元元年（前143年）· 距破吴楚十一年", W / 2, 1010, 28, "dim", da * ctx.fin("s8_10", 0.5, 1.4), align="c")
                 tag(c, "《汉书·景帝纪》：“条侯周亚夫下狱死”", W / 2, 1054, 24, "dim2", da * ctx.fin("s8_10", 0.5, 1.8), align="c")
         # ---- D：父与子 ----
         aD = pulse(t, T("s8_11") + 0.05, T("s8_15") - 0.05, 0.6, 0.5) * a
@@ -440,7 +442,7 @@ def scene_s8(c, ctx):
             quote(c, ["吾嘗將百萬軍", "然安知獄吏之貴乎"], W / 2, 384, 66, clamp(ctx.prog("s8_12", 0, 0.2) * 0.6 + 0.42) if t > T("s8_12") else 0.4 * ctx.fin("s8_11", 0.8, 0.8), qa, lh=1.4, track=2)
             for i, (who, mid, mid2, end, col, tk) in enumerate([
                     ("父 · 周勃", "千金与狱吏", "薄昭为言薄太后", "出", "gold", T("s8_11") + 0.3),
-                    ("子 · 周亚夫", "梁孝王数言其短", "太后不悦 · 景帝疏之", "死", "red", T("s8_14") + 2.6)]):
+                    ("子 · 周亚夫", "梁孝王生前屡言其短", "景帝：“吾不用也”", "死", "red", T("s8_14") + 2.6)]):
                 y = 690 + i * 300
                 ai = aD * ease(ramp(t, tk, tk + 0.6))
                 node(c, who, 210, y, ai, "bone", size=40, w=270)
@@ -451,13 +453,14 @@ def scene_s8(c, ctx):
                 tag(c, mid2, 585, y + 34, 27, "bone", ai * ease(ramp(pr, 0.4, 0.8)), align="c", plate=True)
                 node(c, end, 900, y, ai * ease(ramp(pr, 0.7, 1.0)), col, size=58, w=120)
             tag(c, "宫里有人替他说话", 585, 600, 26, "gold", aD * ctx.fin("s8_14", 0.5, 0.4), align="c")
-            tag(c, "宫里的人，站在对面", 585, 1100, 26, "red", aD * ctx.fin("s8_14", 0.5, 4.6), align="c")
+            tag(c, "可以说：这一回，宫里没人替他说话", 585, 1100, 26, "red", aD * ctx.fin("s8_14", 0.5, 4.6), align="c")
+            tag(c, "梁孝王已于前144年去世（《汉书·景帝纪》）", 585, 1140, 22, "dim", aD * ctx.fin("s8_14", 0.5, 5.2), align="c")
         # ---- E：那根线 ----
         aE = pulse(t, T("s8_15") + 0.05, s1, 0.6, 0.7) * a
         if aE > 0:
             st = T("s8_15")
             items = [("以梁委之", "前154年 · 赢下这一仗的决定", "gold", 500), ("梁孝王有卻", "“由此”结怨", "bone", 700),
-                     ("太后前言其短", "景帝渐疏之", "bone", 900), ("下狱 · 不食五日而死", "前143年", "red", 1100)]
+                     ("常与太后言条侯之短", "同时：争栗太子，“景帝由此疏之”", "bone", 900), ("下狱 · 不食五日而死", "前143年", "red", 1100)]
             lp = ease(ramp(t, st + 0.4, st + 5.2))
             c.drawPath(poly([(200, 500), (200, 1100)]), P("red", aE * 0.5, 9, blur=7, trim=(0, lp)))
             c.drawPath(poly([(200, 500), (200, 1100)]), P("red", aE, 3.5, trim=(0, lp)))
@@ -466,5 +469,8 @@ def scene_s8(c, ctx):
                 circle(c, 200, y, 13, "bg", ai); circle(c, 200, y, 13, col, ai, sw=4); circle(c, 200, y, 5, col, ai)
                 text(c, h, 250, y + 16, font("serif", 900, 50), col, ai)
                 tag(c, sub, 252, y + 58, 26, "dim", ai)
-            text(c, "那根线", W / 2, 396, font("serif", 900, 72), "bone", aE * ease(ramp(t, st + 2.4, st + 3.2)), align="c", track=12)
+            text(c, "那根线", W / 2, 380, font("serif", 900, 72), "bone", aE * ease(ramp(t, st + 2.4, st + 3.2)), align="c", track=12)
+            tag(c, "至少有一头，拴在这里", W / 2, 430, 28, "dim", aE * ease(ramp(t, st + 3.0, st + 3.8)), align="c")
+            tag(c, "太史公曰：「足己而不學，守節不遜，終以窮困」", W / 2, 1230, 28, "gold2", aE * ease(ramp(t, st + 4.0, st + 4.8)), align="c", kind="serif", weight=700)
+            tag(c, "自满而不学，守节却不谦逊，终致困厄", W / 2, 1270, 23, "dim", aE * ease(ramp(t, st + 4.2, st + 5.0)), align="c")
     chapter(c, t, s0, "叁", "周亚夫", "赢了之后", None)
