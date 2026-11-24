@@ -277,7 +277,7 @@ def scene_s3(c, ctx):
     qa = pulse(t, T("s3_05") - 0.2, ctx.en("s3_07") + 0.2, 0.4, 0.4)
     quote(c, ["楚兵剽輕，難與爭鋒", "願以梁委之，絕其糧道，乃可制"], W / 2, 346, 46, ctx.prog("s3_05", 0, 0.4), qa, lh=1.42, weight=800, track=2)
     st7 = ease(ramp(t, T("s3_07") + 0.1, T("s3_07") + 0.5)) * (1 - ease(ramp(t, ctx.en("s3_07") + 0.2, ctx.en("s3_07") + 0.6)))
-    stamp(c, "上許之", 160, 560, 46, "red", st7, rot=-6)
+    stamp(c, "上許之", 190, 506, 46, "red", st7, rot=-6)
     # 两种来历
     sa = pulse(t, T("s3_08") - 0.1, ctx.en("s3_08") + 0.15, 0.4, 0.4)
     if sa > 0:

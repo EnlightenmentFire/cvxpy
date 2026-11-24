@@ -423,8 +423,8 @@ def background(c, t):
 
 def finish(c, t, frame):
     c.drawImage(_vignette_image(), 0, 0)
-    g = _grain_images()[(frame // 2) % 6]
-    c.drawImageRect(g, skia.Rect.MakeWH(W, H), skia.SamplingOptions(skia.FilterMode.kLinear), skia.Paint(Alphaf=0.16))
+    g = _grain_images()[0]          # 静态颗粒：逐帧变化会让码率超出 100MB 上限
+    c.drawImageRect(g, skia.Rect.MakeWH(W, H), skia.SamplingOptions(skia.FilterMode.kLinear), skia.Paint(Alphaf=0.10))
 
 
 # ---------- 字幕 ----------

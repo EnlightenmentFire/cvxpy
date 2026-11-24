@@ -159,8 +159,8 @@ def scene_s6(c, ctx):
 
     # ---------- 上半：咸阳司马门 ----------
     q_on = pulse(t, T("s6_06") - 0.3, T("s6_12") - 0.1, 0.5, 0.6)          # 两段原文占用上半屏
-    q1 = pulse(t, s0 + 0.3, T("s6_02") + 2.0, 0.5, 0.5)
-    pal_a = a * top_on * (1 - 0.86 * q_on)
+    q1 = pulse(t, s0 + 0.3, T("s6_03") + 0.5, 0.5, 0.5)
+    pal_a = a * top_on * (1 - q_on)
     if pal_a > 0.003:
         day_t = ctx.prog("s6_04", 0.2, 1.2)
         # 日夜轮转的天光
@@ -190,8 +190,8 @@ def scene_s6(c, ctx):
         ea = a * (1 - ease(ramp(t, T("s6_06") - 0.2, T("s6_06") + 0.5)))
         c.drawPath(spline(ESC), P("bone", ea * 0.55, 3, dash=(9, 9), trim=(0, esc)))
         runner(c, ESC, esc * 0.999, "bone", 7, ea)
-        tag(c, "「不敢出故道」", 800, 812, 28, "gold", ea * ease(ramp(esc, 0.2, 0.5)), kind="serif", weight=700, plate=True, align="c")
-        tag(c, "不敢走来时的原路", 800, 884 + 28, 23, "dim", ea * ease(ramp(esc, 0.3, 0.6)), plate=True, align="c")
+        tag(c, "「不敢出故道」", 800, 1040, 28, "gold", ea * ease(ramp(esc, 0.2, 0.5)), kind="serif", weight=700, plate=True, align="c")
+        tag(c, "不敢走来时的原路", 800, 1076, 23, "dim", ea * ease(ramp(esc, 0.3, 0.6)), plate=True, align="c")
         chase = ease(ramp(t, T("s6_05") + 2.4, T("s6_05") + 4.4)) * 0.62
         rroad = spline(list(reversed(ROAD)))
         c.drawPath(rroad, P("red", ea * 0.9, 5, dash=(4, 12), trim=(0, chase)))

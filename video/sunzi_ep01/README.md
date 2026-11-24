@@ -14,7 +14,9 @@
 | `tools/build_timeline.py` | 逐行 wav → `build/timeline.json`（行起止、分段、字幕块）+ `build/vo.wav` |
 | `tools/music.py` | 配乐（numpy 现场合成，无外部素材）+ 闪避混音 → `build/audio.wav` |
 | `engine.py` `scenes_a/b/c.py` `render.py` | Skia 逐帧渲染：十段场景、字幕、暗角颗粒 |
-| `tools/mux.sh` | 画面 + 音轨 → 成片（响度 -16 LUFS） |
+| `tools/mux.sh` | 母版 + 音轨 → 两遍编码到目标体积（<100MB），响度 -16 LUFS |
+| `tools/asr_check.py` | 旁白读音复核（faster-whisper 识别后比对拼音） |
+| `out/旁白稿.md` | 带时间码的旁白稿（可据此真人录音） |
 | `out/` | 交付物：静帧、样音、成片 |
 
 ## 重建
@@ -25,12 +27,12 @@ pip install skia-python numpy pillow                       # 渲染
 uv venv --python 3.12 .tts && uv pip install --python .tts/bin/python "kokoro>=0.9.4" "misaki[zh]>=0.9.4" soundfile scipy
 
 python tools/verify_quotes.py                               # 引文核对
-.tts/bin/python tools/tts_kokoro.py --voice zm_010 --speed 1.2 --qspeed 1.08 --out build/vo_zm_010
-.tts/bin/python tools/build_timeline.py --vo build/vo_zm_010
+.tts/bin/python tools/tts_kokoro.py --voice zm_014 --speed 1.3 --qspeed 1.16 --out build/vo_zm_014   # 定稿音色 zm_014
+.tts/bin/python tools/build_timeline.py --vo build/vo_zm_014
 .tts/bin/python tools/music.py
 python render.py --stills s3_12:1.0,s6_04:3.2 --out build/stills   # 先看静帧（行id:偏移秒）
-python render.py --all --out build/video.mp4 --jobs 4
-sh tools/mux.sh
+python render.py --all --out build/video.mp4 --jobs 4 --crf 14   # 母版
+sh tools/mux.sh build/video.mp4 build/audio.wav out/sunzi_ep01_v1.mp4 92   # 两遍编码到 92MB 以内
 ```
 
 换配音（别的 TTS 或真人录音）：按行 id 提供 `xxx/<行id>.wav`，重跑 `build_timeline.py --vo xxx` 之后的步骤即可——

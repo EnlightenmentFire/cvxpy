@@ -44,7 +44,7 @@ def draw_frame(surface, tl, frame, subs=True):
         c.drawRect(skia.Rect.MakeWH(W, H), skia.Paint(Color=skia.Color(0, 0, 0, int((1 - k) * 255))))
 
 
-def render_range(tl, f0, f1, out, crf=17, preset="medium"):
+def render_range(tl, f0, f1, out, crf=17, preset="veryfast"):
     cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "bgra", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
            "-c:v", "libx264", "-preset", preset, "-crf", str(crf), "-pix_fmt", "yuv420p", "-color_primaries", "bt709", "-color_trc", "bt709",
            "-colorspace", "bt709", "-movflags", "+faststart", out]
