@@ -145,7 +145,7 @@ SCENES.diner = function (sc) {
   s += G(win('diner', 'thirty', .8), tx(72, 400, 120, '1993', { w: 900, ff: 'Inter', ls: -2 }) + tx(380, 396, 40, '圣何塞 · 一家连锁餐馆', { w: 500, f: COL.mute }), 0);
   const tg = win('thirty', 'busboy');
   ['30 岁', '已婚', '两个孩子'].forEach((w, i) => {
-    const u = tg * eo(prog('thirty', .4, .5 + i * .55));
+    const u = tg * eo(prog('thirty', .35, .1 + i * .5));
     s += G(u, `<rect x="${72 + i * 250}" y="330" width="226" height="74" rx="10" fill="#101512" stroke="${COL.gd}" stroke-width="2"/>` + tx(72 + i * 250 + 113, 381, 38, w, { a: 'middle' }));
   });
   s += G(tg, mono(72, 448, 22, 'CBS《60 Minutes》2024 旁白'), 0);
@@ -176,7 +176,7 @@ SCENES.diner = function (sc) {
   // 小结
   const so = on('so1', .6);
   if (so > 0) {
-    s += DIM(so * .55);
+    s += DIM(so * .55) + SO('so1');
     s += G(eo(prog('so1', .5, 1.0)), tx(540, 640, 54, '方向', { a: 'middle', w: 500, f: COL.mute }) + glow(tx(540, 760, 112, '对的', { a: 'middle', w: 900, f: COL.g, ls: 8 })));
     s += G(eo(prog('so1', .5, 3.1)), tx(540, 900, 54, '下一步', { a: 'middle', w: 500, f: COL.mute }) + tx(540, 1020, 112, '错的', { a: 'middle', w: 900, f: COL.warn, ls: 8 }));
   }
@@ -233,6 +233,7 @@ SCENES.octo = function (sc) {
       mono(72, 1040, 22, '他本人的说法，带夸张口吻；买方是显卡厂商 Diamond'));
   }
   if (so > 0) {
+    s += SO('so2');
     s += G(eo(prog('so2', .5, .9)), tx(540, 640, 50, '产品好不好', { a: 'middle', w: 500, f: COL.mute }) + tx(540, 760, 80, '工程师说了不算', { a: 'middle', w: 900, f: '#77827a' }));
     s += G(eo(prog('so2', .5, 3.0)), glow(tx(540, 920, 96, '掏钱的人说了算', { a: 'middle', w: 900, f: COL.g })));
   }

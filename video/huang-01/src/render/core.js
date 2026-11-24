@@ -116,6 +116,8 @@ function chapterCard(sc) {
 }
 
 const SCENES = {};
+// 每段小结开头的提示语，和旁白“这说明什么？”同步
+const SO = n => G(on(n, .35), mono(540, 452, 30, '这说明什么？', { a: 'middle', f: COL.g, ls: 6 }) + `<rect x="500" y="478" width="80" height="3" fill="${COL.gd}"/>`, 10);
 const SHIFT = 60;   // 画面整体下移，给视频号顶部遮挡区让位
 // 全屏底色（含网格），向上多画一截，配合整体下移
 const BG = (c = '#090b0a', grid = .55) => `<rect x="0" y="-120" width="${W}" height="${H + 120}" fill="${c}"/>` +

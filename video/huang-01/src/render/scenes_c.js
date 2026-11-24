@@ -60,6 +60,7 @@ SCENES.inner = function (sc) {
       mono(540, 960, 22, '图形专家 David Kirk，1996 年到公司 · 据 Witt 的书', { a: 'middle' }));
   }
   if (so > 0) {
+    s += SO('so6');
     s += G(eo(prog('so6', .5, .8)), tx(540, 600, 66, '认错，不是说一句话', { a: 'middle', w: 900, f: '#9aa49d' }));
     s += G(eo(prog('so6', .5, 2.6)), tx(540, 800, 84, '是放下自己人的心血', { a: 'middle', w: 900 }));
     s += G(eo(prog('so6', .5, 4.2)), tx(540, 950, 84, '送走一大半同事', { a: 'middle', w: 900, f: COL.g }));
@@ -174,6 +175,7 @@ SCENES.time = function (sc) {
     s += G(on('q_best', .5, 0.2) * (1 - so), tx(540, 1010, 44, '本该 32 种全做', { a: 'middle', w: 900, f: '#b7c0ba' }) + O(prog('q_best', .5, 3.2), tx(540, 1076, 44, '做出来这样，就把它用到最好', { a: 'middle', w: 900, f: COL.g })), 0);
   }
   if (so > 0) {
+    s += SO('so7');
     s += G(eo(prog('so7', .5, .8)), tx(540, 560, 48, '第三次认错', { a: 'middle', w: 500, f: COL.mute }) + tx(540, 660, 72, '认自己做不到完美', { a: 'middle', w: 900 }));
     ['先到', '够用', '活下来'].forEach((w, i) => s += G(eo(prog('so7', .4, 3.6 + i * .62)), pill(100 + i * 300, 800, 280, 150, w, { fs: 70, w: 900, c: COL.g, f: COL.g, bg: '#0c1a12', sw: 4 })));
   }
@@ -209,6 +211,7 @@ SCENES.result = function (sc) {
     s += G(q * (1 - so), tx(540, 660, 76, '我们公司，离倒闭', { a: 'middle', w: 900 }) + glow(tx(540, 860, 180, '只有 30 天', { a: 'middle', w: 900, f: COL.warn, ls: 4 })), 14);
   }
   if (so > 0) {
+    s += SO('so8');
     s += G(eo(prog('so8', .5, 1.4)), tx(540, 680, 70, '活下来之后，他没讲胜利', { a: 'middle', w: 900, f: '#9aa49d' }));
     s += G(pc('so8', 1), tx(540, 800, 56, '他讲的，还是', { a: 'middle', w: 500, f: COL.mute }) + glow(tx(540, 930, 100, '公司随时会倒闭', { a: 'middle', w: 900, f: COL.g })));
   }
@@ -226,9 +229,9 @@ SCENES.end = function (sc) {
   s += G(qc, `<rect x="72" y="560" width="8" height="340" fill="${COL.g}"/>` + tx(120, 650, 84, '直面错误', { w: 900 }) + O(prog('q_confront', .5, 1.9), tx(120, 760, 84, '带着谦卑去求助', { w: 900 })) +
     O(prog('q_confront', .5, 3.3), glow(tx(120, 880, 84, '救了英伟达', { w: 900, f: COL.g }))));
   if (fin > 0 && nx < 1) {
-    const a = fin * (1 - nx), st = eo(prog('not', .5, 1.5)), up = on('l1', .6), th3 = on('three', .5);
+    const a = fin * (1 - nx), st = eo(prog('not', .5, 1.5)), up = on('l1', .6), th3 = on('three', .45, .25), nf = 1 - on('three', .25);
     s += G(a * (1 - up) * th3, tx(540, 520, 76, '是三次认错', { a: 'middle', w: 900 }) + ['对客户', '对自己人', '对完美'].map((w, i) => O(eo((T - CH('three', 1) - i * .75) / .4), pill(190, 600 + i * 170, 700, 130, w, { fs: 66, w: 900, c: COL.g, f: COL.g, bg: '#0c1a12', sw: 4 }))).join(''));
-    s += G(a * (1 - th3), tx(540, 720, 60, '这不是一个', { a: 'middle', w: 500, f: COL.mute }) + tx(540, 860, 104, '咬牙坚持', { a: 'middle', w: 900, f: '#9aa49d' }) + tx(540, 980, 60, '的故事', { a: 'middle', w: 500, f: COL.mute }) +
+    s += G(a * nf, tx(540, 720, 60, '这不是一个', { a: 'middle', w: 500, f: COL.mute }) + tx(540, 860, 104, '咬牙坚持', { a: 'middle', w: 900, f: '#9aa49d' }) + tx(540, 980, 60, '的故事', { a: 'middle', w: 500, f: COL.mute }) +
       `<rect x="322" y="820" width="${f1(436 * st)}" height="8" fill="${COL.warn}"/>`);
     const rows = [['l1', '押对了方向，', '却押错了规则', COL.ink], ['l2', '认了错，', '把剩下的钱换成了时间', COL.ink], ['l3', '这一次，', '他向别人的标准低头', COL.ink], ['l4', '后来，', '他要让别人，向他的标准低头', COL.g]];
     rows.forEach(([cue, a1, a2, c], i) => {

@@ -83,6 +83,7 @@ SCENES.rule = function (sc) {
     s += O(a, d);
   }
   if (so > 0) {
+    s += SO('so3');
     s += G(eo(prog('so3', .5, .9)), tx(540, 640, 76, '平台一旦定了标准', { a: 'middle', w: 900, f: COL.g }));
     s += G(eo(prog('so3', .5, 2.5)), tx(540, 800, 60, '一家小公司', { a: 'middle', w: 500, f: COL.mute }) + tx(540, 920, 84, '再聪明，也扛不住', { a: 'middle', w: 900 }));
   }
@@ -182,6 +183,7 @@ SCENES.sega = function (sc) {
     });
   }
   if (so > 0) {
+    s += SO('so5');
     s += G(pc('so5', 1), tx(540, 600, 60, '对方押的', { a: 'middle', w: 500, f: COL.mute }) + tx(540, 730, 100, '不是芯片，是人', { a: 'middle', w: 900 }));
     s += G(pc('so5', 2), tx(540, 900, 54, '坦白', { a: 'middle', w: 500, f: COL.mute }) + glow(tx(540, 1030, 96, '成了唯一的筹码', { a: 'middle', w: 900, f: COL.g })));
   }
