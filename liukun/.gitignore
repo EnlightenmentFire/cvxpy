@@ -1,0 +1,14 @@
+audio/vo_raw/
+audio/vo_alt/
+audio/*.log
+out/parts/
+out/scan/
+out/video_raw.mp4
+out/audio_mix.wav
+out/stem_music.wav
+out/render.log
+out/stills/sheet*.jpg
+out/stills/spec*.png
+out/stills/enc_test.png
+fonts/*.ttf
+src/dbg.cjs

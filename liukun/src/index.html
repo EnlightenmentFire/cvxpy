@@ -1,0 +1,11 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:NotoSerif;src:url(../fonts/NotoSerifSC.ttf);font-weight:200 900}
+@font-face{font-family:MaShan;src:url(../fonts/MaShanZheng.ttf)}
+@font-face{font-family:WenKai;src:url(../fonts/LXGWWenKai.ttf)}
+html,body{margin:0;background:#000}canvas{display:block}
+</style></head><body><canvas id="c" width="1080" height="1920"></canvas>
+<script src="timeline.js"></script><script src="core.js"></script><script src="scenes_a.js"></script><script src="scenes_b.js"></script><script src="main.js"></script>
+<script>
+window.ready=(async()=>{await Promise.all(['600 40px NotoSerif','700 40px NotoSerif','500 40px NotoSerif','400 40px MaShan','400 40px WenKai'].map(f=>document.fonts.load(f,'刘琨一座没有后方的孤城')));await document.fonts.ready;setup();return true})();
+</script></body></html>
