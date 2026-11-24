@@ -6,7 +6,7 @@ import sys, os, re, json, time
 import numpy as np, torch, soundfile as sf
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, os.path.dirname(__file__))
-torch.set_num_threads(4)
+torch.set_num_threads(int(os.environ.get("TTS_THREADS", "4")))
 from qwen_tts import Qwen3TTSModel
 from pitch import med_f0
 import script

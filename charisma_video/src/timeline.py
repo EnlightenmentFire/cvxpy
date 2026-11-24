@@ -71,6 +71,8 @@ def build(allow_missing=False):
                 gap = 1.1
             if key == "cold_04":
                 gap = 0.7
+            if ln.get("cue") == "never_ask":
+                gap = 2.2        # 高潮：旁白停约 2 秒，让音乐单独出来
             if sid in STORY_SEGS and i == 0:
                 gap = 1.3        # travel to the end of the road, then into the story
             if i + 1 < len(seg["lines"]) and seg["lines"][i + 1]["t"].startswith("这说明什么"):
