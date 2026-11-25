@@ -814,7 +814,7 @@ def v_khujand(c, x):
     pk = eout((x.t - 3.5) / 4.0)
     P = [cam.P(*q) for q in [(69.75, 40.3), (69.0, 40.9), (68.6, 41.5), (68.3, 42.6)]]
     if pk > 0: arrow(c, P, pk, 22, CYAN)
-    text(c, "帖木儿灭里 · 乘船突围", W / 2, 420, 54, "serifbk", CYAN, clamp(x.t / 0.5), "c", shadow=10)
+    text(c, "帖木儿灭里 · 顺流突围", W / 2, 420, 54, "serifbk", CYAN, clamp(x.t / 0.5), "c", shadow=10)
     if x.on("e18"): text(c, "救得了自己 · 救不了战局", W / 2, 1320, 50, "serifbk", WHITE, x.p("e18", 0.5), "c", shadow=8)
 
 # =================================================================== s5
@@ -834,7 +834,7 @@ def v_bukhara(c, x):
         pk = eout((x.t - x.L("f01")[0] - 2.5) / 3.0)
         P = [cam.P(*q) for q in [(64.35, 39.7), (64.0, 39.4), (63.6, 39.15), (63.3, 39.05)]]
         if pk > 0: tip = arrow(c, P, pk, 26, CYAN)
-        text(c, "夜间突围", W / 2, 420, 58, "serifbk", CYAN, clamp(pk * 3), "c", shadow=10)
+        text(c, "围城第三天 · 弃城突围", W / 2, 420, 58, "serifbk", CYAN, clamp(pk * 3), "c", shadow=10)
     if x.t >= t2:
         pk = eout((x.t - t2) / 1.5)
         P = [cam.P(*q) for q in [(64.9, 39.5), (64.2, 39.0), (63.45, 38.95)]]
