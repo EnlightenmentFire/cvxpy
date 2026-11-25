@@ -254,11 +254,12 @@ def L_lz(c, t, cam):
         terr(c, cam, f, T_[f], FAC['oth'][0] if f == 'ma' else FAC['oth'][0], aa, fa=0.25, edge=OTH_L, ea=0.4, ew=1.5)
     # ① 曹操：玄黑描金，然后上锁变灰
     lk = ease(ramp(t, s1 + 2.2, s1 + 3.4))
+    lkv = clamp((cam.span - 11) / 3)
     terr(c, cam, 'cao', T_['cao'], mix('#0C0C0E', '#4A4E54', lk), aa, fa=0.66, edge=mix(CAO_L, '#9AA0A6', lk), ea=0.95, ew=3)
     if lk > 0:
         x, y = cam.p(113.2, 35.4); y = max(y, 330)
-        lock_icon(c, x, y - 10, 1.25, aa * lk)
-        text(c, '不可与争锋', x, y + 100, 40, '#E4E6E8', 'serifx', aa * lk, 'c', stroke=6, shadow=8)
+        lock_icon(c, x, y - 10, 1.25, aa * lk * lkv)
+        text(c, '不可与争锋', x, y + 100, 40, '#E4E6E8', 'serifx', aa * lk * lkv, 'c', stroke=6, shadow=8)
     # ② 孙权：同盟色带
     ka = win(t, s2 - 0.2, end)
     terr(c, cam, 'sun', T_['sun'], SUN, ka, fa=0.38, edge=SUN_L, ea=0.8, ew=2.5)
@@ -815,7 +816,7 @@ def draw_frame(c, t, fi):
     if il > 0.003:
         st = SC('open')
         if t < SC('hook5')[0]:
-            door = 0.62 + 0.38 * ease(ramp(t, 0.1, 1.3))
+            door = 0.82 + 0.18 * ease(ramp(t, 0.05, 1.2))
             mapu = ease(ramp(t, S('a02') - 0.6, S('a02') + 0.8))
             lit = (ss(ramp(t, S('a02') + 1.0, S('a02') + 1.5)), ss(ramp(t, S('a02') + 1.6, S('a02') + 2.1)))
             z = 1.0 + 0.08 * ramp(t, 0, S('a08')) + 3.2 * ease(ramp(t, S('a08') - 1.2, S('a08') + 0.9))

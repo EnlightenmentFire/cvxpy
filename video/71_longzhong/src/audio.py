@@ -266,6 +266,14 @@ def main():
 
 
 def loudnorm(a, b, I=-15.0, TP=-1.5):
+    # 先把增益推到目标附近，再用 4 倍过采样限幅压住真峰值，最后线性 loudnorm 微调
+    r0 = subprocess.run(['ffmpeg', '-hide_banner', '-i', a, '-af', 'ebur128', '-f', 'null', '-'], capture_output=True, text=True).stderr
+    i0 = float(r0[r0.rindex('I:'):].split()[1])
+    lim = a.replace('.wav', '_lim.wav')
+    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', a, '-af',
+                    f'volume={I - i0 + 0.3:.2f}dB,aresample=192000,alimiter=limit=0.76:attack=2:release=60:level=false,aresample=48000',
+                    '-c:a', 'pcm_f32le', lim], check=True)
+    a = lim
     r = subprocess.run(['ffmpeg', '-hide_banner', '-i', a, '-af', f'loudnorm=I={I}:TP={TP}:LRA=11:print_format=json', '-f', 'null', '-'], capture_output=True, text=True).stderr
     j = json.loads(r[r.rindex('{'):r.rindex('}') + 1])
     af = (f"loudnorm=I={I}:TP={TP}:LRA=11:measured_I={j['input_i']}:measured_TP={j['input_tp']}:measured_LRA={j['input_lra']}:"

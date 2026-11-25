@@ -255,7 +255,7 @@ def draw(c, t, door=1.0, light=1.0, mapu=1.0, mglow=1.0, lit=(0, 0), a=1.0, zoom
     if zoom != 1.0:
         c.translate(zx, zy); c.scale(zoom, zoom); c.translate(-zx, -zy)
     pa = skia.Paint(); pa.setAlphaf(a)
-    c.drawImage(_static['bg'], 0, 0, pa) if a < 1 else c.drawImage(_static['bg'], 0, 0)
+    c.drawImage(_static['bg'], 0, 0, skia.SamplingOptions(), pa)
     # 中景竹（左右两丛，随风摆）
     r = np.random.default_rng(4)
     for i in range(16):

@@ -37,18 +37,20 @@ def main():
         p = f"{PROC}/{d['id']}.wav"
         if not os.path.exists(p): continue
         x, sr = sf.read(p); x = resample_poly(x, 1, 3).astype(np.float32)
-        segs, _ = m.transcribe(x, language='zh', beam_size=5, word_timestamps=True, vad_filter=False,
-                               initial_prompt='以下是普通话的句子。刘备，诸葛亮，隆中对，裴松之，魏略，出师表，荆州，益州。')
+        x = np.concatenate([np.zeros(4000, np.float32), x, np.zeros(8000, np.float32)])
+        segs, _ = m.transcribe(x, language='zh', beam_size=5, word_timestamps=True, vad_filter=True, condition_on_previous_text=False,
+                               initial_prompt='以下是普通话的句子。')
         chars = []      # (字, 起点秒)
         for s in segs:
             for w in s.words:
                 cs = norm(w.word)
                 for k, ch in enumerate(cs):
-                    chars.append((ch, w.start + (w.end - w.start) * k / max(1, len(cs))))
+                    chars.append((ch, w.start - 0.25 + (w.end - w.start) * k / max(1, len(cs))))
         hyp = ''.join(c for c, _ in chars)
         ref = norm(d['say'])
         a, b = lazy_pinyin(ref), lazy_pinyin(hyp)
-        per = edit(a, b) / max(1, len(a))
+        # 尾部容错：取 hyp 的最佳前缀（ASR 常在句尾幻觉出“字幕志愿者”等）
+        per = min(edit(a, b[:k]) for k in range(max(1, len(a) - 3), min(len(b), len(a) + 3) + 1)) / max(1, len(a)) if b else 1.0
         asr[d['id']] = dict(hyp=hyp, per=round(per, 3))
         flag = 'OK ' if per <= 0.08 else 'BAD'
         print(f"{flag} {d['id']} PER={per:.2f}" + ('' if per <= 0.08 else f"\n   want {ref}\n   got  {hyp}"), flush=True)
