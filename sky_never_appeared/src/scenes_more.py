@@ -230,17 +230,16 @@ def boost_decoy(t, phase='boost'):
         tau = t - tb
         objs = [(-1.0, 'w'), (-0.6, 'd'), (-0.2, 'w'), (0.2, 'd'), (0.6, 'd'), (1.0, 'w'), (0.0, 'd')]
         for k, (dx, kind) in enumerate(objs):
-            x = hx + dx * 170 * min(tau, 2.5) / 2.5 + 40 * tau
-            y = hy - 60 * tau - k % 3 * 20 * min(tau, 2.0)
-            splat(e, x, y, 4, (1.0, 0.95, 0.85), 1.4)
+            # spread out, then drift slowly so the labelled objects stay in frame
+            x = hx + dx * 170 * min(tau, 2.5) / 2.5 + 25 * min(tau, 2.5) + 5 * max(tau - 2.5, 0)
+            y = hy + 60 * min(tau, 2.5) + 12 * max(tau - 2.5, 0) + (k % 3 - 1) * 40 * min(tau, 2.0)
+            splat(e, x, y, 6, (1.0, 0.95, 0.85), 1.6)
             if phase == 'decoy' and t > tb + 2.0:
                 lab = '真弹头' if kind == 'w' else '诱饵'
                 col = WHITE if kind == 'w' else GREY
                 a = smooth(remap(t, tb + 2.0, tb + 2.6))
                 if k in (0, 1, 3):
-                    text(c, lab, x, y - 40, 'bold', 30, col, a)
-        if phase == 'decoy':
-            text(c, '在太空里，真假很难分清', W / 2, 1240, 'black', 48, WHITE, smooth(remap(t, tb + 3.0, tb + 3.6)))
+                    text(c, lab, x, y - 44, 'bold', 38, col, a)
     return c, e
 
 
