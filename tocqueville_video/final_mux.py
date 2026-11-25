@@ -93,7 +93,7 @@ def mux(out):
     pic = f"{WORK}/video/picture.mp4"
     a_kbps = 128
     v_kbps = int(94 * 1024 * 1024 * 8 / total / 1000 - a_kbps - 8)
-    common = ["-c:v", "libx264", "-preset", "slow", "-tune", "animation", "-b:v", f"{v_kbps}k", "-maxrate", f"{int(v_kbps * 2.2)}k",
+    common = ["-c:v", "libx264", "-preset", os.environ.get("X264_PRESET", "medium"), "-tune", "animation", "-b:v", f"{v_kbps}k", "-maxrate", f"{int(v_kbps * 2.2)}k",
               "-bufsize", f"{v_kbps * 4}k", "-pix_fmt", "yuv420p", "-r", "30", "-g", "300"]
     os.chdir(f"{WORK}/video")
     run(["ffmpeg", "-y", "-loglevel", "error", "-i", pic] + common + ["-pass", "1", "-an", "-f", "mp4", "/dev/null"])
