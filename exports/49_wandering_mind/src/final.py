@@ -22,7 +22,7 @@ def probe(p):
 
 
 def encode(frames, audio, out, vkbps):
-    common = ["-i", frames, "-i", audio, "-map", "0:v:0", "-map", "1:a:0", "-c:v", "libx264", "-preset", "slow",
+    common = ["-i", frames, "-i", audio, "-map", "0:v:0", "-map", "1:a:0", "-c:v", "libx264", "-preset", os.environ.get("X264_PRESET", "medium"),
               "-b:v", f"{vkbps}k", "-maxrate", f"{int(vkbps * 2.2)}k", "-bufsize", f"{int(vkbps * 4)}k",
               "-profile:v", "high", "-pix_fmt", "yuv420p", "-r", "25", "-g", "50",
               "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709"]
