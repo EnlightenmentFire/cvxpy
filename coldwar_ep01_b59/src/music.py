@@ -140,10 +140,14 @@ def voice_activity_env(voice, attack=0.015, release=0.5):
     fr = voice[: n * hop].reshape(n, hop)
     lvl = 20 * np.log10(np.sqrt(np.mean(fr ** 2, axis=1)) + 1e-9)
     key = (lvl > VOICE_DB - 22).astype(np.float32)  # speaking (incl. soft consonants)
-    # bridge micro-gaps inside words (<60 ms) so the music doesn't pump within a phrase
-    k = int(0.06 / 0.005)
-    key = np.convolve(key, np.ones(k), "same") > 0
-    key = key.astype(np.float32)
+    # hold: bridge every gap shorter than 1.4 s (between words, lines and section cuts) so the music
+    # doesn't pump; only real pauses (>= 1.5 s: title, dive, photo, climax, ending) let it come back up.
+    hold = int(1.4 / 0.005)
+    on = np.where(key > 0)[0]
+    if len(on):
+        gaps = np.diff(on)
+        for i in np.where((gaps > 1) & (gaps <= hold))[0]:
+            key[on[i]:on[i + 1]] = 1.0
     out = np.zeros_like(key)
     ca = 1 - math.exp(-0.005 / attack)
     cr = 1 - math.exp(-0.005 / release)

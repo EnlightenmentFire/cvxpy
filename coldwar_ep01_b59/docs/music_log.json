@@ -1,0 +1,91 @@
+{
+ "segments": [
+  {
+   "name": "Ossuary 6 - Air",
+   "src": 100.0,
+   "t0": 0.0,
+   "t1": 98.77,
+   "level": -31.0,
+   "fin": 2.0,
+   "fout": 3.0
+  },
+  {
+   "name": "Controlled Chaos - no percussion",
+   "src": 20.0,
+   "t0": 95.77,
+   "t1": 230.7,
+   "level": -28.0,
+   "fin": 3.0,
+   "fout": 2.0
+  },
+  {
+   "name": "@heartbeat",
+   "src": 0.0,
+   "t0": 153.33,
+   "t1": 230.0,
+   "level": -30.0,
+   "fin": 4.0,
+   "fout": 2.0
+  },
+  {
+   "name": "Hitman",
+   "src": 41.0,
+   "t0": 233.2,
+   "t1": 262.73,
+   "level": -20.0,
+   "fin": 2.0,
+   "fout": 0.25
+  },
+  {
+   "name": "Dark Times",
+   "src": 5.0,
+   "t0": 265.8,
+   "t1": 366.97,
+   "level": -29.0,
+   "fin": 3.0,
+   "fout": 3.0
+  },
+  {
+   "name": "Ossuary 1 - A Beginning",
+   "src": 1.0,
+   "t0": 366.97,
+   "t1": 434.17,
+   "level": -31.0,
+   "fin": 3.0,
+   "fout": 3.0
+  },
+  {
+   "name": "Colorless Aura",
+   "src": 8.0,
+   "t0": 431.17,
+   "t1": 475.83,
+   "level": -28.0,
+   "fin": 3.0,
+   "fout": 3.0
+  }
+ ],
+ "loudnorm_pass1": {
+  "input_i": "-16.55",
+  "input_tp": "-4.36",
+  "input_lra": "3.10",
+  "input_thresh": "-26.93",
+  "output_i": "-15.98",
+  "output_tp": "-1.50",
+  "output_lra": "3.10",
+  "output_thresh": "-26.30",
+  "normalization_type": "dynamic",
+  "target_offset": "-0.02"
+ },
+ "loudnorm_pass2": {
+  "input_i": "-16.52",
+  "input_tp": "-4.44",
+  "input_lra": "3.00",
+  "input_thresh": "-26.87",
+  "output_i": "-15.96",
+  "output_tp": "-3.89",
+  "output_lra": "3.10",
+  "output_thresh": "-26.32",
+  "normalization_type": "linear",
+  "target_offset": "-0.04"
+ }
+}

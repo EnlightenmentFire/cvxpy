@@ -1,0 +1,108 @@
+{
+ "integrated_lufs": -16.0,
+ "true_peak_dbtp": -3.8,
+ "lra": 3.0,
+ "music_under_voice_db": {
+  "median": 16.2,
+  "p10": 10.6,
+  "p90": 19.7
+ },
+ "sections": [
+  {
+   "section": "铺底 片头→扎进海底",
+   "music_rms_in_pauses_db": -33.7,
+   "music_rms_under_voice_db": -34.6,
+   "voice_rms_db": -18.6,
+   "gap_db_median": 16.0
+  },
+  {
+   "section": "推进 海底→命令",
+   "music_rms_in_pauses_db": -32.5,
+   "music_rms_under_voice_db": -34.6,
+   "voice_rms_db": -18.7,
+   "gap_db_median": 15.8
+  },
+  {
+   "section": "高潮 假想段",
+   "music_rms_in_pauses_db": -29.8,
+   "music_rms_under_voice_db": -34.9,
+   "voice_rms_db": -18.7,
+   "gap_db_median": 16.2
+  },
+  {
+   "section": "变稀 浮上来→门外",
+   "music_rms_in_pauses_db": -33.8,
+   "music_rms_under_voice_db": -34.6,
+   "voice_rms_db": -18.6,
+   "gap_db_median": 16.2
+  },
+  {
+   "section": "收尾 独奏钢琴",
+   "music_rms_in_pauses_db": -32.1,
+   "music_rms_under_voice_db": -35.0,
+   "voice_rms_db": -18.5,
+   "gap_db_median": 16.8
+  }
+ ],
+ "climax_music_alone": {
+  "from": 260.43,
+  "to": 262.73,
+  "music_rms_db": -19.2
+ },
+ "music_jumps_over_9db_per_s": [
+  [
+   431.5,
+   10.3
+  ],
+  [
+   431.6,
+   12.3
+  ],
+  [
+   431.7,
+   12.2
+  ],
+  [
+   469.7,
+   9.8
+  ],
+  [
+   469.8,
+   11.1
+  ],
+  [
+   469.9,
+   9.4
+  ],
+  [
+   470.3,
+   9.2
+  ],
+  [
+   470.4,
+   9.3
+  ]
+ ],
+ "asr_syllable_error_rate": {
+  "voice": 0.0,
+  "mix": 0.0,
+  "phone": 0.0005
+ },
+ "asr_lines_worse_than_voice": [
+  {
+   "id": "c06",
+   "voice": [
+    0.0,
+    "三个地方都离华盛顿和莫斯科很远,这一天班基落在了离中心最远的人手里。"
+   ],
+   "mix": [
+    0.0,
+    "三个地方都离华盛顿和莫斯科很远,这一天,半季落在了离中心最远的人手里。"
+   ],
+   "phone": [
+    0.031,
+    "三个地方都离华盛顿和莫斯科很远。这一天,半斤落在了离中心最远的人手里。"
+   ]
+  }
+ ]
+}
