@@ -29,6 +29,8 @@ HALF = 196.0                  # 城墙半边长
 GATE_W = 52.0
 RING_IN, RING_ROWS, RING_STEP = 246.0, 5, 19.0
 TOP_SAFE, BOT_SAFE = int(H * 0.10), int(H * 0.80)
+GRAIN_SIGMA = float(os.environ.get("GRAIN_SIGMA", "1.4"))
+GRAIN_HOLD = int(os.environ.get("GRAIN_HOLD", "4"))
 
 
 def clamp(x, a=0.0, b=1.0):
@@ -575,9 +577,10 @@ class Scene:
     def post(self, img, t):
         f = img.astype(np.float32)
         f *= self.vign
-        g = self.grain[int(t * 30) % len(self.grain)]
+        # 颗粒：每 GRAIN_HOLD 帧换一张（克制，也给编码器留余地）
+        g = self.grain[int(round(t * 30)) // GRAIN_HOLD % len(self.grain)]
         g = np.repeat(np.repeat(g, 2, 0), 2, 1)[..., None]
-        f += g * 4.2
+        f += g * GRAIN_SIGMA
         return np.clip(f, 0, 255).astype(np.uint8)
 
     # -------------------------------------------------- world
@@ -585,7 +588,7 @@ class Scene:
         T, A = self.T, self.A
         # 墙头火光：越撞越亮
         hits_done = sum(1 for th in T["hits"] if t >= th)
-        rally = ramp(t, T["rally"], 1.4)
+        rally = ramp(t, T["rally"], 0.6)
         loosen = ramp(t, T["loosen"], 1.8)
         wall_glow = (0.25 * rally + 0.14 * hits_done) * (1 - loosen)
         for th in T["hits"]:
@@ -662,7 +665,7 @@ class Scene:
         p = p * (1 - loose[:, None]) + A.def_loose * loose[:, None]
         p = p + jit + np.array([CX, CY], np.float32)
         hits_done = sum(1 for th in T["hits"] if t >= th)
-        inten = 0.42 + 0.48 * ramp(t, T["rally"], 1.4) + 0.08 * hits_done
+        inten = 0.42 + 0.48 * ramp(t, T["rally"], 0.4) + 0.08 * hits_done
         for th in T["hits"]:
             dt = t - th
             if 0 <= dt < 0.5:
@@ -749,8 +752,9 @@ class Scene:
         if 0 < sweep < 1:
             gx = W / 2 - 300 + 600 * sweep
             sh = skia.GradientShader.MakeLinear(
-                [skia.Point(gx - 70, 0), skia.Point(gx, 0), skia.Point(gx + 70, 0)],
-                [skia.Color4f(1, 1, 1, 0).toColor(), skia.Color4f(1, 1, 0.9, 0.85 * a).toColor(), skia.Color4f(1, 1, 1, 0).toColor()])
+                [skia.Point(gx - 70, 0), skia.Point(gx + 70, 0)],
+                [skia.Color4f(1, 1, 1, 0).toColor(), skia.Color4f(1, 1, 0.9, 0.85 * a).toColor(), skia.Color4f(1, 1, 1, 0).toColor()],
+                [0.0, 0.5, 1.0])
             blob = _blob_pos("留个口子？", W / 2 - f2.measureText("留个口子？") / 2, 600, f2, 0)
             c.drawTextBlob(blob, 0, 0, skia.Paint(AntiAlias=True, Shader=sh))
         # 下划光

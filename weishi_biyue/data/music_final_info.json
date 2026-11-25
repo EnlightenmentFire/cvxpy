@@ -1,0 +1,11 @@
+{
+ "take": "main_s7",
+ "offset": 0.47,
+ "chord_src_t": 0.0,
+ "chord_score": 0.85,
+ "hit_src_t": 0.85,
+ "xun_src_t": 5.3,
+ "t_cut": 18.951,
+ "t_hit": 19.621,
+ "bed_ref_db": -25.7
+}
