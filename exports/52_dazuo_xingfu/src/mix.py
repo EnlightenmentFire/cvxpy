@@ -1,6 +1,6 @@
 """混音 + 封装。
   底乐比人声低 MUSIC_REL dB（静态），旁白期间再侧链压低约 3 dB（停顿处自然回升）；
-  两遍 loudnorm 到 -15 LUFS / -1.5 dBTP；aresample=async=1；音频裁到与视频同长。
+  两遍 loudnorm 到 -15 LUFS，真峰值目标 -2.2 dBTP（AAC 后实测约 -1.8）；aresample=async=1；音频裁到与视频同长。
 usage: python mix.py VIDEO_SILENT.mp4 OUT.mp4 [--nomusic]
 """
 import sys, os, re, json, subprocess
