@@ -1,0 +1,24 @@
+{
+ "隆中对与三顾茅庐.mp4": {
+  "video_s": 731.64,
+  "audio_s": 731.64,
+  "diff": 0.0,
+  "size_mb": 96.82,
+  "size_mib": 92.33,
+  "fps": "25/1",
+  "wh": "1080x1920",
+  "frames": "18291",
+  "loudness": "I:         -15.2 LUFS Peak:       -3.9 dBFS"
+ },
+ "隆中对与三顾茅庐_无配乐版.mp4": {
+  "video_s": 731.64,
+  "audio_s": 731.64,
+  "diff": 0.0,
+  "size_mb": 96.19,
+  "size_mib": 91.73,
+  "fps": "25/1",
+  "wh": "1080x1920",
+  "frames": "18291",
+  "loudness": "I:         -15.2 LUFS Peak:       -4.1 dBFS"
+ }
+}
