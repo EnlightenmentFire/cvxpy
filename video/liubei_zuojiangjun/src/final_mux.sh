@@ -9,8 +9,8 @@ cd "$WORK/seg"
 ls seg_*.mp4 | sort | sed "s/^/file '/;s/$/'/" > list.txt
 ffmpeg -y -loglevel error -f concat -safe 0 -i list.txt -c copy "$WORK/video_cat.mp4"
 DUR=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$WORK/video_cat.mp4")
-# 总码率预算：96 MB；音频 128k
-VBR=$(python3 -c "print(int((96*8*1024*1024/$DUR - 128000)/1000))")
+# 总码率预算：88 MB（十进制，留出两遍编码的超额余量）；音频 128k
+VBR=$(python3 -c "print(int((88e6*8/$DUR - 128000)/1000))")
 VBR=$(( VBR > 1400 ? 1400 : VBR ))
 echo "duration $DUR s, video bitrate ${VBR}k"
 cd "$WORK"
