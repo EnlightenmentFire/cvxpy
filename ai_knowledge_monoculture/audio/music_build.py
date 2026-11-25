@@ -39,15 +39,19 @@ SECTIONS = [
 ]
 
 
-def load_piece(path):
+# start offsets (s) for pieces whose first seconds are a near-silent intro (avoids a sudden entrance)
+PIECE_OFFSET = {"ending": 3.5}
+
+
+def load_piece(path, offset=0.0):
     w, sr = sf.read(path, dtype="float32")
     if w.ndim == 1:
         w = np.stack([w, w], axis=1)
     if sr != SR:
         g = np.gcd(sr, SR)
         w = np.stack([resample_poly(w[:, c], SR // g, sr // g) for c in range(2)], axis=1).astype(np.float32)
-    # trim MusicGen's first 0.3 s (often a soft attack artefact) and normalise to -20 dBFS RMS
-    w = w[int(0.3 * SR):]
+    # trim MusicGen's first 0.3 s (often a soft attack artefact) plus any listed intro; normalise to -20 dBFS RMS
+    w = w[int((0.3 + offset) * SR):]
     rms = np.sqrt(np.mean(w ** 2)) + 1e-9
     return (w * (10 ** (-20 / 20) / rms)).astype(np.float32)
 
@@ -130,7 +134,7 @@ def build(voice_dir, robot, choices_path, pieces_dir, out_path, brake=True):
         for fn in files:
             path = os.path.join(pieces_dir, fn)
             if path not in cache:
-                cache[path] = load_piece(path)
+                cache[path] = load_piece(path, PIECE_OFFSET.get(piece, 0.0))
             takes.append(cache[path])
         w = takes[0]
         a = max(0.0, s0 - (xf / 2 if i > 0 else 0))
