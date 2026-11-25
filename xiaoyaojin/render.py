@@ -203,7 +203,10 @@ def partial_path(path, frac):
 def path_point(path, frac):
     meas = skia.PathMeasure(path, False)
     L = meas.getLength()
-    pos, tan = meas.getPosTan(L * clamp(frac))
+    r = meas.getPosTan(L * clamp(frac)) if L > 0 else None
+    if not r:
+        return None
+    pos, tan = r
     return (pos.fX, pos.fY), (tan.fX, tan.fY)
 
 
@@ -217,7 +220,10 @@ def arrow(c, pts, col, a=1.0, width=10, frac=1.0, head=30, dash=None, glow=True,
         pp.setPathEffect(skia.DashPathEffect.Make(dash, 0))
     c.drawPath(sub, pp)
     if frac > 0.05 and head:
-        (x, y), (tx, ty) = path_point(path, frac)
+        pt = path_point(path, frac)
+        if pt is None:
+            return
+        (x, y), (tx, ty) = pt
         ang = math.atan2(ty, tx)
         hp = skia.Path()
         hp.moveTo(x + math.cos(ang) * head * 0.6, y + math.sin(ang) * head * 0.6)

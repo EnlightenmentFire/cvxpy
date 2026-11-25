@@ -18,8 +18,19 @@ echo "duration $DUR"
 N=4
 for k in $(seq 0 $((N-1))); do
   python3 render.py chunk $k $N "$WORK/chunk_$k.mp4" > "$WORK/chunk_$k.log" 2>&1 &
+  PIDS[$k]=$!
 done
-wait
+for k in $(seq 0 $((N-1))); do wait ${PIDS[$k]} || { echo "chunk $k FAILED"; tail -5 "$WORK/chunk_$k.log"; exit 1; }; done
+# 帧数校验：总帧数必须等于时间线帧数，否则音画会错位
+python3 - "$WORK" $N <<'EOF'
+import json, math, subprocess, sys
+W, N = sys.argv[1], int(sys.argv[2])
+nf = math.ceil(json.load(open('timeline.json'))['total'] * 25)
+got = sum(int(subprocess.check_output(['ffprobe', '-v', 'error', '-count_packets', '-show_entries', 'stream=nb_read_packets',
+          '-of', 'csv=p=0', f'{W}/chunk_{k}.mp4']).decode().strip()) for k in range(N))
+print('frames', got, 'expected', nf)
+sys.exit(0 if got == nf else 1)
+EOF
 : > "$WORK/list.txt"
 for k in $(seq 0 $((N-1))); do echo "file '$WORK/chunk_$k.mp4'" >> "$WORK/list.txt"; done
 ffmpeg -y -loglevel error -f concat -safe 0 -i "$WORK/list.txt" -c copy "$WORK/video_hq.mp4"
