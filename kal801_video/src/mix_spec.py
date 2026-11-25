@@ -19,7 +19,9 @@ import scenes as SC
 from score import build_score
 
 SR = 48000
-TARGET_GAP_DB = 16.0
+TARGET_GAP_DB = 17.0
+HOLD_S = 0.6          # 侧链保持：句间 <0.6 秒的小空隙不让音乐回升，只在真正的停顿处回升
+KEY_RMS_DB = -24.0    # 侧链键电平（决定压缩深度 ≈ 9 dB）
 
 
 def _env(x, fc=6.0):
@@ -125,6 +127,20 @@ def build_stems(tl, t0, t1, manifest, gpws_manifest, work, with_music=True):
     return voice, sfx, music
 
 
+def sidechain_key(voice):
+    """侧链键信号：说话 = 1、没说话 = 0 的开关量（语音结束后再保持 0.6 秒），电平固定 -24 dBFS，白噪声承载。
+    这样压缩深度恒定（≈9 dB），音乐不随字的轻重起伏；只有 ≥0.6 秒的真正停顿才回升。"""
+    from scipy.ndimage import maximum_filter1d
+    env = sosfiltfilt(butter(2, 30, fs=SR, output="sos"), np.abs(voice)) * 1.4142
+    gate = (env > 0.008).astype(np.float32)
+    k = int(HOLD_S * SR)
+    gate = maximum_filter1d(gate, size=k, origin=(k - 1) // 2)          # 只向后保持
+    gate = sosfiltfilt(butter(1, 40, fs=SR, output="sos"), gate).clip(0, 1)   # 边沿平滑
+    noise = np.random.default_rng(3).standard_normal(len(voice)).astype(np.float32)
+    key = (gate * noise * 10 ** (KEY_RMS_DB / 20)).astype(np.float32)
+    return np.stack([key, key], 1)
+
+
 def _ffmpeg(args):
     r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-y"] + args, capture_output=True, text=True)
     if r.returncode != 0:
@@ -137,10 +153,10 @@ GRAPH = ("[0:a]asplit=2[v][sc];"
          "[m][sc]sidechaincompress=threshold=0.02:ratio=10:attack=15:release=500[duck];")
 
 
-def duck_music(voice_wav, music_wav, out_wav, g):
+def duck_music(key_wav, music_wav, out_wav, g):
     graph = ("[0:a]anull[sc];[1:a]volume={g:.4f},equalizer=f=3000:t=q:w=1:g=-4[m];"
              "[m][sc]sidechaincompress=threshold=0.02:ratio=10:attack=15:release=500[out]").format(g=g)
-    _ffmpeg(["-i", voice_wav, "-i", music_wav, "-filter_complex", graph, "-map", "[out]", "-c:a", "pcm_f32le",
+    _ffmpeg(["-i", key_wav, "-i", music_wav, "-filter_complex", graph, "-map", "[out]", "-c:a", "pcm_f32le",
              out_wav])
 
 
@@ -166,13 +182,15 @@ def mix(voice, sfx, music, out_wav, work, tag="mix", calibrate=True):
     sf.write(vw, np.stack([voice, voice], 1), SR, subtype="FLOAT")
     sf.write(mw, music, SR, subtype="FLOAT")
     sf.write(sw, sfx, SR, subtype="FLOAT")
+    kw = os.path.join(work, f"_{tag}_key.wav")
+    sf.write(kw, sidechain_key(voice), SR, subtype="FLOAT")
     g = 0.5
     report = {}
     has_music = np.abs(music).max() > 1e-4
     if has_music and calibrate:
         for it in range(3):
             dw = os.path.join(work, f"_{tag}_duck.wav")
-            duck_music(vw, mw, dw, g)
+            duck_music(kw, mw, dw, g)
             d, _ = sf.read(dw, dtype="float32")
             Lv, Lm = short_term_lufs(voice), short_term_lufs(d)
             n = min(len(Lv), len(Lm))
@@ -180,19 +198,22 @@ def mix(voice, sfx, music, out_wav, work, tag="mix", calibrate=True):
             gap = float(np.median(Lv[:n][act] - Lm[:n][act])) if act.any() else 99
             report[f"iter{it}"] = dict(music_gain=round(g, 4), voice_minus_music_db=round(gap, 2))
             print(f"calibrate {it}: gain={g:.3f} voice-music gap={gap:.1f} dB", flush=True)
-            if 15.0 <= gap <= 17.5:
+            if abs(gap - TARGET_GAP_DB) <= 0.5:
                 break
             g *= 10 ** ((gap - TARGET_GAP_DB) / 20)
     pre = os.path.join(work, f"_{tag}_pre.wav")
-    graph = (GRAPH.format(g=g) + "[v][duck][1:a]amix=inputs=3:duration=first:normalize=0[mx]") if has_music else \
+    graph = ("[3:a]anull[sc];[2:a]volume={g:.4f},equalizer=f=3000:t=q:w=1:g=-4[m];"
+             "[m][sc]sidechaincompress=threshold=0.02:ratio=10:attack=15:release=500[duck];"
+             "[0:a][duck][1:a]amix=inputs=3:duration=first:normalize=0[mx]").format(g=g) if has_music else \
         "[0:a][1:a]amix=inputs=2:duration=first:normalize=0[mx]"
-    ins = ["-i", vw, "-i", sw, "-i", mw] if has_music else ["-i", vw, "-i", sw]
+    ins = ["-i", vw, "-i", sw, "-i", mw, "-i", kw] if has_music else ["-i", vw, "-i", sw]
     _ffmpeg(ins + ["-filter_complex", graph, "-map", "[mx]", "-c:a", "pcm_f32le", pre])
-    # 两遍 loudnorm（-16 LUFS / -1.5 dBTP / LRA 11），片尾 3 秒淡出
+    # 两遍 loudnorm（-16 LUFS / LRA 11）。真峰值目标 -2.0 dBTP：AAC 编码会多出约 0.3–0.5 dB 的样点间峰值，
+    # 封装后的成片才能满足规范的 ≤ -1.5 dBTP。片尾 3 秒淡出。
     dur = sf.info(pre).duration
-    err = _ffmpeg(["-i", pre, "-af", "loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"])
+    err = _ffmpeg(["-i", pre, "-af", "loudnorm=I=-16:TP=-2.0:LRA=11:print_format=json", "-f", "null", "-"])
     js = json.loads(err[err.rindex("{"):err.rindex("}") + 1])
-    ln = ("loudnorm=I=-16:TP=-1.5:LRA=11:measured_I={input_i}:measured_TP={input_tp}:measured_LRA={input_lra}:"
+    ln = ("loudnorm=I=-16:TP=-2.0:LRA=11:measured_I={input_i}:measured_TP={input_tp}:measured_LRA={input_lra}:"
           "measured_thresh={input_thresh}:offset={target_offset}:linear=true").format(**js)
     _ffmpeg(["-i", pre, "-af", f"{ln},afade=t=out:st={max(0, dur - 3):.3f}:d=3,aresample=48000",
              "-c:a", "pcm_s16le", out_wav])

@@ -22,7 +22,7 @@ DEFAULT_CHOICE = {"L1_pad": ["L1_pad_0", "L1_pad_1"], "L2_push": ["L2_push_0", "
 CUES = [
     ("s0_08", "s2_14", "L1_pad", -4.0, dict(fade_in=2.0, keys=["L1_pad_0"])),  # 铺底：片头淡入，只用干净的长音版
     ("ch3", "s3_35", "L2_push", -3.0, dict(ramp_db=4.0, heartbeat=True)),      # 推进：逐步抬高 + 心跳低鼓
-    ("s3_38", "s3_40", "L3_elegy", 0.0, dict(fade_in=0.25, xf_in=0.0, keys=["L3_elegy_1", "L3_elegy_0"])),  # 高潮
+    ("s3_38", "s3_40", "L3_elegy", 0.0, dict(fade_in=0.25, xf_in=0.0, keys=["L3_elegy_1", "L3_elegy_0"], alone_boost_db=6.0)),  # 高潮
     ("ch4", "s4_11", "L4_piano", -4.0, {}),
     ("ch5", "s5_15", "L2_push", -5.0, dict(tape=True, variant=1)),             # 1978：老音色 + 磁带底噪
     ("ch6", "s6_08", "L4_think", -5.0, {}),
@@ -35,7 +35,8 @@ CUES = [
 
 
 # 截掉片段里的瞬态/爆音（秒），由频谱人工检查确定
-TRIM = {"L1_pad_0": (0.0, 19.0), "L2_push_0": (0.0, 20.5), "L2_push_1": (0.0, 22.0)}
+TRIM = {"L1_pad_0": (0.0, 19.0), "L2_push_0": (0.0, 20.5), "L2_push_1": (0.0, 22.0),
+        "L3_elegy_1": (5.0, 24.0)}      # 高潮从弦乐已经推起来的地方切入
 
 
 def _load(path, key=None):
@@ -164,6 +165,16 @@ def build_score(tl, t0, t1, work, choice=None):
         g = np.full(len(seg), 10 ** (base_db / 20), np.float32)
         if opt.get("ramp_db"):
             g *= 10 ** (np.linspace(0, opt["ramp_db"], len(seg)) / 20).astype(np.float32)
+        if opt.get("alone_boost_db"):
+            # 高潮：旁白开口前音乐单独出来的那几秒抬高，开口时 0.6 秒内回落
+            e0 = by_id[b0]
+            t_alone = e0.get("lead", 0.0)
+            i1 = int((a + t_alone - seg_start) * SR)
+            r = int(0.6 * SR)
+            env = np.zeros(len(seg), np.float32)
+            env[:i1] = opt["alone_boost_db"]
+            env[i1:i1 + r] = np.linspace(opt["alone_boost_db"], 0, len(env[i1:i1 + r]))
+            g *= (10 ** (env / 20)).astype(np.float32)
         seg *= g[:, None]
         # 进出淡化（段落间等功率交叉；片头 / 高潮 / 结尾按选项）
         fin = int((opt.get("fade_in") or xf_in or 0.05) * SR)

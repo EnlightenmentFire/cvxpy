@@ -1,0 +1,67 @@
+{
+ "纯人声": {
+  "cer": 0.0241
+ },
+ "配乐版": {
+  "cer": 0.0114,
+  "loudness": "Summary: Integrated loudness: I: -16.0 LUFS Threshold: -26.2 LUFS Loudness range: LRA: 2.9 LU Threshold: -36.2 LUFS LRA low: -17.7 LUFS LRA high: -14.8 LUFS True peak: Peak: -1.5 dBFS"
+ },
+ "无配乐版": {
+  "cer": 0.0076,
+  "loudness": "Summary: Integrated loudness: I: -16.0 LUFS Threshold: -26.4 LUFS Loudness range: LRA: 3.0 LU Threshold: -36.4 LUFS LRA low: -17.9 LUFS LRA high: -14.9 LUFS True peak: Peak: -1.5 dBFS"
+ },
+ "配乐版·手机外放模拟": {
+  "cer": 0.0112
+ },
+ "音乐突跳(>8dB/1s)": {
+  "count": 22,
+  "not_in_pause": [
+   [
+    400.2,
+    9.3,
+    false
+   ],
+   [
+    442.3,
+    10.7,
+    false
+   ],
+   [
+    536.1,
+    8.6,
+    false
+   ],
+   [
+    661.4,
+    10.6,
+    false
+   ],
+   [
+    703.4,
+    9.7,
+    false
+   ],
+   [
+    906.9,
+    10.2,
+    false
+   ],
+   [
+    948.9,
+    9.1,
+    false
+   ],
+   [
+    959.3,
+    14.2,
+    false
+   ]
+  ]
+ },
+ "高潮段": {
+  "silence_seconds": 2.05,
+  "silence_rms_dbfs": -240.0,
+  "music_alone_seconds": 2.0,
+  "music_alone_lufs_median": -24.1
+ }
+}

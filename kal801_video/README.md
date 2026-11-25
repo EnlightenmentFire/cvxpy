@@ -10,6 +10,8 @@
 
 | 路径 | 内容 |
 |---|---|
+| `docs/交付说明.md` | 成片、配乐编排、混音参数与导出前自检结果 |
+| `output/` | 成片：配乐版 / 无配乐版（mp4） |
 | `docs/fact_check.md` | 史料核对报告：清单逐条结果、四处更正、黑匣子原话逐句对照 NTSB 附录 B |
 | `docs/script.md` | 完整旁白稿 + 字幕卡 + 场景说明（由 `src/script_data.py` 自动导出） |
 | `stills/` | 关键静帧（与成片同一套渲染代码） |
@@ -22,7 +24,7 @@
 | `src/music_gen.py` | MusicGen 分层生成配乐（铺底 / 推进 / 高潮挽歌 / 分析段钢琴 / 结尾大提琴），D 小调 |
 | `src/music_select.py` | 每层多版本按客观指标挑版：人声频段占比、响度突跳、类人声检测、叠旁白后的 ASR 误读率 |
 | `src/score.py` | 按三层起伏编排配乐，段落间 3 秒等功率交叉淡化，1978 段加磁带音色 |
-| `src/mix_spec.py` | 按规范混音：侧链压缩（实测校准到音乐比人声低约 16 dB）、3 kHz 削 4 dB、两遍 loudnorm（-16 LUFS / -1.5 dBTP） |
+| `src/mix_spec.py` | 按规范混音：侧链压缩（规范参数；键信号为带 0.6 秒保持的开关量，实测音乐比人声低 17 dB）、3 kHz 削 4 dB、两遍 loudnorm（-16 LUFS，封装后真峰值 ≤ -1.5 dBTP） |
 | `src/export_final.py` | 全片导出：画面渲一次，两条音轨（配乐版 / 无配乐版） |
 | `src/selfcheck.py` | 导出前自检：纯人声 / 配乐版 / 手机外放模拟的 ASR 对比、响度、音乐突跳、高潮段 |
 | `src/make_segment.py` | 渲染一段或全片：混音 + 逐帧画面 → mp4 |
@@ -43,7 +45,9 @@ cd src
 python3 tts_build.py            # 全部旁白（可加段落号只做某几段）
 python3 gpws_build.py           # 近地警告
 python3 stills.py OUTDIR        # 关键静帧
-python3 make_segment.py OUT s0_01 s12_01 --crf 26   # 全片
+python3 music_gen.py && python3 music_select.py   # 分层配乐与挑版
+python3 export_final.py ../output --crf 22        # 全片两版（可断点续跑；--worker r/N 并行渲染画面）
+python3 selfcheck.py                              # 导出前自检
 ```
 
 依赖：skia-python、numpy、scipy、soundfile、praat-parselmouth、qwen-tts、faster-whisper、pypinyin、cn2an、

@@ -1,0 +1,18 @@
+{
+ "musicgen": {
+  "iter0": {
+   "music_gain": 0.5,
+   "voice_minus_music_db": 18.75
+  },
+  "iter1": {
+   "music_gain": 0.6116,
+   "voice_minus_music_db": 17.0
+  },
+  "final": "Summary: Integrated loudness: I: -16.0 LUFS Threshold: -26.2 LUFS Loudness range: LRA: 2.9 LU Threshold: -36.2 LUFS LRA low: -17.7 LUFS LRA high: -14.8 LUFS True peak: Peak: -2.0 dBFS",
+  "music_gain": 0.6116350702621766
+ },
+ "nomusic": {
+  "final": "Summary: Integrated loudness: I: -16.0 LUFS Threshold: -26.4 LUFS Loudness range: LRA: 3.0 LU Threshold: -36.4 LUFS LRA low: -17.9 LUFS LRA high: -15.0 LUFS True peak: Peak: -2.0 dBFS",
+  "music_gain": 0.5
+ }
+}

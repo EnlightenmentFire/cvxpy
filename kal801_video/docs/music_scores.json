@@ -1,0 +1,157 @@
+{
+ "_voice_only_cer": 0.0,
+ "L1_pad_0": {
+  "layer": "L1_pad",
+  "speech_band": 0.002,
+  "max_jump_db": 11.3,
+  "range_db": 7.2,
+  "dropout_s": 0.0,
+  "peak": 1.001,
+  "asr_cer_with_music": 0.0,
+  "vocal_like": "We'll see you next time.",
+  "score": 5.597
+ },
+ "L1_pad_1": {
+  "layer": "L1_pad",
+  "speech_band": 0.008,
+  "max_jump_db": 3.3,
+  "range_db": 10.8,
+  "dropout_s": 0.0,
+  "peak": 1.009,
+  "asr_cer_with_music": 0.0,
+  "vocal_like": "I'll see you next time.",
+  "score": 4.032
+ },
+ "L2_push_0": {
+  "layer": "L2_push",
+  "speech_band": 0.046,
+  "max_jump_db": 4.1,
+  "range_db": 15.0,
+  "dropout_s": 0.0,
+  "peak": 1.422,
+  "asr_cer_with_music": 0.0,
+  "vocal_like": "So",
+  "score": 1.182
+ },
+ "L2_push_1": {
+  "layer": "L2_push",
+  "speech_band": 0.005,
+  "max_jump_db": 5.7,
+  "range_db": 7.5,
+  "dropout_s": 0.0,
+  "peak": 1.003,
+  "asr_cer_with_music": 0.0,
+  "vocal_like": "For more information visit www.fema.org",
+  "score": 4.021
+ },
+ "L3_climax_0": {
+  "layer": "L3_climax",
+  "speech_band": 0.249,
+  "max_jump_db": 7.5,
+  "range_db": 17.3,
+  "dropout_s": 0.0,
+  "peak": 1.526,
+  "asr_cer_with_music": 0.0,
+  "vocal_like": "Transcription by CastingWords",
+  "score": 5.46
+ },
+ "L3_climax_1": {
+  "layer": "L3_climax",
+  "speech_band": 0.0,
+  "max_jump_db": 22.9,
+  "range_db": 15.6,
+  "dropout_s": 0.0,
+  "peak": 1.005,
+  "asr_cer_with_music": 0.0,
+  "vocal_like": "Thank you.",
+  "score": 6.078
+ },
+ "L3_elegy_0": {
+  "layer": "L3_elegy",
+  "speech_band": 0.072,
+  "max_jump_db": 5.4,
+  "range_db": 8.4,
+  "dropout_s": 0.0,
+  "peak": 0.891,
+  "asr_cer_with_music": 0.0,
+  "vocal_like": "You",
+  "score": 0.287
+ },
+ "L3_elegy_1": {
+  "layer": "L3_elegy",
+  "speech_band": 0.059,
+  "max_jump_db": 4.1,
+  "range_db": 6.1,
+  "dropout_s": 0.0,
+  "peak": 0.794,
+  "asr_cer_with_music": 0.0,
+  "vocal_like": "For more information visit www.fema.gov",
+  "score": 3.236
+ },
+ "L4_piano_0": {
+  "layer": "L4_piano",
+  "speech_band": 0.002,
+  "max_jump_db": 6.6,
+  "range_db": 11.0,
+  "dropout_s": 0.0,
+  "peak": 1.004,
+  "asr_cer_with_music": 0.0,
+  "vocal_like": "I'll see you next time.",
+  "score": 4.202
+ },
+ "L4_piano_1": {
+  "layer": "L4_piano",
+  "speech_band": 0.005,
+  "max_jump_db": 8.6,
+  "range_db": 6.1,
+  "dropout_s": 0.0,
+  "peak": 1.003,
+  "asr_cer_with_music": 0.0,
+  "vocal_like": "Thank you so much for watching.",
+  "score": 4.8
+ },
+ "L4_think_0": {
+  "layer": "L4_think",
+  "speech_band": 0.021,
+  "max_jump_db": 5.0,
+  "range_db": 11.6,
+  "dropout_s": 0.0,
+  "peak": 1.001,
+  "asr_cer_with_music": 0.0,
+  "vocal_like": "For more information visit www.fema.gov",
+  "score": 4.084
+ },
+ "L4_think_1": {
+  "layer": "L4_think",
+  "speech_band": 0.027,
+  "max_jump_db": 3.0,
+  "range_db": 4.9,
+  "dropout_s": 0.0,
+  "peak": 1.033,
+  "asr_cer_with_music": 0.0,
+  "vocal_like": "Thank you.",
+  "score": 1.109
+ },
+ "L5_end_0": {
+  "layer": "L5_end",
+  "speech_band": 0.002,
+  "max_jump_db": 3.4,
+  "range_db": 8.7,
+  "dropout_s": 0.0,
+  "peak": 0.641,
+  "asr_cer_with_music": 0.0,
+  "vocal_like": "Thank you.",
+  "score": 0.008
+ },
+ "L5_end_1": {
+  "layer": "L5_end",
+  "speech_band": 0.024,
+  "max_jump_db": 10.3,
+  "range_db": 17.5,
+  "dropout_s": 0.0,
+  "peak": 1.004,
+  "asr_cer_with_music": 0.0,
+  "vocal_like": "Thank you.",
+  "score": 2.392
+ }
+}
