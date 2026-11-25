@@ -31,13 +31,13 @@ LAYERS = {
     "drive": dict(n=3, sec=30, prompt="minimal modern electronic pulse with soft piano and light percussion, "
                                       "steady, thoughtful, understated, 90 bpm, no vocals"),
     # 1945 —— 悬疑类：低频 drone + 稀疏心跳式低鼓
-    "tension": dict(n=2, sec=30, prompt="dark low frequency drone with sparse heartbeat-like low drum, tense, "
+    "tension": dict(n=2, sec=24, prompt="dark low frequency drone with sparse heartbeat-like low drum, tense, "
                                         "slow, cinematic, D minor, no melody, no vocals"),
     # 高潮 —— 全编制但克制温暖（本片题材不是战争，不用悲壮大鼓）
-    "climax": dict(n=2, sec=22, prompt="cinematic emotional swell, full warm strings and piano, hopeful, "
+    "climax": dict(n=2, sec=20, prompt="cinematic emotional swell, full warm strings and piano, hopeful, "
                                        "reflective, slow build, 80 bpm, no vocals"),
     # 尾声 —— 收成单个乐器
-    "outro": dict(n=2, sec=15, prompt="solo piano, gentle, reflective, slow, soft final chord with long "
+    "outro": dict(n=2, sec=14, prompt="solo piano, gentle, reflective, slow, soft final chord with long "
                                       "sustain, no vocals"),
 }
 
