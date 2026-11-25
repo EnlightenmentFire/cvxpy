@@ -109,9 +109,7 @@ def run(clips_dir, dur_path, music_path, out, t_end=None, no_music=False):
         g0 = measure_gap(None, vp, mp, sp, t_end, no_print=True)
         m, _ = sf.read(mp, dtype="float32")
         m = m * (10 ** ((g0 - GAP_TARGET) / 20))
-        pk = np.abs(m).max()
-        if pk > 0.89:
-            m = np.tanh(m / 0.89) * 0.89
+        # float WAV: values above 1.0 are kept; ffmpeg's float pipeline + final limiter handle the peaks
         mp = os.path.join(d, "music_cal.wav")
         sf.write(mp, m.astype(np.float32), SR, subtype="FLOAT")
         print(f"calibration: gap {g0:.1f} dB -> scaled music by {g0 - GAP_TARGET:+.1f} dB")

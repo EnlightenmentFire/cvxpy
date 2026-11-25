@@ -129,11 +129,15 @@ def load48(path):
 
 
 def lufs_gain(a, target):
-    """Approximate gain to bring a clip to `target` (K-weighting skipped; RMS of active parts)."""
-    ld = short_loud(a, SR_OUT, 0.4)
-    act = ld[ld > ld.max() - 25]
-    cur = 10 * np.log10(np.mean(10 ** (act / 10)) + 1e-12)
+    """Gain that brings a clip to `target` integrated loudness (ITU BS.1770, K-weighted)."""
+    import pyloudnorm as pyln
+    cur = pyln.Meter(SR_OUT).integrated_loudness(a)
     return 10 ** ((target - cur) / 20)
+
+
+def clipped(path, thr=0.995, max_n=100):
+    a, _ = sf.read(path, dtype="float32")
+    return int((np.abs(a) > thr).sum()) > max_n
 
 
 def xfade_concat(clips, xf):
@@ -174,7 +178,10 @@ def build(out, dur_path, music_path):
     pick = {}
     for name in LAYERS:
         cands = sorted([(v["badness"], f) for f, v in scores.items() if f.startswith(name + "_")])
-        keep = [f for b, f in cands if not scores[f]["heard"] or len(scores[f]["heard"]) <= 6][:2]
+        keep = [f for b, f in cands
+                if (not scores[f]["heard"] or len(scores[f]["heard"]) <= 6)   # no vocals
+                and scores[f]["silent"] < 0.05                                 # no dropouts
+                and not clipped(os.path.join(out, f))][:2]                     # no clipping
         pick[name] = keep or [cands[0][1]]
     print("picked", pick)
     clips = {k: [load48(os.path.join(out, f)) for f in v] for k, v in pick.items()}
@@ -213,6 +220,9 @@ def build(out, dur_path, music_path):
             env[-k:] = 1.0
         j = min(n, i0 + len(sig))
         mus[i0:j] += sig[: j - i0] * env[: j - i0, None]
+    # remove inaudible sub-rumble (< 35 Hz) that only eats headroom
+    from scipy.signal import butter, sosfiltfilt
+    mus = sosfiltfilt(butter(2, 35, btype="highpass", fs=SR_OUT, output="sos"), mus, axis=0).astype(np.float32)
     # 开头淡入 2 秒，结尾淡出 3 秒
     fi, fo = int(2 * SR_OUT), int(3 * SR_OUT)
     mus[:fi] *= np.linspace(0, 1, fi)[:, None]
