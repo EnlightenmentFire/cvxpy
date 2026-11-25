@@ -62,10 +62,10 @@ def main():
     a_kbps = 160
     v_kbps = int(94.0 * 8e3 / dur - a_kbps)
     log = os.path.join(out, "x264pass")
-    sh(["ffmpeg", "-y", "-loglevel", "error", "-i", pic, "-c:v", "libx264", "-preset", "slow", "-b:v", f"{v_kbps}k",
+    sh(["ffmpeg", "-y", "-loglevel", "error", "-i", pic, "-c:v", "libx264", "-preset", "medium", "-x264-params", "aq-mode=3", "-b:v", f"{v_kbps}k",
         "-pass", "1", "-passlogfile", log, "-pix_fmt", "yuv420p", "-an", "-f", "mp4", "/dev/null"])
     sh(["ffmpeg", "-y", "-loglevel", "error", "-i", pic, "-i", mix, "-map", "0:v", "-map", "1:a",
-        "-c:v", "libx264", "-preset", "slow", "-b:v", f"{v_kbps}k", "-pass", "2", "-passlogfile", log,
+        "-c:v", "libx264", "-preset", "medium", "-x264-params", "aq-mode=3", "-b:v", f"{v_kbps}k", "-pass", "2", "-passlogfile", log,
         "-pix_fmt", "yuv420p", "-profile:v", "high", "-r", "30", "-c:a", "aac", "-b:a", f"{a_kbps}k", "-ar", "48000",
         "-movflags", "+faststart", "-shortest", final])
     size = os.path.getsize(final) / 1e6
