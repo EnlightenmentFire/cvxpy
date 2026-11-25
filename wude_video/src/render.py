@@ -295,29 +295,6 @@ def resolve_time(tl, spec):
     return float(spec)
 
 
-if __name__ == "__main__":
-    mode = sys.argv[1]
-    dur_path = os.environ.get("DURATIONS")
-    tl = build_timeline(dur_path)
-    R = Renderer(tl)
-    if mode == "still":
-        for spec, out in zip(sys.argv[2::2], sys.argv[3::2]):
-            t = resolve_time(tl, spec)
-            R.png(t, out)
-            print(f"{out} @ {t:.2f}s")
-    elif mode == "video":
-        out = sys.argv[2]
-        a = float(sys.argv[3]) if len(sys.argv) > 3 else 0.0
-        b = float(sys.argv[4]) if len(sys.argv) > 4 else None
-        export_video(tl, out, a, b, audio=os.environ.get("AUDIO"), crf=int(os.environ.get("CRF", "20")),
-                     vbitrate=os.environ.get("VBITRATE"))
-        print("wrote", out)
-    elif mode == "info":
-        print(f"total {tl.total:.1f}s ({tl.total/60:.1f} min), lines {len(tl.lines)}")
-        for s in tl.segs:
-            print(s["id"], f"{s['t0']:.1f}-{s['t1']:.1f}", s["title"])
-
-
 # ------------------------------------------------------------------ video export
 def export_video(tl, out_mp4, t0=0.0, t1=None, audio=None, crf=20, preset="slow", workers=4,
                  vbitrate=None):
@@ -364,3 +341,26 @@ def _render_chunk(tl, idx, a, b, path, crf, preset, vbitrate):
         p.stdin.write(np.ascontiguousarray(arr).tobytes())
     p.stdin.close()
     p.wait()
+
+
+if __name__ == "__main__":
+    mode = sys.argv[1]
+    dur_path = os.environ.get("DURATIONS")
+    tl = build_timeline(dur_path)
+    R = Renderer(tl)
+    if mode == "still":
+        for spec, out in zip(sys.argv[2::2], sys.argv[3::2]):
+            t = resolve_time(tl, spec)
+            R.png(t, out)
+            print(f"{out} @ {t:.2f}s")
+    elif mode == "video":
+        out = sys.argv[2]
+        a = float(sys.argv[3]) if len(sys.argv) > 3 else 0.0
+        b = float(sys.argv[4]) if len(sys.argv) > 4 else None
+        export_video(tl, out, a, b, audio=os.environ.get("AUDIO"), crf=int(os.environ.get("CRF", "20")),
+                     vbitrate=os.environ.get("VBITRATE"))
+        print("wrote", out)
+    elif mode == "info":
+        print(f"total {tl.total:.1f}s ({tl.total/60:.1f} min), lines {len(tl.lines)}")
+        for s in tl.segs:
+            print(s["id"], f"{s['t0']:.1f}-{s['t1']:.1f}", s["title"])

@@ -377,7 +377,7 @@ def vignette(strength=0.55):
     return np.clip(1.0 - strength * np.clip(r - 0.35, 0, None) ** 1.6, 0.25, 1.0).astype(np.float32)
 
 
-@functools.lru_cache(maxsize=64)
+@functools.lru_cache(maxsize=8)
 def background_image(theme_key):
     """theme_key: tuple(top, bottom, paper, dark) -> skia.Image"""
     top, bottom, paper_amt, dark = theme_key
