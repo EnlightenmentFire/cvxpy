@@ -1,0 +1,255 @@
+1
+00:00:00,000 --> 00:00:03,039
+一家工厂缺了一个零件，今早的计划表上根本没有这一项。
+A factory is short of a part that no plan listed this morning.
+
+2
+00:00:03,539 --> 00:00:05,761
+最先发现的人，不是做计划的人。
+The first person to see it is not the planner.
+
+3
+00:00:06,261 --> 00:00:08,925
+而是车间里的一个人，盯着一只空料箱。
+It's someone on the floor, staring at an empty bin.
+
+4
+00:00:09,425 --> 00:00:11,024
+所以，真正的问题来了。
+So here is the real question.
+
+5
+00:00:11,524 --> 00:00:12,913
+不是谁更聪明。
+It is not who is smarter.
+
+6
+00:00:13,413 --> 00:00:15,284
+而是：此刻，谁知道这件事？
+It is: who knows this, right now?
+
+7
+00:00:15,784 --> 00:00:19,526
+这件事，又怎样传到那些必须跟着改变做法的人那里？
+And how does that knowledge reach everyone else who now has to change what they are doing?
+
+8
+00:00:20,026 --> 00:00:22,199
+有一种知识，可以整整齐齐地填进表格。
+Some knowledge fits neatly into a spreadsheet.
+
+9
+00:00:22,699 --> 00:00:29,925
+公司有几辆卡车，给多少人发工资，一台机器一小时能做多少件。
+How many trucks a company owns. How many people are on the payroll. What a machine can make in an hour.
+
+10
+00:00:30,425 --> 00:00:33,190
+你可以把它收上来、加起来、报到最上面。
+You can collect it, add it up, and send it to the top.
+
+11
+00:00:33,690 --> 00:00:36,444
+但还有一种知识，不会乖乖停在那里，等你来收。
+But some knowledge won't sit still long enough to be collected.
+
+12
+00:00:36,944 --> 00:00:38,925
+今早到的这批面粉，有点受潮。
+This morning's flour came in a little damp.
+
+13
+00:00:39,425 --> 00:00:41,920
+东边那条路上的桥，封到中午。
+The bridge on the east road is closed until noon.
+
+14
+00:00:42,420 --> 00:00:45,932
+城另一头的仓库，空出四十个托盘位，只限今天。
+A warehouse across town has forty empty pallets, today only.
+
+15
+00:00:46,432 --> 00:00:51,800
+司机知道，店员知道，值班的班长知道。
+A driver knows it. A clerk knows it. A shift supervisor knows it.
+
+16
+00:00:52,300 --> 00:00:55,591
+等它写进报表，往往已经过时了。
+By the time it reaches a report, it's often already out of date.
+
+17
+00:00:56,091 --> 00:01:00,911
+1945 年，经济学家哈耶克给这种知识起了一个很讲究的名字。
+In 1945, the economist Friedrich Hayek gave this kind of knowledge a careful name.
+
+18
+00:01:01,411 --> 00:01:04,037
+「特定时间和地点的情势」。
+The particular circumstances of time and place.
+
+19
+00:01:04,537 --> 00:01:06,883
+他的意思听起来简单，却很容易被略过。
+His point sounds simple, and is easy to miss.
+
+20
+00:01:07,383 --> 00:01:11,213
+一个经济赖以运转的知识，从来不是集中、完整地放在一个地方。
+The knowledge an economy runs on never sits in one complete, central place.
+
+21
+00:01:11,713 --> 00:01:15,099
+它是零散的，分在许多人手里，每人只握着一小块。
+It is scattered in pieces, across many people who each hold a little.
+
+22
+00:01:15,599 --> 00:01:17,859
+接下来，是常被一笔带过的部分。
+Now comes the part that usually gets skipped.
+
+23
+00:01:18,359 --> 00:01:21,635
+你也许觉得答案很简单：让现场的人自己拿主意。
+You might think the answer is easy: let the person on the spot decide.
+
+24
+00:01:22,135 --> 00:01:23,549
+哈耶克没有停在这里。
+Hayek did not stop there.
+
+25
+00:01:24,049 --> 00:01:28,015
+现场的人，把自己这一角看得很清楚，却看不见整盘棋。
+The man on the spot sees his own corner clearly, but not the rest of the board.
+
+26
+00:01:28,515 --> 00:01:31,184
+面包店要不要改用另一家磨坊的干面粉？
+Should the bakery switch to dry flour from another mill?
+
+27
+00:01:31,684 --> 00:01:35,279
+这取决于今天还有多少家面包店，也在要同一种面粉。
+That depends on how many other bakeries want the same flour, today.
+
+28
+00:01:35,779 --> 00:01:37,763
+面包师眼前，没有任何东西告诉他这一点。
+Nothing in front of the baker says so.
+
+29
+00:01:38,263 --> 00:01:43,293
+用哈耶克的话说，他不能只凭自己对身边那些「有限但亲密的知识」做决定。
+In Hayek's words, he cannot decide solely on his limited but intimate knowledge of what is around him.
+
+30
+00:01:43,793 --> 00:01:49,763
+他还需要进一步的信息，才能把自己的决定，嵌进「更大经济系统的整体变化格局」。
+He still needs further information, to fit his decision into the whole pattern of changes of the larger economic system.
+
+31
+00:01:50,263 --> 00:01:54,946
+在市场里，有一个信号承担了这份信息的一大部分：价格。
+In a market, one signal carries much of that information. The price.
+
+32
+00:01:55,446 --> 00:01:58,466
+某处的干面粉变少了，它的价格就会上涨。
+When dry flour gets scarcer somewhere, its price goes up.
+
+33
+00:01:58,966 --> 00:02:04,321
+面包师不必知道原因：是水灾、罢工，还是城里新开了一家对手。
+The baker does not need to know why. A flood, a strike, a new rival across town.
+
+34
+00:02:04,821 --> 00:02:07,766
+他只需要看到：现在更贵了，然后调整。
+He only needs to see that it costs more now, and adjust.
+
+35
+00:02:08,266 --> 00:02:12,456
+成千上万的人朝同一个方向调整，每个人只知道原因的一小片。
+Thousands of people shift in the same direction, each knowing only a sliver of the cause.
+
+36
+00:02:12,956 --> 00:02:16,616
+这不是魔法，也不保证价格永远是对的。
+That is not magic, and it is not a promise that prices are always right.
+
+37
+00:02:17,116 --> 00:02:23,859
+这是一种分工：现场的眼睛看细节，一个大家共享的数字传递概要。
+It is a division of labor. Local eyes see the detail. A shared number carries the summary.
+
+38
+00:02:24,359 --> 00:02:25,818
+这就说到了总数。
+Which brings us to the totals.
+
+39
+00:02:26,318 --> 00:02:28,338
+一份上报的总表，必须把东西加起来。
+A central report has to add things up.
+
+40
+00:02:28,838 --> 00:02:35,113
+面粉一万吨，卡车三百辆，总库存：充足。
+Ten thousand tons of flour. Three hundred trucks. Overall stock: sufficient.
+
+41
+00:02:35,613 --> 00:02:38,882
+要得到一个数字，就得把不一样的东西，当成一样的东西。
+To get one number, you have to treat different things as the same thing.
+
+42
+00:02:39,382 --> 00:02:45,759
+哈耶克说，统计要「抽象掉次要的差别」，把地点、品质不同的东西「归并在一起」。
+Hayek described statistics as abstracting from minor differences, lumping together items that differ in location and quality.
+
+43
+00:02:46,259 --> 00:02:48,510
+受潮的面粉和干面粉，成了同一行。
+Damp flour and dry flour become one line.
+
+44
+00:02:49,010 --> 00:02:51,964
+北边的卡车和南边的卡车，成了同一列。
+A truck in the north and a truck in the south become one column.
+
+45
+00:02:52,464 --> 00:02:57,570
+总数看起来没问题。可街角那家面包店，手里还是没有能用的面粉。
+The total looks fine. And the bakery on the corner still has nothing it can bake with.
+
+46
+00:02:58,070 --> 00:03:03,139
+这个数字没有错。它只是回答不了现场正在问的那个问题。
+The number is not wrong. It just cannot answer the question being asked on the spot.
+
+47
+00:03:03,639 --> 00:03:06,476
+那么，回到那个车间，回到那只空料箱。
+So go back to that factory floor, and the empty bin.
+
+48
+00:03:06,976 --> 00:03:12,155
+在一家公司内部，缺的零件、闲着的机器、累坏的团队，通常都没有价格。
+Inside a company, there is usually no price for a missing part, an idle machine, or a tired team.
+
+49
+00:03:12,655 --> 00:03:16,715
+现场的人看什么，才知道自己这一步，怎样接上别人的那一步？
+What does the person on the spot look at, to know how this move fits everyone else's?
+
+50
+00:03:17,215 --> 00:03:19,632
+整栋楼里，有哪几个数，是每个人都看得见的？
+Which few numbers can everyone in the building see?
+
+51
+00:03:20,132 --> 00:03:23,614
+一旦大家发现这几个数能决定事情，谁来保证它们不被做手脚？
+And once people learn those numbers decide things, who keeps them honest?
+
