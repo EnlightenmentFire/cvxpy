@@ -6,3 +6,4 @@ out/*.mp4
 __pycache__/
 samples/*/mix_full_tmp.wav
 samples/*/*.mp4
+out/final/*.parts/

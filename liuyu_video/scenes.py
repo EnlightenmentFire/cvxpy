@@ -10,7 +10,7 @@ from assets import MapView, PLACES, MODERN
 from engine import (W, H, C, clamp, prog, ease_out, ease_in, ease_io, ease_back, smooth, lerp, fade,
                     draw_text, text_size, set_col, rect, rrect_path, line, circle, polyline, point_along, arrow,
                     arrow_head, draw_seal, paper_texture, paint_surface, new_frame, postprocess, smooth_path)
-from timeline import TITLE_CARD
+from timeline import TITLE_CARD, END_HOLD
 from widgets import (draw_subtitles, chapter_tag, chapter_card, vquote, Dots, tag, card, name_tile, strike, cross,
                      big_number, takeaway, icon_house, icon_flag, icon_tree, icon_boat, icon_crown, icon_gate,
                      icon_granary, icon_coins, icon_dice, icon_person, icon_robe, icon_fire, wind_arrows, TOP_Y)
@@ -99,8 +99,8 @@ class Film:
 
     # ── 片尾卡 ────────────────────────────────────────────
     def end_card(self, ctx, t):
-        t0 = self.T.end_card
-        a = ease_out(prog(t, t0, 0.8))
+        t0 = self.T.end_card + END_HOLD
+        a = ease_out(prog(t, t0, 0.7))
         rect(ctx, 0, 0, W, H, "#0a0806", 0.88 * a)
         draw_text(ctx, "京口起兵", W / 2, 520, family="serif", weight="Black", size=96, color=C["ink"], alpha=a,
                   anchor="cm", tracking=0.18)
@@ -111,7 +111,8 @@ class Film:
             draw_text(ctx, r, W / 2, 680 + i * 56, family="serif" if i else "sans", weight="SemiBold" if i else "Bold",
                       size=32 if i else 30, color=C["gold"] if i == 0 else C["ink"], alpha=a * (1 if i else 0.9),
                       anchor="cm")
-        cr = ["地图为示意，海岸线取今形　旁白为 AI 合成（Kokoro，Apache-2.0）",
+        cr = ["地图为示意，海岸线取今形",
+              "旁白：AI 合成（Qwen3-TTS，Apache-2.0）　配乐：AI 生成（ACE-Step 1.5，MIT）",
               "地图数据 Natural Earth　字体 Noto Serif/Sans SC（OFL）"]
         for i, r in enumerate(cr):
             draw_text(ctx, r, W / 2, 1040 + i * 44, family="sans", weight="Regular", size=24, color=C["dim"],
@@ -225,7 +226,7 @@ class Film:
             draw_text(ctx, "樗蒲：掷五枚木子的博戏", 300, 1225, family="sans", weight="Regular", size=26, color=C["dim"],
                       alpha=ad, anchor="cm")
         # 结论
-        takeaway(ctx, t, T.start("s1f"), T.sec_end["S1"] + 0.3, ["两边立场相反", "都承认：出身最底层"], y=620)
+        takeaway(ctx, t, T.start("s1f"), T.sec_end["S1"] + 0.3, ["两边立场相反", "却都承认：出身寒微"], y=620)
 
     # ══ S2 马桩 ═══════════════════════════════════════════
     def draw_S2(self, ctx, t):
@@ -329,6 +330,10 @@ class Film:
 
     def map_label(self, ctx, view, name, alpha, side="r", col=None, size=34, modern=True, dx=0, dy=0, dot=7):
         x, y = view.place(name)
+        if x < 620:   # 镜头推近时地名会跑到左上角，和章节标签（TOP_Y）叠在一起：在那一带淡出
+            alpha *= clamp((y - (TOP_Y + 40)) / 60)
+        if alpha <= 0.01:
+            return
         circle(ctx, x, y, dot, col or C["ink"], alpha)
         circle(ctx, x, y, dot + 6, col or C["ink"], alpha * 0.4, stroke=True, width=1.5)
         sgn = 1 if side == "r" else -1
@@ -400,20 +405,21 @@ class Film:
         a = fade(t, T.start("s3d") - 0.1, T.start("s3e") - 0.3, 0.5, 0.4)
         if a > 0:
             rect(ctx, 0, 0, W, H, "#0b0806", 0.7 * a)
+            # 两块对比卡整体上移、压矮，给下面的原文卡和出处留位置（出处不能压在字幕上）
             for k, (x0, title, col) in enumerate(((70, "官军：纵兵抢掠", C["gray"]), (560, "刘裕：法令明整", C["red2"]))):
-                card(ctx, x0, 340, 450, 470, a, edge=col)
-                draw_text(ctx, title, x0 + 225, 395, family="sans", weight="Bold", size=36, color=col, alpha=a, anchor="cm")
+                card(ctx, x0, 300, 450, 400, a, edge=col)
+                draw_text(ctx, title, x0 + 225, 355, family="sans", weight="Bold", size=36, color=col, alpha=a, anchor="cm")
                 if k == 0:
                     for j in range(4):
-                        icon_house(ctx, x0 + 80 + j * 100, 720, 30, "#3b3328", a)
-                    P0 = self.d_gray_80.grid(x0 + 225, 560, 10, 22)
-                    P1 = self.d_gray_80.ring(x0 + 225, 690, 40, 190)
+                        icon_house(ctx, x0 + 80 + j * 100, 640, 30, "#3b3328", a)
+                    P0 = self.d_gray_80.grid(x0 + 225, 500, 10, 22)
+                    P1 = self.d_gray_80.ring(x0 + 225, 620, 40, 170)
                     P = self.d_gray_80.lerp(P0, P1, t, T.start("s3d") + 0.3, 1.2, spread=0.6)
                     self.d_gray_80.draw(ctx, P, C["gray"], r=4, alpha=a)
                 else:
-                    P = self.d_gray_80.grid(x0 + 225, 600, 10, 22)
+                    P = self.d_gray_80.grid(x0 + 225, 520, 10, 22)
                     self.d_gray_80.draw(ctx, P, C["red2"], r=4, alpha=a)
-            vquote(ctx, t, T, "s3d", W / 2, 1040, size=50)
+            vquote(ctx, t, T, "s3d", W / 2, 972, size=46)
         # 海盐（s3e）
         a = fade(t, T.start("s3e") + 0.2, T.start("s3f") + 0.2, 0.5, 0.4)
         if a > 0:
@@ -597,6 +603,7 @@ class Film:
                 for k in range(24):
                     gx, gy = 170 + (k % 8) * 105, 620 + (k // 8) * 170
                     sx, sy = rng.uniform(-200, W + 200), rng.uniform(300, 600)
+                    sy = max(sy, 480)          # 不从“周氏”名牌上飞过
                     p = ease_io(prog(t, tr - 0.8 + k * 0.03, 1.1))
                     x, y = lerp(sx, gx, p), lerp(sy, gy, p)
                     if p < 0.98:
@@ -614,8 +621,9 @@ class Film:
                      ("1700", "《通鉴》：带出京口", T.word("s5g", "一千七百人"), 1700),
                      ("1848", "请功名单", T.word("s5g", "一千八百四十八人"), 1700)]
             cur = 0
+            ah = fade(t, T.start("s5h") + 0.6, T.sec_end["S5"] + 0.2, 0.4, 0.3)   # “这说明什么”对比
             for k, (num, src, tk, n) in enumerate(steps):
-                ak = ease_out(prog(t, tk - 0.2, 0.4)) * a
+                ak = ease_out(prog(t, tk - 0.2, 0.4)) * a * (1 - ah)               # 对比出来时数字阶梯让位
                 y = 360 + k * 112
                 col = C["red2"] if k < 2 else C["gold2"]
                 draw_text(ctx, num, 120, y, family="serif", weight="Black", size=84, color=col, alpha=ak, anchor="lm")
@@ -628,10 +636,10 @@ class Film:
             base = 0 if t < steps[1][2] else 1000
             cnt = base + (prev - base) * ease_out(prog(t, tk_ - 0.1, 0.8))
             self.d_red_1700.draw(ctx, P, C["red2"], r=3.4, alpha=a, count=cnt)
-            draw_text(ctx, "每点 1 人", 900, 1170, family="sans", weight="Regular", size=24, color=C["dim"], alpha=a, anchor="rm")
-            ah = fade(t, T.start("s5h") + 0.6, T.sec_end["S5"] + 0.2, 0.4, 0.3)
+            draw_text(ctx, "每点 1 人", 900, 1170, family="sans", weight="Regular", size=24, color=C["dim"],
+                      alpha=a * clamp(cnt / 100), anchor="rm")
             if ah > 0:
-                rect(ctx, 0, 0, W, H, "#0b0806", 0.55 * ah)
+                rect(ctx, 0, 0, W, H, "#0b0806", 0.3 * ah)
                 draw_text(ctx, "全部家当", 300, 620, family="serif", weight="Black", size=72, color=C["red2"], alpha=ah, anchor="cm", shadow=6)
                 draw_text(ctx, "对", W / 2, 620, family="serif", weight="Bold", size=48, color=C["dim"], alpha=ah, anchor="cm")
                 icon_crown(ctx, 790, 560, 70, C["blue2"], ah)
@@ -653,7 +661,7 @@ class Film:
         else:
             v = MapView.blend(V, Vfz, ease_io(prog(t, te - 0.3, 1.6)))
         assets.draw_map(ctx, v)
-        for n, side, dy in (("建康", "l", 30), ("京口", "r", 0), ("江乘", "r", -40), ("罗落桥", "r", 34), ("竹里", "r", 40),
+        for n, side, dy in (("建康", "l", 30), ("京口", "r", 46), ("江乘", "r", -40),   # 京口字压在红点下方，不被“刘裕约1700”挡住 ("罗落桥", "r", 34), ("竹里", "r", 40),
                             ("覆舟山", "r", -36), ("石头城", "l", -10)):
             x, y = v.place(n)
             al = 0.95 if n in ("建康", "京口") else fade(t, T.start("s6b") - 0.2 if n in ("江乘", "竹里", "罗落桥") else te, None)
@@ -669,7 +677,7 @@ class Film:
         col_core = None
         if t >= tf - 0.2:
             # 北府人：亮起红芯，随后“散开”而不是倒下
-            Pd = self.d_blue_2000.scatter_from(Pb, fzx + 0.03 * v.k, fzy - 0.02 * v.k, 0.11 * v.k)
+            Pd = self.d_blue_2000.scatter_from(Pb, fzx + 0.03 * v.k, fzy - 0.02 * v.k, 0.07 * v.k)
             Pb = self.d_blue_2000.lerp(Pb, Pd, t, T.word("s6g", "两万人") - 0.7, 2.4, spread=1.0)
             alphas = 1 - 0.85 * np.clip((t - T.word("s6g", "两万人") - self.d_blue_2000.r[:, 2] * 1.0) / 1.6, 0, 1)
         self.d_blue_2000.draw(ctx, Pb, C["blue"], r=max(1.6, min(3.6, v.k / 520)), alpha=ab, alphas=alphas)
@@ -777,7 +785,7 @@ class Film:
         # 东北风、火、桓玄跑路
         a = fade(t, tg - 0.1, th + 0.4, 0.4, 0.6)
         if a > 0:
-            fzx, fzy = v.place("东陵")
+            fzx, fzy = v.place("东陵")  # 东北风、放火、溃散
             tw = T.word("s6g", "东北风")
             wind_arrows(ctx, t, fzx + 520, fzy - 420, fzx - 120, fzy + 220, 5, C["ink"], a * ease_out(prog(t, tw - 0.1, 0.4)) * 0.7, tw)
             tfi = T.word("s6g", "顺风放火")
@@ -791,7 +799,7 @@ class Film:
                 icon_fire(ctx, fx, fy, 30 + rng.uniform(0, 26), a * ease_out(p) * (1 - 0.5 * prog(t, th, 0.5)), phase=t + k)
             tag(ctx, "时东北风急，因纵火", 90, 470, alpha=a * ease_out(prog(t, tw, 0.4)), col=C["gold2"], size=32)
             # 桓玄
-            tr = T.word("s6g", "石头城")
+            tr = T.word("s6g2", "石头城")
             sx, sy = v.place("石头城")
             pb = ease_io(prog(t, tr + 0.2, 2.2))
             ab_ = fade(t, tr - 0.2, th + 0.4, 0.4, 0.5)
@@ -816,8 +824,8 @@ class Film:
                 draw_text(ctx, v1, 560, y, family="serif", weight="Black", size=44, color=C["dim"] if hl else C["blue2"], alpha=ak, anchor="cm")
                 draw_text(ctx, v2, 850, y, family="serif", weight="Black", size=44 if not hl else 52,
                           color=C["red2"] if hl else C["dim"], alpha=ak, anchor="cm")
-            af = ease_out(prog(t, T.word("s6h", "仗还没打") - 0.2, 0.5)) * a
-            draw_text(ctx, "仗还没打，对面先散了", W / 2, 1040, family="serif", weight="Black", size=60, color=C["ink"],
+            af = ease_out(prog(t, T.word("s6h", "人还在阵上") - 0.2, 0.5)) * a
+            draw_text(ctx, "人还在阵上，心先散了", W / 2, 1040, family="serif", weight="Black", size=60, color=C["ink"],
                       alpha=af, anchor="cm", shadow=8)
 
     # ══ S7 恩怨 ═══════════════════════════════════════════
@@ -974,13 +982,15 @@ class Film:
         T = self.T
         t0 = T.sec_start["S9"]
         tn = clamp((t - t0) / (T.total - t0))
-        assets.draw_woodcut(ctx, tn, mood="dusk", figure=False, push=(1.04, 1.12), focus=(700, 1000), t_abs=t)
+        # 镜头往上方推（焦点在天空）：马桩顶端始终压在 y≈530 以下，四行字放在它上面的天空里，不和木桩交叉
+        assets.draw_woodcut(ctx, tn, mood="dusk", figure=False, push=(1.04, 1.12), focus=(700, 200), t_abs=t)
         rect(ctx, 0, 0, W, H, "#0a0806", 0.25)
-        for k, (lid, txt, col) in enumerate((("s9a", "他欠下三万钱，被捆在马桩上。", C["ink"]),
-                                             ("s9b", "他攒下的，是一支军队的信任。", C["gold2"]),
-                                             ("s9c", "一千七百人能赢，", C["red2"]))):
-            a = fade(t, T.start(lid) - 0.1, T.end_card - 0.2, 0.6, 0.5)
-            draw_text(ctx, txt, 86, 330 + k * 92, family="serif", weight="Black", size=54, color=col, alpha=a, shadow=6)
-        a = fade(t, T.word("s9c", "是因为") - 0.1, T.end_card - 0.2, 0.6, 0.5)
-        draw_text(ctx, "是因为对面的兵，本来就是他的。", 86, 330 + 3 * 92, family="serif", weight="Black", size=54,
-                  color=C["red2"], alpha=a, shadow=6)
+        t_off = T.end_card + END_HOLD - 0.5          # 最后一句说完，字再停约 1.2 秒，然后淡出，片尾卡才出来
+        rows = (("s9a", "他欠下一笔还不上的钱，被捆在马桩上。", C["ink"], T.start("s9a")),
+                ("s9b", "他攒下的，是一支军队的信任。", C["gold2"], T.start("s9b")),
+                ("s9c", "一千七百人能赢，", C["red2"], T.start("s9c")),
+                ("s9c", "是因为对面的兵，本来就是他的。", C["red2"], T.word("s9c", "是因为")))
+        for k, (lid, txt, col, ts) in enumerate(rows):
+            a = fade(t, ts - 0.1, t_off, 0.6, 0.5)
+            draw_text(ctx, txt, 86, 262 + k * 82, family="serif", weight="Black", size=52, color=col, alpha=a,
+                      anchor="lm", shadow=6)

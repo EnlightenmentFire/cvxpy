@@ -335,7 +335,7 @@ def takeaway(ctx, t, t0, t1, lines_, y=560, size=58, col=None):
     a = fade(t, t0, t1, 0.45, 0.4)
     if a <= 0:
         return
-    rect(ctx, 0, 0, W, H, "#0b0806", 0.55 * a)
+    rect(ctx, 0, 0, W, H, "#0b0806", 0.85 * a)   # 底下的卡片压到很暗，结论字不和它们叠在一起
     draw_text(ctx, "这说明什么", W / 2, y - 110, family="serif", weight="Bold", size=34, color=C["gold"], alpha=a,
               anchor="cm", tracking=0.4)
     line(ctx, W / 2 - 150, y - 70, W / 2 + 150, y - 70, C["gold"], 1.5, a * 0.7)

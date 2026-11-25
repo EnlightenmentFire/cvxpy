@@ -396,7 +396,7 @@ def vignette_map(strength=0.55):
 
 
 @functools.lru_cache(maxsize=1)
-def grain_bank(n=12, amp=5.0, seed=3):
+def grain_bank(n=12, amp=3.5, seed=3):
     rng = np.random.default_rng(seed)
     bank = []
     for _ in range(n):

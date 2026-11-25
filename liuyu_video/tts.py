@@ -90,8 +90,12 @@ PRON = {
     "岛夷刘裕": "dao3 yi2 liu2 yu4",
     # 白话里的多音字
     "还不上": "huan2 bu2 shang4",
-    "替他还钱": "ti4 ta1 huan2 qian2",
-    "悄悄还的": "qiao1 qiao1 huan2 de5",
+    "辟易": "bi4 yi4",          # 关键词单独查时也要用对的读音（否则按默认 pì 判错）
+    "称力": "chen4 li4",
+    "替他还了钱": "ti4 ta1 huan2 le5 qian2",
+    "替他还的": "ti4 ta1 huan2 de5",
+    "王谧为公": "wang2 mi4 wei2 gong1",
+    "一箭正中": "yi2 jian4 zheng4 zhong4",
     "还钱之恩": "huan2 qian2 zhi1 en1",
     "拴马桩": "shuan1 ma3 zhuang1",
     "大个子": "da4 ge4 zi5",
