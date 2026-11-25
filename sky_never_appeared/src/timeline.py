@@ -11,6 +11,8 @@ COLD_OPEN_SILENT = 13.4      # imagined sky runs before the first word
 TITLE_HOLD = 4.2             # title card after o4
 CHAPTER_GAP = 1.3            # chapter card between sections (music bridge, not a narration pause)
 MAX_PAUSE = 0.4              # narration pauses are capped at 0.4 s
+# climax: narration stops so the music can come through on its own (music spec, 'climax')
+CLIMAX_AFTER = {'k12': 1.6}
 EN_GAP = 0.35
 END_TAIL = 6.0
 
@@ -111,6 +113,9 @@ def build(meta_dir):
                 subs.append({'start': tc, 'end': tc + dd, 'text': c})
                 tc += dd
             t += d + min(pause, MAX_PAUSE)
+            if lid in CLIMAX_AFTER:
+                cues['CLIMAX'] = t
+                t += CLIMAX_AFTER[lid]
             for k in ('EN1', 'EN2'):
                 if k in tags:
                     t += EN_GAP
