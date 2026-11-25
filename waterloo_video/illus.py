@@ -238,31 +238,53 @@ def cannon_side(ctx, x, y, s, alpha=1.0, sink=0.0):
 
 # ---------------------------------------------------------------- courier
 def horse_rider(ctx, x, y, s, t, alpha=1.0, color=(0.03, 0.03, 0.04)):
+    """galloping horse + courier silhouette, facing right; feet near (x, y)"""
     ctx.save(); ctx.translate(x, y); ctx.scale(s, s)
     ctx.set_source_rgba(*color, alpha)
     g = t * 9.0
-    # body
-    ctx.save(); ctx.rotate(0.05 * math.sin(g))
-    ctx.move_to(-70, -95); ctx.curve_to(-40, -120, 50, -118, 75, -100); ctx.curve_to(82, -80, 60, -60, 40, -62)
-    ctx.line_to(-55, -62); ctx.curve_to(-80, -66, -84, -86, -70, -95); ctx.fill()
-    # neck + head
-    ctx.move_to(55, -105); ctx.line_to(95, -150); ctx.line_to(122, -142); ctx.line_to(118, -128); ctx.line_to(80, -88); ctx.close_path(); ctx.fill()
-    # tail
-    ctx.set_line_width(7); ctx.move_to(-72, -92); ctx.curve_to(-100, -90, -110, -70, -118, -55 + 6 * math.sin(g)); ctx.stroke()
-    # rider
-    ctx.move_to(-10, -118); ctx.line_to(14, -118); ctx.line_to(20, -168); ctx.line_to(-6, -172); ctx.close_path(); ctx.fill()
-    ctx.arc(8, -184, 11, 0, 6.3); ctx.fill()
-    ctx.move_to(-6, -192); ctx.line_to(24, -192); ctx.line_to(8, -206); ctx.close_path(); ctx.fill()  # bicorne-ish
-    # cloak flapping
-    ctx.move_to(-4, -168); ctx.curve_to(-40, -160 + 8 * math.sin(g * 1.3), -55, -130, -50, -118); ctx.line_to(-6, -125); ctx.fill()
-    ctx.restore()
-    # legs (gallop cycle)
+    pitch = 0.06 * math.sin(g)
+    ctx.save(); ctx.rotate(pitch)
+    # barrel / body
+    ctx.move_to(-78, -92)
+    ctx.curve_to(-70, -122, 40, -128, 62, -108)
+    ctx.curve_to(74, -98, 70, -70, 52, -64)
+    ctx.curve_to(10, -56, -40, -58, -70, -66)
+    ctx.curve_to(-90, -72, -92, -86, -78, -92); ctx.fill()
+    # neck stretched forward, head low (gallop)
+    ctx.move_to(44, -112); ctx.curve_to(70, -140, 96, -150, 112, -142)
+    ctx.line_to(140, -118); ctx.curve_to(146, -110, 138, -102, 128, -106)
+    ctx.line_to(104, -116); ctx.curve_to(90, -104, 72, -86, 58, -78); ctx.close_path(); ctx.fill()
+    # ears & mane
+    ctx.move_to(104, -146); ctx.line_to(108, -162); ctx.line_to(114, -146); ctx.fill()
+    ctx.set_line_width(5)
+    for k in range(5):
+        mx = 60 + k * 10; my = -124 - k * 5
+        ctx.move_to(mx, my); ctx.line_to(mx - 14, my - 8 + 4 * math.sin(g + k)); ctx.stroke()
+    # tail streaming
     ctx.set_line_width(9); ctx.set_line_cap(cairo.LINE_CAP_ROUND)
-    for i, (hx, ph) in enumerate([(-50, 0), (-38, 0.6), (48, 2.2), (60, 2.8)]):
-        a = math.sin(g + ph)
-        kx = hx + a * 22; ky = -30
-        fx = hx + a * 46; fy = -2 - max(0, math.cos(g + ph)) * 14
-        ctx.move_to(hx, -66); ctx.line_to(kx, ky); ctx.line_to(fx, fy); ctx.stroke()
+    ctx.move_to(-80, -96); ctx.curve_to(-110, -100, -130, -92, -150, -84 + 8 * math.sin(g * 1.2)); ctx.stroke()
+    # rider: leaning forward
+    ctx.move_to(-14, -116); ctx.line_to(16, -116); ctx.line_to(30, -168); ctx.line_to(4, -176); ctx.close_path(); ctx.fill()
+    ctx.arc(30, -186, 12, 0, 6.3); ctx.fill()
+    ctx.move_to(14, -194); ctx.curve_to(26, -206, 40, -206, 50, -194); ctx.close_path(); ctx.fill()   # bicorne
+    ctx.set_line_width(7); ctx.move_to(22, -160); ctx.line_to(58, -136); ctx.line_to(92, -132); ctx.stroke()  # arm + reins
+    ctx.move_to(4, -170); ctx.curve_to(-34, -164 + 10 * math.sin(g * 1.3), -56, -140, -60, -122); ctx.line_to(-10, -124); ctx.fill()  # cloak
+    ctx.move_to(-4, -118); ctx.line_to(-12, -84); ctx.line_to(4, -80); ctx.stroke()  # boot
+    # satchel
+    rrect(ctx, -30, -112, 22, 18, 3); ctx.fill()
+    ctx.restore()
+    # legs: gallop cycle, two-segment with hooves
+    ctx.set_line_cap(cairo.LINE_CAP_ROUND)
+    legs = [(-58, 0.0, -1), (-44, 0.5, -1), (40, 2.4, 1), (54, 2.9, 1)]
+    for hx, ph, side in legs:
+        a = math.sin(g + ph); lift = max(0.0, math.cos(g + ph))
+        kx = hx + a * 26 * side * (1 if side > 0 else 1)
+        ky = -36 - lift * 12
+        fx = hx + a * 52
+        fy = -4 - lift * 26
+        ctx.set_line_width(13); ctx.move_to(hx, -70); ctx.line_to(kx, ky); ctx.stroke()
+        ctx.set_line_width(8); ctx.move_to(kx, ky); ctx.line_to(fx, fy); ctx.stroke()
+        ctx.arc(fx, fy, 6, 0, 6.3); ctx.fill()
     ctx.restore()
 
 
