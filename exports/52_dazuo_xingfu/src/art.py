@@ -355,8 +355,13 @@ def put(base, sprite, xy, alpha=1.0, anchor="lt"):
     if alpha < 0.997:
         a = sprite.getchannel("A").point(lambda v: int(v * alpha))
         sprite = sprite.copy(); sprite.putalpha(a)
-    base.alpha_composite(sprite, (max(0, x), max(0, y)),
-                         (max(0, -x), max(0, -y)))
+    sx0, sy0 = max(0, -x), max(0, -y)
+    sx1, sy1 = min(sprite.width, base.width - x), min(sprite.height, base.height - y)
+    if sx1 <= sx0 or sy1 <= sy0:
+        return
+    if (sx0, sy0, sx1, sy1) != (0, 0, sprite.width, sprite.height):
+        sprite = sprite.crop((sx0, sy0, sx1, sy1))
+    base.alpha_composite(sprite, (max(0, x), max(0, y)))
 
 
 def ease(x):

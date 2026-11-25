@@ -6,7 +6,7 @@ usage: python mix.py VIDEO_SILENT.mp4 OUT.mp4 [--nomusic]
 import sys, os, re, json, subprocess
 WORK = os.environ.get("WORK", "/tmp/claude-0/work")
 MUSIC_REL = float(os.environ.get("MUSIC_REL", -20.0))
-I, TP = -15.0, -1.5
+I, TP = -15.0, -2.2
 
 
 def run(cmd):
