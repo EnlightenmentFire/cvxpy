@@ -35,7 +35,11 @@ def main():
         p = f"{PROC}/{d['id']}.wav"
         if not os.path.exists(p):
             continue
-        segs, _ = model.transcribe(p, language="zh", beam_size=5, initial_prompt="以下是普通话的句子。东印度公司，纳瓦布，克莱武，普拉西，孟加拉。")
+        import soundfile as sf
+        from scipy.signal import resample_poly
+        x, sr = sf.read(p)
+        x = resample_poly(x, 1, 3).astype("float32") if sr == 48000 else x.astype("float32")
+        segs, _ = model.transcribe(x, language="zh", beam_size=5, initial_prompt="以下是普通话的句子。东印度公司，纳瓦布，克莱武，普拉西，孟加拉。")
         hyp = "".join(s.text for s in segs)
         a, b = py(d["say"]), py(hyp)
         er = ed(a, b) / max(1, len(a))
