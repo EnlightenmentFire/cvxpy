@@ -278,6 +278,27 @@ class Renderer:
                 if (ln["k"] == "n" or ln.get("low")) and ln.get("cue") not in ("final1", "final2", "final3"):
                     for a, b, c in chunk_sub(ln["sub"], ln["start"], ln["end"]):
                         self.subs.append((a - 0.08, b + 0.12, c, s["id"]))
+        # no two subtitles on screen at once: clip each window at the next one's start
+        self.subs.sort(key=lambda x: x[0])
+        clipped = []
+        for i, (a, b, c, sid) in enumerate(self.subs):
+            if i + 1 < len(self.subs):
+                b = min(b, self.subs[i + 1][0] - 0.01)
+            clipped.append((a, b, c, sid))
+        self.subs = clipped
+        # quote cards: consecutive cards swap at the midpoint (dip), never overlap
+        cards = []
+        for s in self.scenes:
+            for ln in s["lines"]:
+                if ln["k"] == "q":
+                    pad_a, pad_b = (0.2, 0.3) if ln.get("low") else (0.35, 0.45)
+                    cards.append([ln["start"] - pad_a - 0.4, ln["end"] + pad_b + 0.4, ln])
+        cards.sort(key=lambda x: x[0])
+        for i in range(len(cards) - 1):
+            if cards[i + 1][0] < cards[i][1]:
+                mid = (cards[i][1] + cards[i + 1][0]) / 2
+                cards[i][1] = mid; cards[i + 1][0] = mid
+        self.cards = cards
         self._ill_cache = {}
 
     def scene_at(self, t):
@@ -308,27 +329,23 @@ class Renderer:
         fr[y0p:y0p + content.shape[0], x0p:x0p + content.shape[1]] = reg * (1 - m) + content * m
         # scene-specific overlays drawn over the page (titles etc.)
         self.anim.scene_overlay(s["id"], c, fr, overlay)
-        # quote cards
-        for ln in s["lines"]:
-            if ln["k"] != "q":
+        # quote cards (windows already made non-overlapping)
+        sl = set(l["id"] for l in s["lines"])
+        for a, b, ln in self.cards:
+            if ln["id"] not in sl or not (a <= t <= b):
                 continue
+            fd = min(0.4, (b - a) / 2)
+            op = min(ease((t - a) / fd), ease((b - t) / fd))
             if ln.get("low"):
-                a, b = ln["start"] - 0.2, ln["end"] + 0.3
-                if a - 0.4 <= t <= b + 0.4:
-                    op = min(ease((t - (a - 0.4)) / 0.4), ease(((b + 0.4) - t) / 0.4))
-                    overlay(("qlow", ln["id"]), lambda cv, ln=ln: low_quote(cv, ln["fr"], ln["src"])).apply(fr, op)
-                continue
-            a, b = ln["start"] - 0.35, ln["end"] + 0.45
-            if a - 0.4 <= t <= b + 0.4:
-                op = min(ease((t - (a - 0.4)) / 0.4), ease(((b + 0.4) - t) / 0.4))
-                ov = overlay(("q", ln["id"]), lambda cv, ln=ln: layout.quote_card(cv, ln["fr"], ln["sub"], ln["src"]))
-                ov.apply(fr, op)
-        # subtitles (narration only)
+                overlay(("qlow", ln["id"]), lambda cv, ln=ln: low_quote(cv, ln["fr"], ln["src"])).apply(fr, op)
+            else:
+                overlay(("q", ln["id"]), lambda cv, ln=ln: layout.quote_card(cv, ln["fr"], ln["sub"], ln["src"])).apply(fr, op)
+        # subtitles (one at a time)
         for a, b, txt, sid in self.subs:
-            if sid == s["id"] and a - 0.15 <= t <= b + 0.15:
-                op = min(ease((t - (a - 0.15)) / 0.15), ease(((b + 0.15) - t) / 0.15))
-                ov = overlay(("sub", txt), lambda cv, txt=txt: layout.subtitle(cv, txt))
-                ov.apply(fr, op)
+            if sid == s["id"] and a <= t <= b:
+                fd = min(0.12, (b - a) / 3)
+                op = min(ease((t - a) / fd), ease((b - t) / fd))
+                overlay(("sub", txt), lambda cv, txt=txt: layout.subtitle(cv, txt)).apply(fr, op)
         # fade to black (scene-defined, e.g. Memphis)
         blk = self.anim.scene_black(s["id"], c)
         if blk > 0:
@@ -375,7 +392,13 @@ def render_all(workers=4, out=f"{WORK}/video/picture.mp4"):
     tl = load_timeline()
     n = int(round(tl["total"] * FPS))
     os.makedirs(f"{WORK}/video", exist_ok=True)
-    bounds = [round(n * i / workers) for i in range(workers + 1)]
+    # balance by estimated cost: Memphis frames (snow redrawn every frame) cost ~3x
+    w = np.ones(n)
+    for s in tl["scenes"]:
+        if s["id"] == "s09":
+            w[int(s["start"] * FPS):int(s["end"] * FPS)] = 3.0
+    cw = np.cumsum(w)
+    bounds = [0] + [int(np.searchsorted(cw, cw[-1] * i / workers)) for i in range(1, workers)] + [n]
     procs, parts = [], []
     for i in range(workers):
         part = f"{WORK}/video/part{i}.mp4"
