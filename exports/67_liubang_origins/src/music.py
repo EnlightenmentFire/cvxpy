@@ -18,6 +18,11 @@ SC = {s['id']: s for s in TL['scenes']}
 def lp(x, f, o=2): return sosfilt(butter(o, f, 'low', fs=SR, output='sos'), x)
 def hp(x, f, o=2): return sosfilt(butter(o, f, 'high', fs=SR, output='sos'), x)
 def bp(x, f1, f2, o=2): return sosfilt(butter(o, [f1, f2], 'band', fs=SR, output='sos'), x)
+def movavg(x, n):
+    c = np.cumsum(np.r_[0.0, x]); y = (c[n:] - c[:-n]) / n
+    p = (len(x) - len(y)); return np.r_[np.full(p // 2, y[0]), y, np.full(p - p // 2, y[-1])]
+
+
 def hz(m): return 440 * 2 ** ((m - 69) / 12)
 
 
@@ -156,10 +161,10 @@ v = np.pad(v, (0, max(0, N - len(v))))[:N]
 lv = meter.integrated_loudness(v)
 # 底乐整体响度设为人声以下约 21 dB，并在有人声时再闪避 3 dB
 mlv = meter.integrated_loudness(st)
-st *= 10 ** (((lv - 21) - mlv) / 20)
-env = np.convolve(np.abs(v), np.ones(int(0.3 * SR)) / (0.3 * SR), 'same')
+st *= 10 ** (((lv - 16.5) - mlv) / 20)
+env = movavg(np.abs(v), int(0.3 * SR))
 act = (env > 0.01).astype(float)
-act = np.convolve(act, np.ones(int(0.4 * SR)) / (0.4 * SR), 'same')
+act = movavg(act, int(0.4 * SR))
 duck = 10 ** (-3 * act / 20) * 10 ** (1.5 * (1 - act) / 20)
 st *= duck[:, None]
 # 结尾淡出
