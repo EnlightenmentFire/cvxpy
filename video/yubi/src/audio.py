@@ -80,7 +80,8 @@ def fx():
     add(amb, wind(S['s7']['start'] - S['s6']['start'] + 1, 1.0, 0.12), S['s6']['start'], 0.9)
     # 柒：风声贯穿；歌词前后音乐收掉，只剩风（风在 hush 处略抬）
     w7 = wind(S['s8']['card'][0] - S['s7']['start'] + 1.5, 1.4, 0.1); tt = np.arange(len(w7)) / SR + S['s7']['start']
-    w7 *= 1 + 1.0 * np.clip((tt - S['s7']['hush'] + 0.8) / 1.2, 0, 1) * np.clip((S['s8']['card'][0] - tt) / 1.5, 0, 1)
+    up = lambda a, z: np.clip(np.minimum((tt - a) / 0.8, (z - tt) / 0.8), 0, 1)      # 只在歌词前的静场和念完后的两秒抬风，不压歌词
+    w7 *= 1 + 1.0 * np.maximum(up(S['s7']['hush'] - 0.8, A('s7', 4) + 0.3), up(E('s7', 4) - 0.3, A('s7', 5) + 0.3))
     add(amb, w7, S['s7']['start'], 1.0)
     # 捌：侯景
     add(fx, whoosh(1.0, 300, 1600), CK('s8', 0, 2) + 0.3, 0.5)
@@ -122,21 +123,24 @@ def mixdown(music, out):
     pre, pre2, duck = f"{ROOT}/cache/premix.wav", f"{ROOT}/cache/premix2.wav", out.replace('.wav', '_bed.wav')
     ins = ['-i', f"{AU}/narration.wav", '-i', f"{AU}/fx.wav"] + (['-i', music] if music else [])
     g = f"[0:a]asplit=2[v][sc];[1:a]volume={FX_DB}dB[f];"
-    if music: g += f"[2:a]volume={MUSIC_DB}dB,equalizer=f=3000:t=q:w=1:g=-4,afade=t=in:d=2[m];[m][f]amix=inputs=2:duration=first:normalize=0[bed];"
-    else: g += "[f]anull[bed];"
+    # 音乐 + 音效整体晚 80 毫秒进入压缩器 = 侧链“前瞻” 80 毫秒：旁白一开口音乐已经压下去，句首第一个字不被盖住（80 毫秒的音画差察觉不到）
+    if music: g += f"[2:a]volume={MUSIC_DB}dB,equalizer=f=3000:t=q:w=1:g=-4,afade=t=in:d=2[m];[m][f]amix=inputs=2:duration=first:normalize=0,adelay=80|80,atrim=end={TOTAL:.3f}[bed];"
+    else: g += f"[f]adelay=80|80,atrim=end={TOTAL:.3f}[bed];"
     g += (f"[bed][sc]sidechaincompress=threshold={SC['threshold']}:ratio={SC['ratio']}:attack={SC['attack']}:release={SC['release']},"
           f"afade=t=out:st={TL['total'] - 3:.2f}:d=3,asplit=2[d1][d2];"
           f"[v][d1]amix=inputs=2:duration=first:normalize=0[o]")
     ff(*ins, '-filter_complex', g, '-map', '[o]', '-c:a', 'pcm_f32le', pre, '-map', '[d2]', '-c:a', 'pcm_f32le', duck)
-    # 先把整体增益推到 -16 LUFS 附近，同时用限幅器把样本峰值压在 -2.3 dBFS 以下（给真峰值留余量），
+    # 先把整体增益推到 -16 LUFS 附近，同时用限幅器把样本峰值压在 -2.8 dBFS 以下（给真峰值留余量），
     # 再做 loudnorm 两遍：先测，再按实测值线性归一（不做动态压缩，保住音乐与人声的相对关系）
     g0 = -16.0 - measure_i(pre)
-    ff('-i', pre, '-af', f"alimiter=level_in={10 ** (g0 / 20):.5f}:limit={10 ** (-2.3 / 20):.5f}:attack=3:release=60:level=false", '-c:a', 'pcm_f32le', pre2)
+    ff('-i', pre, '-af', f"alimiter=level_in={10 ** (g0 / 20):.5f}:limit={10 ** (-2.8 / 20):.5f}:attack=3:release=60:level=false", '-c:a', 'pcm_f32le', pre2)
     r = subprocess.run(['ffmpeg', '-hide_banner', '-i', pre2, '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json', '-f', 'null', '-'], capture_output=True, text=True).stderr
     m = json.loads(r[r.rindex('{'):r.rindex('}') + 1])
     ln = (f"loudnorm=I=-16:TP=-1.5:LRA=11:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}:"
           f"measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true:print_format=json")
-    r2 = subprocess.run(['ffmpeg', '-y', '-hide_banner', '-i', pre2, '-af', ln, '-ar', '48000', '-c:a', 'pcm_s24le', out], capture_output=True, text=True).stderr
+    tmp = out.replace('.wav', '.tmp.wav')            # 先写临时文件再原子替换：正在编码的 ffmpeg 读的旧文件不受影响
+    r2 = subprocess.run(['ffmpeg', '-y', '-hide_banner', '-i', pre2, '-af', ln, '-ar', '48000', '-c:a', 'pcm_s24le', tmp], capture_output=True, text=True).stderr
+    os.replace(tmp, out)
     m2 = json.loads(r2[r2.rindex('{'):r2.rindex('}') + 1])
     gain = g0 + float(m2['output_i']) - float(m2['input_i'])
     return dict(normalization_type=m2['normalization_type'], gain_db=round(gain, 2), pre_tp=m['input_tp'], pre_lra=m['input_lra']), duck, gain
