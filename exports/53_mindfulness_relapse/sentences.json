@@ -1,0 +1,1018 @@
+{
+ "voice": "Tocqueville (Qwen3-TTS-12Hz-1.7B-Base ICL clone of voice_design_reference)",
+ "tempo": {
+  "narration": 1.16,
+  "quote": 1.0
+ },
+ "gap_s": 0.5,
+ "lines": [
+  {
+   "id": "s01_hook_01",
+   "scene": "s01_hook",
+   "kind": "narration",
+   "tts_text": "得过几次抑郁的人，最怕的，往往不是今天的难过。",
+   "subtitle": "得过几次抑郁的人，最怕的，往往不是今天的难过。",
+   "start": 0.3,
+   "end": 4.317
+  },
+  {
+   "id": "s01_hook_02",
+   "scene": "s01_hook",
+   "kind": "narration",
+   "tts_text": "而是那种熟悉的下坠感，又开始了。",
+   "subtitle": "而是那种熟悉的下坠感，又开始了。",
+   "start": 4.817,
+   "end": 7.817
+  },
+  {
+   "id": "s01_hook_03",
+   "scene": "s01_hook",
+   "kind": "narration",
+   "tts_text": "有一种来自静坐的练习，被做进了临床随机试验。",
+   "subtitle": "有一种来自静坐的练习，被做进了临床随机试验。",
+   "start": 8.317,
+   "end": 12.128
+  },
+  {
+   "id": "s02_headline_01",
+   "scene": "s02_headline",
+   "kind": "narration",
+   "tts_text": "九项随机试验，一千二百五十八名患者。",
+   "subtitle": "9 项随机试验，1,258 名患者。",
+   "start": 13.078,
+   "end": 16.216
+  },
+  {
+   "id": "s02_headline_02",
+   "scene": "s02_headline",
+   "kind": "narration",
+   "tts_text": "练过的人，在一年多的随访里，抑郁复发的风险低了大约三成。",
+   "subtitle": "练过的人，在一年多的随访里，抑郁复发的风险低了大约三成。",
+   "start": 16.716,
+   "end": 21.629
+  },
+  {
+   "id": "s03_thesis_01",
+   "scene": "s03_thesis",
+   "kind": "narration",
+   "tts_text": "它没有让人不再难过。",
+   "subtitle": "它没有让人不再难过。",
+   "start": 22.579,
+   "end": 24.269
+  },
+  {
+   "id": "s03_thesis_02",
+   "scene": "s03_thesis",
+   "kind": "narration",
+   "tts_text": "它做的是另一件事：让人不再被难过拖走。",
+   "subtitle": "它做的是另一件事：让人不再被难过拖走。",
+   "start": 24.769,
+   "end": 28.01
+  },
+  {
+   "id": "s04_arrow_tease_01",
+   "scene": "s04_arrow_tease",
+   "kind": "narration",
+   "tts_text": "两千多年前的一部经里，有个比喻：中了一箭，别再中第二箭。",
+   "subtitle": "两千多年前的一部经里，有个比喻：中了一箭，别再中第二箭。",
+   "start": 28.96,
+   "end": 34.288
+  },
+  {
+   "id": "s04_arrow_tease_02",
+   "scene": "s04_arrow_tease",
+   "kind": "narration",
+   "tts_text": "今天，我们把这个比喻和这些研究放在一起看。",
+   "subtitle": "今天，我们把这个比喻和这些研究放在一起看。",
+   "start": 34.788,
+   "end": 38.305
+  },
+  {
+   "id": "s04_arrow_tease_03",
+   "scene": "s04_arrow_tease",
+   "kind": "narration",
+   "tts_text": "先说清楚：这是印照，不是证明。",
+   "subtitle": "先说清楚：这是印照，不是证明。",
+   "start": 38.805,
+   "end": 41.995
+  },
+  {
+   "id": "s05_disclaimer_01",
+   "scene": "s05_disclaimer",
+   "kind": "narration",
+   "tts_text": "也先说一句：本片只讲研究，不构成医疗建议。",
+   "subtitle": "也先说一句：本片只讲研究，不构成医疗建议。",
+   "start": 43.345,
+   "end": 47.655
+  },
+  {
+   "id": "s05_disclaimer_02",
+   "scene": "s05_disclaimer",
+   "kind": "narration",
+   "tts_text": "正在服药或治疗的朋友，任何调整，都请先和医生商量。",
+   "subtitle": "正在服药或治疗的朋友，任何调整，都请先和医生商量。",
+   "start": 48.155,
+   "end": 52.707
+  },
+  {
+   "id": "s06_relapse_01",
+   "scene": "s06_relapse",
+   "kind": "narration",
+   "tts_text": "抑郁有一个让人难受的特点：容易回来。",
+   "subtitle": "抑郁有一个让人难受的特点：容易回来。",
+   "start": 53.957,
+   "end": 57.181
+  },
+  {
+   "id": "s06_relapse_02",
+   "scene": "s06_relapse",
+   "kind": "narration",
+   "tts_text": "临床上普遍观察到，发作的次数越多，再次发作的风险就越高。",
+   "subtitle": "临床上普遍观察到，发作的次数越多，再次发作的风险就越高。",
+   "start": 57.681,
+   "end": 62.698
+  },
+  {
+   "id": "s06_relapse_03",
+   "scene": "s06_relapse",
+   "kind": "narration",
+   "tts_text": "为什么？心理学家提出过一个假说。",
+   "subtitle": "为什么？心理学家提出过一个假说。",
+   "start": 63.198,
+   "end": 65.871
+  },
+  {
+   "id": "s06_relapse_04",
+   "scene": "s06_relapse",
+   "kind": "narration",
+   "tts_text": "每一次发作，都像在心里踩出一条小路。",
+   "subtitle": "每一次发作，都像在心里踩出一条小路。",
+   "start": 66.371,
+   "end": 69.44
+  },
+  {
+   "id": "s06_relapse_05",
+   "scene": "s06_relapse",
+   "kind": "narration",
+   "tts_text": "病好了，这条路并没有消失。",
+   "subtitle": "病好了，这条路并没有消失。",
+   "start": 69.94,
+   "end": 72.422
+  },
+  {
+   "id": "s06_relapse_06",
+   "scene": "s06_relapse",
+   "kind": "narration",
+   "tts_text": "某一天，一点小小的低落，一句冷淡的话，一个阴雨的下午，",
+   "subtitle": "某一天，一点小小的低落，一句冷淡的话，一个阴雨的下午，",
+   "start": 72.922,
+   "end": 78.319
+  },
+  {
+   "id": "s06_relapse_07",
+   "scene": "s06_relapse",
+   "kind": "narration",
+   "tts_text": "就可能把整套旧想法重新唤醒：我又不行了，什么都不会好，都是我的错。",
+   "subtitle": "就可能把整套旧想法重新唤醒：我又不行了，什么都不会好，都是我的错。",
+   "start": 78.819,
+   "end": 84.733
+  },
+  {
+   "id": "s06b_reactivity_01",
+   "scene": "s06b_reactivity",
+   "kind": "narration",
+   "tts_text": "这个假说有实验的影子。",
+   "subtitle": "这个假说有实验的影子。",
+   "start": 85.683,
+   "end": 87.648
+  },
+  {
+   "id": "s06b_reactivity_02",
+   "scene": "s06b_reactivity",
+   "kind": "narration",
+   "tts_text": "二零零六年，西格尔团队找来九十九位已经康复的抑郁症患者，用实验方法让他们短暂地难过一下，",
+   "subtitle": "2006 年，西格尔团队找来 99 位已经康复的抑郁症患者，用实验方法让他们短暂地难过一下，",
+   "start": 88.148,
+   "end": 95.441
+  },
+  {
+   "id": "s06b_reactivity_03",
+   "scene": "s06b_reactivity",
+   "kind": "narration",
+   "tts_text": "再测一测，那些消极的信念被勾起来多少。",
+   "subtitle": "再测一测，那些消极的信念被勾起来多少。",
+   "start": 95.941,
+   "end": 99.186
+  },
+  {
+   "id": "s06b_reactivity_04",
+   "scene": "s06b_reactivity",
+   "kind": "narration",
+   "tts_text": "结果，被勾起得越多的人，在之后一年半里复发得越早。",
+   "subtitle": "结果，被勾起得越多的人，在之后一年半里复发得越早。",
+   "start": 99.686,
+   "end": 104.238
+  },
+  {
+   "id": "s06b_reactivity_05",
+   "scene": "s06b_reactivity",
+   "kind": "narration",
+   "tts_text": "这只是一项九十九人的研究，但它提示：危险的也许不是难过本身，而是难过唤醒的那一整套想法。",
+   "subtitle": "这只是一项九十九人的研究，但它提示：危险的也许不是难过本身，而是难过唤醒的那一整套想法。",
+   "start": 104.738,
+   "end": 112.6
+  },
+  {
+   "id": "s07_rumination_01",
+   "scene": "s07_rumination",
+   "kind": "narration",
+   "tts_text": "接着，人开始反复地想。想为什么，想怎么办，越想越往下沉。",
+   "subtitle": "接着，人开始反复地想。想为什么，想怎么办，越想越往下沉。",
+   "start": 113.55,
+   "end": 119.791
+  },
+  {
+   "id": "s07_rumination_02",
+   "scene": "s07_rumination",
+   "kind": "narration",
+   "tts_text": "心理学把它叫做反刍。",
+   "subtitle": "心理学把它叫做反刍。",
+   "start": 120.291,
+   "end": 122.015
+  },
+  {
+   "id": "s07_rumination_03",
+   "scene": "s07_rumination",
+   "kind": "narration",
+   "tts_text": "反刍看起来像在解决问题，其实是在原地打转。",
+   "subtitle": "反刍看起来像在解决问题，其实是在原地打转。",
+   "start": 122.515,
+   "end": 126.119
+  },
+  {
+   "id": "s07_rumination_04",
+   "scene": "s07_rumination",
+   "kind": "narration",
+   "tts_text": "一圈涟漪，推出下一圈，越推越大。",
+   "subtitle": "一圈涟漪，推出下一圈，越推越大。",
+   "start": 126.619,
+   "end": 130.015
+  },
+  {
+   "id": "s08_origin_01",
+   "scene": "s08_origin",
+   "kind": "narration",
+   "tts_text": "上世纪九十年代，三位心理学家想解决的，正是这个问题。",
+   "subtitle": "上世纪九十年代，三位心理学家想解决的，正是这个问题。",
+   "start": 130.965,
+   "end": 135.482
+  },
+  {
+   "id": "s08_origin_02",
+   "scene": "s08_origin",
+   "kind": "narration",
+   "tts_text": "他们是：西格尔，威廉斯，蒂斯代尔。",
+   "subtitle": "他们是：辛德尔·西格尔、马克·威廉斯、约翰·蒂斯代尔。",
+   "start": 135.982,
+   "end": 139.862
+  },
+  {
+   "id": "s08_origin_03",
+   "scene": "s08_origin",
+   "kind": "narration",
+   "tts_text": "他们起初想做的，是一种预防用的维持版认知疗法。",
+   "subtitle": "他们起初想做的，是一种预防用的维持版认知疗法。",
+   "start": 140.362,
+   "end": 144.138
+  },
+  {
+   "id": "s08_origin_04",
+   "scene": "s08_origin",
+   "kind": "narration",
+   "tts_text": "后来他们慢慢意识到：要紧的也许不是把想法改对，而是换一种方式，和想法相处。",
+   "subtitle": "后来他们慢慢意识到：要紧的也许不是把想法改对，而是换一种方式，和想法相处。",
+   "start": 144.638,
+   "end": 151.195
+  },
+  {
+   "id": "s08_origin_05",
+   "scene": "s08_origin",
+   "kind": "narration",
+   "tts_text": "他们去看了卡巴金在美国麻省大学医学院开设的正念减压课程。",
+   "subtitle": "他们去看了卡巴金在美国麻省大学医学院开设的正念减压课程。",
+   "start": 151.695,
+   "end": 155.937
+  },
+  {
+   "id": "s08_origin_06",
+   "scene": "s08_origin",
+   "kind": "narration",
+   "tts_text": "这套课程取法东方的禅修传统，去掉宗教的外衣，变成了八周的训练。",
+   "subtitle": "这套课程取法东方的禅修传统，去掉宗教的外衣，变成了八周的训练。",
+   "start": 156.437,
+   "end": 161.764
+  },
+  {
+   "id": "s08_origin_07",
+   "scene": "s08_origin",
+   "kind": "narration",
+   "tts_text": "他们把正念训练和认知疗法结合起来，就是正念认知疗法，英文简称 M B C T。",
+   "subtitle": "他们把正念训练和认知疗法结合起来，就是正念认知疗法，英文简称 MBCT。",
+   "start": 162.264,
+   "end": 168.454
+  },
+  {
+   "id": "s09_design_01",
+   "scene": "s09_design",
+   "kind": "narration",
+   "tts_text": "它的对象很特别：不是正在发病的人，而是曾经多次抑郁、现在已经缓解的人。",
+   "subtitle": "它的对象很特别：不是正在发病的人，而是曾经多次抑郁、现在已经缓解的人。",
+   "start": 169.404,
+   "end": 175.714
+  },
+  {
+   "id": "s09_design_02",
+   "scene": "s09_design",
+   "kind": "narration",
+   "tts_text": "目标也很特别：不是治好这一次，而是防住下一次。",
+   "subtitle": "目标也很特别：不是治好这一次，而是防住下一次。",
+   "start": 176.214,
+   "end": 180.561
+  },
+  {
+   "id": "s09_design_03",
+   "scene": "s09_design",
+   "kind": "narration",
+   "tts_text": "八周，每周一次小组课，再加上每天在家练习。",
+   "subtitle": "八周，每周一次小组课，再加上每天在家练习。",
+   "start": 181.061,
+   "end": 185.13
+  },
+  {
+   "id": "s09_design_04",
+   "scene": "s09_design",
+   "kind": "narration",
+   "tts_text": "练的内容很朴素：呼吸，身体扫描，在日常小事里觉察。",
+   "subtitle": "练的内容很朴素：呼吸，身体扫描，在日常小事里觉察。",
+   "start": 185.63,
+   "end": 190.544
+  },
+  {
+   "id": "s09_design_05",
+   "scene": "s09_design",
+   "kind": "narration",
+   "tts_text": "其中有个小练习，叫三分钟呼吸空间。",
+   "subtitle": "其中有个小练习，叫三分钟呼吸空间。",
+   "start": 191.044,
+   "end": 194.13
+  },
+  {
+   "id": "s09_design_06",
+   "scene": "s09_design",
+   "kind": "narration",
+   "tts_text": "第一分钟，停下来，问问自己：此刻有什么念头，什么感受，身体哪里发紧。",
+   "subtitle": "第一分钟，停下来，问问自己：此刻有什么念头，什么感受，身体哪里发紧。",
+   "start": 194.63,
+   "end": 200.94
+  },
+  {
+   "id": "s09_design_07",
+   "scene": "s09_design",
+   "kind": "narration",
+   "tts_text": "第二分钟，把注意力收拢到呼吸上。第三分钟，再慢慢扩展到整个身体。",
+   "subtitle": "第二分钟，把注意力收拢到呼吸上。第三分钟，再慢慢扩展到整个身体。",
+   "start": 201.44,
+   "end": 207.595
+  },
+  {
+   "id": "s10_decenter_01",
+   "scene": "s10_decenter",
+   "kind": "narration",
+   "tts_text": "核心只有一件事：念头来了，看见它，承认它，但不必相信它。",
+   "subtitle": "核心只有一件事：念头来了，看见它，承认它，但不必相信它。",
+   "start": 208.545,
+   "end": 214.511
+  },
+  {
+   "id": "s10_decenter_02",
+   "scene": "s10_decenter",
+   "kind": "narration",
+   "tts_text": "研究者把这叫做去中心化。",
+   "subtitle": "研究者把这叫做去中心化。",
+   "start": 215.011,
+   "end": 217.028
+  },
+  {
+   "id": "s10_decenter_03",
+   "scene": "s10_decenter",
+   "kind": "narration",
+   "tts_text": "我真没用，这句话出现时，把它看成心里飘过的一个念头，而不是关于自己的事实。",
+   "subtitle": "「我真没用」——这句话出现时，把它看成心里飘过的一个念头，而不是关于自己的事实。",
+   "start": 217.528,
+   "end": 223.735
+  },
+  {
+   "id": "s10_decenter_04",
+   "scene": "s10_decenter",
+   "kind": "narration",
+   "tts_text": "这是一个机制假说，有部分实验支持，还没有完全定论。",
+   "subtitle": "这是一个机制假说，有部分实验支持，还没有完全定论。",
+   "start": 224.235,
+   "end": 228.58
+  },
+  {
+   "id": "s11_teasdale_01",
+   "scene": "s11_teasdale",
+   "kind": "narration",
+   "tts_text": "二零零零年，他们发表了第一项随机试验。",
+   "subtitle": "2000 年，他们发表了第一项随机试验。",
+   "start": 229.53,
+   "end": 232.461
+  },
+  {
+   "id": "s11_teasdale_02",
+   "scene": "s11_teasdale",
+   "kind": "narration",
+   "tts_text": "一百四十五名已经康复的患者，随机分成两组：一组照常治疗，一组另外加上这门课，随访六十周。",
+   "subtitle": "145 名已经康复的患者，随机分成两组：一组照常治疗，一组另外加上这门课，随访 60 周。",
+   "start": 232.961,
+   "end": 240.909
+  },
+  {
+   "id": "s11_teasdale_03",
+   "scene": "s11_teasdale",
+   "kind": "narration",
+   "tts_text": "结果有点出人意料。",
+   "subtitle": "结果有点出人意料。",
+   "start": 241.409,
+   "end": 242.875
+  },
+  {
+   "id": "s11_teasdale_04",
+   "scene": "s11_teasdale",
+   "kind": "narration",
+   "tts_text": "对发作过三次以上的人，复发风险明显下降；只发作过两次的人，却看不出差别。",
+   "subtitle": "对发作过 3 次以上的人，复发风险明显下降；只发作过 2 次的人，却看不出差别。",
+   "start": 243.375,
+   "end": 249.651
+  },
+  {
+   "id": "s11_teasdale_05",
+   "scene": "s11_teasdale",
+   "kind": "narration",
+   "tts_text": "研究者的解读是：它针对的，可能正是那条被反复踩过的旧路。",
+   "subtitle": "研究者的解读是：它针对的，可能正是那条被反复踩过的旧路。",
+   "start": 250.151,
+   "end": 255.099
+  },
+  {
+   "id": "s12_kuyken_01",
+   "scene": "s12_kuyken",
+   "kind": "narration",
+   "tts_text": "一项试验说明不了太多。",
+   "subtitle": "一项试验说明不了太多。",
+   "start": 256.049,
+   "end": 258.325
+  },
+  {
+   "id": "s12_kuyken_02",
+   "scene": "s12_kuyken",
+   "kind": "narration",
+   "tts_text": "真正有分量的，是二零一六年发表在美国医学会精神病学杂志上的一项分析。",
+   "subtitle": "真正有分量的，是 2016 年发表在《美国医学会精神病学杂志》上的一项分析。",
+   "start": 258.825,
+   "end": 264.842
+  },
+  {
+   "id": "s12_kuyken_03",
+   "scene": "s12_kuyken",
+   "kind": "narration",
+   "tts_text": "牛津大学的威廉·凯肯团队，没有只看各篇论文的结论，",
+   "subtitle": "牛津大学的威廉·凯肯团队，没有只看各篇论文的结论，",
+   "start": 265.342,
+   "end": 269.256
+  },
+  {
+   "id": "s12_kuyken_04",
+   "scene": "s12_kuyken",
+   "kind": "narration",
+   "tts_text": "而是把九项随机试验里，每一位患者的原始数据都拿来，重新合在一起算。",
+   "subtitle": "而是把 9 项随机试验里，每一位患者的原始数据都拿来，重新合在一起算。",
+   "start": 269.756,
+   "end": 275.549
+  },
+  {
+   "id": "s12_kuyken_05",
+   "scene": "s12_kuyken",
+   "kind": "narration",
+   "tts_text": "这叫个体数据元分析，在证据等级里相当靠前。",
+   "subtitle": "这叫个体数据元分析，在证据等级里相当靠前。",
+   "start": 276.049,
+   "end": 280.032
+  },
+  {
+   "id": "s12_kuyken_06",
+   "scene": "s12_kuyken",
+   "kind": "narration",
+   "tts_text": "一共一千二百五十八人，平均年龄四十七岁，四分之三是女性。",
+   "subtitle": "一共 1,258 人，平均年龄 47 岁，四分之三是女性。",
+   "start": 280.532,
+   "end": 285.445
+  },
+  {
+   "id": "s13_kuyken_result_01",
+   "scene": "s13_kuyken_result",
+   "kind": "narration",
+   "tts_text": "在六十周的随访里，和没有接受这门课的人相比，复发的风险比是零点六九，大约低了三成。",
+   "subtitle": "在 60 周的随访里，和没有接受这门课的人相比，复发的风险比是 0.69，大约低了三成。",
+   "start": 286.695,
+   "end": 293.971
+  },
+  {
+   "id": "s13_kuyken_result_02",
+   "scene": "s13_kuyken_result",
+   "kind": "narration",
+   "tts_text": "再和其他积极治疗相比，其中包括继续服用抗抑郁药，风险比是零点七九，低了约两成。",
+   "subtitle": "再和其他积极治疗相比，其中包括继续服用抗抑郁药，风险比是 0.79，低了约两成。",
+   "start": 294.471,
+   "end": 301.626
+  },
+  {
+   "id": "s13_kuyken_result_03",
+   "scene": "s13_kuyken_result",
+   "kind": "narration",
+   "tts_text": "不过这个优势的置信区间，上限已经接近一，说明差距不算大。",
+   "subtitle": "不过这个优势的置信区间，上限已经接近 1，说明差距不算大。",
+   "start": 302.126,
+   "end": 306.713
+  },
+  {
+   "id": "s13_kuyken_result_04",
+   "scene": "s13_kuyken_result",
+   "kind": "narration",
+   "tts_text": "还有一个细节：治疗前残余症状越重的人，获益似乎越大。作者的措辞是，有一些证据提示。",
+   "subtitle": "还有一个细节：治疗前残余症状越重的人，获益似乎越大。作者的措辞是，有一些证据提示。",
+   "start": 307.213,
+   "end": 314.592
+  },
+  {
+   "id": "s14_caveat_01",
+   "scene": "s14_caveat",
+   "kind": "narration",
+   "tts_text": "但有两点，必须说清楚。",
+   "subtitle": "但有两点，必须说清楚。",
+   "start": 315.542,
+   "end": 317.684
+  },
+  {
+   "id": "s14_caveat_02",
+   "scene": "s14_caveat",
+   "kind": "narration",
+   "tts_text": "第一，研究对象是复发性抑郁、目前已经缓解的人。不是正在急性发作的人，更不是所有人。",
+   "subtitle": "第一，研究对象是复发性抑郁、目前已经缓解的人。不是正在急性发作的人，更不是所有人。",
+   "start": 318.184,
+   "end": 325.477
+  },
+  {
+   "id": "s14_caveat_03",
+   "scene": "s14_caveat",
+   "kind": "narration",
+   "tts_text": "第二，它不是用来替代治疗的。把这项研究理解成打坐可以代替吃药，就完全读反了。",
+   "subtitle": "第二，它不是用来替代治疗的。把这项研究理解成打坐可以代替吃药，就完全读反了。",
+   "start": 325.977,
+   "end": 332.535
+  },
+  {
+   "id": "s14_caveat_04",
+   "scene": "s14_caveat",
+   "kind": "narration",
+   "tts_text": "英国国家卫生与临床优化研究所二零二二年的成人抑郁指南，把团体正念认知疗法列为预防复发的可选方案之一，",
+   "subtitle": "英国国家卫生与临床优化研究所（NICE）2022 年的成人抑郁指南，把团体正念认知疗法列为预防复发的可选方案之一，",
+   "start": 333.035,
+   "end": 341.535
+  },
+  {
+   "id": "s14_caveat_05",
+   "scene": "s14_caveat",
+   "kind": "narration",
+   "tts_text": "和继续服药等方案并列，并且要由受过专门训练的人来带。",
+   "subtitle": "和继续服药等方案并列，并且要由受过专门训练的人来带。",
+   "start": 342.035,
+   "end": 346.224
+  },
+  {
+   "id": "s15_goyal_01",
+   "scene": "s15_goyal",
+   "kind": "narration",
+   "tts_text": "那么，对更常见的焦虑和抑郁情绪呢？",
+   "subtitle": "那么，对更常见的焦虑和抑郁情绪呢？",
+   "start": 347.174,
+   "end": 350.106
+  },
+  {
+   "id": "s15_goyal_02",
+   "scene": "s15_goyal",
+   "kind": "narration",
+   "tts_text": "二零一四年，约翰斯·霍普金斯大学的戈亚尔团队，在美国医学会内科学杂志上发表了一项系统综述。",
+   "subtitle": "2014 年，约翰斯·霍普金斯大学的戈亚尔团队，在《美国医学会内科学杂志》上发表了一项系统综述。",
+   "start": 350.606,
+   "end": 357.714
+  },
+  {
+   "id": "s15_goyal_03",
+   "scene": "s15_goyal",
+   "kind": "narration",
+   "tts_text": "他们从一万八千多篇文献里，筛出四十七项随机试验，三千五百多人，而且都有积极的对照组。",
+   "subtitle": "他们从 18,753 篇文献里，筛出 47 项随机试验，3,515 人，而且都有积极的对照组。",
+   "start": 358.214,
+   "end": 366.128
+  },
+  {
+   "id": "s15_goyal_04",
+   "scene": "s15_goyal",
+   "kind": "narration",
+   "tts_text": "结论是：正念冥想改善焦虑和抑郁，有中等强度的证据，八周时的效应量大约在零点三到零点四之间。",
+   "subtitle": "结论是：正念冥想改善焦虑和抑郁，有中等强度的证据，8 周时的效应量大约在 0.3 到 0.4 之间。",
+   "start": 366.628,
+   "end": 375.197
+  },
+  {
+   "id": "s15_goyal_05",
+   "scene": "s15_goyal",
+   "kind": "narration",
+   "tts_text": "这是小到中等的效果：看得出来，但不是奇迹。",
+   "subtitle": "这是小到中等的效果：看得出来，但不是奇迹。",
+   "start": 375.697,
+   "end": 379.645
+  },
+  {
+   "id": "s15_goyal_06",
+   "scene": "s15_goyal",
+   "kind": "narration",
+   "tts_text": "同一篇综述还写明：没有证据表明，它比药物、运动或其他行为疗法更好。",
+   "subtitle": "同一篇综述还写明：没有证据表明，它比药物、运动或其他行为疗法更好。",
+   "start": 380.145,
+   "end": 386.835
+  },
+  {
+   "id": "s15_goyal_07",
+   "scene": "s15_goyal",
+   "kind": "narration",
+   "tts_text": "所以更准确的说法是：正念是一种有证据的选择，但不是唯一的，也不是最强的。",
+   "subtitle": "所以更准确的说法是：正念是一种有证据的选择，但不是唯一的，也不是最强的。",
+   "start": 387.335,
+   "end": 393.611
+  },
+  {
+   "id": "s16_limits_01",
+   "scene": "s16_limits",
+   "kind": "narration",
+   "tts_text": "说到这里，还要泼一点冷水。",
+   "subtitle": "说到这里，还要泼一点冷水。",
+   "start": 394.561,
+   "end": 396.837
+  },
+  {
+   "id": "s16_limits_02",
+   "scene": "s16_limits",
+   "kind": "narration",
+   "tts_text": "二零一八年，范达姆等十五位学者联名发表长文，题目就叫警惕炒作。",
+   "subtitle": "2018 年，范达姆等十五位学者联名发表长文，题目就叫《警惕炒作》。",
+   "start": 397.337,
+   "end": 403.095
+  },
+  {
+   "id": "s16_limits_03",
+   "scene": "s16_limits",
+   "kind": "narration",
+   "tts_text": "他们提醒：正念这个词本身就定义不一；不少研究样本小，对照组设计也弱。",
+   "subtitle": "他们提醒：正念这个词本身就定义不一；不少研究样本小，对照组设计也弱。",
+   "start": 403.595,
+   "end": 409.354
+  },
+  {
+   "id": "s16_limits_04",
+   "scene": "s16_limits",
+   "kind": "narration",
+   "tts_text": "冥想也很难做到盲法：练的人知道自己在练，期待本身就可能让人感觉变好。",
+   "subtitle": "冥想也很难做到盲法：练的人知道自己在练，期待本身就可能让人感觉变好。",
+   "start": 409.854,
+   "end": 415.561
+  },
+  {
+   "id": "s16_limits_05",
+   "scene": "s16_limits",
+   "kind": "narration",
+   "tts_text": "还有一点常被忽略：冥想并不是对每个人都无害。",
+   "subtitle": "还有一点常被忽略：冥想并不是对每个人都无害。",
+   "start": 416.061,
+   "end": 419.82
+  },
+  {
+   "id": "s16_limits_06",
+   "scene": "s16_limits",
+   "kind": "narration",
+   "tts_text": "二零二零年的一项系统综述，汇总了八十三项研究、六千七百多名练习者，",
+   "subtitle": "2020 年的一项系统综述，汇总了 83 项研究、6,703 名练习者，",
+   "start": 420.32,
+   "end": 425.785
+  },
+  {
+   "id": "s16_limits_07",
+   "scene": "s16_limits",
+   "kind": "narration",
+   "tts_text": "总体约百分之八的人报告过不良反应，最常见的是焦虑和情绪低落。",
+   "subtitle": "总体约 8% 的人报告过不良反应，最常见的是焦虑和情绪低落。",
+   "start": 426.285,
+   "end": 430.992
+  },
+  {
+   "id": "s16_limits_08",
+   "scene": "s16_limits",
+   "kind": "narration",
+   "tts_text": "所以，正在经历严重抑郁或创伤的人，练习最好有合格的老师和专业人员陪伴。",
+   "subtitle": "所以，正在经历严重抑郁或创伤的人，练习最好有合格的老师和专业人员陪伴。",
+   "start": 431.492,
+   "end": 438.05
+  },
+  {
+   "id": "s16b_ledger_01",
+   "scene": "s16b_ledger",
+   "kind": "narration",
+   "tts_text": "把前面的证据，再捋一捋。",
+   "subtitle": "把前面的证据，再捋一捋。",
+   "start": 439.0,
+   "end": 441.12
+  },
+  {
+   "id": "s16b_ledger_02",
+   "scene": "s16b_ledger",
+   "kind": "narration",
+   "tts_text": "预防复发：多项随机试验加个体数据元分析，属于实证，证据较强，但只针对已缓解的复发性抑郁。",
+   "subtitle": "预防复发：多项随机试验加个体数据元分析，属于实证，证据较强，但只针对已缓解的复发性抑郁。",
+   "start": 441.62,
+   "end": 450.396
+  },
+  {
+   "id": "s16b_ledger_03",
+   "scene": "s16b_ledger",
+   "kind": "narration",
+   "tts_text": "改善焦虑和抑郁情绪：实证，效果小到中等，不比其他积极疗法更好。",
+   "subtitle": "改善焦虑和抑郁情绪：实证，效果小到中等，不比其他积极疗法更好。",
+   "start": 450.896,
+   "end": 456.81
+  },
+  {
+   "id": "s16b_ledger_04",
+   "scene": "s16b_ledger",
+   "kind": "narration",
+   "tts_text": "去中心化这个机制：理论加部分实证，还在研究中。",
+   "subtitle": "去中心化这个机制：理论加部分实证，还在研究中。",
+   "start": 457.31,
+   "end": 461.657
+  },
+  {
+   "id": "s16b_ledger_05",
+   "scene": "s16b_ledger",
+   "kind": "narration",
+   "tts_text": "而接下来要讲的佛经和这些研究的相通之处，是类比，不是实证。",
+   "subtitle": "而接下来要讲的佛经和这些研究的相通之处，是类比，不是实证。",
+   "start": 462.157,
+   "end": 467.571
+  },
+  {
+   "id": "s17_arrow_01",
+   "scene": "s17_arrow",
+   "kind": "narration",
+   "tts_text": "讲完证据，回到两千多年前的那个比喻。",
+   "subtitle": "讲完证据，回到两千多年前的那个比喻。",
+   "start": 468.821,
+   "end": 471.976
+  },
+  {
+   "id": "s17_arrow_02",
+   "scene": "s17_arrow",
+   "kind": "narration",
+   "tts_text": "杂阿含经第四百七十经里，佛陀对弟子们说：",
+   "subtitle": "《杂阿含经》第 470 经里，佛陀对弟子们说：",
+   "start": 472.476,
+   "end": 476.165
+  },
+  {
+   "id": "s17_arrow_03",
+   "scene": "s17_arrow",
+   "kind": "narration",
+   "tts_text": "没有听闻正法的人，身体遇到痛苦，会忧愁、抱怨、哭号，甚至心乱发狂，像被两支毒箭射中。",
+   "subtitle": "没有听闻正法的人，身体遇到痛苦，会忧愁、抱怨、哭号，甚至心乱发狂，像被两支毒箭射中。",
+   "start": 476.665,
+   "end": 485.355
+  },
+  {
+   "id": "s17_arrow_04",
+   "scene": "s17_arrow",
+   "kind": "narration",
+   "tts_text": "而多闻的弟子，遇到同样的痛：",
+   "subtitle": "而多闻的弟子，遇到同样的痛：",
+   "start": 485.855,
+   "end": 488.165
+  },
+  {
+   "id": "s17_arrow_05",
+   "scene": "s17_arrow",
+   "kind": "quote",
+   "tts_text": "譬如士夫被一毒箭，不被第二毒箭，当于尔时，唯生一受，所谓身受，不生心受。",
+   "subtitle": "譬如士夫被一毒箭，不被第二毒箭，當於爾時，唯生一受，所謂身受，不生心受。",
+   "start": 488.665,
+   "end": 497.405
+  },
+  {
+   "id": "s17_arrow_06",
+   "scene": "s17_arrow",
+   "kind": "narration",
+   "tts_text": "像一个人只中了一支箭，没有再中第二支：只有身体的痛，没有心里的苦上加苦。",
+   "subtitle": "像一个人只中了一支箭，没有再中第二支：只有身体的痛，没有心里的苦上加苦。",
+   "start": 498.505,
+   "end": 504.506
+  },
+  {
+   "id": "s18_two_arrows_01",
+   "scene": "s18_two_arrows",
+   "kind": "narration",
+   "tts_text": "第一支箭，是生活里本来就有的痛：病痛、失去、挫折。它常常躲不开。",
+   "subtitle": "第一支箭，是生活里本来就有的痛：病痛、失去、挫折。它常常躲不开。",
+   "start": 505.456,
+   "end": 512.266
+  },
+  {
+   "id": "s18_two_arrows_02",
+   "scene": "s18_two_arrows",
+   "kind": "narration",
+   "tts_text": "第二支箭，是我们自己补上的：为什么又是我，我是不是永远好不了。",
+   "subtitle": "第二支箭，是我们自己补上的：为什么又是我，我是不是永远好不了。",
+   "start": 512.766,
+   "end": 517.99
+  },
+  {
+   "id": "s18_two_arrows_03",
+   "scene": "s18_two_arrows",
+   "kind": "narration",
+   "tts_text": "比如，工作上挨了一句批评。那句话本身，是第一支箭。",
+   "subtitle": "比如，工作上挨了一句批评。那句话本身，是第一支箭。",
+   "start": 518.49,
+   "end": 523.232
+  },
+  {
+   "id": "s18_two_arrows_04",
+   "scene": "s18_two_arrows",
+   "kind": "narration",
+   "tts_text": "接下来一整晚反复回放，给自己下结论：我就是不行。这是第二支箭，常常比第一支更疼。",
+   "subtitle": "接下来一整晚反复回放，给自己下结论：我就是不行。这是第二支箭，常常比第一支更疼。",
+   "start": 523.732,
+   "end": 531.232
+  },
+  {
+   "id": "s18_two_arrows_05",
+   "scene": "s18_two_arrows",
+   "kind": "narration",
+   "tts_text": "这和去中心化，有相通之处。",
+   "subtitle": "这和去中心化，有相通之处。",
+   "start": 531.732,
+   "end": 534.301
+  },
+  {
+   "id": "s18_two_arrows_06",
+   "scene": "s18_two_arrows",
+   "kind": "narration",
+   "tts_text": "难过来了，就是难过；念头来了，只是念头。不必顺着它，再射出第二支、第三支箭。",
+   "subtitle": "难过来了，就是难过；念头来了，只是念头。不必顺着它，再射出第二支、第三支箭。",
+   "start": 534.801,
+   "end": 543.473
+  },
+  {
+   "id": "s19_verse_01",
+   "scene": "s19_verse",
+   "kind": "narration",
+   "tts_text": "这部经的偈颂里说：",
+   "subtitle": "这部经的偈颂里说：",
+   "start": 544.423,
+   "end": 545.889
+  },
+  {
+   "id": "s19_verse_02",
+   "scene": "s19_verse",
+   "kind": "quote",
+   "tts_text": "苦乐二俱舍，不顺亦不违。",
+   "subtitle": "苦樂二俱捨，不順亦不違。",
+   "start": 546.389,
+   "end": 549.489
+  },
+  {
+   "id": "s19_verse_03",
+   "scene": "s19_verse",
+   "kind": "narration",
+   "tts_text": "对苦和乐都不执取：不顺着它走，也不跟它对抗。",
+   "subtitle": "对苦和乐都不执取：不顺着它走，也不跟它对抗。",
+   "start": 550.489,
+   "end": 554.626
+  },
+  {
+   "id": "s19_verse_04",
+   "scene": "s19_verse",
+   "kind": "narration",
+   "tts_text": "这恰好也是正念练习的要领：不是压住难过，也不是赶走念头，而是看着它来，看着它走。",
+   "subtitle": "这恰好也是正念练习的要领：不是压住难过，也不是赶走念头，而是看着它来，看着它走。",
+   "start": 555.126,
+   "end": 562.235
+  },
+  {
+   "id": "s19_verse_05",
+   "scene": "s19_verse",
+   "kind": "narration",
+   "tts_text": "金刚经说：",
+   "subtitle": "《金刚经》说：",
+   "start": 562.735,
+   "end": 563.684
+  },
+  {
+   "id": "s19_verse_06",
+   "scene": "s19_verse",
+   "kind": "quote",
+   "tts_text": "一切有为法，如梦幻泡影，如露亦如电，应作如是观。",
+   "subtitle": "一切有為法，如夢幻泡影，如露亦如電，應作如是觀。",
+   "start": 564.184,
+   "end": 570.384
+  },
+  {
+   "id": "s19_verse_07",
+   "scene": "s19_verse",
+   "kind": "narration",
+   "tts_text": "念头也是这样：生起，停留，消散。",
+   "subtitle": "念头也是这样：生起，停留，消散。",
+   "start": 571.684,
+   "end": 575.408
+  },
+  {
+   "id": "s20_yinzhao_01",
+   "scene": "s20_yinzhao",
+   "kind": "narration",
+   "tts_text": "当然，经文讲的是修行，研究讲的是复发率，二者不是一回事。",
+   "subtitle": "当然，经文讲的是修行，研究讲的是复发率，二者不是一回事。",
+   "start": 576.358,
+   "end": 581.565
+  },
+  {
+   "id": "s20_yinzhao_02",
+   "scene": "s20_yinzhao",
+   "kind": "narration",
+   "tts_text": "科学没有证明佛法。或许，佛学的讲法也有一些科学基础，算是一种印照。",
+   "subtitle": "科学没有证明佛法。或许，佛学的讲法也有一些科学基础，算是一种印照。",
+   "start": 582.065,
+   "end": 588.203
+  },
+  {
+   "id": "s20_yinzhao_03",
+   "scene": "s20_yinzhao",
+   "kind": "narration",
+   "tts_text": "两种语言，在同一个地方相遇：此生，此心。",
+   "subtitle": "两种语言，在同一个地方相遇：此生，此心。",
+   "start": 588.703,
+   "end": 593.375
+  },
+  {
+   "id": "s21_end_01",
+   "scene": "s21_end",
+   "kind": "narration",
+   "tts_text": "雨总会停。",
+   "subtitle": "雨总会停。",
+   "start": 594.925,
+   "end": 595.908
+  },
+  {
+   "id": "s21_end_02",
+   "scene": "s21_end",
+   "kind": "narration",
+   "tts_text": "难过来了，可以让它只是难过。",
+   "subtitle": "难过来了，可以让它只是难过。",
+   "start": 596.408,
+   "end": 599.132
+  },
+  {
+   "id": "s21_end_03",
+   "scene": "s21_end",
+   "kind": "narration",
+   "tts_text": "看见念头只是念头，就少中一支箭。",
+   "subtitle": "看见念头只是念头，就少中一支箭。",
+   "start": 599.632,
+   "end": 602.632
+  },
+  {
+   "id": "s21_end_04",
+   "scene": "s21_end",
+   "kind": "quote",
+   "tts_text": "不被第二毒箭。",
+   "subtitle": "不被第二毒箭。",
+   "start": 603.832,
+   "end": 604.972
+  }
+ ]
+}
