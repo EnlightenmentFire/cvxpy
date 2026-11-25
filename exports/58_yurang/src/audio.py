@@ -241,8 +241,12 @@ def main():
     meter = pyln.Meter(SR)
     v = voice()
     sf.write(f"{WK}/build/voice.wav", v, SR, subtype="PCM_24")
-    m = music(); sf.write(f"{WK}/build/music_raw.wav", m, SR, subtype="FLOAT")
-    fx = sfx(); sf.write(f"{WK}/build/sfx_raw.wav", fx, SR, subtype="FLOAT")
+    if "--reuse" in sys.argv:
+        m = sf.read(f"{WK}/build/music_raw.wav")[0].astype(np.float32)
+        fx = sf.read(f"{WK}/build/sfx_raw.wav")[0].astype(np.float32)
+    else:
+        m = music(); sf.write(f"{WK}/build/music_raw.wav", m, SR, subtype="FLOAT")
+        fx = sfx(); sf.write(f"{WK}/build/sfx_raw.wav", fx, SR, subtype="FLOAT")
     vs = np.stack([v, v], 1)
     lv = meter.integrated_loudness(vs)
     env = act_env(v)[:, None]
@@ -256,6 +260,19 @@ def main():
     lf = meter.integrated_loudness(fx[speech] + 1e-6)
     gf = 10 ** ((lv - 14.0 - lf) / 20)
     fxs = fx * gf * (1 - 0.3 * env)
+    # 高燃段落提升：开场剑鸣劈斩、请衣三击（旁白空档里）
+    boost = np.ones(N, np.float32)
+    def bump(a, b, g, r=0.3):
+        i, j, k = int(a * SR), int(b * SR), int(r * SR)
+        seg = np.ones(j - i, np.float32) * g
+        seg[:k] = np.linspace(1, g, k); seg[-k:] = np.linspace(g, 1, k)
+        boost[i:j] = np.maximum(boost[i:j], seg)
+    bump(0.0, 2.6, 1.8)
+    st = TL["events"]["strikes"]
+    if st:
+        bump(st[0] - 1.2, st[-1] + 0.65, 2.6, 0.25)
+    music_bed = music_bed * boost[:, None]
+    fxs = fxs * boost[:, None]
     for name, mix in (("mix_full", vs + music_bed + fxs), ("mix_nomusic", vs + fxs)):
         sf.write(f"{WK}/build/{name}_pre.wav", mix, SR, subtype="FLOAT")
     # 报告
