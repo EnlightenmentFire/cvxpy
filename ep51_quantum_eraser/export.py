@@ -23,7 +23,7 @@ def main(out):
         sents.append(dict(id=d["id"], scene=d["scene"], kind=("经文/原句" if d["k"] == "q" else "旁白"), text=d["say"], subtitle=d["sub"],
                           pause_after=d["gap"], start=e["start"], end=e["end"]))
     json.dump(dict(voice="托克维尔声音（Qwen3-TTS-12Hz-1.7B-Base ICL 克隆，参考 voice_design_reference）",
-                   tempo={"旁白": 1.06, "经文/原句": 1.0}, sentences=sents),
+                   tempo={"旁白": 1.12, "经文/原句": 1.03}, sentences=sents),
               open(f"{out}/sentences.json", "w", encoding="utf8"), ensure_ascii=False, indent=1)
     with open(f"{out}/sentences.txt", "w", encoding="utf8") as f:
         for s in sents:

@@ -75,6 +75,27 @@ def mix():
     g = np.concatenate([g, np.full(n - len(g), g[-1])])
     g = uniform_filter1d(g, int(0.05 * SR))
     mm = m * (base * g)[:, None]
+    # 按场景校准：旁白进行时，底乐 RMS 比旁白低 TARGET dB（场景交界 3 秒交叉过渡）
+    TARGET = -float(os.environ.get("MUSIC_REL_DB", 21.0))
+    tl0 = json.load(open(f"{WORK}/timeline.json"))
+    vv0 = np.sqrt((fr ** 2).mean(1))
+    mf0 = mm.mean(1)[: n // hop * hop].reshape(-1, hop)
+    ml0 = np.sqrt((mf0 ** 2).mean(1))
+    corr = np.ones(n)
+    pts_t, pts_g = [], []
+    for sc_ in tl0["scenes"]:
+        a_, b_ = int(sc_["start"] / 0.05), int(sc_["end"] / 0.05)
+        sp_ = speak[a_:b_]
+        rel = 10 * np.log10((ml0[a_:b_][sp_] ** 2).mean() / (vv0[a_:b_][sp_] ** 2).mean())
+        gdb = TARGET - rel
+        pts_t += [sc_["start"] + 1.5, sc_["end"] - 1.5]
+        pts_g += [gdb, gdb]
+    tt = np.arange(n) / SR
+    corr = 10 ** (np.interp(tt, pts_t, pts_g) / 20)
+    mm = mm * corr[:, None]
+    # 开场声音钩子：第 0 秒的磬抬 8 dB，1.5 秒内回落到正常底乐电平
+    hook_db = 8.0 * np.clip(1 - (tt - 0.2) / 1.3, 0, 1)
+    mm = mm * (10 ** (hook_db / 20))[:, None]
     mix = np.stack([v, v], 1) + mm
     sf.write(f"{ST}/_pre_music.wav", mix.astype(np.float32), SR, subtype="FLOAT")
     sf.write(f"{ST}/_pre_voice.wav", np.stack([v, v], 1).astype(np.float32), SR, subtype="FLOAT")

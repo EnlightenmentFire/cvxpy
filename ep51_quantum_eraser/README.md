@@ -8,7 +8,7 @@
 | `script_data.py` | 全片逐句稿（数据）：旁白、上屏字幕/原文、停顿、画面提示 |
 | `FACTCHECK.md` | 物理与佛典逐条核对（CBETA 原文、Kim 等论文 PDF） |
 | `tts_clone.py` | Qwen3-TTS-12Hz-1.7B-Base ICL 克隆，逐句合成；中位音高不在 82–108 Hz 就换 seed |
-| `voice_post.py` | 去头尾静音、句内停顿 ≤0.38 s、rubberband R3 变速（旁白 1.06，原句 1.0）、50 Hz 高通；拼时间线，出 timeline.json / narration.srt / voice.wav |
+| `voice_post.py` | 去头尾静音、句内停顿 ≤0.38 s、rubberband R3 变速（旁白 1.12，原句 1.03）、50 Hz 高通；拼时间线，出 timeline.json / narration.srt / voice.wav |
 | `asr_check.py` | faster-whisper 回读，按无调拼音与稿子比对 |
 | `music.py` | 原创底乐（numpy 合成：磬、类古琴拨弦、箫、玻璃钟、低音持续），开场第 0 秒一声磬作声音钩子 |
 | `render.py` | 逐帧画面：双缝、Kim 实验光路（示意）、符合计数分组、经文卡、禅堂灯、云月、书法；字幕烧录 |
