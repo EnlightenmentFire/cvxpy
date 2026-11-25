@@ -1,0 +1,723 @@
+{
+ "summary": {
+  "voice_only": {
+   "mean": 0.0003,
+   "lines_over_8pct": []
+  },
+  "mix": {
+   "mean": 0.0017,
+   "lines_over_8pct": []
+  },
+  "mix_phone": {
+   "mean": 0.0008,
+   "lines_over_8pct": []
+  }
+ },
+ "lines": {
+  "c_year": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "c_ad": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "c_apps": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "c_bet": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_dennis": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_fut": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_fut2": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_long": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_long2": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_pit": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_pit2": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_money": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_money2": {
+   "voice_only": 0.0,
+   "mix": 0.056,
+   "mix_phone": 0.0
+  },
+  "b_eck": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_argue": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_yes": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_no": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_deny": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_exp": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_turtle": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_quote": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_quote2": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_quote3": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_film": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_film2": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_film3": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "b_sowhat": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "o_apps": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "o_test": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "o_interview": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "o_select": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "o_total": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "o_jobs": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "o_faith": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "o_train": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "o_money": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "o_acct": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "o_sowhat": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r_intro": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r_paper": {
+   "voice_only": 0.0,
+   "mix": 0.037,
+   "mix_phone": 0.0
+  },
+  "r_trend": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r1": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r1_tr": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r1_n": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r2": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r2_rule": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r2_mk": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r2_guard": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r3": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r3_def": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r3_dc": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r3_buy": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r3_sys": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r3_skip": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r3_guard": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r4": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r4_rule": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r4_cap": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r4_guard": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r5": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r5_line": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r5_pct": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r5_quote": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r5_explain": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r5_guard": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r6": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r6_rule": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r6_hard": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r6_give": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r6_guard": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r7": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r7_rule": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r7_ex": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r7_guard": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r_sum": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r_nosecret": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "r_sowhat": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "d_q": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "d_most": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "d_win": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "d_why": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "d_why2": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "d_count": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "d_note": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "d_miss": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "d_guard": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "d_seventh": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "d_big": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "d_give": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "d_sowhat": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_q": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_curve": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_split": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_faith": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_faith2": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_cut": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_sum1": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_sum2": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_two": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_one1": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_one2": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_one3": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_other1": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_other2": {
+   "voice_only": 0.0,
+   "mix": 0.033,
+   "mix_phone": 0.0
+  },
+  "v_quote": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_q1": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_q2": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_explain": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_later": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_money": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "v_sowhat": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_1988": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_funds": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_crash": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_april": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_turtles": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_shannon": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_end": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_dimaria": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_why": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_reasons": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_aug": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_suit": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_settle": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_settle2": {
+   "voice_only": 0.037,
+   "mix": 0.037,
+   "mix_phone": 0.037
+  },
+  "t_diff": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_sowhat": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "t_bet": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "q_q": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "q_bt": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "q_bt2": {
+   "voice_only": 0.0,
+   "mix": 0.043,
+   "mix_phone": 0.043
+  },
+  "q_hard": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "q_split": {
+   "voice_only": 0.0,
+   "mix": 0.037,
+   "mix_phone": 0.037
+  },
+  "q_same": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "q_either": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "q_slogan": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "q_think": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "q_final": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "e1": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "e2": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  },
+  "e3": {
+   "voice_only": 0.0,
+   "mix": 0.0,
+   "mix_phone": 0.0
+  }
+ }
+}

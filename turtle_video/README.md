@@ -2,6 +2,16 @@
 
 微信视频号竖屏视频（1080×1920，30fps，mp4，< 100MB）。本目录是完整的制作源码、讲稿和史料核对。
 
+## 成片
+
+| 文件 | 说明 |
+|---|---|
+| `export/turtle_experiment_ep01.mp4` | 有配乐版：1080×1920，30fps，H.264 High + AAC 48kHz，13:42，92.2MB |
+| `export/turtle_experiment_ep01_nomusic.mp4` | 无配乐版（规范第三选项，授权干净）：同一画面，旁白 + 音效，90.9MB |
+| `export/climax_excerpt.m4a` | 高潮段单听（1988 章结尾到第七章开头） |
+| `export/post_description.md` | 视频号简介，含配乐署名 |
+| `export/qa/` | 混音报告、分章和逐句 ASR 对比、配乐选用 |
+
 ## 目录
 
 | 路径 | 内容 |
