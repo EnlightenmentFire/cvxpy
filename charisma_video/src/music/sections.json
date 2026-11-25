@@ -1,0 +1,123 @@
+{
+ "sections": [
+  {
+   "name": "L1a",
+   "layer": "L1",
+   "t0": 0.0,
+   "t1": 46.238,
+   "gain_db": -6.5,
+   "cand": true,
+   "need": 53.24
+  },
+  {
+   "name": "L1b",
+   "layer": "L1",
+   "t0": 46.238,
+   "t1": 137.079,
+   "gain_db": -5.5,
+   "cand": false,
+   "need": 97.84
+  },
+  {
+   "name": "L1c",
+   "layer": "L1",
+   "t0": 137.079,
+   "t1": 200.26,
+   "gain_db": -5.0,
+   "cand": false,
+   "need": 70.18
+  },
+  {
+   "name": "L2a",
+   "layer": "L2",
+   "t0": 200.26,
+   "t1": 288.84,
+   "gain_db": -4.0,
+   "cand": true,
+   "need": 95.58
+  },
+  {
+   "name": "L2b",
+   "layer": "L2",
+   "t0": 288.84,
+   "t1": 359.84,
+   "gain_db": -3.5,
+   "cand": false,
+   "need": 78.0
+  },
+  {
+   "name": "L2c",
+   "layer": "L2",
+   "t0": 359.84,
+   "t1": 454.068,
+   "gain_db": -3.5,
+   "cand": false,
+   "need": 101.23
+  },
+  {
+   "name": "L2d",
+   "layer": "L2",
+   "t0": 454.068,
+   "t1": 521.008,
+   "gain_db": -3.0,
+   "cand": false,
+   "need": 73.94
+  },
+  {
+   "name": "L2e",
+   "layer": "L2",
+   "t0": 521.008,
+   "t1": 607.461,
+   "gain_db": -3.0,
+   "cand": false,
+   "need": 93.45
+  },
+  {
+   "name": "L2f",
+   "layer": "L2",
+   "t0": 607.461,
+   "t1": 731.192,
+   "gain_db": -3.5,
+   "cand": false,
+   "need": 130.73
+  },
+  {
+   "name": "COLD",
+   "layer": "COLD",
+   "t0": 731.192,
+   "t1": 780.936,
+   "gain_db": -7.0,
+   "cand": false,
+   "need": 61.74
+  },
+  {
+   "name": "L2g",
+   "layer": "L2",
+   "t0": 780.936,
+   "t1": 815.266,
+   "gain_db": -4.0,
+   "cand": false,
+   "need": 46.33
+  },
+  {
+   "name": "L3",
+   "layer": "L3",
+   "t0": 815.266,
+   "t1": 883.301,
+   "gain_db": 0.0,
+   "cand": true,
+   "need": 80.04
+  },
+  {
+   "name": "OUT",
+   "layer": "OUT",
+   "t0": 883.301,
+   "t1": 895.091,
+   "gain_db": -3.0,
+   "cand": false,
+   "need": 23.79
+  }
+ ],
+ "peak": 837.316,
+ "total": 895.091
+}

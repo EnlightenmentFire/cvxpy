@@ -17,8 +17,15 @@ def norm(s):
 def py(s):
     return lazy_pinyin(norm(s))
 
+def digits(s):
+    import re
+    from tts import num2zh, DIG
+    s = re.sub(r"(\d{4})\s*年", lambda m: "".join(DIG[int(d)] for d in m.group(1)) + "年", s)
+    s = re.sub(r"(\d+)%", lambda m: "百分之" + num2zh(m.group(1)), s)
+    return re.sub(r"\d+", lambda m: num2zh(m.group(0)), s)
+
 def cer(ref, hyp):
-    a, b = py(ref), py(hyp)
+    a, b = py(ref), py(digits(hyp))
     sm = difflib.SequenceMatcher(None, a, b)
     edits = sum(max(i2 - i1, j2 - j1) for op, i1, i2, j1, j2 in sm.get_opcodes() if op != "equal")
     return edits / max(1, len(a))
@@ -27,7 +34,7 @@ def main():
     model_dir, meta_path = sys.argv[1], sys.argv[2]
     files = sys.argv[3:]
     meta = json.load(open(meta_path))
-    m = WhisperModel(model_dir, device="cpu", compute_type="int8", cpu_threads=4)
+    m = WhisperModel(model_dir, device="cpu", compute_type="int8", cpu_threads=int(os.environ.get("ASR_THREADS","4")))
     out = {}
     for f in files:
         key = os.path.basename(f)[:-4]

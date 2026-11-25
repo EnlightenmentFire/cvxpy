@@ -64,7 +64,8 @@ def gen_batch(mg, prompts, audio_prompts, seconds, seed, guidance=3.0):
     inp = mg.proc(audio=aps, sampling_rate=SR_MG, text=prompts, padding=True, return_tensors="pt")
     inp["input_values"] = inp["input_values"].to(torch.bfloat16)
     with torch.inference_mode():
-        out = mg.model.generate(**inp, do_sample=True, guidance_scale=guidance, max_new_tokens=int(seconds * TOK_PER_S))
+        out = mg.model.generate(**inp, do_sample=True, guidance_scale=float(guidance),
+                                max_new_tokens=int(seconds * TOK_PER_S))
     res = []
     for i in range(len(prompts)):
         a = out[i].float().numpy()

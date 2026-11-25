@@ -451,6 +451,11 @@ def d_apple(c, seg, t):
             draw_text(c, "“what would Walt have done?”", 540, 860, "garamond_i", 46, ICE_C, ma, align="center")
             draw_text(c, "沃尔特走后，大家开会琢磨：沃尔特会怎么做？", 540, 920, "serif", 30, IVORY, ma, align="center")
             na = seg.P(t, "never_ask", 1.0)
+            # climax: the narration pauses ~2 s after this line; let the light bloom with the music
+            ni = [i for i, ln in enumerate(seg.lines) if ln.get("cue") == "never_ask"][0]
+            bloom = ease(prog(t, seg.cue(f"E{ni}"), 1.2)) * (1 - ease(prog(t, seg.cue(f"E{ni}") + 2.0, 1.5)))
+            if bloom > 0:
+                radial(c, 540, 930, 620, (*GOLD_HI, 90), (*GOLD, 0), alpha=bloom)
             if na > 0:
                 draw_text(c, "“never ask what he would do.", 540, 860, "garamond_i", 52, GOLD_HI, na, align="center")
                 draw_text(c, "Just do what’s right.”", 540, 930, "garamond_i", 52, GOLD_HI, na, align="center")

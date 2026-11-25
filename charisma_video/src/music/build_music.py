@@ -87,7 +87,11 @@ def extend(model_path, choice_path, group=5):
         out = os.path.join(HERE, "stems", s["name"] + ".wav")
         if os.path.exists(out):
             continue
-        if s["cand"]:
+        part = os.path.join(HERE, "stems", "partial", s["name"] + ".wav")
+        if os.path.exists(part):
+            chains[s["name"]] = dict(s=s, audio=load32(os.path.relpath(part, HERE)),
+                                     prompt=seed_audio[s["layer"]][:, -int(PROMPT_S * SR_MG):])
+        elif s["cand"]:
             chains[s["name"]] = dict(s=s, audio=seed_audio[s["layer"]].copy(), prompt=None)
         else:
             chains[s["name"]] = dict(s=s, audio=np.zeros((2, 0), np.float32),
@@ -108,12 +112,15 @@ def extend(model_path, choice_path, group=5):
         remain = max(chains[k]["s"]["need"] - chains[k]["audio"].shape[1] / SR_MG for k in grp)
         secs = min(NEW_S, max(8.0, remain + 1.0))
         t = time.time()
-        outs = gen_batch(mg, prompts, aps, secs, 1000 + rnd)
+        outs = gen_batch(mg, prompts, aps, secs, 1000 + rnd, guidance=float(os.environ.get("MG_GUIDANCE", "3.0")))
         for k, new in zip(grp, outs):
             c = chains[k]
             c["audio"] = xfade_concat(c["audio"], new, int(0.05 * SR_MG)) if c["audio"].shape[1] else new
             if c["audio"].shape[1] / SR_MG >= c["s"]["need"]:
                 sf.write(os.path.join(HERE, "stems", k + ".wav"), c["audio"].T, SR_MG)
+            else:
+                os.makedirs(os.path.join(HERE, "stems", "partial"), exist_ok=True)
+                sf.write(os.path.join(HERE, "stems", "partial", k + ".wav"), c["audio"].T, SR_MG)
         rnd += 1
         print(f"round {rnd}: {grp} +{secs:.0f}s in {time.time()-t:.0f}s; " +
               ", ".join(f"{k}={chains[k]['audio'].shape[1]/SR_MG:.0f}/{chains[k]['s']['need']:.0f}" for k in grp), flush=True)

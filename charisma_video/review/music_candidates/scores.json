@@ -1,0 +1,98 @@
+{
+ "L1": [
+  {
+   "file": "L1_seed22.wav",
+   "vocal_band": 0.018,
+   "onset": 0.778,
+   "flatness": 0.0,
+   "dyn_db": 4.2,
+   "dminor": 0.602,
+   "asr": "",
+   "score": -0.372
+  },
+  {
+   "file": "L1_seed33.wav",
+   "vocal_band": 0.021,
+   "onset": 0.723,
+   "flatness": 0.0,
+   "dyn_db": 6.0,
+   "dminor": 0.495,
+   "asr": "",
+   "score": -0.468
+  },
+  {
+   "file": "L1_seed11.wav",
+   "vocal_band": 0.002,
+   "onset": 0.68,
+   "flatness": 0.0,
+   "dyn_db": 6.9,
+   "dminor": 0.23,
+   "asr": "",
+   "score": -0.687
+  }
+ ],
+ "L2": [
+  {
+   "file": "L2_seed11.wav",
+   "vocal_band": 0.004,
+   "onset": 0.683,
+   "flatness": 0.0,
+   "dyn_db": 11.2,
+   "dminor": 0.789,
+   "asr": "",
+   "score": 0.613
+  },
+  {
+   "file": "L2_seed33.wav",
+   "vocal_band": 0.03,
+   "onset": 0.845,
+   "flatness": 0.0,
+   "dyn_db": 6.2,
+   "dminor": 0.739,
+   "asr": "",
+   "score": 0.252
+  },
+  {
+   "file": "L2_seed22.wav",
+   "vocal_band": 0.007,
+   "onset": 0.685,
+   "flatness": 0.0,
+   "dyn_db": 8.9,
+   "dminor": 0.216,
+   "asr": "",
+   "score": -0.266
+  }
+ ],
+ "L3": [
+  {
+   "file": "L3_seed22.wav",
+   "vocal_band": 0.054,
+   "onset": 0.798,
+   "flatness": 0.0001,
+   "dyn_db": 7.6,
+   "dminor": 0.419,
+   "asr": "",
+   "score": -0.336
+  },
+  {
+   "file": "L3_seed11.wav",
+   "vocal_band": 0.027,
+   "onset": 0.89,
+   "flatness": 0.0007,
+   "dyn_db": 5.9,
+   "dminor": 0.024,
+   "asr": "",
+   "score": -0.852
+  },
+  {
+   "file": "L3_seed33.wav",
+   "vocal_band": 0.102,
+   "onset": 0.923,
+   "flatness": 0.0006,
+   "dyn_db": 3.6,
+   "dminor": -0.296,
+   "asr": "",
+   "score": -1.806
+  }
+ ]
+}
