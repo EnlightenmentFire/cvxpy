@@ -1180,8 +1180,8 @@ def credits(t, D, cues):
             ("", "regular", 20, NEU_DIM),
             ("档案图片：美国国家档案馆（公有领域）", "regular", 24, NEU_DIM),
             ("地图数据：Natural Earth（公有领域）", "regular", 24, NEU_DIM),
-            ("配乐：Kevin MacLeod（incompetech.com）· CC BY 4.0", "regular", 24, NEU_DIM),
-            ("Ossuary 6 - Air · Controlled Chaos · Hitman · Dark Times · Ossuary 1 · Colorless Aura", "regular", 19, NEU_DIM),
+            ("配乐：MusicGen 本地生成（Meta · CC-BY-NC 4.0 · 非商用）", "regular", 24, NEU_DIM),
+            ("心跳低鼓与音效：程序合成", "regular", 22, NEU_DIM),
             ("「假想」段为示意，并未发生", "bold", 26, (1.0, 0.75, 0.9))]
     y = 520
     for txt, wgt, sz, col in rows:

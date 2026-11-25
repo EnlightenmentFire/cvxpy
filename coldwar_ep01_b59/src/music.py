@@ -15,6 +15,10 @@ from scipy import signal
 SR = 48000
 LIB = "/tmp/claude-0/-home-user-cvxpy/c6f191ba-c6fe-598c-beeb-d3aef80994fb/scratchpad/music_lib/wav"
 
+GEN = "/tmp/claude-0/-home-user-cvxpy/c6f191ba-c6fe-598c-beeb-d3aef80994fb/scratchpad/musicgen/layers"
+SOURCE = os.environ.get("SCORE_SOURCE", "gen")   # "gen" = MusicGen layers (spec priority 1), "lib" = library
+USE_HEARTBEAT = os.environ.get("SCORE_HEARTBEAT", "1") == "1"
+
 VOICE_DB = -18.0          # active RMS of the narration track (before final loudnorm)
 UNDER = 16.5              # music sits this many dB under the voice while narration is active
 
@@ -22,8 +26,29 @@ UNDER = 16.5              # music sits this many dB under the voice while narrat
 # start/end are crossfade centres; fades are applied around them.
 
 
+def plan_gen(T):
+    """Same three-layer arc, built from locally generated MusicGen layers."""
+    flash = T["hypo_out"] + 1.1
+    segs = [
+        dict(name="gen_bed", src=0.0, t0=0.0, t1=T["dive"] + 1.0, level=-31.0, fin=2.0, fout=3.0),
+        dict(name="gen_build", src=0.0, t0=T["dive"] - 2.0, t1=T["hypo_launch"] + 0.2, level=-28.0, fin=3.0, fout=2.0,
+             auto=[(T["sonar"] - 2.0, 0.0), (T["sonar"] + 2.0, 2.5)]),
+        # climax clip is end-aligned so its own crescendo peaks in the narration-free beat before the flash
+        dict(name="gen_climax", src="end", t0=T["hypo_burst"] + 0.5, t1=flash, level=-20.0, fin=1.0, fout=0.25,
+             ramp=[(T["hypo_burst"] + 0.5, -27.0), (T["hypo_globe"] + 2.0, -23.5), (T["hypo_out"] - 0.4, -19.0)]),
+        dict(name="gen_post", src=0.0, t0=T["surfacing"] - 0.5, t1=T["ending"] + 1.5, level=-29.5, fin=3.0, fout=3.0),
+        dict(name="gen_ending", src=0.0, t0=T["ending"] - 1.5, t1=T["credits"] + 4.5, level=-28.0, fin=3.0, fout=3.0),
+    ]
+    if USE_HEARTBEAT:
+        segs.insert(2, dict(name="@heartbeat", src=0.0, t0=T["sonar"], t1=T["hypo_launch"] - 0.5, level=-31.0,
+                            fin=4.0, fout=2.0))
+    return segs
+
+
 def plan(T):
     """T: dict shot_id -> start time. Returns list of segments."""
+    if SOURCE == "gen":
+        return plan_gen(T)
     hypo_end_flash = T["hypo_out"] + 1.1
     return [
         # 1. bed: very light drone from the top to the dive
@@ -69,6 +94,10 @@ def _heartbeat(dur, period=1.5):
 def _load(name, dur=None):
     if name == "@heartbeat":
         return _heartbeat(dur + 10)
+    if name.startswith("gen_"):
+        x, sr = sf.read(os.path.join(GEN, name + ".wav"), dtype="float32")
+        assert sr == SR
+        return x
     x, sr = sf.read(os.path.join(LIB, name + ".wav"), dtype="float32")
     assert sr == SR
     return x  # stereo
@@ -172,8 +201,15 @@ def build(tl, voice):
         a = seg["t0"] - fin / 2 if seg["t0"] > 0 else 0.0
         b = min(n / SR, seg["t1"] + fout / 2)
         L = int((b - a) * SR)
-        s0 = int(max(0.0, seg["src"] - (seg["t0"] - a)) * SR)
-        clip = x[s0:s0 + L]
+        src = seg["src"]
+        if src == "end":  # align the clip's end with t1 (+ the fade-out half)
+            src = len(x) / SR - (b - a) + (seg["t0"] - a)
+        s0f = src - (seg["t0"] - a)
+        pre = int(max(0.0, -s0f) * SR)
+        s0 = int(max(0.0, s0f) * SR)
+        clip = x[s0:s0 + L - pre]
+        if pre:
+            clip = np.concatenate([np.zeros((pre, 2), np.float32), clip])
         if len(clip) < L:
             clip = np.pad(clip, ((0, L - len(clip)), (0, 0)))
         g = 10 ** ((seg["level"] - _rms_db(clip[int(fin * SR): max(int(fin * SR) + 1, L - int(fout * SR))])) / 20)
