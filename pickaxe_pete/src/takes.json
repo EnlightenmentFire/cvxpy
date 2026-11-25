@@ -1,0 +1,844 @@
+{
+ "s1_pete": {
+  "take": "s1_pete__7.wav",
+  "wer": 0.067,
+  "pitch_range": 11.9,
+  "dur": 5.41,
+  "asr": "Forty years of digging and all I found is sand and a very disappointed mule",
+  "all": [
+   [
+    "s1_pete__7.wav",
+    0.07,
+    11.9
+   ],
+   [
+    "s1_pete__99.wav",
+    0.07,
+    9.9
+   ],
+   [
+    "s1_pete__21.wav",
+    0.07,
+    8.5
+   ]
+  ]
+ },
+ "s2_pete1": {
+  "take": "s2_pete1__7.wav",
+  "wer": 0.0,
+  "pitch_range": 15.8,
+  "dur": 2.09,
+  "asr": "Gold mine, stand back, I'll start digging.",
+  "all": [
+   [
+    "s2_pete1__7.wav",
+    0.0,
+    15.8
+   ],
+   [
+    "s2_pete1__21.wav",
+    0.14,
+    14.3
+   ],
+   [
+    "s2_pete1__99.wav",
+    0.29,
+    18.1
+   ]
+  ]
+ },
+ "s2_zoe1": {
+  "take": "s2_zoe1__7.wav",
+  "wer": 0.0,
+  "pitch_range": 6.1,
+  "dur": 1.25,
+  "asr": "Please don't hit Riggy.",
+  "all": [
+   [
+    "s2_zoe1__7.wav",
+    0.0,
+    6.1
+   ],
+   [
+    "s2_zoe1__99.wav",
+    0.0,
+    4.7
+   ],
+   [
+    "s2_zoe1__21.wav",
+    0.25,
+    5.3
+   ]
+  ]
+ },
+ "s2_riggy1": {
+  "take": "s2_riggy1__99.wav",
+  "wer": 0.0,
+  "pitch_range": 15.9,
+  "dur": 1.71,
+  "asr": "Welcome, Challenger, to the mine.",
+  "all": [
+   [
+    "s2_riggy1__99.wav",
+    0.0,
+    15.9
+   ],
+   [
+    "s2_riggy1__21.wav",
+    0.0,
+    15.1
+   ],
+   [
+    "s2_riggy1__7.wav",
+    0.0,
+    12.8
+   ]
+  ]
+ },
+ "s2_pete2": {
+  "take": "s2_pete2__7.wav",
+  "wer": 0.0,
+  "pitch_range": 15.7,
+  "dur": 0.76,
+  "asr": "Where's the dirt?",
+  "all": [
+   [
+    "s2_pete2__7.wav",
+    0.0,
+    15.7
+   ],
+   [
+    "s2_pete2__21.wav",
+    0.0,
+    10.4
+   ],
+   [
+    "s2_pete2__99.wav",
+    0.0,
+    3.3
+   ]
+  ]
+ },
+ "s2_zoe2": {
+  "take": "s2_zoe2__7.wav",
+  "wer": 0.0,
+  "pitch_range": 6.1,
+  "dur": 2.27,
+  "asr": "There is no dirt. We mine by guessing.",
+  "all": [
+   [
+    "s2_zoe2__7.wav",
+    0.0,
+    6.1
+   ],
+   [
+    "s2_zoe2__99.wav",
+    0.0,
+    5.6
+   ],
+   [
+    "s2_zoe2__21.wav",
+    0.0,
+    5.1
+   ]
+  ]
+ },
+ "s3_zoe1": {
+  "take": "s3_zoe1__21.wav",
+  "wer": 0.0,
+  "pitch_range": 5.6,
+  "dur": 5.6,
+  "asr": "Imagine one giant notebook of who paid who. Everybody keeps the same copy, so nobody can cheat.",
+  "all": [
+   [
+    "s3_zoe1__21.wav",
+    0.0,
+    5.6
+   ],
+   [
+    "s3_zoe1__7.wav",
+    0.0,
+    8.6
+   ],
+   [
+    "s3_zoe1__99.wav",
+    0.0,
+    5.3
+   ]
+  ]
+ },
+ "s3_pete1": {
+  "take": "s3_pete1__21.wav",
+  "wer": 0.0,
+  "pitch_range": 9.5,
+  "dur": 2.59,
+  "asr": "Sounds like the saloon tab, except honest.",
+  "all": [
+   [
+    "s3_pete1__21.wav",
+    0.0,
+    9.5
+   ],
+   [
+    "s3_pete1__7.wav",
+    0.0,
+    6.4
+   ],
+   [
+    "s3_pete1__99.wav",
+    0.0,
+    4.4
+   ]
+  ]
+ },
+ "s3_zoe2": {
+  "take": "s3_zoe2__7.wav",
+  "wer": 0.0,
+  "pitch_range": 7.2,
+  "dur": 2.81,
+  "asr": "Every few minutes, somebody gets to write the next page.",
+  "all": [
+   [
+    "s3_zoe2__7.wav",
+    0.0,
+    7.2
+   ],
+   [
+    "s3_zoe2__21.wav",
+    0.0,
+    6.8
+   ],
+   [
+    "s3_zoe2__99.wav",
+    0.0,
+    10.1
+   ]
+  ]
+ },
+ "s4_zoe1": {
+  "take": "s4_zoe1__7.wav",
+  "wer": 0.0,
+  "pitch_range": 6.9,
+  "dur": 4.62,
+  "asr": "To win the pen, you have to guess a magic number. No skill, no trick, just guessing.",
+  "all": [
+   [
+    "s4_zoe1__7.wav",
+    0.0,
+    6.9
+   ],
+   [
+    "s4_zoe1__21.wav",
+    0.0,
+    6.0
+   ],
+   [
+    "s4_zoe1__99.wav",
+    0.0,
+    8.1
+   ]
+  ]
+ },
+ "s4_riggy1": {
+  "take": "s4_riggy1__21.wav",
+  "wer": 0.0,
+  "pitch_range": 10.6,
+  "dur": 4.41,
+  "asr": "I guess 100 trillion times a second. I am very good at being wrong.",
+  "all": [
+   [
+    "s4_riggy1__21.wav",
+    0.0,
+    10.6
+   ],
+   [
+    "s4_riggy1__7.wav",
+    0.07,
+    10.3
+   ],
+   [
+    "s4_riggy1__99.wav",
+    0.07,
+    8.1
+   ]
+  ]
+ },
+ "s4_pete1": {
+  "take": "s4_pete1__99.wav",
+  "wer": 0.0,
+  "pitch_range": 13.5,
+  "dur": 2.92,
+  "asr": "So you're paid to guess wrong really fast.",
+  "all": [
+   [
+    "s4_pete1__99.wav",
+    0.0,
+    13.5
+   ],
+   [
+    "s4_pete1__7.wav",
+    0.0,
+    10.8
+   ],
+   [
+    "s4_pete1__21.wav",
+    0.0,
+    6.5
+   ]
+  ]
+ },
+ "s4_zoe2": {
+  "take": "s4_zoe2__99.wav",
+  "wer": 0.0,
+  "pitch_range": 7.0,
+  "dur": 1.45,
+  "asr": "Until one time, it's right.",
+  "all": [
+   [
+    "s4_zoe2__99.wav",
+    0.0,
+    7.0
+   ],
+   [
+    "s4_zoe2__7.wav",
+    0.0,
+    8.2
+   ],
+   [
+    "s4_zoe2__21.wav",
+    0.0,
+    5.2
+   ]
+  ]
+ },
+ "s4_riggy2": {
+  "take": "s4_riggy2__7.wav",
+  "wer": 0.0,
+  "pitch_range": 10.7,
+  "dur": 2.06,
+  "asr": "I wrote the page. I get new coins.",
+  "all": [
+   [
+    "s4_riggy2__7.wav",
+    0.0,
+    10.7
+   ],
+   [
+    "s4_riggy2__21.wav",
+    0.0,
+    9.7
+   ],
+   [
+    "s4_riggy2__99.wav",
+    0.0,
+    8.7
+   ]
+  ]
+ },
+ "s5_pete1": {
+  "take": "s5_pete1__99.wav",
+  "wer": 0.0,
+  "pitch_range": 10.5,
+  "dur": 1.94,
+  "asr": "Well heck, I'd build a thousand Riggys.",
+  "all": [
+   [
+    "s5_pete1__99.wav",
+    0.0,
+    10.5
+   ],
+   [
+    "s5_pete1__21.wav",
+    0.14,
+    17.5
+   ],
+   [
+    "s5_pete1__7.wav",
+    0.29,
+    13.2
+   ]
+  ]
+ },
+ "s5_zoe1": {
+  "take": "s5_zoe1__99.wav",
+  "wer": 0.0,
+  "pitch_range": 6.5,
+  "dur": 2.42,
+  "asr": "everybody does, so the game makes itself harder.",
+  "all": [
+   [
+    "s5_zoe1__99.wav",
+    0.0,
+    6.5
+   ],
+   [
+    "s5_zoe1__7.wav",
+    0.0,
+    7.9
+   ],
+   [
+    "s5_zoe1__21.wav",
+    0.0,
+    5.5
+   ]
+  ]
+ },
+ "s5_zoe2": {
+  "take": "s5_zoe2__21.wav",
+  "wer": 0.0,
+  "pitch_range": 5.8,
+  "dur": 4.01,
+  "asr": "No matter how many miners show up, a new page still takes about 10 minutes.",
+  "all": [
+   [
+    "s5_zoe2__21.wav",
+    0.0,
+    5.8
+   ],
+   [
+    "s5_zoe2__7.wav",
+    0.07,
+    7.4
+   ],
+   [
+    "s5_zoe2__99.wav",
+    0.07,
+    5.9
+   ]
+  ]
+ },
+ "s5_pete2": {
+  "take": "s5_pete2__21.wav",
+  "wer": 0.2,
+  "pitch_range": 13.1,
+  "dur": 1.42,
+  "asr": "Some more diggers, same gold.",
+  "all": [
+   [
+    "s5_pete2__21.wav",
+    0.2,
+    13.1
+   ],
+   [
+    "s5_pete2__7.wav",
+    0.2,
+    7.9
+   ],
+   [
+    "s5_pete2__99.wav",
+    1.2,
+    10.2
+   ]
+  ]
+ },
+ "s5_zoe3": {
+  "take": "s5_zoe3__3.wav",
+  "wer": 0.0,
+  "pitch_range": 5.1,
+  "dur": 0.59,
+  "asr": "Exactly.",
+  "all": [
+   [
+    "s5_zoe3__3.wav",
+    0.0,
+    5.1
+   ],
+   [
+    "s5_zoe3__42.wav",
+    0.0,
+    4.2
+   ],
+   [
+    "s5_zoe3__1234.wav",
+    0.0,
+    2.8
+   ],
+   [
+    "s5_zoe3__21.wav",
+    1.0,
+    10.9
+   ],
+   [
+    "s5_zoe3__7.wav",
+    1.0,
+    2.5
+   ],
+   [
+    "s5_zoe3__11.wav",
+    1.0,
+    2.3
+   ],
+   [
+    "s5_zoe3__5.wav",
+    1.0,
+    1.3
+   ],
+   [
+    "s5_zoe3__99.wav",
+    2.0,
+    0.0
+   ]
+  ]
+ },
+ "s5_pete3": {
+  "take": "s5_pete3__7.wav",
+  "wer": 0.0,
+  "pitch_range": 11.7,
+  "dur": 2.69,
+  "asr": "That's the most honest thing I've heard in 200 years.",
+  "all": [
+   [
+    "s5_pete3__7.wav",
+    0.0,
+    11.7
+   ],
+   [
+    "s5_pete3__99.wav",
+    0.0,
+    9.7
+   ],
+   [
+    "s5_pete3__21.wav",
+    0.0,
+    6.7
+   ]
+  ]
+ },
+ "s6_pete1": {
+  "take": "s6_pete1__21.wav",
+  "wer": 0.0,
+  "pitch_range": 10.5,
+  "dur": 1.54,
+  "asr": "and what does all this guessing cost?",
+  "all": [
+   [
+    "s6_pete1__21.wav",
+    0.0,
+    10.5
+   ],
+   [
+    "s6_pete1__7.wav",
+    0.0,
+    7.9
+   ],
+   [
+    "s6_pete1__99.wav",
+    0.0,
+    6.1
+   ]
+  ]
+ },
+ "s6_zoe1": {
+  "take": "s6_zoe1__7.wav",
+  "wer": 0.0,
+  "pitch_range": 4.3,
+  "dur": 2.21,
+  "asr": "about as much electricity as a small country.",
+  "all": [
+   [
+    "s6_zoe1__7.wav",
+    0.0,
+    4.3
+   ],
+   [
+    "s6_zoe1__99.wav",
+    0.0,
+    3.8
+   ],
+   [
+    "s6_zoe1__21.wav",
+    0.0,
+    3.3
+   ]
+  ]
+ },
+ "s6_pete2": {
+  "take": "s6_pete2__7.wav",
+  "wer": 0.0,
+  "pitch_range": 17.2,
+  "dur": 3.03,
+  "asr": "a whole country to play a guessing game.",
+  "all": [
+   [
+    "s6_pete2__7.wav",
+    0.0,
+    17.2
+   ],
+   [
+    "s6_pete2__21.wav",
+    0.0,
+    13.9
+   ],
+   [
+    "s6_pete2__99.wav",
+    0.0,
+    12.9
+   ]
+  ]
+ },
+ "s6_riggy1": {
+  "take": "s6_riggy1__99.wav",
+  "wer": 0.0,
+  "pitch_range": 27.9,
+  "dur": 1.68,
+  "asr": "Also, I am very hot.",
+  "all": [
+   [
+    "s6_riggy1__99.wav",
+    0.0,
+    27.9
+   ],
+   [
+    "s6_riggy1__7.wav",
+    0.0,
+    27.5
+   ],
+   [
+    "s6_riggy1__21.wav",
+    0.2,
+    9.1
+   ]
+  ]
+ },
+ "s6_zoe2": {
+  "take": "s6_zoe2__99.wav",
+  "wer": 0.0,
+  "pitch_range": 6.7,
+  "dur": 3.45,
+  "asr": "Some people use the heat to warm greenhouses. We use it for this.",
+  "all": [
+   [
+    "s6_zoe2__99.wav",
+    0.0,
+    6.7
+   ],
+   [
+    "s6_zoe2__7.wav",
+    0.0,
+    6.5
+   ],
+   [
+    "s6_zoe2__21.wav",
+    0.0,
+    6.5
+   ]
+  ]
+ },
+ "s7_pete1": {
+  "take": "s7_pete1__21.wav",
+  "wer": 0.0,
+  "pitch_range": 12.2,
+  "dur": 1.56,
+  "asr": "How long till I win?",
+  "all": [
+   [
+    "s7_pete1__21.wav",
+    0.0,
+    12.2
+   ],
+   [
+    "s7_pete1__99.wav",
+    0.0,
+    9.9
+   ],
+   [
+    "s7_pete1__7.wav",
+    0.0,
+    5.9
+   ]
+  ]
+ },
+ "s7_zoe1": {
+  "take": "s7_zoe1__21.wav",
+  "wer": 0.0,
+  "pitch_range": 6.4,
+  "dur": 2.86,
+  "asr": "with one little computer, maybe a few thousand years.",
+  "all": [
+   [
+    "s7_zoe1__21.wav",
+    0.0,
+    6.4
+   ],
+   [
+    "s7_zoe1__99.wav",
+    0.0,
+    7.7
+   ],
+   [
+    "s7_zoe1__7.wav",
+    0.0,
+    5.7
+   ]
+  ]
+ },
+ "s7_pete2": {
+  "take": "s7_pete2__7.wav",
+  "wer": 0.0,
+  "pitch_range": 11.7,
+  "dur": 4.35,
+  "asr": "Ha, I spent 40 years in a river. I'm basically warmed up.",
+  "all": [
+   [
+    "s7_pete2__7.wav",
+    0.0,
+    11.7
+   ],
+   [
+    "s7_pete2__21.wav",
+    0.0,
+    6.5
+   ],
+   [
+    "s7_pete2__99.wav",
+    0.08,
+    9.2
+   ]
+  ]
+ },
+ "s8_pete1": {
+  "take": "s8_pete1__3.wav",
+  "wer": 0.0,
+  "pitch_range": 13.3,
+  "dur": 3.65,
+  "asr": "In my day, you dug for gold and mostly found nothing.",
+  "all": [
+   [
+    "s8_pete1__3.wav",
+    0.0,
+    13.3
+   ],
+   [
+    "s8_pete1__1234.wav",
+    0.0,
+    11.9
+   ],
+   [
+    "s8_pete1__11.wav",
+    0.0,
+    9.4
+   ],
+   [
+    "s8_pete1__5.wav",
+    0.09,
+    13.1
+   ],
+   [
+    "s8_pete1__99.wav",
+    0.09,
+    12.8
+   ],
+   [
+    "s8_pete1__7.wav",
+    0.09,
+    12.8
+   ],
+   [
+    "s8_pete1__42.wav",
+    0.09,
+    10.1
+   ],
+   [
+    "s8_pete1__21.wav",
+    0.09,
+    7.6
+   ]
+  ]
+ },
+ "s8_zoe1": {
+  "take": "s8_zoe1__21.wav",
+  "wer": 0.0,
+  "pitch_range": 5.1,
+  "dur": 2.74,
+  "asr": "Now we guess for coins, and mostly find nothing.",
+  "all": [
+   [
+    "s8_zoe1__21.wav",
+    0.0,
+    5.1
+   ],
+   [
+    "s8_zoe1__7.wav",
+    0.0,
+    4.5
+   ],
+   [
+    "s8_zoe1__99.wav",
+    0.0,
+    3.8
+   ]
+  ]
+ },
+ "s8_pete2a": {
+  "take": "s8_pete2a__7.wav",
+  "wer": 0.0,
+  "pitch_range": 10.4,
+  "dur": 0.42,
+  "asr": "Well?",
+  "all": [
+   [
+    "s8_pete2a__7.wav",
+    0.0,
+    10.4
+   ],
+   [
+    "s8_pete2a__99.wav",
+    0.0,
+    2.0
+   ],
+   [
+    "s8_pete2a__21.wav",
+    1.0,
+    2.0
+   ]
+  ]
+ },
+ "s8_pete2b": {
+  "take": "s8_pete2b__99.wav",
+  "wer": 0.0,
+  "pitch_range": 16.8,
+  "dur": 1.55,
+  "asr": "Good to know some things never change.",
+  "all": [
+   [
+    "s8_pete2b__99.wav",
+    0.0,
+    16.8
+   ],
+   [
+    "s8_pete2b__21.wav",
+    0.0,
+    12.9
+   ],
+   [
+    "s8_pete2b__7.wav",
+    0.0,
+    10.0
+   ]
+  ]
+ },
+ "s8_riggy1": {
+  "take": "s8_riggy1__21.wav",
+  "wer": 0.0,
+  "pitch_range": 13.7,
+  "dur": 2.49,
+  "asr": "Game over. Insert electricity to continue.",
+  "all": [
+   [
+    "s8_riggy1__21.wav",
+    0.0,
+    13.7
+   ],
+   [
+    "s8_riggy1__7.wav",
+    0.0,
+    12.4
+   ],
+   [
+    "s8_riggy1__99.wav",
+    0.0,
+    12.0
+   ]
+  ]
+ }
+}

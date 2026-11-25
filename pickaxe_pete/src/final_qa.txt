@@ -1,0 +1,35 @@
+s1_pete       2.40 wer=0.07 OK  | 40 years of digging and all I found is sand and a very disappointed mule.
+s2_pete1     11.31 wer=0.00 OK  | Gold mine. Stand back. I'll start digging.
+s2_zoe1      13.65 wer=0.00 OK  | Please don't hit Riggy.
+s2_riggy1    15.14 wer=0.00 OK  | Welcome, challenger, to the mine.
+s2_pete2     17.40 wer=0.00 OK  | Where's the dirt?
+s2_zoe2      18.46 wer=0.12 OK  | There is no dirt. Be mine by guessing.
+s3_zoe1      22.13 wer=0.00 OK  | Imagine one giant notebook of who paid who. Everybody keeps the same copy, so nobody can cheat.
+s3_pete1     28.02 wer=0.00 OK  | Sounds like the saloon tab. Except, honest.
+s3_zoe2      30.91 wer=0.00 OK  | Every few minutes, somebody gets to write the next page.
+s4_zoe1      35.03 wer=0.00 OK  | To win the pen, you have to guess a magic number. No skill, no trick, just guessing.
+s4_riggy1    39.90 wer=0.00 OK  | I guess 100 trillion times a second. I am very good at being wrong.
+s4_pete1     45.26 wer=0.00 OK  | So, you're paid to guess wrong really fast.
+s4_zoe2      48.48 wer=0.20 OK  | Until one time, it's time.
+s4_riggy2    51.22 wer=0.00 OK  | I wrote the page. I get new coins.
+s5_pete1     54.63 wer=0.00 OK  | Well heck, I'd build a thousand Riggys.
+s5_zoe1      57.47 wer=0.00 OK  | Everybody does, so the game makes itself harder.
+s5_zoe2      60.39 wer=0.00 OK  | No matter how many miners show up, a new page still takes about 10 minutes.
+s5_pete2     64.70 wer=0.20 OK  | Some more diggers, same gold.
+s5_zoe3      66.32 wer=0.00 OK  | Exactly
+s5_pete3     67.41 wer=0.00 OK  | That's the most honest thing I've heard in 200 years.
+s6_pete1     71.15 wer=0.00 OK  | And what does all this guessing cost?
+s6_zoe1      72.99 wer=0.00 OK  | about as much electricity as a small country.
+s6_pete2     75.55 wer=0.00 OK  | a whole country to play a guessing game.
+s6_riggy1    78.88 wer=0.00 OK  | Also, I am very hot.
+s6_zoe2      81.31 wer=0.00 OK  | Some people use the heat to warm greenhouses. We use it for this.
+s7_pete1     86.22 wer=0.00 OK  | How long till I win?
+s7_zoe1      88.07 wer=0.00 OK  | With one little computer, maybe a few thousand years.
+s7_pete2     91.33 wer=0.00 OK  | Ha! I spent 40 years in a river. I'm basically warmed up.
+s8_pete1     97.49 wer=0.00 OK  | In my day, you dug for gold and mostly found nothing.
+s8_zoe1     101.44 wer=0.00 OK  | Now we guess for coins, and mostly find nothing.
+s8_pete2a   105.18 wer=0.00 OK  | Well?
+s8_pete2b   106.10 wer=0.00 OK  | Good to know some things never change.
+s8_riggy1   108.05 wer=0.00 OK  | Game over. Insert electricity to continue.
+lines with WER>0.2: 0 of 33
+sample peak -5.1 dBFS
