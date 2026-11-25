@@ -7,9 +7,11 @@ Layers (cold-war / suspense palette: low drone + sparse heartbeat drum):
                                          narration pause after k12 -> strings
   imagined cold open / ch.3 / ch.7       80s synth (cut back to reality on the white flash)
   ending                                 slowed synth theme -> one soft bell note, 2-3 s tail
-Mix: music EQ -4 dB @ 3 kHz; sidechain ducking so music sits ~16 dB under speech and
-recovers in pauses (attack 15 ms, release 500 ms); music fade in 2 s / out 3 s;
-two-pass loudnorm to -16 LUFS, true peak -1.5 dBTP.
+Mix: music EQ -4 dB @ 3 kHz; sidechain ducking so music sits ~17 dB under speech (every
+line 15-18 dB, measured on voiced frames). Sentence pauses keep it down (no pumping); gaps
+of 1 s or more let it up 0.15 s after the voice stops (0.35 s rise) and ease it down 0.3 s
+before the voice returns. Music fade in 2 s / out 3 s; Reagan's archival clips go through a
+look-ahead peak limiter; stems are written as float WAV; two-pass loudnorm to -16 LUFS.
 
 usage: python3 mix2.py <tts_dir> <out_dir>
 writes  out_dir/mix.wav (final), out_dir/nomusic.wav (voice + effects, no music),
@@ -25,7 +27,8 @@ import scene_sky as SKY
 from common import SCRATCH
 
 SR = A.SR
-UNDER_VOICE_DB = -19.0        # ducking target; measured speech-to-music gap lands at ~16-17 dB
+UNDER_VOICE_DB = -18.0        # music ducking target under the voice; per line (voiced frames) the
+                             # measured gap lands at ~17 dB, every line between 15 and 18 dB or quieter
 
 
 # ------------------------------------------------------------------ helpers
@@ -57,10 +60,46 @@ def env_follow(x, attack=0.015, release=0.5):
 
 
 def short_rms_db(x, win=0.4):
-    m = x.mean(1) if x.ndim == 2 else x
+    # playback power (mean of the channel powers): a mono downmix under-reads wide stereo
+    # material such as the synth pads by up to 3 dB, which left those passages under-ducked
+    p = (x ** 2).mean(1) if x.ndim == 2 else x ** 2
     k = A.secs(win)
-    p = signal.fftconvolve(m ** 2, np.ones(k) / k, mode='same')
+    p = signal.fftconvolve(p, np.ones(k) / k, mode='same')
     return 10 * np.log10(np.maximum(p, 1e-12))
+
+
+def voice_activity(voice, thr_db=-45.0, frame=0.01, hold=0.15, release=0.35, preroll=0.3, min_gap=1.0):
+    """sidechain control from the narration bus, computed with the whole track in view.
+
+    Speech frames (10 ms, above thr_db) give 1. A gap shorter than min_gap keeps 1, so the
+    music does not pump between sentences (sentence pauses are capped at 0.4 s). In a
+    longer gap (chapter gap, title, climax, start and end of the film) the music comes back
+    hold s after the voice stops and rises over release s. It eases down over preroll s
+    before the narration resumes, so it is never cut off by the first word.
+    """
+    p = (voice ** 2).mean(1) if voice.ndim == 2 else voice ** 2
+    hop = int(frame * SR)
+    n = len(p) // hop
+    on = 10 * np.log10(p[:n * hop].reshape(n, hop).mean(1) + 1e-12) > thr_db
+    v = np.ones(n)
+    i = 0
+    while i < n:
+        if on[i]:
+            i += 1
+            continue
+        j = i
+        while j < n and not on[j]:
+            j += 1
+        L = j - i
+        if L * frame >= min_gap or i == 0 or j == n:
+            k = np.arange(L)
+            up = np.clip((k * frame - hold) / release, 0, 1) if i > 0 else np.ones(L)
+            down = np.clip((L - k) * frame / preroll, 0, 1) if j < n else np.ones(L)
+            v[i:j] = 1 - np.minimum(up, down)
+        i = j
+    out = np.ones(len(p))
+    out[:n * hop] = np.repeat(v, hop)
+    return out
 
 
 def duck_to(bus, vact, target_db):
@@ -70,6 +109,24 @@ def duck_to(bus, vact, target_db):
     # smooth the gain change (attack 15 ms / release 500 ms behaviour comes from vact)
     over = signal.fftconvolve(over, np.ones(A.secs(0.05)) / A.secs(0.05), mode='same')
     return bus * (10 ** (-over / 20))[:, None]
+
+
+def lookahead_limit(x, ceiling, look=0.003, release=0.08):
+    """peak limiter with look-ahead: the gain eases down over 3 ms before a peak and recovers
+    over 80 ms, so peaks are turned down rather than flattened."""
+    from scipy.ndimage import minimum_filter1d
+    pk = np.abs(x).max(1) if x.ndim == 2 else np.abs(x)
+    g = np.minimum(1.0, ceiling / np.maximum(pk, 1e-9))
+    k = max(1, int(look * SR))
+    g = minimum_filter1d(g, size=2 * k + 1)
+    g = signal.fftconvolve(g, np.hanning(k + 2)[1:-1] / np.hanning(k + 2)[1:-1].sum(), mode='same')
+    a = math.exp(-1 / (release * SR))
+    held = np.empty_like(g); s = 1.0
+    for i, v in enumerate(g):           # instant down, exponential up
+        s = v if v < s else a * s + (1 - a) * v
+        held[i] = s
+    held = np.minimum(held, minimum_filter1d(np.minimum(1.0, ceiling / np.maximum(pk, 1e-9)), size=2 * k + 1))
+    return x * (held[:, None] if x.ndim == 2 else held)
 
 
 def place(buf, x, t0, gain=1.0):
@@ -188,7 +245,9 @@ def build(tts_dir):
         w = w.mean(1) if w.ndim == 2 else w
         if sr != SR:
             w = signal.resample_poly(w, SR, sr)
-        place(voice, A.to_rms(A.bp(w, 160, 6500), -18.0), c['start'])
+        # the archival recording is quiet with sharp peaks: at -18 dBFS RMS a few peaks pass full
+        # scale, so a look-ahead limiter catches them (they used to clip in the 16-bit stem)
+        place(voice, lookahead_limit(A.to_rms(A.bp(w, 160, 6500), -18.0), 10 ** (-3 / 20)), c['start'])
     voice = A.to_rms(voice, -18.0)
 
     # ---- music layers. Each layer is pre-normalised to a reference loudness and then
@@ -240,8 +299,11 @@ def build(tts_dir):
         ramp = np.clip((np.arange(L) / SR) / max(1.0, t_cl - t_build0), 0, 1)[:, None]
         return ck + st * (0.6 + 0.8 * ramp)
     put(seg(rk_layer, t_build0, rk_end, fin=3.0, fout=3.0), t_build0, t_cl - 3.0, -25.0)
+    # the narration stops 0.4 s before the cue and resumes 1.6 s after it; the music is fully
+    # up from ~0.25 s after the cue until 0.3 s before the next line, so the peak and the
+    # timpani land in that window
     sw = ensemble_swell(9.0, peak_at=3.2)
-    put(sw, t_cl - 3.2, t_cl + 1.6, -14.0)                  # music alone for 1.6 s
+    put(sw, t_cl + 0.5 - 3.2, t_cl + 1.6, -18.0)             # peak ~4-5 LU above the narration
     # imagined Soviet station (ch.7) then reality: low drone
     t_su, t_launch = at('HYPO_SU'), at('LAUNCH')
     syn2 = A.synth_theme(t_launch - t_su + 0.8, bpm=96, intensity=0.55, drums=False, arp=True, dark=0.6, seed=2)
@@ -288,11 +350,10 @@ def build(tts_dir):
 
     # ---- music processing: EQ, ducking, fades
     music = peaking(music, 3000, -4.0, 1.0)
-    venv = env_follow(voice, 0.015, 0.5)                    # attack 15 ms, release 500 ms
-    vact = np.clip(venv / 0.03, 0, 1)                       # 0 = silent, 1 = speaking
+    vact = voice_activity(voice)                            # 1 = narration on, 0 = music free
     target_under = -18.0 + UNDER_VOICE_DB                   # voice sits at -18 dBFS RMS
     music = duck_to(music, vact, target_under)
-    sfx = duck_to(sfx, vact, target_under - 2.0)
+    sfx = duck_to(sfx, vact, target_under - 3.0)                # effects: 21 dB under the voice
     music = xfade_in(music, 2.0)
     music[A.secs(total - 3.0):] *= np.linspace(1, 0, len(music) - A.secs(total - 3.0))[:, None]
     voice, music, sfx = voice[:A.secs(total)], music[:A.secs(total)], sfx[:A.secs(total)]
@@ -312,6 +373,20 @@ def speech_vs_music(voice, music, vact_thr=0.5):
     return float(np.median(d)), float(np.percentile(d, 10)), len(d)
 
 
+def per_line_gap(tl, voice, bg):
+    """voice minus background (dB) over the voiced 20 ms frames of each narration line."""
+    fr = A.secs(0.02)
+    out = {}
+    for ln in tl['lines']:
+        a, b = A.secs(ln['start']), A.secs(ln['start'] + ln['dur'])
+        vf = np.array([np.mean(voice[i:i + fr] ** 2) for i in range(a, b - fr, fr)])
+        bf = np.array([np.mean(bg[i:i + fr] ** 2) for i in range(a, b - fr, fr)])
+        on = vf > 1e-4                                       # voiced: above -40 dBFS
+        if on.any():
+            out[ln['id']] = round(float(10 * np.log10(vf[on].mean() / max(bf[on].mean(), 1e-12))), 1)
+    return out
+
+
 def loudnorm(inp, out, I=-16.0, TP=-1.5, LRA=11.0):
     r = subprocess.run(['ffmpeg', '-hide_banner', '-nostats', '-i', inp, '-af',
                         f'loudnorm=I={I}:TP={TP}:LRA={LRA}:print_format=json', '-f', 'null', '-'],
@@ -320,13 +395,15 @@ def loudnorm(inp, out, I=-16.0, TP=-1.5, LRA=11.0):
     m = json.loads(txt)
     af = (f"loudnorm=I={I}:TP={TP}:LRA={LRA}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:"
           f"measured_LRA={m['input_lra']}:measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true")
-    subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', inp, '-af', af, '-ar', '48000', out], check=True)
+    r2 = subprocess.run(['ffmpeg', '-y', '-hide_banner', '-nostats', '-i', inp, '-af', af + ':print_format=json',
+                         '-ar', '48000', out], capture_output=True, text=True, check=True)
+    mode = json.loads(r2.stderr[r2.stderr.rindex('{'):r2.stderr.rindex('}') + 1])['normalization_type']
     r = subprocess.run(['ffmpeg', '-hide_banner', '-nostats', '-i', out, '-af', 'ebur128=peak=true', '-f', 'null', '-'],
                        capture_output=True, text=True)
     s = r.stderr
     I_out = float(s[s.rindex('I:'):].split()[1])
     tp = float(s[s.rindex('Peak:'):].split()[1])
-    return {'measured_in': m, 'I': I_out, 'true_peak': tp}
+    return {'measured_in': m, 'I': I_out, 'true_peak': tp, 'mode': mode}
 
 
 def main():
@@ -334,13 +411,20 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
     tl, voice, music, sfx = build(tts_dir)
     med, p10, nwin = speech_vs_music(voice, music + sfx)
-    sf.write(os.path.join(out_dir, 'voice.wav'), voice.astype(np.float32), SR)
-    sf.write(os.path.join(out_dir, 'music.wav'), music.astype(np.float32), SR)
+    sf.write(os.path.join(out_dir, 'voice.wav'), voice.astype(np.float32), SR, subtype='FLOAT')
+    sf.write(os.path.join(out_dir, 'music.wav'), music.astype(np.float32), SR, subtype='FLOAT')
     pre = voice + music + sfx
-    sf.write(os.path.join(out_dir, 'pre_mix.wav'), pre.astype(np.float32), SR)
-    sf.write(os.path.join(out_dir, 'pre_nomusic.wav'), (voice + sfx).astype(np.float32), SR)
+    sf.write(os.path.join(out_dir, 'pre_mix.wav'), pre.astype(np.float32), SR, subtype='FLOAT')
+    sf.write(os.path.join(out_dir, 'pre_nomusic.wav'), (voice + sfx).astype(np.float32), SR, subtype='FLOAT')
     rep = {'speech_minus_music_db_median': round(med, 1), 'speech_minus_music_db_p10': round(p10, 1),
            'windows': nwin, 'total_s': round(tl['total'], 2)}
+    gaps = per_line_gap(tl, voice, music + sfx)
+    g = np.array(list(gaps.values()))
+    rep['per_line_gap_db'] = {'median': round(float(np.median(g)), 1), 'min': round(float(g.min()), 1),
+                              'max': round(float(g.max()), 1),
+                              'under_15': {k: v for k, v in gaps.items() if v < 15.0},
+                              'over_18': {k: v for k, v in gaps.items() if v > 18.0}}
+    rep['voice_peak_dbfs'] = round(float(20 * np.log10(np.abs(voice).max())), 2)
     rep['mix'] = loudnorm(os.path.join(out_dir, 'pre_mix.wav'), os.path.join(out_dir, 'mix.wav'))
     rep['nomusic'] = loudnorm(os.path.join(out_dir, 'pre_nomusic.wav'), os.path.join(out_dir, 'nomusic.wav'))
     json.dump(tl, open(os.path.join(out_dir, 'timeline.json'), 'w'), ensure_ascii=False)
