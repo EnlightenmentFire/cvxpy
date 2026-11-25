@@ -1,0 +1,285 @@
+1
+00:00:00,350 --> 00:00:06,043
+两位钟表匠。同样的手艺，同样一千个零件的表。
+Two watchmakers. Same skill. Same thousand-part watch.
+
+2
+00:00:06,043 --> 00:00:11,195
+一个越做越兴旺，另一个最后丢了铺子。为什么？
+One prospered. The other lost his shop. Why?
+
+3
+00:00:11,895 --> 00:00:13,802
+一切从一通电话开始。
+It starts with a phone call.
+
+4
+00:00:13,802 --> 00:00:16,763
+电话一响，两人都得放下手里的活。
+The phone rings, and both of them put their work down.
+
+5
+00:00:16,763 --> 00:00:19,570
+一个回来，接着往下做。
+One comes back and picks up where he left off.
+
+6
+00:00:19,570 --> 00:00:22,306
+另一个回来，面对的是一堆散落的零件。
+The other comes back to a pile of loose parts.
+
+7
+00:00:22,306 --> 00:00:27,528
+差别不在天赋，而在被打断之后，还剩下什么。
+The difference isn't talent. It's what still stands after an interruption.
+
+8
+00:00:27,828 --> 00:00:30,076
+他们一个叫霍拉（Hora），一个叫坦帕斯（Tempus）。
+Their names were Hora and Tempus.
+
+9
+00:00:30,076 --> 00:00:33,661
+两人做的都是好表，每块大约一千个零件。
+Both made very fine watches, about a thousand parts each.
+
+10
+00:00:33,661 --> 00:00:36,926
+两人都很抢手，电话整天响个不停。
+Both were in demand, so their phones rang all day.
+
+11
+00:00:37,226 --> 00:00:40,717
+坦帕斯一口气往下装，一个零件接一个零件。
+Tempus built his watch in one long run, part after part.
+
+12
+00:00:40,717 --> 00:00:44,354
+可半成品只要一放下，就立刻散架。
+But if he had to put a half-finished watch down, it fell to pieces.
+
+13
+00:00:44,354 --> 00:00:48,886
+装到第七百个，电话响了。归零。
+Seven hundred parts in, the phone rings. Back to zero.
+
+14
+00:00:48,886 --> 00:00:52,344
+顾客越喜欢他的表，打来的电话就越多，
+And the more customers loved his watches, the more they called,
+
+15
+00:00:52,344 --> 00:00:56,192
+他也就越难找到一段不被打断的时间，哪怕只做完一块。
+and the harder it was to find enough quiet time to finish even one.
+
+16
+00:00:56,492 --> 00:01:01,546
+霍拉的表一样复杂，但他的装法不同。
+Hora's watches were just as complex. But he built them differently.
+
+17
+00:01:01,546 --> 00:01:06,066
+他先把大约十个零件装成一个小组件，放下也不会散。
+He joined about ten parts into a small subassembly that held together on its own.
+
+18
+00:01:06,066 --> 00:01:11,002
+十个小组件拼成一个大组件，十个大组件组成整块表。
+Ten of those made a larger unit. Ten larger units made the watch.
+
+19
+00:01:11,002 --> 00:01:14,786
+所以电话响时，他只丢掉手上正在装的那一小截。
+So when his phone rang, he lost only the little piece in his hands.
+
+20
+00:01:14,786 --> 00:01:17,633
+已经扣好的部分，都还在。
+Everything already clicked together stayed together.
+
+21
+00:01:17,633 --> 00:01:22,247
+同样一千个零件，霍拉多了一个站得住的中间层。
+Same thousand parts. But Hora had a stable middle layer.
+
+22
+00:01:22,547 --> 00:01:27,467
+这个寓言出自科学家赫伯特·西蒙 1962 年的一篇论文。
+This parable comes from the scientist Herbert Simon, in a 1962 paper.
+
+23
+00:01:27,467 --> 00:01:32,781
+他还算了算差距有多大。不是去测量真实的钟表匠，
+He also worked out how big the gap is. Not by measuring real watchmakers,
+
+24
+00:01:32,781 --> 00:01:34,875
+而是做一个思想实验。
+but as a thought experiment.
+
+25
+00:01:35,175 --> 00:01:39,716
+假设每装上一个零件，电话响起的概率是百分之一。
+Suppose that every time you add a part, there's a one-in-a-hundred chance the phone rings.
+
+26
+00:01:39,716 --> 00:01:42,316
+那么，差距就落在三个数上。
+Then the gap comes down to three numbers.
+
+27
+00:01:42,616 --> 00:01:45,634
+第一个数：霍拉要装配的次数更多。
+Number one: Hora has more assembling to do.
+
+28
+00:01:45,634 --> 00:01:49,606
+一百个小组件，十个大组件，再加最后一次总装。
+A hundred small units, ten larger ones, and one final watch.
+
+29
+00:01:49,606 --> 00:01:53,512
+一共 111 次装配，而坦帕斯只装一次。
+That's 111 assemblies, where Tempus does just one.
+
+30
+00:01:53,512 --> 00:01:56,188
+单看这一项，坦帕斯占优。
+On this count alone, Tempus is ahead.
+
+31
+00:01:56,488 --> 00:01:59,351
+第二个数：一次打断，损失多少。
+Number two: what one interruption costs.
+
+32
+00:01:59,351 --> 00:02:03,876
+电话一响，坦帕斯平均丢掉大约 100 个零件的活。
+When the phone rings, Tempus loses about 100 parts of work, on average.
+
+33
+00:02:03,876 --> 00:02:05,778
+霍拉只丢大约 5 个。
+Hora loses about 5.
+
+34
+00:02:05,778 --> 00:02:08,443
+每次打断，损失相差 20 倍。
+20 times more lost, every time.
+
+35
+00:02:08,743 --> 00:02:12,489
+第三个数：一次装配不被打断、顺利做完的机会。
+Number three: the chance of finishing one assembly without a call.
+
+36
+00:02:12,489 --> 00:02:20,708
+霍拉只需连续装 10 个：0.99 的 10 次方，大约十次成九次。
+For Hora, that's 10 parts in a row. 0.99 to the 10th power: about 9 times in 10.
+
+37
+00:02:20,708 --> 00:02:29,620
+坦帕斯要连续装 1000 个：0.99 的 1000 次方，一百万次里大约只成 44 次。
+For Tempus, it's 1,000 in a row. 0.99 to the 1,000th power: about 44 chances in a million.
+
+38
+00:02:29,620 --> 00:02:35,534
+所以每做成一次装配，坦帕斯要尝试的次数，大约是霍拉的 20,000 倍。
+So for each assembly he completes, Tempus needs about 20,000 times as many attempts as Hora.
+
+39
+00:02:35,834 --> 00:02:37,750
+现在，把三项乘起来。
+Now multiply the three.
+
+40
+00:02:37,750 --> 00:02:44,148
+111 分之一，乘以 20，再乘以 20,000。
+1/111, times 20, times 20,000.
+
+41
+00:02:44,148 --> 00:02:45,910
+大约 4,000。
+Roughly 4,000.
+
+42
+00:02:46,710 --> 00:02:50,210
+两万倍（20,000），是每次装配的尝试次数之比。
+20,000 is the ratio of attempts, per assembly.
+
+43
+00:02:50,210 --> 00:02:54,088
+四千倍（4,000），是做成一整块表的总时间之比。
+4,000 is the ratio of total time, per finished watch.
+
+44
+00:02:54,388 --> 00:02:59,447
+如果霍拉做一块表要一天，坦帕斯平均要大约 4,000 天。
+If Hora needs one day for a watch, Tempus needs, on average, about 4,000 days.
+
+45
+00:02:59,447 --> 00:03:01,326
+那是十年还不止。
+That's more than ten years.
+
+46
+00:03:01,526 --> 00:03:07,837
+不是因为他手慢，也不是他没耐心。只是因为电话响时，有些东西会散掉。
+Not because he's slower, or less patient. Only because of what falls apart when the phone rings.
+
+47
+00:03:08,137 --> 00:03:12,705
+西蒙给霍拉这种结构起了个名字：近似可分解系统。
+Simon had a name for Hora's kind of structure: a nearly decomposable system.
+
+48
+00:03:12,705 --> 00:03:18,467
+每个组件内部，零件扣得很紧；组件之间，连接很弱。
+Inside each unit, the parts are tightly bound. Between units, the links are weak.
+
+49
+00:03:18,467 --> 00:03:22,766
+弱，但不是可以忽略。这是他的原话。
+Weak, but not negligible. Those are his words.
+
+50
+00:03:22,766 --> 00:03:26,819
+在短时间里，几乎可以把每个组件单独来看。
+Over a short stretch, you can look at each unit almost on its own.
+
+51
+00:03:26,819 --> 00:03:30,510
+时间一长，那些弱连接仍在起作用。
+Over a longer stretch, those weak connections still do their work.
+
+52
+00:03:30,510 --> 00:03:38,827
+西蒙还借这个寓言追问：复杂系统究竟是怎么形成的。那一部分，他自己也只当作推测。
+Simon used this parable to ask a bigger question: how complex systems form at all. That part, he offered as speculation.
+
+53
+00:03:39,127 --> 00:03:40,791
+回到那通电话。
+Back to the phone call.
+
+54
+00:03:40,791 --> 00:03:45,585
+你手上正在做的事，如果此刻电话响了，还剩下什么站得住？
+Whatever you're building right now, if the phone rang this minute, what would still be standing?
+
+55
+00:03:45,585 --> 00:03:47,763
+有没有一个放下也不会散的中间层？
+Is there a middle layer that holds?
+
+56
+00:03:47,763 --> 00:03:52,683
+还有那些你觉得弱到可以不管的连接，时间一长，会不会回来？
+And the links you've written off as too weak to matter, given enough time, will they come back?
+
+57
+00:03:52,683 --> 00:03:54,272
+电话又响了。
+The phone is ringing.
+
