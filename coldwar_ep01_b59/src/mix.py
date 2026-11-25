@@ -1,4 +1,4 @@
-"""Final mix per 配乐规范: voice + library score (sidechain-ducked, 2-4 kHz carve) + sound design,
+"""Final mix per 配乐规范: voice + score (MusicGen layers by default; sidechain-ducked, 2-4 kHz carve) + sound design,
 two-pass loudnorm to -16 LUFS / -1.5 dBTP, then self-checks (levels, ASR on mix and phone-speaker sim).
 
 Run in the qwen312 venv:  python mix.py build   |   python mix.py check
@@ -90,9 +90,10 @@ def check():
     gap = (vdb - mdb)[speaking]
     rep["music_under_voice_db"] = {"median": round(float(np.median(gap)), 1), "p10": round(float(np.percentile(gap, 10)), 1),
                                    "p90": round(float(np.percentile(gap, 90)), 1)}
-    sections = [("铺底 片头→扎进海底", 0, T["dive"]), ("推进 海底→命令", T["dive"], T["hypo_launch"]),
+    sections = [("铺底 片头→扎进海底", 0, T["dive"]), ("推进1 海底→声呐（无鼓）", T["dive"], T["sonar"]),
+                ("推进2 声呐→命令（心跳低鼓）", T["sonar"], T["hypo_launch"]),
                 ("高潮 假想段", T["hypo_burst"] + 0.5, T["hypo_out"] + 1.1), ("变稀 浮上来→门外", T["surfacing"], T["ending"]),
-                ("收尾 独奏钢琴", T["ending"], T["credits"] + 4.4)]
+                ("收尾 单件乐器", T["ending"], T["credits"] + 4.4)]
     secs = []
     for name, a, b in sections:
         i0, i1 = int(a / 0.2), int(b / 0.2)
@@ -118,6 +119,9 @@ def check():
     big = [(round(i * 0.1, 1), round(float(r), 1)) for i, r in enumerate(rise) if r > 9
            and min(abs(i * 0.1 - d) for d in designed) > 2.5 and st[i + 10] > -40]
     rep["music_jumps_over_9db_per_s"] = big[:20]
+    if "noasr" in sys.argv:
+        print(json.dumps(rep, ensure_ascii=False, indent=1))
+        return
     # ASR: each line on voice-only, on the final mix, and on a phone-speaker simulation of the mix
     lines = {ln["id"]: ln for ln in json.load(open(os.path.join(os.path.dirname(os.path.dirname(__file__)), "audio/full/lines.json")))}
     mono = mix.mean(1)

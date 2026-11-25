@@ -1,0 +1,365 @@
+{
+ "climax": {
+  "prompt": "epic tragic cinematic orchestral climax, low cellos and double basses, slow heavy taiko drums, dark swelling brass, solemn, building to a huge crescendo, D minor, 70 bpm, no vocals",
+  "n": 3,
+  "batches": [
+   {
+    "idx": [
+     0,
+     1,
+     2
+    ],
+    "seconds": 30.0,
+    "gen_s": 647.3
+   }
+  ]
+ },
+ "bed": {
+  "prompt": "dark ambient cinematic underscore, deep low drone and sustained low strings, cold war suspense, very sparse and quiet, slow, no drums, no melody, no vocals, D minor, 60 bpm",
+  "clips": {
+   "0": {
+    "seconds": 30.0,
+    "batch": [
+     "bed_0",
+     "bed_1",
+     "bed_2"
+    ],
+    "seed": 1299,
+    "gen_s": 654.5
+   },
+   "1": {
+    "seconds": 30.0,
+    "batch": [
+     "bed_0",
+     "bed_1",
+     "bed_2"
+    ],
+    "seed": 1299,
+    "gen_s": 654.5
+   },
+   "2": {
+    "seconds": 30.0,
+    "batch": [
+     "bed_0",
+     "bed_1",
+     "bed_2"
+    ],
+    "seed": 1299,
+    "gen_s": 654.6
+   },
+   "3": {
+    "seconds": 30.0,
+    "batch": [
+     "bed_3",
+     "bed_4",
+     "tension_0"
+    ],
+    "seed": 1590,
+    "gen_s": 507.3
+   },
+   "4": {
+    "seconds": 30.0,
+    "batch": [
+     "bed_3",
+     "bed_4",
+     "tension_0"
+    ],
+    "seed": 1590,
+    "gen_s": 507.3
+   }
+  }
+ },
+ "tension": {
+  "prompt": "tense cold war submarine thriller underscore, deep low drone, slow tremolo low strings, ominous and restrained, slowly rising tension, no drums, no percussion, no melody, no vocals, D minor, 70 bpm",
+  "clips": {
+   "0": {
+    "seconds": 30.0,
+    "batch": [
+     "bed_3",
+     "bed_4",
+     "tension_0"
+    ],
+    "seed": 1590,
+    "gen_s": 507.3
+   },
+   "1": {
+    "seconds": 30.0,
+    "batch": [
+     "tension_1",
+     "tension_2",
+     "tension_3"
+    ],
+    "seed": 1865,
+    "gen_s": 502.2
+   },
+   "2": {
+    "seconds": 30.0,
+    "batch": [
+     "tension_1",
+     "tension_2",
+     "tension_3"
+    ],
+    "seed": 1865,
+    "gen_s": 502.2
+   },
+   "3": {
+    "seconds": 30.0,
+    "batch": [
+     "tension_1",
+     "tension_2",
+     "tension_3"
+    ],
+    "seed": 1865,
+    "gen_s": 502.2
+   },
+   "4": {
+    "seconds": 30.0,
+    "batch": [
+     "tension_4",
+     "tension_5",
+     "tension_6"
+    ],
+    "seed": 2156,
+    "gen_s": 908.9
+   },
+   "5": {
+    "seconds": 30.0,
+    "batch": [
+     "tension_4",
+     "tension_5",
+     "tension_6"
+    ],
+    "seed": 2156,
+    "gen_s": 909.0
+   },
+   "6": {
+    "seconds": 30.0,
+    "batch": [
+     "tension_4",
+     "tension_5",
+     "tension_6"
+    ],
+    "seed": 2156,
+    "gen_s": 909.0
+   }
+  }
+ },
+ "build": {
+  "prompt": "tense cold war submarine thriller underscore, deep low drone with a sparse slow heartbeat-like low kick drum pulse, minimal, restrained, ominous, no melody, no vocals, D minor, 60 bpm",
+  "clips": {
+   "0": {
+    "seconds": 30.0,
+    "batch": [
+     "build_0",
+     "build_1",
+     "build_2"
+    ],
+    "seed": 1528,
+    "gen_s": 512.3
+   },
+   "1": {
+    "seconds": 30.0,
+    "batch": [
+     "build_0",
+     "build_1",
+     "build_2"
+    ],
+    "seed": 1528,
+    "gen_s": 512.3
+   },
+   "2": {
+    "seconds": 30.0,
+    "batch": [
+     "build_0",
+     "build_1",
+     "build_2"
+    ],
+    "seed": 1528,
+    "gen_s": 512.3
+   }
+  }
+ },
+ "drum": {
+  "prompt": "dark cinematic suspense underscore, steady slow pulsing heartbeat rhythm played on deep low drums, thumping sub bass hits, ominous low drone underneath, minimal, no melody, no vocals, D minor, 60 bpm",
+  "clips": {
+   "0": {
+    "seconds": 30.0,
+    "batch": [
+     "drum_0",
+     "drum_1",
+     "drum_2"
+    ],
+    "seed": 1440,
+    "gen_s": 683.6
+   },
+   "1": {
+    "seconds": 30.0,
+    "batch": [
+     "drum_0",
+     "drum_1",
+     "drum_2"
+    ],
+    "seed": 1440,
+    "gen_s": 683.6
+   },
+   "2": {
+    "seconds": 30.0,
+    "batch": [
+     "drum_0",
+     "drum_1",
+     "drum_2"
+    ],
+    "seed": 1440,
+    "gen_s": 683.7
+   },
+   "3": {
+    "seconds": 30.0,
+    "batch": [
+     "drum_3",
+     "drum_4",
+     "drum_5"
+    ],
+    "seed": 1731,
+    "gen_s": 498.2
+   },
+   "4": {
+    "seconds": 30.0,
+    "batch": [
+     "drum_3",
+     "drum_4",
+     "drum_5"
+    ],
+    "seed": 1731,
+    "gen_s": 498.2
+   },
+   "5": {
+    "seconds": 30.0,
+    "batch": [
+     "drum_3",
+     "drum_4",
+     "drum_5"
+    ],
+    "seed": 1731,
+    "gen_s": 498.2
+   }
+  }
+ },
+ "ending": {
+  "prompt": "solo cello, slow mournful melody, sparse and quiet, intimate, gentle hall reverb, D minor, 60 bpm, no other instruments, no drums, no vocals",
+  "clips": {
+   "0": {
+    "seconds": 30.0,
+    "batch": [
+     "ending_0",
+     "ending_1",
+     "ending_2"
+    ],
+    "seed": 1629,
+    "gen_s": 599.3
+   },
+   "1": {
+    "seconds": 30.0,
+    "batch": [
+     "ending_0",
+     "ending_1",
+     "ending_2"
+    ],
+    "seed": 1629,
+    "gen_s": 599.3
+   },
+   "2": {
+    "seconds": 30.0,
+    "batch": [
+     "ending_0",
+     "ending_1",
+     "ending_2"
+    ],
+    "seed": 1629,
+    "gen_s": 599.3
+   }
+  }
+ },
+ "post": {
+  "prompt": "sparse melancholic low strings, slow sustained cello and double bass over a soft dark ambient drone, quiet aftermath at sea, solemn, D minor, 60 bpm, no drums, no vocals",
+  "clips": {
+   "0": {
+    "seconds": 30.0,
+    "batch": [
+     "post_0",
+     "post_1",
+     "post_2"
+    ],
+    "seed": 1454,
+    "gen_s": 962.7
+   },
+   "1": {
+    "seconds": 30.0,
+    "batch": [
+     "post_0",
+     "post_1",
+     "post_2"
+    ],
+    "seed": 1454,
+    "gen_s": 962.7
+   },
+   "2": {
+    "seconds": 30.0,
+    "batch": [
+     "post_0",
+     "post_1",
+     "post_2"
+    ],
+    "seed": 1454,
+    "gen_s": 962.7
+   },
+   "3": {
+    "seconds": 30.0,
+    "batch": [
+     "post_3",
+     "post_4",
+     "post_5"
+    ],
+    "seed": 1745,
+    "gen_s": 472.2
+   },
+   "4": {
+    "seconds": 30.0,
+    "batch": [
+     "post_3",
+     "post_4",
+     "post_5"
+    ],
+    "seed": 1745,
+    "gen_s": 472.2
+   },
+   "5": {
+    "seconds": 30.0,
+    "batch": [
+     "post_3",
+     "post_4",
+     "post_5"
+    ],
+    "seed": 1745,
+    "gen_s": 472.3
+   },
+   "6": {
+    "seconds": 30.0,
+    "batch": [
+     "post_6",
+     "post_7"
+    ],
+    "seed": 2036,
+    "gen_s": 477.3
+   },
+   "7": {
+    "seconds": 30.0,
+    "batch": [
+     "post_6",
+     "post_7"
+    ],
+    "seed": 2036,
+    "gen_s": 477.3
+   }
+  }
+ }
+}

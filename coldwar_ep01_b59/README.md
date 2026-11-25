@@ -4,7 +4,8 @@
 
 ## 当前状态：成片完成（8 分钟版）
 
-成片：`output/coldwar_ep01_haidi_naye.mp4`（1080×1920 · 30fps · 7:56 · 90.3 MiB）。自审记录见 `docs/self_review.md`。
+成片：`output/coldwar_ep01_haidi_naye.mp4`（1080×1920 · 30fps · 7:56 · 90.7 MiB / 95.1MB · −16 LUFS）。自审记录见 `docs/self_review.md`。
+配乐按《配乐规范》用 MusicGen 本地生成（权重 CC BY-NC 4.0，**仅限非商用**），署名与明细见 `docs/music_credits.md`；高潮段 48 秒试听小样：`output/climax_preview_224-272s.mp4`。
 - `docs/script.md` 旁白稿 v1（约 2700 字，预计 9.5–10 分钟）
 - `docs/factcheck.md` 20 条史料逐条核对表（已对上原文 / 有出入 / 说法不一）
 - `stills/` 8 张关键静帧 + `00_contact_sheet.jpg` 总览
@@ -19,12 +20,16 @@
 - `src/scenes.py` 各场景（真实段冷蓝/琥珀，假想段洋红热成像）
 - `src/stills.py` 出静帧：`python3 src/stills.py`
 - `src/script_v2.py` 8 分钟版旁白（64 句，字幕文本 + 配音文本）→ `audio/full/lines.json`、`docs/script_v2.md`
-- `src/scenes2.py` 全片 35 个镜头；`src/edit.py` 按配音时长排镜头、切字幕、拼人声；`src/score.py` 配乐与音效；`src/render.py` 并行渲染；`src/finalize.py` 两遍编码（< 100MB）+ 整片 ASR 与响度复核
+- `src/scenes2.py` 全片 35 个镜头；`src/edit.py` 按配音时长排镜头、切字幕、拼人声；`src/render.py` 并行渲染；`src/finalize.py` 两遍编码（< 100MB）、混入音轨、成片逐句 ASR 与响度复核
 - `src/tts_qwen3.py` 首选配音：Qwen3-TTS-12Hz-1.7B-VoiceDesign 按描述设计参考音 → 1.7B-Base 克隆，逐句合成；每句测音高（85–105 Hz）+ ASR 回读，不合格换 seed 重做（Python 3.12 venv：`qwen-tts==0.1.1`，CPU bf16）
 - `src/voiceqc.py` 质检工具：parselmouth 测音高、faster-whisper 回读（按拼音比对，标出声调可疑处）、压停顿（≤0.38 s）、rubberband 变速（R3 引擎，保留共振峰）、50 Hz 高通、-18 dBFS RMS
 - `src/voice_post.py` 后期与拼接：旁白 ×1.3、引文 ×1.16，句间停顿 ≤0.4 s，配乐自动避让，成片整段 ASR 回读
 - `src/tts_kokoro.py` 备选配音（Kokoro-82M v1.1-zh，需 Python 3.12 venv：`kokoro==0.9.4`、`misaki[zh]==0.9.4`）
-- `src/sound.py` 配乐与音效，全部程序合成
+- `src/musicgen_layers.py` 用 MusicGen（facebook/musicgen-stereo-medium）按层生成 30 秒片段（每批 3 段，可断点续跑）
+- `src/music_gen.py` 按客观指标挑段（1–4kHz 占比、响度平稳、无鼓层的打击乐/重击、语音误判），去渐强空白、统一响度，按调性相近顺序 3.5 秒交叉淡化拼成各层
+- `src/music.py` 三层起伏的配乐总线：慢速电平跟随、层间 3 秒交叉淡化、人声触发的侧链避让（15ms/500ms）、削 3kHz、首尾淡入淡出；程序合成的心跳低鼓
+- `src/mix.py` 人声 + 配乐 + 音效混音，两遍 loudnorm 到 −16 LUFS / −1.5dBTP，并做分段响度、跳变和 ASR（纯人声/成片/手机外放）自检
+- `src/score.py`、`src/sound.py` 音效（声呐、深弹、海浪、飞机等），全部程序合成
 - `src/fetch_assets.sh` 重新下载地图数据和档案照片
 
 ## 素材与许可
@@ -37,4 +42,5 @@
 | 配音模型（备选） | hexgrad/Kokoro-82M-v1.1-zh | Apache-2.0 |
 | ASR 校验 | Systran/faster-whisper-medium | MIT |
 | 字体 | Noto Sans CJK SC、JetBrains Mono | SIL OFL 1.1 |
-| 配乐音效 | 本项目代码合成 | — |
+| 配乐 | facebook/musicgen-stereo-medium（Meta）本地生成 | 权重 CC BY-NC 4.0，仅限非商用 |
+| 心跳低鼓、音效 | 本项目代码合成 | — |

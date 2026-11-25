@@ -1,8 +1,10 @@
-"""Library score per 配乐规范: cold-war/suspense palette (low drone + sparse low drum), three-layer arc,
+"""Score per 配乐规范: cold-war/suspense palette (low drone + sparse heartbeat-like low drum), three-layer arc,
 2-4 s equal-power crossfades, voice-keyed sidechain ducking (attack 15 ms / release 500 ms) so music sits
 ~16.5 dB under the narration and comes back up in pauses, -4 dB @ 3 kHz carve, 2 s fade-in / 3 s fade-out.
 
-All music: Kevin MacLeod (incompetech.com), CC BY 4.0 — attribution in the description + end card.
+SCORE_SOURCE=gen (default): layers generated locally with MusicGen (facebook/musicgen-stereo-medium,
+CC-BY-NC 4.0 weights -> non-commercial use only), selected and stitched by music_gen.py.
+SCORE_SOURCE=lib: the earlier library score (Kevin MacLeod, incompetech.com, CC BY 4.0).
 """
 import json
 import math
@@ -17,27 +19,39 @@ LIB = "/tmp/claude-0/-home-user-cvxpy/c6f191ba-c6fe-598c-beeb-d3aef80994fb/scrat
 
 GEN = "/tmp/claude-0/-home-user-cvxpy/c6f191ba-c6fe-598c-beeb-d3aef80994fb/scratchpad/musicgen/layers"
 SOURCE = os.environ.get("SCORE_SOURCE", "gen")   # "gen" = MusicGen layers (spec priority 1), "lib" = library
+# the sparse heartbeat-like low drum of the 推进 layer is synthesized (lub-dub, 40/min): MusicGen gave no steady,
+# sparse drum across clips (see music_gen.py), and scattered generated booms would read as depth charges
 USE_HEARTBEAT = os.environ.get("SCORE_HEARTBEAT", "1") == "1"
 
 VOICE_DB = -18.0          # active RMS of the narration track (before final loudnorm)
 UNDER = 16.5              # music sits this many dB under the voice while narration is active
+# level window of the ducker: longer for the generated score so a drum hit is not pumped on its own
+DUCK_WIN = 0.8 if SOURCE == "gen" else 0.4
 
 # layer: (track file, source offset s, timeline start, timeline end, pre-duck RMS dBFS)
 # start/end are crossfade centres; fades are applied around them.
 
 
 def plan_gen(T):
-    """Same three-layer arc, built from locally generated MusicGen layers."""
+    """Three-layer arc from locally generated MusicGen layers. Neighbouring layers cross-fade
+    symmetrically (3 s) around the cut they belong to. src = fin/2 so each layer file starts where its
+    fade-in starts (src 0 would pad the first half of the fade with silence, and the leveler would boost
+    the entry)."""
     flash = T["hypo_out"] + 1.1
     segs = [
-        dict(name="gen_bed", src=0.0, t0=0.0, t1=T["dive"] + 1.0, level=-31.0, fin=2.0, fout=3.0),
-        dict(name="gen_build", src=0.0, t0=T["dive"] - 2.0, t1=T["hypo_launch"] + 0.2, level=-28.0, fin=3.0, fout=2.0,
-             auto=[(T["sonar"] - 2.0, 0.0), (T["sonar"] + 2.0, 2.5)]),
-        # climax clip is end-aligned so its own crescendo peaks in the narration-free beat before the flash
+        # 铺底: long tones only, opening -> the plunge
+        dict(name="gen_bed", src=0.0, t0=0.0, t1=T["dive"], level=-31.0, fin=2.0, fout=3.0),
+        # 推进: tense tremolo strings under water; with the sonar hunt the heartbeat drum comes in (below)
+        # and the strings come up 2 dB
+        dict(name="gen_tension", src=1.5, t0=T["dive"], t1=T["hypo_launch"] + 0.2, level=-29.0, fin=3.0, fout=2.0,
+             auto=[(T["sonar"] - 1.5, 0.0), (T["sonar"] + 1.5, 2.0)]),
+        # 高潮: end-aligned so the clip's own crescendo peaks in the narration-free beat before the flash
         dict(name="gen_climax", src="end", t0=T["hypo_burst"] + 0.5, t1=flash, level=-20.0, fin=1.0, fout=0.25,
              ramp=[(T["hypo_burst"] + 0.5, -27.0), (T["hypo_globe"] + 2.0, -23.5), (T["hypo_out"] - 0.4, -19.0)]),
-        dict(name="gen_post", src=0.0, t0=T["surfacing"] - 0.5, t1=T["ending"] + 1.5, level=-29.5, fin=3.0, fout=3.0),
-        dict(name="gen_ending", src=0.0, t0=T["ending"] - 1.5, t1=T["credits"] + 4.5, level=-28.0, fin=3.0, fout=3.0),
+        # 变稀: thin low strings after the flash
+        dict(name="gen_post", src=1.5, t0=T["surfacing"] - 0.5, t1=T["ending"], level=-29.5, fin=3.0, fout=3.0),
+        # 收尾: a single instrument, its tail into black
+        dict(name="gen_ending", src=1.5, t0=T["ending"], t1=T["credits"] + 4.5, level=-28.0, fin=3.0, fout=3.0),
     ]
     if USE_HEARTBEAT:
         segs.insert(2, dict(name="@heartbeat", src=0.0, t0=T["sonar"], t1=T["hypo_launch"] - 0.5, level=-31.0,
@@ -73,21 +87,31 @@ def plan(T):
     ]
 
 
-def _heartbeat(dur, period=1.5):
-    """Low two-beat thump (lub-dub), felt more than heard."""
-    t = np.arange(int(dur * SR)) / SR
-    x = np.zeros_like(t)
+def _heartbeat(dur, period=1.5, knock_db=-22.0):
+    """Sparse low two-beat thump (lub-dub, 40 per minute). The body sits at 45-65 Hz, felt more than heard;
+    a short, soft knock (band-passed noise, 250-900 Hz, ~25 ms) lets a phone speaker, which cannot play
+    50 Hz, still carry the beat."""
+    rng = np.random.default_rng(7)
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    body = np.zeros(n)
+    knock = np.zeros(n)
+    sos_k = signal.butter(2, [250 / (SR / 2), 900 / (SR / 2)], "band", output="sos")
     for k in range(int(dur / period) + 1):
         for off, a in ((0.0, 1.0), (0.24, 0.62)):
             t0 = k * period + off
-            i0, i1 = int(t0 * SR), int((t0 + 0.35) * SR)
-            if i0 >= len(t):
+            i0, i1 = int(t0 * SR), min(n, int((t0 + 0.35) * SR))
+            if i0 >= n:
                 continue
             tt = t[i0:i1] - t0
             f = 46 + 18 * np.exp(-tt * 30)
-            x[i0:i1] += a * np.sin(2 * np.pi * np.cumsum(f) / SR)[: len(tt)] * np.exp(-tt * 11)
+            body[i0:i1] += a * np.sin(2 * np.pi * np.cumsum(f) / SR)[: len(tt)] * np.exp(-tt * 11)
+            j1 = min(n, i0 + int(0.06 * SR))
+            nz = signal.sosfilt(sos_k, rng.standard_normal(j1 - i0))
+            knock[i0:j1] += a * nz * np.exp(-(t[i0:j1] - t0) * 90)
     b, a_ = signal.butter(2, 160 / (SR / 2), "low")
-    x = signal.lfilter(b, a_, x)
+    body = signal.lfilter(b, a_, body)
+    x = body + knock * (np.max(np.abs(body)) / (np.max(np.abs(knock)) + 1e-12)) * 10 ** (knock_db / 20)
     return np.stack([x, x], 1).astype(np.float32)
 
 
@@ -242,7 +266,7 @@ def build(tl, voice):
     # sidechain (voice-keyed): while narration sounds, pull the music down to (voice - UNDER) dB;
     # attack 15 ms / release 500 ms come from the key envelope; music comes back up in the pauses.
     key = voice_activity_env(voice)
-    mus_st = _st_db(bus, win=0.4)
+    mus_st = _st_db(bus, win=DUCK_WIN)
     over = np.maximum(0.0, mus_st - (VOICE_DB - UNDER))
     gain_db = -over * key
     gain_db = np.minimum(gain_db, -depth_db * key * 0.0)  # (depth kept for logging only)

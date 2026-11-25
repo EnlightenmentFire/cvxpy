@@ -40,6 +40,33 @@ def encode(out, target_mb=93.0, audio_kbps=128, mix_name="mix_v2.wav"):
     print(f"{out}: {size:.1f} MiB, {probe_duration(out):.1f}s")
 
 
+def encode_video(vout, target_mb=93.0, audio_kbps=128):
+    """2-pass video-only encode (same settings as encode), so the picture can be encoded while the mix is
+    still being made; mux() then adds the audio without touching the video."""
+    pic = os.path.join(EDIT, "picture.mp4")
+    dur = probe_duration(pic)
+    v_kbps = int(target_mb * 8 * 1024 / dur - audio_kbps - 12)
+    print(f"duration {dur:.1f}s -> video {v_kbps} kbps")
+    x264 = "aq-mode=3:aq-strength=0.9:deblock=-1,-1:keyint=120:min-keyint=30:rc-lookahead=60"
+    common = ["-c:v", "libx264", "-preset", "slow", "-profile:v", "high", "-level", "4.1", "-pix_fmt", "yuv420p",
+              "-b:v", f"{v_kbps}k", "-maxrate", f"{int(v_kbps * 2.2)}k", "-bufsize", f"{int(v_kbps * 4)}k",
+              "-x264-params", x264, "-r", "30"]
+    log = os.path.join(EDIT, "x264pass_v")
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", pic] + common +
+                   ["-pass", "1", "-passlogfile", log, "-an", "-f", "mp4", os.devnull], check=True)
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", pic] + common +
+                   ["-pass", "2", "-passlogfile", log, "-an", "-movflags", "+faststart", vout], check=True)
+    print(f"{vout}: {os.path.getsize(vout) / 1024 / 1024:.1f} MiB")
+
+
+def mux(out, vout, mix_name="mix_v2.wav", audio_kbps=128):
+    mix = os.path.join(EDIT, mix_name)
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", vout, "-i", mix, "-map", "0:v:0", "-map", "1:a:0",
+                    "-c:v", "copy", "-c:a", "aac", "-b:a", f"{audio_kbps}k", "-ar", "48000", "-ac", "2",
+                    "-shortest", "-movflags", "+faststart", out], check=True)
+    print(f"{out}: {os.path.getsize(out) / 1024 / 1024:.1f} MiB, {probe_duration(out):.1f}s")
+
+
 def check(out):
     sys.path.insert(0, os.path.dirname(__file__))
     import numpy as np
@@ -64,8 +91,53 @@ def check(out):
     print(json.dumps({k: v for k, v in rep.items() if k != "asr_text"}, ensure_ascii=False, indent=1))
 
 
+def check_lines(out, report_path):
+    """per-line ASR on the encoded file's own audio (AAC decoded), plain and through a phone-speaker band
+    (300 Hz - 7 kHz), plus EBU R128 loudness / true peak of the file."""
+    sys.path.insert(0, os.path.dirname(__file__))
+    import numpy as np
+    import soundfile as sf
+    from scipy import signal
+    import voiceqc as Q
+    wav = os.path.join(EDIT, "final_audio_48k.wav")
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", out, "-ac", "1", "-ar", "48000", wav], check=True)
+    x, sr = sf.read(wav, dtype="float32")
+    phone = signal.sosfilt(signal.butter(4, [300 / (sr / 2), 7000 / (sr / 2)], "band", output="sos"), x).astype(np.float32)
+    ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    lines = {ln["id"]: ln for ln in json.load(open(os.path.join(ROOT, "audio/full/lines.json")))}
+    tl = json.load(open(os.path.join(EDIT, "timeline.json")))
+    tot, nsyl, errors = {"mix": 0.0, "phone": 0.0}, 0, []
+    for sh in tl["shots"]:
+        for lid, (s0, s1) in sh["cues"].items():
+            a, b = int((sh["start"] + s0 - 0.15) * sr), int((sh["start"] + s1 + 0.15) * sr)
+            exp = lines[lid]["tts"]
+            n_ = len(Q.to_syllables(exp))
+            nsyl += n_
+            for k, sig in (("mix", x), ("phone", phone)):
+                h = Q.asr(sig[a:b], sr)
+                e = Q.syllable_error_rate(exp, h)
+                tot[k] += e * n_
+                if e > 0:
+                    errors.append([lid, k, round(float(e), 3), h])
+    r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", out, "-af", "ebur128=peak=true", "-f", "null", "-"],
+                       capture_output=True, text=True).stderr
+    rep = {"file": os.path.basename(out), "size_bytes": os.path.getsize(out), "duration_s": round(probe_duration(out), 3),
+           "integrated_lufs": float(re.findall(r"I:\s+(-?[\d.]+) LUFS", r)[-1]),
+           "true_peak_dbfs": float(re.findall(r"Peak:\s+(-?[\d.]+) dBFS", r)[-1]),
+           "lra_lu": float(re.findall(r"LRA:\s+(-?[\d.]+) LU", r)[-1]),
+           "syllable_error_rate": {k: round(v / nsyl, 4) for k, v in tot.items()}, "errors": errors}
+    json.dump(rep, open(report_path, "w"), ensure_ascii=False, indent=1)
+    print(json.dumps(rep, ensure_ascii=False, indent=1))
+
+
 if __name__ == "__main__":
     if sys.argv[1] == "encode":
         encode(sys.argv[2], float(sys.argv[3]) if len(sys.argv) > 3 else 93.0)
+    elif sys.argv[1] == "encode_video":
+        encode_video(sys.argv[2], float(sys.argv[3]) if len(sys.argv) > 3 else 93.0)
+    elif sys.argv[1] == "mux":
+        mux(sys.argv[2], sys.argv[3])
+    elif sys.argv[1] == "check_lines":
+        check_lines(sys.argv[2], sys.argv[3])
     else:
         check(sys.argv[2])

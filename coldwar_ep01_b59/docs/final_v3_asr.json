@@ -1,0 +1,20 @@
+{
+ "file": "coldwar_ep01_haidi_naye.mp4",
+ "size_bytes": 95108277,
+ "duration_s": 475.833,
+ "integrated_lufs": -16.0,
+ "true_peak_dbfs": -3.7,
+ "lra_lu": 3.0,
+ "syllable_error_rate": {
+  "mix": 0.0,
+  "phone": 0.0005
+ },
+ "errors": [
+  [
+   "c06",
+   "phone",
+   0.031,
+   "三个地方都离华盛顿和莫斯科很远。这一天,半斤落在了离中心最远的人手里。"
+  ]
+ ]
+}

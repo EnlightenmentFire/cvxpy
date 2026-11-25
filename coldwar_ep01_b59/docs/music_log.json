@@ -1,20 +1,20 @@
 {
  "segments": [
   {
-   "name": "Ossuary 6 - Air",
-   "src": 100.0,
+   "name": "gen_bed",
+   "src": 0.0,
    "t0": 0.0,
-   "t1": 98.77,
+   "t1": 97.77,
    "level": -31.0,
    "fin": 2.0,
    "fout": 3.0
   },
   {
-   "name": "Controlled Chaos - no percussion",
-   "src": 20.0,
-   "t0": 95.77,
+   "name": "gen_tension",
+   "src": 1.5,
+   "t0": 97.77,
    "t1": 230.7,
-   "level": -28.0,
+   "level": -29.0,
    "fin": 3.0,
    "fout": 2.0
   },
@@ -23,41 +23,32 @@
    "src": 0.0,
    "t0": 153.33,
    "t1": 230.0,
-   "level": -30.0,
+   "level": -31.0,
    "fin": 4.0,
    "fout": 2.0
   },
   {
-   "name": "Hitman",
-   "src": 41.0,
+   "name": "gen_climax",
+   "src": "end",
    "t0": 233.2,
    "t1": 262.73,
    "level": -20.0,
-   "fin": 2.0,
+   "fin": 1.0,
    "fout": 0.25
   },
   {
-   "name": "Dark Times",
-   "src": 5.0,
+   "name": "gen_post",
+   "src": 1.5,
    "t0": 265.8,
-   "t1": 366.97,
-   "level": -29.0,
+   "t1": 432.67,
+   "level": -29.5,
    "fin": 3.0,
    "fout": 3.0
   },
   {
-   "name": "Ossuary 1 - A Beginning",
-   "src": 1.0,
-   "t0": 366.97,
-   "t1": 434.17,
-   "level": -31.0,
-   "fin": 3.0,
-   "fout": 3.0
-  },
-  {
-   "name": "Colorless Aura",
-   "src": 8.0,
-   "t0": 431.17,
+   "name": "gen_ending",
+   "src": 1.5,
+   "t0": 432.67,
    "t1": 475.83,
    "level": -28.0,
    "fin": 3.0,
@@ -65,27 +56,27 @@
   }
  ],
  "loudnorm_pass1": {
-  "input_i": "-16.55",
-  "input_tp": "-4.36",
+  "input_i": "-16.51",
+  "input_tp": "-4.31",
   "input_lra": "3.10",
-  "input_thresh": "-26.93",
+  "input_thresh": "-26.94",
   "output_i": "-15.98",
   "output_tp": "-1.50",
   "output_lra": "3.10",
-  "output_thresh": "-26.30",
+  "output_thresh": "-26.31",
   "normalization_type": "dynamic",
   "target_offset": "-0.02"
  },
  "loudnorm_pass2": {
-  "input_i": "-16.52",
+  "input_i": "-16.47",
   "input_tp": "-4.44",
-  "input_lra": "3.00",
-  "input_thresh": "-26.87",
-  "output_i": "-15.96",
-  "output_tp": "-3.89",
+  "input_lra": "3.10",
+  "input_thresh": "-26.88",
+  "output_i": "-15.97",
+  "output_tp": "-3.93",
   "output_lra": "3.10",
-  "output_thresh": "-26.32",
+  "output_thresh": "-26.37",
   "normalization_type": "linear",
-  "target_offset": "-0.04"
+  "target_offset": "-0.03"
  }
 }
