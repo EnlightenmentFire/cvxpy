@@ -34,6 +34,17 @@ dtype = torch.bfloat16 if os.environ.get('MG_FP32') != '1' else torch.float32
 model = MusicgenForConditionalGeneration.from_pretrained(MID, dtype=dtype)
 model.audio_encoder.float()            # EnCodec 编解码保持 fp32
 model.eval()
+# 生成结束时 MusicGen 会把整批一次性送进 EnCodec 解码，峰值内存很高；改成逐条解码再拼回
+_dec = model.audio_encoder.decode
+def _chunked_decode(audio_codes, audio_scales=None, *a, **k):
+    outs = []
+    for b in range(audio_codes.shape[1]):
+        sc = None if audio_scales is None else audio_scales[b:b + 1]
+        outs.append(_dec(audio_codes[:, b:b + 1], audio_scales=sc, *a, **k).audio_values)
+    o = _dec.__self__.decode.__func__ if False else None
+    from transformers.models.encodec.modeling_encodec import EncodecDecoderOutput
+    return EncodecDecoderOutput(audio_values=torch.cat(outs, 0))
+model.audio_encoder.decode = _chunked_decode
 SR = model.config.audio_encoder.sampling_rate; FR = 50
 logp = os.path.join(OUT, 'log.json'); log = json.load(open(logp)) if os.path.exists(logp) else {}
 
