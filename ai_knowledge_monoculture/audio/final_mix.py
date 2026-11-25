@@ -150,8 +150,8 @@ if __name__ == "__main__":
         under = under_voice_db(vp, ducked, segs)
         print("vol", round(vol, 3), "under voice:", under, flush=True)
         err = under["voice_minus_music_db"] - 16.5
-        if abs(err) <= 0.6:
-            break
+        if abs(err) <= 0.6 or it == 3:
+            break          # keep the last measured volume so the report matches the mix
         vol = vol * (10 ** (err / 20))
     mix(vp, music_path, sp, os.path.join(out_dir, "mix.wav"), vol)
     m1 = measure(os.path.join(out_dir, "mix.wav"))
