@@ -43,7 +43,10 @@ SECTIONS = [
 PIECE_OFFSET = {"ending": 3.5}
 
 
-def load_piece(path, offset=0.0):
+LEVEL_PIECES = {"open", "bed", "victorian", "lyre", "push", "tension", "baroque"}
+
+
+def load_piece(path, offset=0.0, level=False):
     w, sr = sf.read(path, dtype="float32")
     if w.ndim == 1:
         w = np.stack([w, w], axis=1)
@@ -52,8 +55,25 @@ def load_piece(path, offset=0.0):
         w = np.stack([resample_poly(w[:, c], SR // g, sr // g) for c in range(2)], axis=1).astype(np.float32)
     # trim MusicGen's first 0.3 s (often a soft attack artefact) plus any listed intro; normalise to -20 dBFS RMS
     w = w[int((0.3 + offset) * SR):]
+    if level:
+        w = level_slow(w)
     rms = np.sqrt(np.mean(w ** 2)) + 1e-9
     return (w * (10 ** (-20 / 20) / rms)).astype(np.float32)
+
+
+def level_slow(w, win_s=3.0, max_db=6.0):
+    """Gentle leveller for bed layers: follow a 3 s RMS envelope and pull it toward the piece's median,
+    at most +/-6 dB, so a continuation that grew louder doesn't creep up under the voice."""
+    m = np.sqrt(np.mean(w ** 2, axis=1))
+    hop = int(0.1 * SR)
+    frames = np.array([np.sqrt(np.mean(m[i:i + hop] ** 2)) for i in range(0, len(m), hop)]) + 1e-6
+    k = max(1, int(win_s / 0.1))
+    env = np.sqrt(np.convolve(frames ** 2, np.ones(k) / k, mode="same")) + 1e-6
+    target = np.median(env)
+    g = np.clip(target / env, 10 ** (-max_db / 20), 10 ** (max_db / 20))
+    g = np.convolve(g, np.ones(k) / k, mode="same")
+    gs = np.interp(np.arange(len(m)), np.arange(len(g)) * hop + hop / 2, g)
+    return (w * gs[:, None]).astype(np.float32)
 
 
 def beat_period(w):
@@ -134,7 +154,7 @@ def build(voice_dir, robot, choices_path, pieces_dir, out_path, brake=True):
         for fn in files:
             path = os.path.join(pieces_dir, fn)
             if path not in cache:
-                cache[path] = load_piece(path, PIECE_OFFSET.get(piece, 0.0))
+                cache[path] = load_piece(path, PIECE_OFFSET.get(piece, 0.0), piece in LEVEL_PIECES)
             takes.append(cache[path])
         w = takes[0]
         a = max(0.0, s0 - (xf / 2 if i > 0 else 0))
