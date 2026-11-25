@@ -4,7 +4,9 @@
 1. 旁白：50 Hz 高通，逐句统一响度，拼成整轨（voice.wav）。
 2. 配乐：铺底 → 推进 → 高潮 → 回落 → 尾声，层与层之间 3 秒等功率交叉淡化；
    高潮最响的一段对准 s6g 之后的 1.6 秒旁白空白。
-3. 规范里的 ffmpeg 链：音乐 3 kHz −4 dB、2 秒淡入、3 秒淡出、侧链压缩（实测调参：阈值 0.05，比 4，15/700 ms），
+3. 逐句电平：讲话时每句的音乐都摆到比这句人声低 16.5 dB（冷开场 21 dB）；句内短停顿里音乐最多回升到
+   比人声低 9 dB；高潮那 1.6 秒空白再抬 5 dB。
+4. 规范里的 ffmpeg 链：音乐 3 kHz −4 dB、2 秒淡入、3 秒淡出、侧链压缩（实测调参：阈值 0.05，比 4，15/700 ms），
    amix 后 loudnorm I=−16 / TP=−2.0（给 AAC 编码留余量）/ LRA=11。
 
 python mix2.py NARR_DIR LAYERS.json OUT_DIR
@@ -29,6 +31,11 @@ SR = 48000
 VOICE_RMS_DB = -18.0
 LAYER_DB = {"base": -20.0, "push": -18.0, "climax": -14.0, "after": -20.0, "coda": -21.0}
 XF = 3.0
+# 逐句电平：讲话时这句人声的整体响度比音乐（压低后，K 加权 400 ms）高多少 dB
+GAP_DB = 16.5          # 规范 15–18
+GAP_DB_OPEN = 21.0     # 冷开场（S0）：规范"铺底…音乐很轻"
+SWELL_DB = 5.0         # 高潮那 1.6 秒旁白空白里，在侧链自然回升之外再抬高的量
+CEIL_GAP = 9.0         # 句内和句间短空隙里，音乐最多回升到"这句人声响度 − 9 dB"
 
 
 def rms_db(x, thr_db=-50.0):
@@ -162,6 +169,125 @@ def ff(*args):
     subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", *args], check=True)
 
 
+def music_chain(dur):
+    return (f"[1:a]acompressor=threshold=-12dB:ratio=2:attack=80:release=600,volume=0.5,"
+            f"equalizer=f=3000:t=q:w=1:g=-4,afade=t=in:d=2,afade=t=out:st={dur - 3:.2f}:d=3[m]")
+
+
+# 规范参考值是 threshold=0.02:ratio=10:release=500；在这条人声上会压下 25 dB 以上，
+# 实测调到 0.05 / 4 / 700 ms，停顿时回升更平缓
+DUCK = "[m][sc]sidechaincompress=threshold=0.05:ratio=4:attack=15:release=700[duck]"
+
+
+def ducked(vpath, mpath, outpath, dur):
+    ff("-i", vpath, "-i", mpath, "-filter_complex", "[0:a]anull[sc];" + music_chain(dur) + ";" + DUCK,
+       "-map", "[duck]", "-ar", str(SR), outpath)
+
+
+def line_frames(T, n_frames):
+    """每句的测量帧（去掉句首句尾各 0.3 秒；第一句再避开 2 秒淡入）"""
+    from loudness import frame_centers
+    t = frame_centers(n_frames)
+    out = []
+    for e in T.lines:
+        a = max(e["start"] + 0.3, 2.6)
+        sel = (t > a) & (t < e["end"] - 0.3)
+        if sel.sum() >= 3:
+            out.append((e, sel))
+    return t, out
+
+
+def level_to_voice(T, voice, bed, tmpdir, iters=6):
+    """逐句把音乐摆到"比这句人声低 GAP_DB"，并在句内设天花板：
+    - 侧链对每一层压下去的量基本一样，所以压前更响的层（高潮）在人声底下也更响；
+      这里按句测量真实结果（跑同一条 ffmpeg 链路），算出每句该补多少 dB。
+    - 只看中位数会漏掉句内短停顿里音乐冒上来的情况（侧链一松，鼓点/铜管就顶上来），
+      所以句内和句间短空隙（<0.8 秒）再加一道天花板：音乐不得高于"这句人声响度 − CEIL_GAP"。
+    - 0.8 秒以上的空白（章节转场、片名卡、高潮那 1.6 秒、片尾）不设天花板，让音乐回升。
+    几轮"测—改"收敛。"""
+    from loudness import momentary_lufs, line_loudness, frame_centers
+    n = len(bed)
+    dur = n / SR
+    vpath = os.path.join(tmpdir, "lv_voice.wav")
+    sf.write(vpath, np.stack([voice, voice], 1), SR, subtype="FLOAT")
+    mv = momentary_lufs(np.stack([voice, voice], 1))
+    t, lines = line_frames(T, len(mv))
+    line_l = {e["id"]: line_loudness(mv, sel) for e, sel in lines}
+    # 天花板区域：每句 [起-0.05, 止+0.05]，以及与下一句之间 <0.8 秒的空隙
+    ceil = np.full(len(mv), np.inf)
+    ent = [e for e, _ in lines]
+    for i, e in enumerate(ent):
+        L = line_l[e["id"]] - CEIL_GAP
+        sel = (t >= e["start"] - 0.05) & (t <= e["end"] + 0.05)
+        ceil[sel] = np.minimum(ceil[sel], L)
+        if i + 1 < len(ent) and ent[i + 1]["start"] - e["end"] < 0.8:
+            nxt = ent[i + 1]
+            sel = (t > e["end"]) & (t < nxt["start"])
+            ceil[sel] = np.minimum(ceil[sel], min(L, line_l[nxt["id"]] - CEIL_GAP))
+    corr = {e["id"]: 0.0 for e in ent}
+    att = np.zeros(len(mv))                       # 天花板压下的量（dB，≤0），按测量帧中心计
+    grid = np.arange(int(np.ceil(dur / 0.1)) + 1) * 0.1
+    ker15 = np.hanning(15); ker15 /= ker15.sum()
+    ker5 = np.hanning(5); ker5 /= ker5.sum()
+    log = []
+    for it in range(iters + 1):
+        knots_t, knots_g = [], []
+        for e in ent:
+            knots_t += [e["start"], e["end"]]; knots_g += [corr[e["id"]]] * 2
+        g = np.interp(grid, knots_t, knots_g)
+        g = np.convolve(np.pad(g, 7, mode="edge"), ker15, mode="valid")[:len(grid)]
+        # 天花板衰减：先向两边各扩 0.2 秒（400 ms 窗的跨度），再短平滑
+        a_d = att.copy()
+        for sh in (1, 2):
+            a_d = np.minimum(a_d, np.minimum(np.roll(att, sh), np.roll(att, -sh)))
+        a_d = np.convolve(np.pad(a_d, 2, mode="edge"), ker5, mode="valid")[:len(att)]
+        g = g + np.interp(grid, t, a_d)
+        gs = np.interp(np.arange(n) / SR, grid, g)
+        mpath = os.path.join(tmpdir, "lv_music.wav")
+        sf.write(mpath, (bed * (10 ** (gs / 20))[:, None]).astype(np.float32), SR, subtype="FLOAT")
+        dpath = os.path.join(tmpdir, "lv_ducked.wav")
+        ducked(vpath, mpath, dpath, dur)
+        md, _ = sf.read(dpath, dtype="float32")
+        mm = momentary_lufs(md)
+        k = min(len(mm), len(mv), len(ceil))
+        gaps = {}
+        for e, sel in lines:
+            gaps[e["id"]] = float(np.median(line_l[e["id"]] - mm[:k][sel[:k]]))
+        err = {e["id"]: gaps[e["id"]] - (GAP_DB_OPEN if e["sec"] == "S0" else GAP_DB) for e in ent}
+        over = mm[:k] - ceil[:k]                    # >0：音乐顶过了天花板
+        worst = max(abs(x) for x in err.values())
+        worst_over = float(np.max(over[np.isfinite(over)]))
+        log.append(dict(iter=it, worst_err_db=round(worst, 2), worst_over_ceiling_db=round(worst_over, 2),
+                        gap_min=round(min(gaps.values()), 1), gap_max=round(max(gaps.values()), 1)))
+        print(f"  电平第 {it} 轮：中位偏差最大 {worst:.2f} dB，顶过天花板最多 {worst_over:.2f} dB", flush=True)
+        if it == iters or (worst < 0.4 and worst_over < 0.5):
+            break
+        for e in ent:   # 差值大＝音乐太轻→抬；每轮最多改 8 dB，总量限在 −14…+12 dB
+            corr[e["id"]] = float(np.clip(corr[e["id"]] + np.clip(err[e["id"]], -8, 8), -14, 12))
+        fin = np.isfinite(over)
+        step = np.zeros(len(att))
+        step[:k][fin] = np.clip(-over[fin], -10, 2)  # 顶过就压，有余量就慢慢松回（每轮最多 2 dB）
+        att = np.clip(att + step, -15, 0)
+        att[~np.isfinite(ceil)] = 0.0
+    return (bed * (10 ** (gs / 20))[:, None]).astype(np.float32), dict(
+        line_gain_db={k_: round(v, 2) for k_, v in corr.items()},
+        line_gap_db={k_: round(v, 2) for k_, v in gaps.items()},
+        ceiling_gap_db=CEIL_GAP, ceiling_frames_attenuated=int((att < -0.5).sum()),
+        ceiling_max_att_db=round(float(att.min()), 1), iterations=log)
+
+
+def climax_swell(T, bed):
+    """高潮那 1.6 秒旁白空白：在侧链自然回升之外再抬 SWELL_DB，前后各 0.25 秒余弦过渡"""
+    a, b = T.end("s6g"), T.start("s6g2")
+    n = len(bed)
+    tt = np.arange(n) / SR
+    up = np.clip((tt - a) / 0.25, 0, 1)
+    down = np.clip((b - 0.05 - tt) / 0.25, 0, 1)
+    shape = 0.5 - 0.5 * np.cos(np.pi * np.minimum(up, down))
+    g = 10 ** (SWELL_DB * shape / 20)
+    return (bed * g[:, None]).astype(np.float32), dict(swell_db=SWELL_DB, start=round(a, 2), end=round(b, 2))
+
+
 def main(narr_dir, layers_json, out):
     os.makedirs(out, exist_ok=True)
     T = Timeline(os.environ.get("META") or os.path.join(narr_dir, "meta.json"))
@@ -169,24 +295,24 @@ def main(narr_dir, layers_json, out):
     bed, info = arrange(T, json.load(open(layers_json)))
     n = min(len(voice), len(bed))
     voice, bed = voice[:n], bed[:n]
+    if os.environ.get("NO_LEVEL") != "1":
+        bed, info["leveling"] = level_to_voice(T, voice, bed, out)
+        bed, info["climax_swell"] = climax_swell(T, bed)
     vpath, mpath = os.path.join(out, "voice.wav"), os.path.join(out, "music.wav")
     sf.write(vpath, np.stack([voice, voice], 1), SR, subtype="FLOAT")
     sf.write(mpath, bed, SR, subtype="FLOAT")
     dur = n / SR
-    music_chain = (f"[1:a]acompressor=threshold=-12dB:ratio=2:attack=80:release=600,volume=0.5,"
-                   f"equalizer=f=3000:t=q:w=1:g=-4,afade=t=in:d=2,afade=t=out:st={dur - 3:.2f}:d=3[m]")
-    # 规范参考值是 threshold=0.02:ratio=10:release=500；在这条人声上会压下 25 dB 以上，
-    # 实测调到 0.05 / 4 / 700 ms，讲话时人声比音乐高约 17 dB（规范 15–18 dB），停顿时回升更平缓
-    duck = "[m][sc]sidechaincompress=threshold=0.05:ratio=4:attack=15:release=700[duck]"
     # 成片混音（规范的链路）。真峰值目标取 −2.0：AAC 128k 编码后真峰值会抬高约 0.2–0.5 dB，
     # 实测 −1.5 的 WAV 编完是 −1.3 dBTP，超了规范的 −1.5；留出余量后成片 mp4 仍 ≤ −1.5
     ff("-i", vpath, "-i", mpath, "-filter_complex",
-       "[0:a]asplit=2[v][sc];" + music_chain + ";" + duck +
+       "[0:a]asplit=2[v][sc];" + music_chain(dur) + ";" + DUCK +
        ";[v][duck]amix=inputs=2:duration=first:normalize=0,loudnorm=I=-16:TP=-2.0:LRA=11",
        "-ar", str(SR), os.path.join(out, "mix.wav"))
     # 仅压低后的音乐（用来量人声与音乐的差）
-    ff("-i", vpath, "-i", mpath, "-filter_complex", "[0:a]anull[sc];" + music_chain + ";" + duck,
-       "-map", "[duck]", "-ar", str(SR), os.path.join(out, "music_ducked.wav"))
+    ducked(vpath, mpath, os.path.join(out, "music_ducked.wav"), dur)
+    for f in ("lv_voice.wav", "lv_music.wav", "lv_ducked.wav"):
+        if os.path.exists(os.path.join(out, f)):
+            os.remove(os.path.join(out, f))
     json.dump(info, open(os.path.join(out, "arrange.json"), "w"), ensure_ascii=False, indent=1)
     print(json.dumps(info, ensure_ascii=False))
 

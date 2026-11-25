@@ -34,19 +34,7 @@ def ebur128(path):
     return dict(I=I, LRA=LRA, TP=TP)
 
 
-def momentary_lufs(x):
-    """EBU R128 瞬时响度：K 加权，400 ms 窗，100 ms 步进"""
-    from scipy.signal import lfilter
-    if x.ndim == 1:
-        x = x[:, None]
-    b1 = [1.53512485958697, -2.69169618940638, 1.19839281085285]; a1 = [1.0, -1.69065929318241, 0.73248077421585]
-    b2 = [1.0, -2.0, 1.0]; a2 = [1.0, -1.99004745483398, 0.99007225036621]
-    y = lfilter(b2, a2, lfilter(b1, a1, x.astype(np.float64), axis=0), axis=0)
-    p = (y ** 2).sum(1)
-    hop, win = int(0.1 * SR), int(0.4 * SR)
-    c = np.concatenate([[0], np.cumsum(p)])
-    idx = np.arange(0, len(p) - win, hop)
-    return -0.691 + 10 * np.log10((c[idx + win] - c[idx]) / win + 1e-12)
+from loudness import momentary_lufs  # noqa: E402  （K 加权 400 ms，混音与质检同一把尺）
 
 
 def frames_db(x, win=0.05):
