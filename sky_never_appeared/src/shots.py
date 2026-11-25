@@ -201,6 +201,7 @@ def build_shots():
     add('m8', lambda t: SM.quote_card(t, '波德维格 2017', '“不太可能造成任何\n可测量的经济压力”', 'Science & Global Security 25:1'), name='podvig')
     add('m9', lambda t: SM.quote_card(t, '波德维格还发现', '星球大战给苏联国内\n主张对抗的人壮了胆', 'Podvig 2017'), name='embolden')
     add('m10', lambda t: SM.verdict(t), name='verdict')
+    add('m11', lambda t: SM.takeaway(t, ['改变历史的', '不是它拖垮了谁', '而是双方的猜测'], size=60), name='take')
     # ---- 10 end
     add('e1', lambda t: ending(t), hypo=True, name='ending')
     S.sort(key=lambda s: s.start)
@@ -268,8 +269,8 @@ def render(t, fi):
     # chapter cards in the gap before each section's first line
     for sec in TL['sections'][1:]:
         first = cue([ln for ln in TL['lines'] if ln['sec'] == sec['sec']][0]['id'])
-        if sec['chapter'] and first - 1.85 <= t < first - 0.25:
-            c, e = chapter_card(t - (first - 1.85), sec)
+        if sec['chapter'] and first - 1.5 <= t < first - 0.25:
+            c, e = chapter_card(t - (first - 1.5), sec)
             return S2.finish(c, e, fi)
     s = shot_at(t)
     if s is None:
