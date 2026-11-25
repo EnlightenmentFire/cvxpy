@@ -51,6 +51,17 @@ def build_stems(voice_dir, robot, out_dir):
     vp, sp = os.path.join(out_dir, "voice.wav"), os.path.join(out_dir, "sfx.wav")
     sf.write(vp, voice, SR, subtype="FLOAT")
     sf.write(sp, sfx, SR, subtype="FLOAT")
+    # sidechain key: steady noise at the narration's level for the whole of each sentence, silence between
+    # sentences -> the music stays put under a sentence (no 'breathing' in tiny pauses) and comes back up
+    # between sentences, paragraphs and chapters.
+    rng = np.random.default_rng(0)
+    key = np.zeros(n, np.float32)
+    for s in segs:
+        for e in s.events:
+            a, b = int(max(0, e.start - 0.08) * SR), int(min(total, e.end + 0.12) * SR)
+            key[a:b] = rng.normal(0, 10 ** (-18 / 20), b - a)
+    kp = os.path.join(out_dir, "key.wav")
+    sf.write(kp, key, SR, subtype="FLOAT")
     return segs, total, vp, sp
 
 
@@ -61,8 +72,8 @@ def ff(args):
     return r.stderr
 
 
-GRAPH = ("[0:a]aformat=channel_layouts=stereo,asplit=2[v][sc];"
-         "[1:a]volume={vol},equalizer=f=3000:t=q:w=1:g=-4,afade=t=in:d=2[m];"
+GRAPH = ("[0:a]aformat=channel_layouts=stereo[v];[3:a]aformat=channel_layouts=stereo[sc];"
+         "[1:a]volume={vol},acompressor=threshold=0.1:ratio=3:attack=20:release=300:knee=4,equalizer=f=3000:t=q:w=1:g=-4,afade=t=in:d=2[m];"
          "[m][sc]sidechaincompress=threshold=0.02:ratio=10:attack=15:release=500[duck];")
 
 
@@ -72,7 +83,7 @@ def mix(vp, mp, sp, out, vol=0.5, no_music=False):
         inputs = ["-i", vp, "-i", sp]
     else:
         g = GRAPH.format(vol=vol) + "[v][duck][2:a]amix=inputs=3:duration=first:normalize=0[pre]"
-        inputs = ["-i", vp, "-i", mp, "-i", sp]
+        inputs = ["-i", vp, "-i", mp, "-i", sp, "-i", os.path.join(os.path.dirname(vp), "key.wav")]
     # pass 1: measure
     err = ff(inputs + ["-filter_complex", g + ";[pre]loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json[o]",
                        "-map", "[o]", "-f", "null", "-"])
@@ -88,7 +99,8 @@ def mix(vp, mp, sp, out, vol=0.5, no_music=False):
 
 def ducked_music_stem(vp, mp, out, vol=0.5):
     g = GRAPH.format(vol=vol) + "[v]anullsink"
-    ff(["-i", vp, "-i", mp, "-filter_complex", g, "-map", "[duck]", "-c:a", "pcm_f32le", out])
+    kp = os.path.join(os.path.dirname(vp), "key.wav")
+    ff(["-i", vp, "-i", mp, "-i", vp, "-i", kp, "-filter_complex", g, "-map", "[duck]", "-c:a", "pcm_f32le", out])
 
 
 def measure(path):

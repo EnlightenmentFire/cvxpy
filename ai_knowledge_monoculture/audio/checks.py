@@ -51,7 +51,7 @@ def jumps_under_speech(duck_path, segs, win=0.4):
     speech = np.zeros(len(db), bool)
     for s in segs:
         for e in s.events:
-            speech[int(e.start / win): int(e.end / win)] = True
+            speech[int(np.ceil(e.start / win)): int(e.end / win)] = True   # whole windows inside a sentence
     bad = []
     for i in range(5, len(db)):
         if speech[i] and speech[i - 5:i].all():
