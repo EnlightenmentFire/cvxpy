@@ -1,0 +1,15 @@
+{
+ "voice_lufs": -21.7,
+ "music_ducked_lufs": -42.6,
+ "music_minus_voice_db": -20.9,
+ "base_gain_db": -24.6,
+ "mix_music": [
+  -15.5,
+  -2.2
+ ],
+ "mix_nomusic": [
+  -15.4,
+  -2.2
+ ],
+ "speech_frames_music_below_voice_rms_db": 26.7
+}
