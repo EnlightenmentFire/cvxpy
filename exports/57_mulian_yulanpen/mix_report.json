@@ -1,0 +1,19 @@
+{
+ "open_0_60": {
+  "voice": -14.3,
+  "music": -38.4,
+  "diff_db": 24.1
+ },
+ "mid_300_360": {
+  "voice": -14.2,
+  "music": -36.0,
+  "diff_db": 21.8
+ },
+ "end_last60": {
+  "voice": -14.1,
+  "music": -35.5,
+  "diff_db": 21.4
+ },
+ "voice_integrated": -14.0,
+ "music_integrated": -36.3
+}
