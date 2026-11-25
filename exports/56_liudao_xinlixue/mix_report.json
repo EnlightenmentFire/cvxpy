@@ -1,0 +1,29 @@
+{
+ "mix_music": {
+  "input_i": "-11.94",
+  "input_tp": "-1.41",
+  "input_lra": "2.10",
+  "input_thresh": "-22.51",
+  "output_i": "-14.96",
+  "output_tp": "-4.43",
+  "output_lra": "2.20",
+  "output_thresh": "-25.53",
+  "normalization_type": "linear",
+  "target_offset": "-0.04"
+ },
+ "mix_dry": {
+  "input_i": "-11.95",
+  "input_tp": "-1.54",
+  "input_lra": "2.20",
+  "input_thresh": "-22.36",
+  "output_i": "-14.97",
+  "output_tp": "-4.56",
+  "output_lra": "2.20",
+  "output_thresh": "-25.38",
+  "normalization_type": "linear",
+  "target_offset": "-0.03"
+ },
+ "voice_lufs_premix": -14.999999999623043,
+ "music_under_voice_db_speech": 20.99348967536573,
+ "music_under_voice_db_pauses": NaN
+}
