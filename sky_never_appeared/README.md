@@ -2,6 +2,9 @@
 
 竖屏 1080×1920 / 30fps 视频号成片的全部工程：解说稿、史料核对、渲染代码、样张、样音。
 
+**成片**：`final/一片没有出现的天空_冷战核按钮02.mp4`（12 分 50 秒，H.264 + AAC，小于 100 MB）。
+配音检测见 `audio/voice_report_full.md`，整片 ASR 回读结果见 `final/asr_film.txt`，抽帧检查见 `final/qa_sheet.jpg`。
+
 - `script/script.md` — 解说稿 v1（逐段旁白 + 画面说明）
 - `script/notes_sources.md` — 史料核对表、对原提纲的更正、主要来源
 - `stills/` — 风格确认用的关键静帧（`00_contact_sheet.jpg` 为总览）

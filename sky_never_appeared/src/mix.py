@@ -105,7 +105,7 @@ def build(tts_dir, t0=0.0, t1=None):
     if at('LAB'):
         A.place(sfx, A.crack(1.5) * 0.8, at('LAB') + 1.15)
     if at('FALL'):
-        A.place(sfx, A.whoosh(2.5, up=False) * 0.8, at('FALL') + 0.2)
+        A.place(sfx, A.lp(A.whoosh(2.5, up=False), 2500) * 0.4, at('FALL') + 0.2)
     if at('VERDICT'):
         A.place(sfx, A.impact(2.5) * 0.35, at('VERDICT') - 0.2)
     if at('HOUSE'):
@@ -130,7 +130,8 @@ def build(tts_dir, t0=0.0, t1=None):
     # music bed sits well under the voice (-18 dBFS RMS): bring it to about -27 dBFS before ducking
     mus = A.to_rms(music, -27.0) if np.abs(music).max() > 0 else music
     fxs = A.to_rms(sfx, -30.0) if np.abs(sfx).max() > 0 else sfx
-    mix = voice + mus * g[:, None] + fxs * (0.55 + 0.45 * g[:, None])
+    # sound effects duck under the narration too, so they never mask a word
+    mix = voice + mus * g[:, None] + fxs * (0.25 + 0.75 * g[:, None])
     i0, i1 = A.secs(t0), A.secs(total)
     mix = mix[i0:i1]
     return A.limiter(mix, 0.89)
