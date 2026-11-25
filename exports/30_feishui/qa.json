@@ -1,0 +1,39 @@
+{
+ "file": "淝水之战_1080x1920.mp4",
+ "width": 1080,
+ "height": 1920,
+ "fps": "25/1",
+ "avg_fps": "25/1",
+ "vcodec": "h264",
+ "acodec": "aac",
+ "a_bitrate": "131231",
+ "video_dur": 874.92,
+ "audio_dur": 874.901,
+ "av_diff": 0.019,
+ "size_mb": 91.49,
+ "lufs": -15.2,
+ "true_peak_dbtp": -1.8,
+ "sync_checks": [
+  {
+   "id": "s1_01",
+   "t": 0.12,
+   "subtitle_first_chunk": "一支号称近百万的大军，只是往后退了几步，就再也停不下来",
+   "asr": "一只号称近百万的大军只是往后退了几步就再也停不下来",
+   "speech_onset_vs_subtitle_s": null
+  },
+  {
+   "id": "s5_09",
+   "t": 427.59,
+   "subtitle_first_chunk": "《晋书·谢玄传》里的版本更有气势：让他们过来，我用几十万铁骑",
+   "asr": "近书谢玄传理的版本更有气势,让他们过来。我用几十万铁记,往河边移压。",
+   "speech_onset_vs_subtitle_s": 0.08
+  },
+  {
+   "id": "s7_06",
+   "t": 848.86,
+   "subtitle_first_chunk": "客人忍不住问，他慢慢答了一句",
+   "asr": "客人忍不住问,他慢慢答了一句。",
+   "speech_onset_vs_subtitle_s": 0.09
+  }
+ ]
+}

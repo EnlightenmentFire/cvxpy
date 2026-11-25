@@ -33,7 +33,12 @@ for l in picks:
     segs, _ = m.transcribe(load16(wav), language="zh", word_timestamps=False)
     segs = list(segs)
     hyp = "".join(s.text for s in segs)
-    onset = segs[0].start - 0.3 if segs else None   # 相对句子起点（字幕起点）的语音起点
+    x16 = load16(wav); fr = int(0.01 * 16000)
+    e = _np.array([_np.sqrt((x16[i:i + fr] ** 2).mean()) for i in range(0, len(x16) - fr, fr)])
+    # 音乐压在 -20 dB 以下；以 0.3 s 前导段电平 + 12 dB 为门限找语音起点
+    thr = max(e[:25].max() * 4, 1e-4)
+    on = int(_np.argmax(e > thr)) if (e > thr).any() else None
+    onset = None if on is None else on * 0.01 - 0.3   # 相对句子起点（字幕起点）的语音起点
     sub = l["subs"][0]
     tm = (sub["t0"] + sub["t1"]) / 2
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{tm:.3f}", "-i", mp4, "-frames:v", "1", f"{out}/chk_{l['id']}.jpg"], check=True)

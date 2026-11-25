@@ -89,7 +89,7 @@ def sfx_track():
     return s
 
 
-def loudnorm(inp, out, I=-15.0, TP=-1.5):
+def loudnorm(inp, out, I=-15.0, TP=-2.2):
     r = subprocess.run(["ffmpeg", "-hide_banner", "-i", inp, "-af", f"loudnorm=I={I}:TP={TP}:LRA=11:print_format=json", "-f", "null", "-"], capture_output=True, text=True).stderr
     m = json.loads(r[r.rindex("{"):r.rindex("}") + 1])
     af = (f"loudnorm=I={I}:TP={TP}:LRA=11:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}:"
