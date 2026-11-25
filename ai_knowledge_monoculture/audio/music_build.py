@@ -148,28 +148,44 @@ def build(voice_dir, robot, choices_path, pieces_dir, out_path, brake=True):
     music = np.zeros((n_total, 2), np.float32)
     xf = 3.0
     cache = {}
-    for i, (key, piece, gain, layer, s0, s1) in enumerate(bounds):
+    # merge neighbouring sections that use the same piece into one continuous span (gain is automated)
+    spans = []
+    for (key, piece, gain, layer, s0, s1) in bounds:
+        if spans and spans[-1]["piece"] == piece:
+            spans[-1]["s1"] = s1
+            spans[-1]["gains"].append((s0, gain))
+        else:
+            spans.append(dict(piece=piece, s0=s0, s1=s1, gains=[(s0, gain)]))
+    played = {}          # how many seconds of each piece have been used so far (resume, don't restart)
+    for i, sp in enumerate(spans):
+        piece = sp["piece"]
         files = choices[piece] if isinstance(choices[piece], list) else [choices[piece]]
-        takes = []
-        for fn in files:
-            path = os.path.join(pieces_dir, fn)
-            if path not in cache:
-                cache[path] = load_piece(path, PIECE_OFFSET.get(piece, 0.0), piece in LEVEL_PIECES)
-            takes.append(cache[path])
-        w = takes[0]
-        a = max(0.0, s0 - (xf / 2 if i > 0 else 0))
-        b = min(total + 0.5, s1 + (xf / 2 if i < len(bounds) - 1 else 0.5))
+        path = os.path.join(pieces_dir, files[0])
+        if path not in cache:
+            cache[path] = load_piece(path, PIECE_OFFSET.get(piece, 0.0), piece in LEVEL_PIECES)
+        w = cache[path]
+        a = max(0.0, sp["s0"] - (xf / 2 if i > 0 else 0))
+        b = min(total + 0.5, sp["s1"] + (xf / 2 if i < len(spans) - 1 else 0.5))
         L = int((b - a) * SR)
-        # start each re-use of a piece at a different offset so repeats don't line up
-        # a piece used in several sections starts from a different take each time
-        rot = sum(1 for (k2, p2, *_r) in bounds[:i] if p2 == piece)
-        order = takes[rot % len(takes):] + takes[:rot % len(takes)]
-        x = chain(order, L) * (10 ** (gain / 20))
+        start = int(played.get(piece, 0.0) * SR) % max(1, len(w) - int(4 * SR))
+        src = np.concatenate([w[start:], w[:start]]) if start else w
+        x = loop_to(src, L)
+        played[piece] = played.get(piece, 0.0) + L / SR
+        # per-section gain automation inside the span (0.8 s ramps)
+        gcurve = np.ones(L, np.float32)
+        for j, (t0, gdb) in enumerate(sp["gains"]):
+            i0 = max(0, int((t0 - a) * SR))
+            gcurve[i0:] = 10 ** (gdb / 20)
+            if j > 0:
+                r = min(int(0.8 * SR), L - i0)
+                prev = 10 ** (sp["gains"][j - 1][1] / 20)
+                gcurve[i0:i0 + r] = np.linspace(prev, 10 ** (gdb / 20), r)
+        x = x * gcurve[:, None]
         nf = int(xf * SR)
         env = np.ones(L, np.float32)
         if i > 0:
-            env[:nf] = np.sin(np.linspace(0, np.pi / 2, nf)) ** 1
-        if i < len(bounds) - 1:
+            env[:nf] = np.sin(np.linspace(0, np.pi / 2, nf))
+        if i < len(spans) - 1:
             env[-nf:] = np.cos(np.linspace(0, np.pi / 2, nf))
         st = int(a * SR)
         music[st: st + L] += x[: len(music) - st] * env[: len(music) - st, None]
