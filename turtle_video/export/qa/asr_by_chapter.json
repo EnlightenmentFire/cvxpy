@@ -1,0 +1,52 @@
+{
+ "cold": {
+  "voice_only": 0.0,
+  "mix": 0.0,
+  "mix_phone": 0.0
+ },
+ "bet": {
+  "voice_only": 0.0034,
+  "mix": 0.0138,
+  "mix_phone": 0.0138
+ },
+ "out": {
+  "voice_only": 0.0,
+  "mix": 0.0,
+  "mix_phone": 0.0
+ },
+ "rules": {
+  "voice_only": 0.0011,
+  "mix": 0.0011,
+  "mix_phone": 0.036
+ },
+ "hard": {
+  "voice_only": 0.0,
+  "mix": 0.0,
+  "mix_phone": 0.0595
+ },
+ "div": {
+  "voice_only": 0.0,
+  "mix": 0.0,
+  "mix_phone": 0.0
+ },
+ "t88": {
+  "voice_only": 0.0021,
+  "mix": 0.0434,
+  "mix_phone": 0.0021
+ },
+ "doubt": {
+  "voice_only": 0.0,
+  "mix": 0.0047,
+  "mix_phone": 0.0
+ },
+ "end": {
+  "voice_only": 0.0,
+  "mix": 0.0,
+  "mix_phone": 0.0
+ },
+ "_overall": {
+  "voice_only": 0.0012,
+  "mix": 0.0091,
+  "mix_phone": 0.0168
+ }
+}

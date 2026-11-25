@@ -1,0 +1,43 @@
+{
+ "total": 822.2,
+ "marks": {
+  "t_ch4": 432.32,
+  "t_big": 484.3,
+  "t_fax": 673.94,
+  "t_diff": 725.78,
+  "t_peak": 746.05,
+  "t_doubt": 747.4,
+  "t_end": 800.13
+ },
+ "sidechain": {
+  "key": "narration presence, 0.65 s hold",
+  "threshold_db": -50.0,
+  "ratio": 20.0,
+  "attack_ms": 15,
+  "release_ms": 500,
+  "under_voice_db": 14.5
+ },
+ "ratio": {
+  "voice_median_db": -20.4,
+  "voice_minus_music_db_median": 17.1,
+  "voice_minus_music_db_p05": 8.6,
+  "voice_minus_music_db_p95": 22.2,
+  "music_in_pauses_max_rel_voice_db": -2.6,
+  "music_at_climax_rel_voice_db": 0.4,
+  "pause_windows_music_within_3db_of_voice": [
+   500.0,
+   501.2,
+   816.0
+  ]
+ },
+ "loud_mix": {
+  "I": -16.0,
+  "LRA": 3.5,
+  "TP": -1.7
+ },
+ "loud_nomusic": {
+  "I": -16.0,
+  "LRA": 3.3,
+  "TP": -1.7
+ }
+}

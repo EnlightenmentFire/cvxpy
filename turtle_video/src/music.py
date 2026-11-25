@@ -100,7 +100,11 @@ def analyse(path):
     stab = float(np.std(body))
     pop = float(np.max(body) - np.median(body))
     dropout = float(np.mean(body < np.median(body) - 18))
-    clip = float(np.mean(np.abs(x) > 0.99))
+    # real clipping = flat-topped plateaus (takes are float, so peaks above 1.0 are just loud, not clipped)
+    a_ = np.abs(x)
+    pk = a_.max()
+    flat = sum(int(np.sum((np.abs(np.diff(x[:, ch])) < 1e-7) & (a_[1:, ch] > 0.95 * pk))) for ch in range(x.shape[1]))
+    clip = flat / x.size
     key, shift, key_conf = estimate_key(mono, sr)
     tempo = float(np.atleast_1d(librosa.beat.beat_track(y=mono, sr=sr)[0])[0])
     return dict(presence=round(pres, 4), stability_db=round(stab, 2), pop_db=round(pop, 2), dropout=round(dropout, 3),
@@ -135,7 +139,8 @@ def score(outdir):
             s = 25 * a["presence"] - 0.3 * a["pop_db"] + 30 * a["dropout"] + 2000 * a["clip"]
         else:                   # beds and builds: steady, unobtrusive
             s = 40 * a["presence"] + 0.6 * a["stability_db"] + 0.25 * a["pop_db"] + 30 * a["dropout"] + 2000 * a["clip"]
-        s += 0.15 * abs(a["shift"])
+        a["shift"] = compat_shift(a["key"])
+        s += 0.4 * abs(a["shift"])
         if a["vocals"]:
             s += 50
         if layer in ("build", "climax"):
@@ -145,6 +150,16 @@ def score(outdir):
         res[f[:-4]] = a
         print(f[:-4], a, flush=True)
     json.dump(res, open(os.path.join(outdir, "scores.json"), "w"), ensure_ascii=False, indent=1)
+
+
+def compat_shift(key):
+    """Smallest pitch shift into a key that blends with A minor / C major: keys one step away on the
+    circle of fifths (G, F major; E, D minor) are left alone, everything else moves at most 2 semitones."""
+    name, mode = key.split()
+    tonic = NOTES.index(name)
+    targets = (0, 7, 5) if mode == "major" else (9, 4, 2)
+    best = min(((t - tonic + 6) % 12 - 6 for t in targets), key=abs)
+    return int(best)
 
 
 KEEP = {"bed": 2, "build": 2, "climax": 1, "drop": 1, "reflect": 1, "end": 1}
@@ -162,7 +177,7 @@ def choose(outdir):
         ref_tempo = sc[keep[0]]["tempo"] if keep else None
         names = []
         for k in keep:
-            shift = sc[k]["shift"]
+            shift = compat_shift(sc[k]["key"])
             tempo_ratio = 1.0
             if layer in ("build", "climax") and ref_tempo and sc[k]["tempo"] > 0:
                 r = ref_tempo / sc[k]["tempo"]

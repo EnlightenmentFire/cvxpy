@@ -28,7 +28,7 @@ from scenes import Ctx, streak_times
 
 XFADE = 3.0
 # target RMS (dBFS, before ducking) per layer
-LEVEL = {"bed": -28.5, "build": -26.0, "drop": -30.5, "climax": -20.5, "reflect": -27.5, "end": -27.0}
+LEVEL = {"bed": -28.5, "build": -26.0, "drop": -30.5, "climax": -22.0, "reflect": -27.5, "end": -27.0}
 SC = dict(threshold=0.035, ratio=4.0, attack=15, release=500)
 
 
