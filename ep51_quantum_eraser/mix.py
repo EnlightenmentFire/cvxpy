@@ -1,7 +1,7 @@
 """混音与封装。
 
 底乐比旁白低约 22 dB（旁白进行时），1 秒以上的停顿处抬 5 dB；包络平滑（起 80 ms / 落 600 ms）。
-成片两遍 loudnorm 到 -15 LUFS、真峰值 -1.5 dBTP；另出无配乐版（只有旁白，同样 -15 LUFS）。
+成片两遍 loudnorm 到 -15 LUFS、真峰值目标 -2.0 dBTP（AAC 编码后约 -1.5）；另出无配乐版（只有旁白，同样 -15 LUFS）。
 usage: python mix.py mix                     -> stems/mix_music.wav, stems/mix_voice_only.wav + 电平报告
        python mix.py mux <picture.mp4> <out_dir> <basename>
 """
@@ -27,7 +27,7 @@ def lufs(path):
     return I, (float(tp[-1]) if tp else None)
 
 
-def loudnorm(src, dst, I=-15.0, TP=-1.5):
+def loudnorm(src, dst, I=-15.0, TP=-2.0):
     r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", src, "-af", f"loudnorm=I={I}:TP={TP}:LRA=11:print_format=json", "-f", "null", "-"],
                        capture_output=True, text=True)
     m = json.loads(r.stderr[r.stderr.rfind("{"):r.stderr.rfind("}") + 1])
