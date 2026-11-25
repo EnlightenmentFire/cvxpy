@@ -23,9 +23,11 @@ LANG_TAG = {KO: "原话为韩语 · NTSB 英译", MIX: "韩英混说 · NTSB 英
 B = []
 
 
-def b(id, sec, scene, say=None, sub=None, q=None, gpws=None, gap=0.25, tempo="narr", key=False, ev=None, **kw):
+def b(id, sec, scene, say=None, sub=None, q=None, gpws=None, gap=0.25, tempo="narr", key=False, ev=None, pre=0.0,
+      **kw):
+    """pre：开口前的留白（秒），高潮处让音乐单独出来。"""
     B.append(dict(id=id, sec=sec, scene=scene, say=say, sub=sub, q=q, gpws=gpws,
-                  gap=gap, tempo=tempo, key=key, ev=dict(ev or {}, **kw)))
+                  gap=gap, tempo=tempo, key=key, pre=pre, ev=dict(ev or {}, **kw)))
 
 
 def Q(t, who, en, lang, note=None):
@@ -62,7 +64,7 @@ b("s1_12", 1, "cockpit", "下降的路上，他抱怨公司：让我们这些开
   sub="下降的路上，他抱怨公司：让我们这些开老 747 的人，干到最大限度。",
   q=Q("01:20:28", CAP, "anyway, they make us (B747) classic guys work to maximum.", KO), tempo="quote", ev=dict(hi="cap"))
 b("s1_13", 1, "cockpit", "一点二十一分，他说了一句：嗯……真的……困。", sub="1 点 21 分，他说了一句：嗯……真的……困。",
-  q=Q("01:21:13", CAP, "eh…. really … sleepy . . .", KO), tempo="quote", gap=0.7, ev=dict(hi="cap"))
+  q=Q("01:21:13", CAP, "eh.... really ... sleepy . . .", KO), tempo="quote", gap=0.7, ev=dict(hi="cap"))
 b("s1_14", 1, "cockpit", "最需要清醒的那个人，那晚是最累的那个人。而在这个驾驶舱里，是他说了算。",
   key=True, gap=0.9, ev=dict(hi="cap"))
 
@@ -75,8 +77,10 @@ b("s2_03", 2, "map", "一道管左右偏没偏，叫航向道；一道管高低�
 b("s2_04", 2, "map", "就像一条看不见的滑梯，顺着滑下去，就落在跑道上。", ev=dict(stage="ils"))
 b("s2_05", 2, "map", "那天晚上，关岛这条跑道的下滑道停用了，事先发过通告。", ev=dict(stage="gs_off"))
 b("s2_06", 2, "map", "滑梯只剩一半：左右有人管，高低，没人管了。", gap=0.5, ev=dict(stage="gs_off"))
-b("s2_07", 2, "map", "没有下滑道，只能飞非精密进近：对着进近图，离某个点还有几海里，最低能降到多高，一级一级往下降，像下台阶。",
-  sub="没有下滑道，只能飞“非精密进近”：对着进近图，离某个点还有几海里、最低能降到多高，一级一级往下降，像下台阶。",
+b("s2_07a", 2, "map", "没有下滑道，只能飞非精密进近。进近，就是落地前对准跑道往下飞的那一段。",
+  sub="没有下滑道，只能飞“非精密进近”。“进近”，就是落地前对准跑道往下飞的那一段。", ev=dict(stage="steps"))
+b("s2_07", 2, "map", "非精密，就是没有那根管高低的线，只能对着进近图，离某个点还有几海里，最低能降到多高，一级一级往下降，像下台阶。",
+  sub="“非精密”，就是没有那根管高低的线：只能对着进近图，离某个点还有几海里、最低能降到多高，一级一级往下降，像下台阶。",
   ev=dict(stage="steps"))
 b("s2_08", 2, "map", "测距离，靠一台测距设备，叫 D M E。陷阱就藏在这儿：",
   sub="测距离，靠一台测距设备，叫 DME。陷阱就藏在这儿：", ev=dict(stage="dme"))
@@ -161,9 +165,9 @@ b("s3_34", 3, "profile", "机械师：看不见。副驾驶：看不见，复飞
 b("s3_35", 3, "profile", "机械师喊：复飞！一秒后，机长也说：复飞。",
   q=Q("01:42:23", CAP, "go around.", EN, "前一秒，飞行工程师：go around."), tempo="quote", ev=dict(t="01:42:23"))
 b("s3_36", 3, "profile", gpws="one hundred. fifty. forty. thirty. twenty.", gap=0.0, ev=dict(t="01:42:24", gpws=True))
-b("s3_37", 3, "impact", None, gap=2.6, ev=dict(impact=True))
+b("s3_37", 3, "impact", None, gap=3.0, ev=dict(impact=True))      # 一声闷响 + 静音 2 秒
 b("s3_38", 3, "memorial", "一点四十二分二十六秒，飞机撞上尼米兹山。机上二百五十四人，二百二十八人遇难。",
-  sub="1 点 42 分 26 秒，飞机撞上尼米兹山。机上 254 人，228 人遇难。", gap=1.5)
+  sub="1 点 42 分 26 秒，飞机撞上尼米兹山。机上 254 人，228 人遇难。", gap=1.5, pre=2.0)   # 高潮：音乐单独 2 秒
 b("s3_39", 3, "memorial", "有人看见了，有人说出口了。从第一次说天气不好，到最后喊出复飞，过了二十分钟；",
   sub="有人看见了，有人说出口了。从第一次说“天气不好”，到最后喊出“复飞”，过了二十分钟；")
 b("s3_40", 3, "memorial", "而从机长报出那个错误的高度，到撞山，不到两分钟。没有一句话，硬到能让飞机拉起来。",
@@ -198,7 +202,7 @@ b("s5_03", 5, "ua173", "放起落架时，咚、咚两声，飞机一晃。该�
 b("s5_04", 5, "ua173", "机长决定先不落地，在附近盘旋，把起落架的事弄清楚。", ev=dict(stage="gear"))
 b("s5_05", 5, "ua173", "这一盘旋，就是将近一个小时。所有人的注意力，都被那盏灯吸走了。", ev=dict(stage="focus"))
 b("s5_06", 5, "ua173", "盘旋快四十分钟时，机长说，再等十五分钟。飞行工程师说：不够。再等十五分钟，油就真的很低了。",
-  q=Q("17:50", FE, "Not enough. Fifteen minutes is gonna — really run us low on fuel here.", EN), tempo="quote",
+  q=Q("17:50", FE, "Not enough. Fifteen minutes is gonna- really run us low on fuel here.", EN), tempo="quote",
   ev=dict(stage="focus"))
 b("s5_07", 5, "ua173", "这话不算轻。可它仍是在描述情况，不是在说：我们必须马上落地。",
   sub="这话不算轻。可它仍是在描述情况，不是在说“我们必须马上落地”。", ev=dict(stage="focus"))
@@ -334,7 +338,7 @@ b("s11_01", 11, "end", "飞机上最危险的，常常不是坏天气，", gap=0
 b("s11_02", 11, "end", "而是看见了问题的人，说不出那个词；或者说了，上面的人听不进。", gap=0.6, ev=dict(line=2))
 b("s11_03", 11, "end", "一个组织安不安全，不看最聪明的那个人有多聪明，", gap=0.3, ev=dict(line=3))
 b("s11_04", 11, "end", "看的是最没有地位的那个人，敢不敢喊停。", sub="看的是最没有地位的那个人，敢不敢喊“停”。",
-  key=True, gap=2.2, ev=dict(line=4))
+  key=True, gap=2.6, ev=dict(line=4))
 
 # ───────────────────────── 12 片尾 ─────────────────────────
 b("s12_01", 12, "credits", None, gap=8.0)

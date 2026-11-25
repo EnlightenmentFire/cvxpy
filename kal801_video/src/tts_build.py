@@ -198,7 +198,23 @@ def main(secs):
     for x in todo:
         base_seed = int(hashlib.md5(x["id"].encode()).hexdigest()[:6], 16)
         best = None
-        for k in range(MAX_TRIES):
+        k0 = int(os.environ.get("KAL_TRY_OFFSET", "0"))     # 重试不合格句时换一批新 seed
+        prev = man.get(x["id"]) if x["id"] in man and man[x["id"]].get("say") == x["say"] else None
+        if prev and k0:
+            best = dict(seed=prev["seed"], f0=prev["f0"], cer=prev["cer"], asr=prev["asr"],
+                        raw=os.path.join(RAW, f"{x['id']}_best_prev.wav"), sr=24000,
+                        score=(0 if F0_LO <= prev["f0"] <= F0_HI else 1) * 10 + prev["cer"] + abs(prev["f0"] - 95) / 1000,
+                        ok=prev["ok"])
+            import glob as _g
+            cands = sorted(_g.glob(os.path.join(RAW, f"{x['id']}_*.wav")))
+            for cpath in cands:
+                if "_best_prev" in cpath:
+                    continue
+                w0, sr0 = sf.read(cpath, dtype="float32")
+                if abs(median_f0(w0, sr0) - prev["f0"]) < 0.05:
+                    best["raw"], best["sr"] = cpath, sr0
+                    break
+        for k in range(k0, k0 + MAX_TRIES):
             seed = base_seed + 7919 * k
             torch.manual_seed(seed)
             t0 = time.time()

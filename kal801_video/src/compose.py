@@ -46,9 +46,9 @@ def build_timeline(manifest=None, gpws_manifest=None):
             ad = gpws_manifest[x["gpws"]]["dur"]
         else:
             ad = est_dur(x)
-        lead = 0.0
+        lead = x.get("pre", 0.0)
         if x["q"] and x["say"]:
-            lead = 0.35          # 卡片先出现，再开口
+            lead += 0.35         # 卡片先出现，再开口
         d = lead + ad + x["gap"]
         e = dict(x)
         e.update(start=t, dur=d, adur=ad, lead=lead)
@@ -205,6 +205,12 @@ def render(tl, t, surface=None, surface2=None):
         p.setAlphaf(1 - ease((t - e["start"]) / XFADE))
         c.drawImage(img, 0, 0, skia.SamplingOptions(), p)
     draw_overlays(c, S)
+    # 片尾：最后 2.5 秒淡入黑场
+    total = tl[-1]["start"] + tl[-1]["dur"]
+    if t > total - 2.5:
+        p = skia.Paint()
+        p.setColor(skia.Color(0, 0, 0, int(255 * ease((t - (total - 2.5)) / 2.5))))
+        c.drawRect(skia.Rect.MakeWH(W, H), p)
     return surface
 
 
