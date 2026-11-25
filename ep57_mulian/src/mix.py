@@ -6,7 +6,8 @@ from scipy.ndimage import uniform_filter1d
 
 WORK = os.environ.get("WORK", "/tmp/claude-0/work")
 SR = 48000
-UNDER_SPEECH, UNDER_PAUSE = -21.0, -17.0
+# targets are relative to the MONO voice loudness; stereo voice measures +3 dB, so -19 => ~-22 dB under voice in the mix
+UNDER_SPEECH, UNDER_PAUSE = -19.0, -15.5
 
 
 def main():
