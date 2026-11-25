@@ -1,0 +1,15 @@
+line-by-line ASR, 86 narration lines, 3147 reference syllables
+syllable errors  pure voice: 2 (0.06%)   final mix: 3 (0.10%)
+lines where the mix reads worse than the pure voice: 1; better: 0
+
+o4  voice 1  mix 1
+   script: 又正是它让这笔交易在最后一刻谈崩了
+   voice : 又正是他让这笔交易在最后一刻弹崩了
+   mix   : 又正是他让这笔交易在最后一刻弹崩了
+k16  voice 0  mix 1
+   script: 舒尔茨还回忆里根推给他一张纸条我错了吗他小声回答没有你是对的散场时戈尔巴乔夫说我不知道我还能做什么里根说你本可以说好
+   mix   : 舒尔兹还回忆里根推给他一张纸条我错了吗他小声回答没有你是对的散场时戈尔巴乔夫说我不知道我还能做什么里根说你本可以说好
+m3  voice 1  mix 1
+   script: 真正的裁军是在把那片天空放到一边之后才谈成的
+   voice : 真正的裁军是在把那片天空放到一边之后才弹成的
+   mix   : 真正的裁军是在把那片天空放到一边之后才弹成的
