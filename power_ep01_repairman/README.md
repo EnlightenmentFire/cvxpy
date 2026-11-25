@@ -31,8 +31,11 @@
 ## 构建
 
 ```bash
-python src/tts.py synth all && python src/tts.py process all     # 配音 + 校验
-EP_DURATIONS=<work>/tts/durations.json python src/render.py video out/video.mp4 --jobs=4
-python src/mix.py out/audio.wav                                    # 混音
-# 最后 ffmpeg 两遍编码 + 合流，控制在 100 MB 以内
+python src/tts.py synth all && python src/tts.py process all        # 配音 + 音高/ASR 校验 + 后期
+python src/music_gen.py a && python src/music_gen.py b && python src/music_gen.py ext   # MusicGen 分层配乐
+EP_DURATIONS=<work>/tts/durations.json python src/render.py video <work>/final/video_noaudio.mp4 --jobs=4
+python src/mix.py <work>/final/audio_nomusic.wav --no-music        # 无配乐版音轨
+python src/finish.py   # 校准配乐电平 → 混音 → 限幅 → 两遍编码 → 封装两版 → 高潮试听片段 → 自检
 ```
+
+成片规格：1080×1920，30 fps，H.264 High@4.1 两遍编码约 830 kbps + AAC 128 kbps，整体响度 -16 LUFS，真峰值 ≤ -1.5 dBTP，旁白时配乐比人声低约 16.7 dB（侧链压缩），文件 < 100 MB。
