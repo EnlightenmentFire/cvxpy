@@ -99,7 +99,7 @@ def main():
             y = y * 10 ** ((-18.0 - lu) / 20)
         except Exception:
             pass
-        sf.write(f"{PROC}/{d['id']}.wav", y, SR)
+        sf.write(f"{PROC}/{d['id']}.wav", y, SR, subtype="FLOAT")
         out.append(y)
     t = LEAD
     tl_lines = []
@@ -112,11 +112,28 @@ def main():
     for y, l in zip(out, tl_lines):
         i0 = int(round(l["start"] * SR)); nar[i0:i0 + len(y)] += y
     nar = nar[: int(round(total * SR))]
+    # 动态：轻压缩（3:1）+ 限幅，再统一到 -15 LUFS，峰值留在 -2 dBFS 以下
     lu = meter.integrated_loudness(nar)
-    nar *= 10 ** ((-15.0 - lu) / 20)
-    pk = np.abs(nar).max()
-    if pk > 10 ** (-1.6 / 20):
-        print("warn: narration peak", 20 * np.log10(pk))
+    nar *= 10 ** ((-20.0 - lu) / 20)
+    sf.write(f"{WORK}/narration_pre.wav", nar, SR, subtype="FLOAT")
+    chain = ("acompressor=threshold=-26dB:ratio=3:attack=4:release=120:knee=6:makeup=1,"
+             "alimiter=limit=-9dB:attack=1:release=60:level=false:asc=1")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{WORK}/narration_pre.wav", "-af", chain,
+                    "-c:a", "pcm_f32le", f"{WORK}/narration_dyn.wav"], check=True)
+    nar, _ = sf.read(f"{WORK}/narration_dyn.wav"); nar = nar.astype(np.float32)
+    for it in range(4):  # 归一到 -15 LUFS，再用限幅器把峰值压到 -2.5 dBFS，迭代收敛
+        lu = meter.integrated_loudness(nar)
+        nar *= 10 ** ((-15.0 - lu) / 20)
+        if 20 * np.log10(np.abs(nar).max()) <= -2.0:
+            break
+        sf.write(f"{WORK}/narration_tmp.wav", nar, SR, subtype="FLOAT")
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{WORK}/narration_tmp.wav", "-af",
+                        "alimiter=limit=-2.5dB:attack=1:release=50:level=false:asc=1", "-c:a", "pcm_f32le",
+                        f"{WORK}/narration_dyn.wav"], check=True)
+        nar, _ = sf.read(f"{WORK}/narration_dyn.wav"); nar = nar.astype(np.float32)
+    pk = 20 * np.log10(np.abs(nar).max())
+    print(f"narration LUFS {meter.integrated_loudness(nar):.2f}")
+    print(f"narration peak after dynamics {pk:.1f} dBFS")
     sf.write(f"{WORK}/narration.wav", nar, SR, subtype="FLOAT")
     # 场景边界（与 render.py 同算法）
     scenes = []
