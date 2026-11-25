@@ -204,8 +204,12 @@ def takeaway(t, lines, color=WHITE, y=640, size=66):
 
 
 # ------------------------------------------------------------------ 04 excalibur
-def boost_decoy(t, phase='boost'):
-    """schematic of boost phase -> bus releasing warheads + decoys (imagined)."""
+def boost_decoy(t, phase='boost', tb=4.0):
+    """schematic of boost phase -> bus releasing warheads + decoys (imagined).
+
+    tb is the burn-out time: the rocket climbs until tb, and the objects separate after it.
+    The boost shot passes its own length so nothing separates before the narration says so.
+    """
     c = new_canvas(hexc('020308')); e = np.zeros_like(c)
     rng = np.random.default_rng(4)
     for _ in range(220):
@@ -217,7 +221,6 @@ def boost_decoy(t, phase='boost'):
     c[...] = c * (1 - m[..., None]) + hexc('061020') * m[..., None]
     ring(e, W / 2, cy_e, 2000, (0.3, 0.55, 1.0), 6, 0.6)
     # rising missile
-    tb = 4.0
     u = min(t, tb) / tb
     path = lambda uu: (300 + 420 * uu, 1290 - 900 * (1 - (1 - uu) ** 2))
     pts = [path(x) for x in np.linspace(0, u, 40)]

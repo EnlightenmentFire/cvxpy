@@ -146,7 +146,9 @@ def build_shots():
     add('r12', lambda t: SM.reagan_admits(t), name='admits')
     add('r13', lambda t: SM.takeaway(t, ['想逃出恐怖平衡的那一步', '恰恰最让对方害怕'], size=60), name='take')
     # ---- 04 excalibur
-    add('x1', lambda t: SM.boost_decoy(t, 'boost'), hypo=True, name='boost')
+    # the rocket burns for the whole boost shot (through the cross-fade); it burns out on 'x3'
+    boost_len = cue('x3') - cue('x1') + XFADE
+    add('x1', lambda t: SM.boost_decoy(t, 'boost', tb=boost_len), hypo=True, name='boost')
     add('x3', lambda t: SM.boost_decoy(t + 4.2, 'decoy'), hypo=True, name='decoy')
     add('x4', lambda t: SM.quote_card(t, '“氢弹之父”泰勒 · 利弗莫尔实验室', '神剑\nX 射线激光', '1980 年代初的设想', col=WHITE), name='excal')
     add('x6', lambda t: SM.xray_schematic(t), hypo=True, name='xray')
