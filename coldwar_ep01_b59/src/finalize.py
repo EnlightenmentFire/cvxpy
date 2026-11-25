@@ -19,9 +19,9 @@ def probe_duration(p):
     return float(out)
 
 
-def encode(out, target_mb=93.0, audio_kbps=128):
+def encode(out, target_mb=93.0, audio_kbps=128, mix_name="mix_v2.wav"):
     pic = os.path.join(EDIT, "picture.mp4")
-    mix = os.path.join(EDIT, "mix.wav")
+    mix = os.path.join(EDIT, mix_name)
     dur = probe_duration(pic)
     total_kbps = target_mb * 8 * 1024 / dur  # MiB -> kbit
     v_kbps = int(total_kbps - audio_kbps - 12)  # container overhead margin

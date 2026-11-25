@@ -217,3 +217,85 @@ def build(tl, voice, sr):
     k = int(2.0 * SR)
     out[-k:] *= np.linspace(1, 0, k)
     return out
+
+
+def build_sfx(tl, voice, sr):
+    assert sr == SR
+    total = len(voice) / SR
+    n = len(voice)
+    shots = {s["id"]: s for s in tl["shots"]}
+
+    def T(sid, which="start"):
+        return shots[sid][which]
+
+    music = np.zeros(n, np.float32)
+    sfx = np.zeros(n, np.float32)
+
+    # --- cold open: hypothetical boom + tinnitus ---------------------------------
+    _place(sfx, _norm(boom(6.0), 0.09), T("cold") + 0.1)
+    _place(sfx, _norm(tinnitus(5.0), 0.006), T("cold") + 0.6)
+    # title hit
+    _place(sfx, _norm(S.impact(3.0, seed=4, depth=0.2), 0.05), T("title"))
+
+    # --- black saturday: a low pulse per red dot ---------------------------------
+    for k in range(3):
+        _place(sfx, _norm(S.sonar_ping(220.0, 2.0), 0.012), T("timeline") + 0.6 + k * 0.9)
+    _place(sfx, _norm(whoosh(2.2), 0.03), T("dive") + 0.2)
+    _place(sfx, _norm(S.impact(2.5, seed=6, depth=0.1), 0.04), T("dive") + 1.4)  # hitting the water
+
+    # --- under the sea ------------------------------------------------------------
+    u0, u1 = T("dive") + 1.4, T("hypo_launch")
+    uw = _norm(underwater(u1 - u0 + 1), 0.010)
+    uw *= _env(len(uw), [(0, 0), (SR, 1), (len(uw) - SR, 1), (len(uw) - 1, 0)])
+    _place(music, uw, u0)
+    t = u0 + 2.0
+    while t < u1 - 2:
+        _place(sfx, _norm(S.sonar_ping(), 0.010), t)
+        t += 7.5
+    for k, tt in enumerate(np.arange(T("section") + 3, T("orders", "end"), 11.0)):
+        _place(sfx, _norm(S.metal_groan(seed=k), 0.008), tt)
+    sh = shots["sonar"]
+    beale, cony, heavy = cuelib.sonar_hits(sh["cues"], sh["end"] - sh["start"])
+    for k, h in enumerate(beale + cony):
+        _place(sfx, _norm(S.impact(2.5, seed=10 + k), 0.06), sh["start"] + h)
+    for k, h in enumerate(heavy):
+        _place(sfx, _norm(S.impact(2.5, seed=30 + k, depth=1.6), 0.10), sh["start"] + h)
+
+    # --- hypothetical --------------------------------------------------------------
+    _place(sfx, _norm(whoosh(2.0, seed=9), 0.04), T("hypo_launch") + 0.4)
+    hb0 = T("hypo_burst")
+    # silence: hard-mute music & sfx for the first 0.5 s of the burst shot
+    i0, i1 = int(hb0 * SR), int((hb0 + 0.5) * SR)
+    music[i0:i1] = 0
+    sfx[i0:i1] = 0
+    _place(sfx, _norm(boom(8.0, seed=2), 0.14), hb0 + 0.5)
+    _place(sfx, _norm(tinnitus(7.0), 0.008), hb0 + 0.6)
+    gl = T("hypo_globe")
+    cut = T("hypo_out") + 1.1
+    music[int(cut * SR):int((cut + 1.2) * SR)] *= np.linspace(0, 1, int(1.2 * SR))[: len(music[int(cut * SR):int((cut + 1.2) * SR)])]
+    sfx[int(cut * SR):int((cut + 0.6) * SR)] = 0
+    _place(sfx, _norm(S.sonar_ping(660.0, 3.0), 0.012), cut + 0.15)
+
+    # --- surfaced: waves, aircraft, cannon -------------------------------------------
+    w0 = T("surfacing")
+    wv = _norm(waves(T("credits", "end") - w0 + 1), 0.009)
+    wv *= _env(len(wv), [(0, 0), (2 * SR, 1), (int((T("ending", "end") - w0) * SR), 1), (len(wv) - 1, 0)])
+    _place(music, wv, w0)
+    for sid in ("topdown", "tower"):
+        s = shots[sid]
+        for p in cuelib.plane_passes(s["cues"], s["end"] - s["start"], sid):
+            _place(sfx, _norm(flyby(), 0.035), s["start"] + p - 1.75)
+    s = shots["topdown"]
+    s4 = s["cues"].get("f04", (2.0, 2.0))[0]
+    for k in range(14):
+        _place(sfx, _norm(pop(k), 0.02), s["start"] + s4 + 0.9 + k * 0.09)
+    _place(sfx, _norm(S.impact(2.0, seed=77, depth=0.2), 0.035), T("photo"))
+
+    # --- duck the music under the voice; keep SFX less ducked ----------------------
+    amb = S.duck(music, voice, depth=0.35)   # ambience (underwater rumble, waves)
+    sfx = S.duck(sfx, voice, depth=0.25)
+    out = (amb + sfx).astype(np.float32)
+    # fade out at the very end
+    k = int(2.0 * SR)
+    out[-k:] *= np.linspace(1, 0, k)
+    return out
