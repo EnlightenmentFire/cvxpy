@@ -36,7 +36,11 @@ def main():
         p = f"{LINES}/{d['id']}.wav"
         if not os.path.exists(p):
             continue
-        segs, _ = m.transcribe(p, language="zh", beam_size=5, initial_prompt="以下是普通话的句子。三国，刘备，陶谦，徐州。")
+        import soundfile as sf
+        from scipy.signal import resample_poly
+        x, sr = sf.read(p)
+        x = resample_poly(x, 1, 3).astype("float32") if sr == 48000 else x.astype("float32")
+        segs, _ = m.transcribe(x, language="zh", beam_size=5, initial_prompt="以下是普通话的句子。三国，刘备，陶谦，徐州。")
         hyp = "".join(s.text for s in segs)
         exp = tts_text(d.get("say", d["t"]))
         a, b = py(exp), py(hyp)

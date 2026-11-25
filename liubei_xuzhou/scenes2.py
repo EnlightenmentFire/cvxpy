@@ -316,9 +316,14 @@ def lose(ctx, t, S):
     if pc > 0:
         Wd.label_pill(ctx, "张飞欲杀曹豹", xp[0] + 120, xp[1] - 170, C["red"], pc, 28, "#fff2ee")
         Wd.label_pill(ctx, "曹豹招吕布", xp[0] + 120, xp[1] - 100, C["blue"], fade(t, S.a("d02b") + 2.5, None, 0.3), 28)
+    pg = prog(t, S.a("d02d"), 0.5)
+    if pg > 0:
+        Wd.label_pill(ctx, "丹阳兵开门", xp[0] - 40, xp[1] + 90, C["green"], pg, 32)
+        for k in range(3):
+            Wd.glow_dot(ctx, xp[0] - 30 + k * 30, xp[1] + 20, 6, C["green2"], pg, math.sin(t * 5 + k))
     pd = prog(t, S.a("d03"), 0.5)
     if pd > 0:
-        Wd.label_pill(ctx, "陶谦旧部", xp[0] - 40, xp[1] + 90, C["green"], pd, 30)
+        Wd.label_pill(ctx, "陶谦旧部", xp[0] - 40, xp[1] + 150, C["green"], pd, 30)
     pe = prog(t, S.a("d03b"), 0.6)
     if pe > 0:
         E.set_col(ctx, "#000000", 0.5 * pe); ctx.rectangle(0, 0, W, H); ctx.fill()
