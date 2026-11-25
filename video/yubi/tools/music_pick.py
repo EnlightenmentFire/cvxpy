@@ -70,8 +70,10 @@ def sheet(rows, out):
 
 
 if __name__ == '__main__':
-    from faster_whisper import WhisperModel
-    asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=2)
+    asr = None
+    if os.environ.get('NOASR') != '1':
+        from faster_whisper import WhisperModel
+        asr = WhisperModel('small', device='cpu', compute_type='int8', cpu_threads=2)
     res = json.load(open(os.path.join(MD, 'pick.json'))) if os.path.exists(os.path.join(MD, 'pick.json')) else {}
     for pre in sys.argv[1:]:
         rows = []

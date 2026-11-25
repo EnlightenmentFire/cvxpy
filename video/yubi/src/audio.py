@@ -75,7 +75,7 @@ def fx():
     for k in range(2): add(fx, arrow_fly(0.4), CK('s4', 11, 2) + k * 0.5 - 0.2, 0.6, -0.4); add(fx, clank_lite(0.3), CK('s4', 11, 2) + k * 0.5 + 0.2, 0.35, 0.3)
     # 伍：夜风；悬赏令再射入
     add(amb, wind(S['s6']['start'] - S['s5']['start'], 1.0, 0.09), S['s5']['start'], 0.8)
-    add(fx, arrow_fly(0.6), CK('s5', 10, 2) - 0.25, 0.8, -0.4); add(fx, thunk(), CK('s5', 10, 2) + 0.45, 0.7)
+    add(fx, arrow_fly(0.6), CK('s5', 10, 2) - 0.25, 0.35, -0.4); add(fx, thunk(), CK('s5', 10, 2) + 0.45, 0.3)     # 压在“你们何必陪他送死”上，放轻
     # 陆：风
     add(amb, wind(S['s7']['start'] - S['s6']['start'] + 1, 1.0, 0.12), S['s6']['start'], 0.9)
     # 柒：风声贯穿；歌词前后音乐收掉，只剩风（风在 hush 处略抬）
@@ -166,9 +166,9 @@ def main():
     os.makedirs(AU, exist_ok=True)
     nar = narration(); sf.write(f"{AU}/narration.wav", np.stack([nar, nar], 1), SR, subtype='FLOAT')
     ev, amb = fx(); vI = lufs(np.stack([nar, nar], 1))
-    # 音效：最响的 3 秒比旁白低约 5 dB；环境风声：比旁白低约 21 dB（之后与音乐一起被旁白侧链压低）
+    # 音效：最响的 3 秒比旁白低约 7 dB；环境风声：比旁白低约 21 dB（之后与音乐一起被旁白侧链压低）
     from loud import short_term
-    ev *= 10 ** ((vI - 5 - short_term(ev)[1].max()) / 20)
+    ev *= 10 ** ((vI - 7 - short_term(ev)[1].max()) / 20)
     act = np.abs(amb).sum(1) > 1e-4; amb *= 10 ** ((vI - 21 - lufs(amb[act])) / 20)
     sf.write(f"{AU}/fx.wav", ev + amb, SR, subtype='FLOAT')
     out = {}

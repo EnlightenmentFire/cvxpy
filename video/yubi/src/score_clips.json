@@ -4,11 +4,18 @@
  "build_a": "build_s2_3+build5.wav",
  "build_b": "build_s2_1.wav",
  "drive": "drive_s2_1+drive4.wav",
- "s5": "build_s2_4+build4+climax5v0.wav",
+ "s5": "build_s2_4+build4+climax5v1.wav",
  "lament_a": "lament_s3_1_x075.wav",
  "lament_b": "lament_s3_2.wav",
  "reflect": "reflect_s1_0.wav",
  "s9": "build_s2_0+build4+climax5.wav",
  "coda": "coda_s1_1.wav",
- "hard_seams": {}
+ "hard_seams": {},
+ "dips": [
+  [
+   441.4,
+   443.9,
+   -5
+  ]
+ ]
 }
