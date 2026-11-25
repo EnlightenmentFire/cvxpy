@@ -161,7 +161,8 @@ def sfx_brake():
     d = 1.4
     t = t_axis(d)
     thunk = pulse_kick(0.5, 45) * 1.0
-    hiss = hp(RNG.normal(0, 1, len(t)), 2500) * np.exp(-t * 3.2) * 0.25
+    hiss = lp(hp(RNG.normal(0, 1, len(t)), 2500), 9000) * np.exp(-t * 3.2) * 0.25
+    hiss[: int(0.01 * SR)] *= np.linspace(0, 1, int(0.01 * SR))   # soften the attack (no inter-sample spikes)
     out = hiss
     out[: len(thunk)] += thunk
     return out

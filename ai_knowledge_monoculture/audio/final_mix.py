@@ -81,7 +81,7 @@ def mix(vp, mp, sp, out, vol=0.5, no_music=False):
           f"measured_I={js['input_i']}:measured_TP={js['input_tp']}:measured_LRA={js['input_lra']}:"
           f"measured_thresh={js['input_thresh']}:offset={js['target_offset']}")
     # pass 2: apply (+ a true-peak safety limiter after the linear gain)
-    ff(inputs + ["-filter_complex", g + f";[pre]{ln},alimiter=limit=0.79:attack=1:release=50:level=false[o]",
+    ff(inputs + ["-filter_complex", g + f";[pre]{ln},aresample=48000,aresample=192000,alimiter=limit=0.79:attack=1:release=50:level=false,aresample=48000[o]",
                  "-map", "[o]", "-ar", str(SR), "-c:a", "pcm_s16le", out])
     return js
 
