@@ -151,10 +151,20 @@ def main():
     mm[e0 + fo:] = 0
     # levels: voice integrated ~ -18 dBFS RMS speech; music target ~ -21 dB under speech when talking, -16 dB in pauses
     v_rms = np.sqrt((voice[np.abs(voice) > 1e-4] ** 2).mean())
+    # slow leveller: music short-term RMS (3 s windows, smoothed) -> constant, boost capped at +6 dB
+    hop = int(0.1 * SR); m_ = N // hop
+    mono = mm[:m_ * hop].mean(1).reshape(m_, hop)
+    st = np.sqrt((mono ** 2).mean(1)) + 1e-7
+    k = 30; st = np.sqrt(np.convolve(st ** 2, np.ones(k) / k, mode="same")) + 1e-7
+    ref = np.median(st[st > np.percentile(st, 20)])
+    lev = np.clip(ref / st, 10 ** (-12 / 20), 10 ** (6 / 20))
+    lev = np.repeat(lev, hop); lev = np.pad(lev, (0, N - len(lev)), mode="edge")
+    mm = mm * lev[:, None]
     m_rms = np.sqrt((mm ** 2).mean())
     base = v_rms / m_rms
     e = env_follow(voice)
-    g = base * 10 ** ((-16 + (-21 - -16) * e) / 20)
+    e = np.pad(e, (0, N - len(e)), mode='edge')
+    g = base * 10 ** ((-17 + (-22.5 - -17) * e) / 20)
     music = mm * g[:, None]
     # open: music sits a bit higher before first words? keep same; hook sfx carries it
     for name, mix in [("mix_music", np.stack([voice, voice], 1) + music + sfx), ("mix_nomusic", np.stack([voice, voice], 1) + sfx)]:
