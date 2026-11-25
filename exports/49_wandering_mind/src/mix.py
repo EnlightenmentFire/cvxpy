@@ -6,12 +6,33 @@ Targets: music 20-24 dB under the voice while speaking; final -15 LUFS integrate
 import os, json, subprocess
 import numpy as np, soundfile as sf, pyloudnorm as pyln
 from scipy.ndimage import uniform_filter1d
+from scipy.signal import resample_poly
 
 WORK = os.environ.get("WORK", "/tmp/claude-0/work")
 SR = 48000
 MUSIC_UNDER_DB = float(os.environ.get("MUSIC_UNDER", 21.0))   # voice-active music level below voice
 GAP_LIFT_DB = 6.0                                              # music lift in longer pauses
 TARGET_LUFS = -15.0
+
+
+def limit(x, ceil_db=-2.0, look=0.004, rel=0.08):
+    """Look-ahead peak limiter on the 4x-oversampled envelope (true-peak aware)."""
+    from scipy.signal import resample_poly
+    from scipy.ndimage import minimum_filter1d
+    lim = 10 ** (ceil_db / 20)
+    os4 = np.abs(resample_poly(x, 4, 1, axis=0)).max(1)
+    env = os4.reshape(-1, 4).max(1)[: len(x)]
+    g = np.minimum(1.0, lim / (env + 1e-9))
+    n = int(look * SR)
+    g = minimum_filter1d(g, 2 * n + 1)            # look-ahead window centred on the peak
+    a = np.exp(-1 / (rel * SR))
+    from scipy.signal import lfilter
+    # release smoothing: one-pole on the gain, then take min with the instantaneous need
+    gs = lfilter([1 - a], [1, -a], g - 1) + 1
+    g = np.minimum(g, gs)
+    g = uniform_filter1d(g, n)                    # smooth the attack edge
+    g = np.minimum(g, minimum_filter1d(np.minimum(1.0, lim / (env + 1e-9)), 3))
+    return x * g[:, None]
 
 
 def rms_db(x):
@@ -65,19 +86,10 @@ def main():
     meter = pyln.Meter(SR)
     rep = {}
     for name, x in (("mix_music", full), ("mix_nomusic", nomus)):
-        L = meter.integrated_loudness(x)
-        x = x * 10 ** ((TARGET_LUFS - L) / 20)
-        # true-peak safety: oversampled peak estimate, soft limit to -2.0 dBTP
-        from scipy.signal import resample_poly
-        tp = np.abs(resample_poly(x, 4, 1, axis=0)).max()
-        lim = 10 ** (-2.0 / 20)
-        if tp > lim:
-            # simple look-ahead-free gain riding on peaks (rare: bell/plosives)
-            env = uniform_filter1d(np.abs(x).max(1), int(0.005 * SR))
-            gr = np.minimum(1.0, lim / (env * (tp / np.abs(x).max()) + 1e-9))
-            gr = -uniform_filter1d(-gr, int(0.02 * SR))  # min filter-ish smoothing
-            gr = uniform_filter1d(gr, int(0.01 * SR))
-            x = x * gr[:, None]
+        for _ in range(4):  # normalise -> limit -> renormalise until both targets hold
+            L = meter.integrated_loudness(x)
+            x = x * 10 ** ((TARGET_LUFS - L) / 20)
+            x = limit(x, -2.0)
         sf.write(f"{WORK}/{name}.wav", x.astype(np.float32), SR, subtype="PCM_24")
         rep[name] = dict(lufs=round(meter.integrated_loudness(x), 2),
                          true_peak_dbtp=round(20 * np.log10(np.abs(resample_poly(x, 4, 1, axis=0)).max()), 2))
@@ -85,8 +97,8 @@ def main():
     k = 10 ** ((TARGET_LUFS - meter.integrated_loudness(full)) / 20)
     rep["music_below_voice_db_speech"] = round(rms_db(v_act) - rms_db(mus_out[active].mean(1)), 1)
     rep["music_below_voice_db_gaps"] = round(rms_db(v_act) - rms_db(mus_out[~act].mean(1)), 1)
-    json.dump(rep, open(f"{WORK}/mix_report.json", "w"), indent=1)
-    print(json.dumps(rep))
+    json.dump(rep, open(f"{WORK}/mix_report.json", "w"), indent=1, default=float)
+    print(json.dumps(rep, default=float))
 
 
 if __name__ == "__main__":

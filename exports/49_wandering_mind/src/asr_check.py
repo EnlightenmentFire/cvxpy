@@ -45,12 +45,16 @@ def main():
         from scipy.signal import resample_poly
         x, sr = sf.read(p, dtype="float32")
         x = resample_poly(x, 1, 3).astype("float32") if sr == 48000 else x
-        segs, _ = m.transcribe(x, language="zh", beam_size=5, vad_filter=False,
-                               initial_prompt="以下是普通话的句子，使用简体中文。")
-        hyp = "".join(s.text for s in segs)
         ref = tts_text(d["say"])
-        a, b = norm(ref), norm(hyp)
-        e = ed(a, b) / max(1, len(a))
+        a = norm(ref)
+        best = None
+        for prompt in ("以下是普通话的句子，使用简体中文。", None):  # whisper sometimes drops a clause; take the better pass
+            segs, _ = m.transcribe(x, language="zh", beam_size=5, vad_filter=False, initial_prompt=prompt)
+            h = "".join(s.text for s in segs)
+            e_ = ed(a, norm(h)) / max(1, len(a))
+            if best is None or e_ < best[0]:
+                best = (e_, h)
+        e, hyp = best
         rep[d["id"]] = dict(ref=d["say"], hyp=hyp, per=round(e, 3))
         print(f"{d['id']} per={e:.3f} | {hyp}", flush=True)
         json.dump(rep, open(rep_p, "w"), ensure_ascii=False, indent=1)

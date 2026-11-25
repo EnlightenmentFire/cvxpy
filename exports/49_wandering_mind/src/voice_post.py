@@ -74,7 +74,11 @@ def process(d):
         g = np.gcd(sr, SR)
         x = resample_poly(x, SR // g, sr // g).astype(np.float32)
     x = trim_and_cap(x)
-    x = tempo(x, TEMPO)
+    # pad before time-stretching so the stretcher's start-up does not smear the first syllable
+    pad = int(0.3 * SR)
+    x = tempo(np.pad(x, (pad, pad)), TEMPO)
+    cut = int(round(pad / TEMPO))
+    x = x[cut:len(x) - cut]
     x = sosfiltfilt(butter(4, 60, "highpass", fs=SR, output="sos"), x).astype(np.float32)
     db, n = frame_db(x)
     v = db > db.max() - 35
