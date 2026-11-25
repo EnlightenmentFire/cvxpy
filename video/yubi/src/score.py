@@ -53,15 +53,15 @@ def build():
     cue('bed', 0.0, card('s2') + 1.5, CL.get('bed_at', 0.0), 0, X)
     # 推进
     cue('build_a', card('s2') - 1.5, card('s3') + 1.0, CL.get('build_a_at', 0.0), X, 1.8)
-    cue('build_b', card('s3') - 0.8, card('s4') + 1.0, CL.get('build_b_at', 0.0), 1.8, 2.0)     # 叁段 28 秒，一条 30 秒的片段正好够
-    cue('drive', card('s4') - 1.0, card('s5') + 1.5, CL.get('drive_at', 0.0), 2.0, X)
+    cue('build_b', card('s3') - 0.8, card('s4') + 1.0, CL.get('build_b_at', 0.0), 1.8, 1.5)     # 叁段 28 秒，一条 30 秒的片段正好够
+    cue('drive', card('s4') - 0.5, card('s5') + 1.0, CL.get('drive_at', 0.0), 1.5, 2.0)          # 肆段 60 秒：30 秒片段 + 30 秒续写
     def aligned(use, t0, t1, tgt, fin=X, fout=X):
         """长片段里最响的 2 秒（只在能放得下的范围里找）对到时间轴上的 tgt。"""
         w = clip(CL[use]); L = len(w) / SR; lo, hi = tgt - t0, L - (t1 - tgt)
         if hi < lo: raise SystemExit(f'{use}: 片段 {L:.1f}s 太短，至少要 {t1 - t0:.1f}s')
         p = CL.get(use + '_peak') or peak_time(w, lo, hi); cue(use, t0, t1, p - (tgt - t0), fin, fout)
     # 伍：一条“推进→高潮”的续写长片段；最响的 2 秒对到“人人有了拼死的心”之后的留白
-    aligned('s5', card('s5') - 1.5, card('s6') + 1.5, (E('s5', 13) + A('s5', 14)) / 2)
+    aligned('s5', card('s5') - 1.0, card('s6') + 1.5, (E('s5', 13) + A('s5', 14)) / 2, 2.0, X)
     # 陆、柒前半：哀段；柒在《敕勒歌》前 0.6 秒起用 0.9 秒收掉
     cue('lament_a', card('s6') - 1.5, card('s7') + 1.5, CL.get('lament_a_at', 0.0))
     cue('lament_b', card('s7') - 1.5, S['s7']['hush'] + 0.3, CL.get('lament_b_at', 0.0), X, 0.9)

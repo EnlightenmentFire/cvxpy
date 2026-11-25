@@ -55,7 +55,7 @@ elif sys.argv[1] == 'gen':
     # 层名:个数,层名:个数 …  同一批生成（CPU 上批量几乎不增加每步耗时）
     spec = [(x.split(':')[0], int(x.split(':')[1])) for x in sys.argv[2].split(',')]; secs = float(sys.argv[3]); seed = int(sys.argv[4]) if len(sys.argv) > 4 else 1
     names = [(ly, k) for ly, n in spec for k in range(n)]
-    t0 = time.time(); a = run([PROMPTS[ly] for ly, _ in names], secs, seed=seed)
+    t0 = time.time(); a = run([PROMPTS[ly] for ly, _ in names], secs, seed=seed); np.save(os.path.join(OUT, f'raw_gen_s{seed}.npy'), a)
     for j, (ly, k) in enumerate(names):
         p = os.path.join(OUT, f'{ly}_s{seed}_{k}.wav'); sf.write(p, a[j].T, SR, subtype='FLOAT')
         log[os.path.basename(p)] = dict(model=MID, prompt=PROMPTS[ly], secs=secs, seed=seed, idx=k, mode='gen')
@@ -70,7 +70,8 @@ elif sys.argv[1] == 'cont':
         w, sr = sf.read(os.path.join(OUT, f)); assert sr == SR; srcs.append(w.T.astype(np.float32))
     prs = [w[:, -int(ps * SR):] for w in srcs]
     t0 = time.time(); a = run([PROMPTS[ly] for _, ly, _ in jobs], secs, audio=prs, seed=seed)
-    inc = a.shape[2] > int(secs * SR) + pr.shape[1] // 2        # 输出是否含提示段（含则去掉）
+    np.save(os.path.join(OUT, f'raw_cont_s{seed}.npy'), a)          # 先存原始输出，后处理出错也不丢
+    inc = a.shape[2] > int(secs * SR) + prs[0].shape[1] // 2     # 输出是否含提示段（含则去掉）
     seen = {}
     print('output', a.shape, 'includes prompt:', inc, flush=True)
     for (f, ly, sc), w, pr, out in zip(jobs, srcs, prs, a):
