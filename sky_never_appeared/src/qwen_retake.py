@@ -23,7 +23,23 @@ SEED = int(os.environ.get('SEED_BASE', '9100'))
 MAX_RATIO = 0.07   # natural length within 7% of the old take, so the alignment stretch stays small
 
 
+def reselect(lines_p, meta_p, lid, must, out):
+    """pick again from the takes already in out_dir (no generation)."""
+    ln = [x for x in json.load(open(lines_p)) if x['id'] == lid][0]
+    ln['must'] = must
+    old_dur = [m for m in json.load(open(meta_p)) if m['id'] == lid][0]['dur']
+    takes = json.load(open(os.path.join(out, 'retake_report.json')))['takes']
+    for t in takes:
+        w, sr = sf.read(os.path.join(out, t['name']), dtype='float32')
+        t['w'], t['sr'] = w, sr
+    select_and_align(takes, ln, lid, old_dur, old_f0(meta_p, lid), out)
+
+
 def main():
+    if '--reselect' in sys.argv:
+        a = [x for x in sys.argv[1:] if x != '--reselect']
+        lines_p, _design_p, meta_p, lid, must, out = a[:6]
+        return reselect(lines_p, meta_p, lid, [m for m in must.split(',') if m], out)
     lines_p, design_p, meta_p, lid, must, out = sys.argv[1:7]
     must = [m for m in must.split(',') if m]
     os.makedirs(out, exist_ok=True)
@@ -31,6 +47,7 @@ def main():
     old_dur = [m for m in json.load(open(meta_p)) if m['id'] == lid][0]['dur']
     assert len(ln['segs']) == 1, 'single-segment lines only'
     kind, text = ln['segs'][0]
+    ln['must'] = must
     tempo = 1.0 if kind == 'n' else Q.QUOTE_SLOW
     v = Q.Voice(json.load(open(design_p)))
     takes = []
@@ -50,11 +67,34 @@ def main():
             takes.append({'name': name, 'seed': seed, 'f0': round(f0, 1), 'dur': round(dur, 3), 'err': round(err, 3),
                           'asr': hyp, 'ok': ok, 'w': lw, 'sr': sr})
             print(f"{name} f0 {f0:.1f} dur {dur:.2f} (old {old_dur:.2f}) err {err:.3f} ok {ok} | {hyp}", flush=True)
+    select_and_align(takes, ln, lid, old_dur, old_f0(meta_p, lid), out)
+
+
+def old_f0(meta_p, lid):
+    rp = os.path.join(os.path.dirname(meta_p), 'report.json')
+    if not os.path.exists(rp):
+        return None
+    return [m for m in json.load(open(rp))['lines'] if m['id'] == lid][0]['f0']
+
+
+def cost(t, old_dur, f0_ref):
+    # 5 Hz away from the old take's pitch weighs as much as 2 % of length; pitch match keeps the
+    # line consistent with its neighbours, length match keeps the alignment stretch small
+    c = abs(t['dur'] / old_dur - 1) / 0.02
+    if f0_ref:
+        c += abs(t['f0'] - f0_ref) / 5.0
+    return c
+
+
+def select_and_align(takes, ln, lid, old_dur, f0_ref, out):
+    must = ln.get('must', [])
     good = [t for t in takes if t['ok'] and abs(t['dur'] / old_dur - 1) <= MAX_RATIO]
     if not good:
         print('no usable take'); sys.exit(1)
-    good.sort(key=lambda t: (t['err'], abs(t['dur'] - old_dur)))
+    emin = min(t['err'] for t in good)
+    good = sorted([t for t in good if t['err'] == emin], key=lambda t: cost(t, old_dur, f0_ref))
     best = good[0]
+    print('candidates:', [(t['name'], t['f0'], t['dur'], round(cost(t, old_dur, f0_ref), 2)) for t in good], flush=True)
     sr = best['sr']
     n_old = int(round(old_dur * sr))
     aligned = Q.stretch(best['w'], sr, len(best['w']) / n_old)
