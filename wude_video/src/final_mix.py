@@ -140,3 +140,43 @@ def ducking_report(tl, voice_wav, duck_wav):
                 music_in_long_pauses_db=float(np.median(gaps)) if gaps else None,
                 voice_speech_db=float(np.median([db(v[int((l['t0'] + .3) * SR):int((l['t1'] - .2) * SR)])
                                                  for l in tl.lines if l['dur'] > 1.5])))
+
+
+# ---------------------------------------------------------------- sidechain with hold (numpy)
+def duck_gain(voice_mono, threshold_db, ratio=10.0, attack_ms=15.0, release_ms=500.0, hold_ms=350.0,
+              lookahead_ms=40.0, knee_db=6.0, rate=1000):
+    """Sidechain compressor gain (linear, per audio sample) keyed by the narration.
+
+    Same law as ffmpeg sidechaincompress (threshold / ratio / attack / release) plus a *hold*:
+    the key level is held for `hold_ms`, so commas inside a sentence do not let the music swell
+    (no pumping), while real pauses still let it come back up.
+    """
+    from scipy.ndimage import maximum_filter1d, uniform_filter1d
+    n = len(voice_mono)
+    step = SR // rate
+    m = len(voice_mono) // step
+    pw = (voice_mono[: m * step] ** 2).reshape(m, step).mean(axis=1)
+    pw = uniform_filter1d(pw, size=max(1, int(0.02 * rate)), mode="nearest")      # 20 ms RMS
+    key_db = 10 * np.log10(pw + 1e-12)
+    h = max(1, int(hold_ms / 1000 * rate))
+    la = int(lookahead_ms / 1000 * rate)
+    size = h + la
+    origin = (size - 1 - size // 2) - la          # window = [t - h + 1, t + la]
+    held = maximum_filter1d(key_db, size=size, origin=origin, mode="nearest")
+    over = held - threshold_db
+    gr = np.where(over <= -knee_db / 2, 0.0,
+                  np.where(over >= knee_db / 2, over * (1 - 1 / ratio),
+                           (1 - 1 / ratio) * (over + knee_db / 2) ** 2 / (2 * knee_db)))
+    a_att = np.exp(-1.0 / (attack_ms / 1000 * rate))
+    a_rel = np.exp(-1.0 / (release_ms / 1000 * rate))
+    sm = np.empty_like(gr)
+    cur = 0.0
+    for i in range(len(gr)):
+        x = gr[i]
+        cur = a_att * cur + (1 - a_att) * x if x > cur else a_rel * cur + (1 - a_rel) * x
+        sm[i] = cur
+    g = 10 ** (-sm / 20)
+    out = np.repeat(g, step)
+    if len(out) < n:
+        out = np.pad(out, (0, n - len(out)), mode="edge")
+    return out[:n]
