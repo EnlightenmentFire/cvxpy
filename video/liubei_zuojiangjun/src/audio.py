@@ -3,7 +3,7 @@
 配乐：低音弦乐铺底（D 小调）、近古琴音色的拨弦、下邳之围与出走段的战鼓。旁白处自动压低。
 输出：$WORK/audio/voice.wav  music.wav  sfx.wav  mix.wav（含乐）  mix_nomusic.wav（无配乐，只有旁白和音效）
 """
-import os, sys, json, math, subprocess
+import re, os, sys, json, math, subprocess
 import numpy as np, soundfile as sf
 from scipy import signal
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -327,14 +327,27 @@ def main():
     sf.write(f"{OUT}/mix_pre.wav", v + m + fx * 0.35, SR, subtype="FLOAT")
     sf.write(f"{OUT}/nomusic_pre.wav", v + fx * 0.35, SR, subtype="FLOAT")
     for src, dst in (("mix_pre", "mix"), ("nomusic_pre", "mix_nomusic")):
-        # 两遍 loudnorm 到 -15 LUFS / -1.5 dBTP
-        r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", f"{OUT}/{src}.wav", "-af", "loudnorm=I=-15:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"],
-                           capture_output=True, text=True).stderr
-        js = json.loads(r[r.rfind("{"):r.rfind("}") + 1])
-        af = (f"loudnorm=I=-15:TP=-1.5:LRA=11:measured_I={js['input_i']}:measured_TP={js['input_tp']}:measured_LRA={js['input_lra']}:"
-              f"measured_thresh={js['input_thresh']}:offset={js['target_offset']}:linear=true,aresample=48000")
-        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", f"{OUT}/{src}.wav", "-af", af, "-ar", "48000", f"{OUT}/{dst}.wav"], check=True)
-        print(dst, "LUFS", lufs(f"{OUT}/{dst}.wav"))
+        # 增益到 -15 LUFS，再经 4 倍过采样真峰值限幅（-1.5 dBTP 留 0.3 dB 余量），迭代修正增益
+        g = -15.0 - lufs(f"{OUT}/{src}.wav")
+        for _ in range(3):
+            af = (f"volume={g:.2f}dB,aresample=192000,alimiter=limit={10 ** (-1.9 / 20):.4f}:attack=2:release=60:level=disabled,"
+                  f"aresample=48000")
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", f"{OUT}/{src}.wav", "-af", af, "-ar", "48000", "-c:a", "pcm_s24le",
+                            f"{OUT}/{dst}.wav"], check=True)
+            I, tp = ebur(f"{OUT}/{dst}.wav")
+            if abs(I + 15.0) < 0.15:
+                break
+            g += -15.0 - I
+        print(dst, "LUFS %.2f  true peak %.2f dBTP" % (I, tp))
+
+
+def ebur(p):
+    r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", p, "-af", "ebur128=peak=true:framelog=quiet", "-f", "null", "-"],
+                       capture_output=True, text=True).stderr
+    tail = r[r.rfind("Summary"):]
+    I = float(re.search(r"I:\s+(-?[\d.]+) LUFS", tail).group(1))
+    tp = float(re.search(r"Peak:\s+(-?[\d.]+) dBFS", tail).group(1))
+    return I, tp
 
 
 if __name__ == "__main__":

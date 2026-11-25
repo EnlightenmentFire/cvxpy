@@ -1,6 +1,6 @@
 # 乱世起家录 · 刘备篇 3：左将军与煮酒论英雄（选题 70）
 
-微信视频号竖屏视频，1080×1920 / 25 fps / H.264 + AAC 128k，约 13.5 分钟。画面全部由代码渲染（skia），配乐与音效全部为 numpy 程序合成的原创音乐，旁白为 Qwen3-TTS（Apache-2.0）克隆的「托克维尔」设计音色。
+微信视频号竖屏视频，1080×1920 / 25 fps / H.264 + AAC 128k，约 12 分钟。画面全部由代码渲染（skia），配乐与音效全部为 numpy 程序合成的原创音乐，旁白为 Qwen3-TTS（Apache-2.0）克隆的「托克维尔」设计音色。
 
 | 文件 | 作用 |
 | --- | --- |
@@ -11,7 +11,7 @@
 | `src/timeline.py` | 按旁白实长排时间轴、卡片窗口、字幕块 |
 | `src/gfx.py` / `src/geo.py` / `src/scenes.py` | 图元、地图（AWS Terrarium 高程 + Natural Earth 河流，均为公共数据）、22 个分镜 |
 | `src/render.py` | 合成与分段渲染 |
-| `src/audio.py` | 旁白拼接、配乐与音效合成、闪避、两遍 loudnorm 到 -15 LUFS / -1.5 dBTP |
+| `src/audio.py` | 旁白拼接、配乐与音效合成、闪避、增益 + 4 倍过采样真峰值限幅到 -15 LUFS / ≤-1.5 dBTP |
 | `src/final_mux.sh` | 两遍 x264（<100 MB）、`aresample=async=1` 混流、音视频时长核对 |
 | `src/cover.py` / `src/export_docs.py` | 封面；旁白稿、sentences.json/txt、字幕 srt |
 | `史实核对.md` / `发布包.md` | 原文核对与改动说明；标题、简介、话题 |

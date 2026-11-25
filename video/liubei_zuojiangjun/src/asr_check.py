@@ -40,7 +40,12 @@ def main():
         p = f"{WORK}/tts/proc/{d['id']}.wav"
         if not os.path.exists(p):
             continue
-        segs, _ = m.transcribe(p, language="zh", beam_size=5, initial_prompt="以下是普通话历史纪录片旁白。")
+        import soundfile as sf, numpy as np
+        from scipy.signal import resample_poly
+        x, sr = sf.read(p, dtype="float32")
+        if x.ndim > 1: x = x.mean(1)
+        x = resample_poly(x, 16000, sr).astype(np.float32)
+        segs, _ = m.transcribe(x, language="zh", beam_size=5, initial_prompt="以下是普通话历史纪录片旁白。")
         hyp = "".join(s.text for s in segs)
         a, b = norm(d["tts"]), norm(hyp)
         e = ed(a, b); r = e / max(1, len(a))
