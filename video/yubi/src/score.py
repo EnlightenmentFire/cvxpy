@@ -49,8 +49,9 @@ def place(buf, w, t0, t1, at, fin, fout):
 def build():
     mus = np.zeros((N, 2)); X = 3.0; card = lambda s: S[s]['card'][0]; cues = []
     def cue(use, t0, t1, at=0.0, fin=X, fout=X): cues.append((use, t0, t1, at, fin, fout))
-    # 铺底：冷启动 + 片名 + 壹，一条续写接长的 pad（开头的 2 秒淡入在混音链里做）
-    cue('bed', 0.0, card('s2') + 1.5, CL.get('bed_at', 0.0), 0, X)
+    # 铺底：冷启动是一支稀疏的埙（与片尾的埙独奏首尾呼应），片名鼓点处交叉进 pad，一直铺到壹段结束（开头的 2 秒淡入在混音链里做）
+    cue('cold', 0.0, S['title']['start'] + 1.5, CL.get('cold_at', 0.0), 0, X)
+    cue('bed', S['title']['start'] - 1.5, card('s2') + 1.5, CL.get('bed_at', 0.0))
     # 推进
     cue('build_a', card('s2') - 1.5, card('s3') + 1.0, CL.get('build_a_at', 0.0), X, 1.8)
     cue('build_b', card('s3') - 0.8, card('s4') + 1.0, CL.get('build_b_at', 0.0), 1.8, 1.5)     # 叁段 28 秒，一条 30 秒的片段正好够
