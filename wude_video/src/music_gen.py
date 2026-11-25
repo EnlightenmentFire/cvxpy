@@ -39,7 +39,7 @@ PROMPTS = {
     "ending": ("solo guqin, slow, sparse, reflective, ancient chinese, gentle final cadence, long reverb tail, "
                + NEG),
 }
-VERSIONS = {"base": 3, "push_cold": 2, "push_tension": 3, "push_warm": 3, "climax": 3, "ending": 2}
+VERSIONS = {"base": 2, "push_cold": 2, "push_tension": 2, "push_warm": 2, "climax": 2, "ending": 2}
 SECONDS = {"base": 30, "push_cold": 30, "push_tension": 30, "push_warm": 30, "climax": 30, "ending": 20}
 
 
@@ -62,7 +62,14 @@ def generate(proc, model, prompts, seconds, seed, audio_prompts=None, sr=32000):
         inputs["input_values"] = inputs["input_values"].to(torch.float32)
     with torch.inference_mode():
         out = model.generate(**inputs, do_sample=True, guidance_scale=3.0, max_new_tokens=int(seconds * 50))
-    return [o.float().numpy().T for o in out]  # list of (samples, channels)
+    res = []
+    for o in out:
+        a = o.float().numpy().T  # (samples, channels)
+        pk = float(np.abs(a).max())
+        if pk > 0.98:            # EnCodec can overshoot: scale down instead of clipping
+            a = a * (0.98 / pk)
+        res.append(a)
+    return res
 
 
 def cmd_versions(proc, model, sr):
@@ -80,7 +87,7 @@ def cmd_versions(proc, model, sr):
         t0 = time.time()
         outs = generate(proc, model, [PROMPTS[j[0]] for j in batch], secs, seed=1000 + b)
         for (layer, k, path), a in zip(batch, outs):
-            sf.write(path, a, sr)
+            sf.write(path, a, sr, subtype="FLOAT")
             json.dump(dict(layer=layer, prompt=PROMPTS[layer], version=k, seed=1000 + b, seconds=len(a) / sr),
                       open(path[:-4] + ".json", "w"), ensure_ascii=False)
         print(f"batch {b // BATCH}: {[j[0] + '_v' + str(j[1]) for j in batch]} {secs}s in {time.time() - t0:.0f}s",
@@ -107,7 +114,7 @@ def cmd_extend(proc, model, sr, sel_path, specs):
         print(f"extend step {step}: {layers} in {time.time() - t0:.0f}s", flush=True)
     for l in plan:
         path = sel[l][0][:-4] + "_ext.wav"
-        sf.write(path, cur[l], sr)
+        sf.write(path, cur[l], sr, subtype="FLOAT")
         print("wrote", path, f"{len(cur[l]) / sr:.1f}s", flush=True)
 
 

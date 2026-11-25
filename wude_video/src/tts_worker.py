@@ -125,7 +125,8 @@ class ASR:
         import librosa
         if sr != 16000:
             wav = librosa.resample(wav.astype(np.float32), orig_sr=sr, target_sr=16000)
-        segs, _ = self.m.transcribe(wav.astype(np.float32), language="zh", beam_size=5,
+        segs, _ = self.m.transcribe(wav.astype(np.float32), language="zh",
+                                    beam_size=int(os.environ.get("ASR_BEAM", "5")),
                                     initial_prompt="以下是普通话朗读的历史纪录片旁白。",
                                     condition_on_previous_text=False, vad_filter=False)
         return cc.convert("".join(s.text for s in segs)).strip()

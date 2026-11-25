@@ -34,8 +34,8 @@ def load_material(choice):
             if sr != SR:
                 a = resample_poly(a, SR, sr, axis=0)
             parts.append(a)
-        # loudness-match each clip first (so alternates do not jump in level), then join with 3 s crossfades
-        parts = [p * (10 ** (-20 / 20) / (np.sqrt(np.mean(p ** 2)) + 1e-9)) for p in parts]
+        # level each clip (no section of it may suddenly jump out), then join with 3 s crossfades
+        parts = [level(p) for p in parts]
         out = parts[0]
         offsets = [0]
         for b in parts[1:]:
@@ -47,6 +47,18 @@ def load_material(choice):
 
 
 OFFSETS = {}
+
+
+def level(x, target_db=-20.0, win=1.5, smooth=0.75, lo_db=-14.0, hi_db=10.0):
+    """Offline look-ahead leveller: centred RMS window -> bounded gain -> smoothed in dB."""
+    from scipy.ndimage import uniform_filter1d
+    m = (x ** 2).mean(axis=1)
+    env = np.sqrt(uniform_filter1d(m, size=int(win * SR), mode="nearest")) + 1e-6
+    g_db = np.clip(target_db - 20 * np.log10(env), lo_db, hi_db)
+    g_db = uniform_filter1d(g_db, size=int(smooth * SR), mode="nearest")
+    y = x * (10 ** (g_db / 20))[:, None]
+    pk = np.abs(y).max()
+    return y * (0.95 / pk) if pk > 0.95 else y
 
 
 def xfade_concat(a, b, secs):

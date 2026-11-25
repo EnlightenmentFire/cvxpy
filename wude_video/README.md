@@ -11,13 +11,18 @@
   - `voice_post.py` 50Hz 高通、变速（rubberband R3，保留共振峰）、停顿压到 0.4s 内、语音 RMS -18 dBFS
   - `audio_synth.py` 编钟 / 磬 / 低鼓 / 埙 / 持续音全部用正弦分音与滤波噪声合成，旁白时自动压低（ducking）
   - `gfx.py` `wheel.py` `stages.py` `timeline.py` `render.py` skia 矢量渲染：五德轮盘、竹简、五色主色调、字幕安全区
-- `stills/` 关键静帧；`audio_sample/` 约 1 分钟样音与样片
+- `stills/` 关键静帧；`audio_sample/` 约 1 分钟样音与样片（早期版本，配乐为旧的合成配乐）
+- `final/` 成片：`五德终始_命理与正统01.mp4`（19:40，1080×1920，30fps，94 MB，-16 LUFS / -1.6 dBTP）、
+  `…_无配乐.mp4`（同画面，人声 + 自制音效，备商用时在视频号曲库加乐）、`高潮片段_轮盘翻面.mp4`
+- 配乐按《配乐规范》：MusicGen 分层生成 → 自动挑选 → 三层起伏拼接 → 侧链混音，说明见 `docs/配乐与混音说明.md`
 
 ## 授权
 - TTS：Qwen3-TTS-12Hz-1.7B-VoiceDesign / Base（Apache-2.0）。声音由文字描述设计，不克隆任何真人。
 - 回读校验：Whisper large-v3-turbo（MIT，CTranslate2 转换版）
 - 字体：思源宋体 / 思源黑体（Noto Serif/Sans CJK，SIL OFL 1.1，可商用）
-- 配乐与音效：本工程代码合成，无第三方素材
+- 背景音乐：MusicGen（facebook/musicgen-stereo-medium）本地生成 —— 权重为 **CC-BY-NC-4.0（非商用）**；
+  商用请用无配乐版或换 CC BY / 视频号曲库音乐
+- 音效（磬、编钟连击、长音等）：本工程代码合成，无第三方素材
 
 ## 运行（概要）
 ```bash

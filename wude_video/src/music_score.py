@@ -6,7 +6,7 @@ Objective proxies (I cannot listen, so these are explicit and reported):
   * peakiness           : 95th pct - median of 100 ms levels (lower = fewer sudden hits)
   * vocal-like content  : Whisper finds words in it -> rejected
   * broken output       : near-silent or clipped -> rejected
-Score = 0.5*z(band) + 0.3*z(steadiness) + 0.2*z(peakiness); lowest wins.
+Score = 0.6*z(band) + 0.2*z(steadiness) + 0.2*z(peakiness); lowest wins.
 usage: music_score.py <clips_dir> <out.json>
 """
 import glob
@@ -66,7 +66,7 @@ def main():
             for r in ok:
                 r["z_" + key] = float((r[key] - vals.mean()) / sd)
         for r in ok:
-            r["score"] = 0.5 * r["z_band"] + 0.3 * r["z_steady"] + 0.2 * r["z_peaky"]
+            r["score"] = 0.6 * r["z_band"] + 0.2 * r["z_steady"] + 0.2 * r["z_peaky"]
         ok.sort(key=lambda r: r["score"])
         choice[layer] = [r["path"] for r in ok]
         for r in rows:
