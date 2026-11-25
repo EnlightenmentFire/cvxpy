@@ -1,0 +1,30 @@
+{
+ "under_db_median": 21.969505297120527,
+ "under_db_min": 16.881924337915034,
+ "under_db_max": 30.040781060001486,
+ "loudnorm_full": {
+  "input_i": "-15.02",
+  "input_tp": "1.82",
+  "input_lra": "4.00",
+  "input_thresh": "-25.93",
+  "output_i": "-15.43",
+  "output_tp": "-1.50",
+  "output_lra": "3.70",
+  "output_thresh": "-26.27",
+  "normalization_type": "dynamic",
+  "target_offset": "0.43"
+ },
+ "loudnorm_nomusic": {
+  "input_i": "-15.02",
+  "input_tp": "1.80",
+  "input_lra": "4.00",
+  "input_thresh": "-25.76",
+  "output_i": "-15.42",
+  "output_tp": "-1.50",
+  "output_lra": "3.70",
+  "output_thresh": "-26.12",
+  "normalization_type": "dynamic",
+  "target_offset": "0.42"
+ },
+ "total": 747.9414916666663
+}
