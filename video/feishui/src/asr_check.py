@@ -5,6 +5,13 @@ import sys, os, json, re
 sys.path.insert(0, os.path.dirname(__file__))
 from script_data import all_lines
 from faster_whisper import WhisperModel
+import numpy as _np, soundfile as _sf
+from scipy.signal import resample_poly as _rp
+def load16(path):
+    x, sr = _sf.read(path, dtype='float32')
+    if x.ndim > 1: x = x.mean(1)
+    g = _np.gcd(sr, 16000)
+    return _rp(x, 16000 // g, sr // g).astype(_np.float32)
 from pypinyin import lazy_pinyin
 import difflib
 
@@ -26,7 +33,7 @@ for d in all_lines():
     p = f"{W}/tts/{kind}/{d['id']}.wav"
     if not os.path.exists(p):
         continue
-    segs, _ = model.transcribe(p, language="zh", beam_size=5, initial_prompt="以下是普通话的句子，关于淝水之战、苻坚、谢安。")
+    segs, _ = model.transcribe(load16(p), language="zh", beam_size=5, initial_prompt="以下是普通话的句子，关于淝水之战、苻坚、谢安。")
     hyp = "".join(s.text for s in segs)
     a, b = py(d["say"]), py(hyp)
     sm = difflib.SequenceMatcher(a=a, b=b)

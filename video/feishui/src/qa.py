@@ -17,13 +17,20 @@ rep = dict(file=os.path.basename(mp4), width=v["width"], height=v["height"], fps
 tl = json.load(open(f"{HERE}/timeline.json")); Ls = [l for l in tl["lines"] if l["k"] == "n"]
 picks = [Ls[0], Ls[len(Ls) // 2], Ls[-3]]
 from faster_whisper import WhisperModel
+import numpy as _np, soundfile as _sf
+from scipy.signal import resample_poly as _rp
+def load16(path):
+    x, sr = _sf.read(path, dtype='float32')
+    if x.ndim > 1: x = x.mean(1)
+    g = _np.gcd(sr, 16000)
+    return _rp(x, 16000 // g, sr // g).astype(_np.float32)
 m = WhisperModel("small", device="cpu", compute_type="int8")
 checks = []
 for l in picks:
     t0, t1 = l["start"], l["end"]
     wav = f"{out}/chk_{l['id']}.wav"
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{t0 - 0.3:.3f}", "-t", f"{t1 - t0 + 0.6:.3f}", "-i", mp4, "-ac", "1", "-ar", "16000", wav], check=True)
-    segs, _ = m.transcribe(wav, language="zh", word_timestamps=False)
+    segs, _ = m.transcribe(load16(wav), language="zh", word_timestamps=False)
     segs = list(segs)
     hyp = "".join(s.text for s in segs)
     onset = segs[0].start - 0.3 if segs else None   # 相对句子起点（字幕起点）的语音起点

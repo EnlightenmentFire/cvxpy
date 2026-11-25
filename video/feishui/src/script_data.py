@@ -121,7 +121,7 @@ SECTIONS = [
   ('n', "其实，它是几十万个人，每一个人，都只看得见身边十几步。", dict(gap=1.0, cue="one vs many")),
  ]),
  ("s6", "停不下来", [
-  ('n', "溃退，还没有结束。", dict(cue="chapter card")),
+  ('n', "溃退，并没有到此结束。", dict(cue="chapter card")),
   ('q', "聞風聲鶴唳，皆以為王師已至。", dict(tts="闻风声鹤唳，皆以为王师已至。", src="《晉書·謝玄傳》", cue="quote")),
   ('n', "听到风声、鹤叫，都以为晋军追来了。《资治通鉴》还说，他们白天黑夜都不敢停。", dict(cue="reeds crane")),
   ('n', "在草里走，在露天睡，又饿又冻，史书说，死了十之七八。", dict(cue="night cold")),
