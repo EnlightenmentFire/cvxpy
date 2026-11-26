@@ -28,13 +28,11 @@ TP_CEIL = -1.5
 
 
 def ebur128(path):
-    r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", path, "-af", "ebur128=peak=true", "-f", "null", "-"],
-                       capture_output=True, text=True)
-    tail = r.stderr[r.stderr.rfind("Summary:"):]
-    i = float(re.search(r"I:\s+(-?[\d.]+) LUFS", tail).group(1))
-    lra = float(re.search(r"LRA:\s+(-?[\d.]+) LU", tail).group(1))
-    tp = float(re.search(r"Peak:\s+(-?[\d.]+|-inf) dBFS", tail).group(1))
-    return i, tp, lra
+    """Integrated loudness / true peak / LRA, two decimals (ffmpeg loudnorm analysis pass, EBU R128)."""
+    r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", path, "-af", "loudnorm=print_format=json",
+                        "-f", "null", "-"], capture_output=True, text=True)
+    js = json.loads(r.stderr[r.stderr.rfind("{"):r.stderr.rfind("}") + 1])
+    return float(js["input_i"]), float(js["input_tp"]), float(js["input_lra"])
 
 
 def measure(x):
@@ -47,32 +45,34 @@ def measure(x):
         os.remove(p)
 
 
-def tp_limit(x, ceil_db, os_factor=4, release=0.05):
-    """Gain-reduce only where the 4x-oversampled (true) peak would exceed ceil_db.
-    Smooth look-ahead gain envelope; leaves everything below the ceiling untouched."""
+def tp_limit(x, ceil_db, os_factor=4, look=0.003, release=0.06):
+    """Look-ahead true-peak limiter (pure gain, no waveform shaping).
+    need = gain that keeps the 4x-oversampled peak under ceil_db; hold it over +-look and smooth
+    with a Hann window of the same span (so the result never exceeds `need`; the gain ramps over
+    ~6 ms instead of the old 2 ms); then a 60 ms release."""
+    from scipy.ndimage import minimum_filter1d
+    from scipy.signal import fftconvolve
     lim = 10 ** (ceil_db / 20)
     up = resample_poly(x, os_factor, 1)
     pk = np.abs(up).reshape(-1, os_factor).max(axis=1)[: len(x)]
     need = np.minimum(1.0, lim / np.maximum(pk, 1e-9))
     if need.min() >= 1.0:
         return x, 0.0
-    # look-ahead: spread each reduction over +-2 ms (min filter), then smooth release
-    w = int(0.002 * SR)
-    from scipy.ndimage import minimum_filter1d, uniform_filter1d
-    g = minimum_filter1d(need, size=2 * w + 1)
-    g = uniform_filter1d(g, size=w)
-    g = np.minimum(g, minimum_filter1d(need, size=2 * w + 1))
-    a = np.exp(-1.0 / (release * SR))
-    out = g.copy()
-    tail = int(8 * release * SR)
-    idx = np.flatnonzero(g < 1.0)
-    # only walk the neighbourhoods that are actually reduced (plus release tail)
-    starts = idx[np.r_[True, np.diff(idx) > tail]]
-    ends = idx[np.r_[np.diff(idx) > tail, True]]
-    for s0, e0 in zip(starts, ends):
-        for i in range(max(1, s0), min(len(out), e0 + tail)):  # release: recover slowly
-            if out[i] > out[i - 1]:
-                out[i] = out[i - 1] * a + out[i] * (1 - a)
+    w = int(look * SR)
+    held = minimum_filter1d(need, size=2 * w + 1)
+    han = np.hanning(2 * w + 1)
+    g = np.minimum(fftconvolve(held, han / han.sum(), mode="same"), held)
+    # release on 1 ms blocks (block minimum), recover at most exp(-t/release) towards 1
+    b = SR // 1000
+    nb = int(np.ceil(len(g) / b))
+    gb = np.pad(g, (0, nb * b - len(g)), constant_values=1.0).reshape(nb, b).min(axis=1)
+    a = np.exp(-1.0 / (release * 1000))
+    lg = np.log(gb)
+    for i in range(1, nb):
+        if lg[i] > lg[i - 1]:
+            lg[i] = lg[i - 1] * a + lg[i] * (1 - a)
+    rel = np.interp(np.arange(len(g)), np.arange(nb) * b + b / 2, np.exp(lg))
+    out = np.minimum(rel, g)
     return (x * out).astype(np.float32), float(20 * np.log10(out.min()))
 
 
@@ -110,7 +110,7 @@ def main():
         z = (y * 10 ** (gain_db / 20)).astype(np.float32)
         z, lim_db = tp_limit(z, TP_CEIL - 0.3)
         i1, tp1, lra = measure(z)
-        if abs(i1 - TARGET_LUFS) <= 0.05 and tp1 <= TP_CEIL:
+        if abs(i1 - TARGET_LUFS) <= 0.02 and tp1 <= TP_CEIL:
             break
         gain_db += TARGET_LUFS - i1
     sf.write(os.path.join(dst, "narration.wav"), z, SR, subtype="PCM_24")

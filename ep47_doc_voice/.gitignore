@@ -1,2 +1,4 @@
 pipeline/ref/seed33_ref.wav
 __pycache__/
+# >100 MB (GitHub per-file limit); session download only, contents are all committed alongside
+ep47_doc_voice.zip

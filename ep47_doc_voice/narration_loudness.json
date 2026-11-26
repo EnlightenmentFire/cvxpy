@@ -1,0 +1,13 @@
+{
+ "duration_s": 517.724,
+ "sample_rate": 48000,
+ "gap_s": 0.4,
+ "lines": 113,
+ "lufs_before": -19.78,
+ "true_peak_before": -1.06,
+ "gain_db": 8.17,
+ "max_limiter_gr_db": -8.91,
+ "lufs_integrated": -15.02,
+ "true_peak_dbtp": -1.8,
+ "lra": 1.9
+}
