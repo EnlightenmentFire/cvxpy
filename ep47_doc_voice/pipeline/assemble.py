@@ -106,7 +106,7 @@ def main():
     i0, tp0, _ = measure(y)
     gain_db = TARGET_LUFS - i0
     lim_db = 0.0
-    for _ in range(4):
+    for _ in range(12):
         z = (y * 10 ** (gain_db / 20)).astype(np.float32)
         z, lim_db = tp_limit(z, TP_CEIL - 0.3)
         i1, tp1, lra = measure(z)
